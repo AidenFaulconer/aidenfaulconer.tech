@@ -5,5 +5,46 @@
   "home": {
     "title": "Hi! I'm Delog",
     "description": "I have been specifically designed to become a digital home for designers and developers, help them build amazing professional looking websites with ease. You don't have to worry about nitty gritty of web hosting services to run a blog and yet take full advantage of CMS to manage content :)"
-  }
+  },
+  "sitePageContent": {
+  "blog": [
+    {
+      "name": "blog",
+      "description": "Aiden Faulconer creates computer applications from scratch, fully capable in any programming language, any technology, any design.",
+      "title": "SOFTWARE DEVELOPMENT AND DESIGN",
+      "btn1": "lets work together",
+      "btn2": "lets connect"
+    }
+  ],
+  "portfolio": [
+    {
+      "name": "portfolio",
+      "description": "Aiden Faulconer creates computer applications from scratch, fully capable in any programming language, any technology, any design.",
+      "title": "SOFTWARE DEVELOPMENT AND DESIGN",
+      "btn1": "lets work together",
+      "btn2": "lets connect"
+    },
+    {}
+  ],
+  "contact": [
+    {
+      "name": "contact",
+      "description": "Aiden Faulconer creates computer applications from scratch, fully capable in any programming language, any technology, any design.",
+      "title": "SOFTWARE DEVELOPMENT AND DESIGN",
+      "btn1": "lets work together",
+      "btn2": "lets connect"
+    },
+    {}
+  ],
+  "visualizations": [
+    {
+      "name": "visualizations",
+      "description": "Aiden Faulconer creates computer applications from scratch, fully capable in any programming language, any technology, any design.",
+      "title": "SOFTWARE DEVELOPMENT AND DESIGN",
+      "btn1": "lets work together",
+      "btn2": "lets connect"
+    },
+    {}
+  ]
+}
 }
