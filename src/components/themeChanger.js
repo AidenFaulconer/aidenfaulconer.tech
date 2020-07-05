@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
+import { InlineIcon } from "@iconify/react";
+import nightIcon from "@iconify/icons-ic/baseline-bedtime";
+import dayIcon from "@iconify/icons-ic/baseline-wb-sunny";
 import { globalThemeState } from "./layout";
 
 const ThemeSwitch = styled.div`
   border-radius: ${props => props.theme.corners.borderRadius3};
-  background: ${props => props.theme.colors.textColor};
-  box-shadow: ${props => props.theme.shadows.primary};
-  height: 20px;
-  width: 65px;
-  margin: auto;
+  background: ${props => props.theme.colors.black};
+  height: 25px;
+  width: 75px;
+  position: relative;
+  margin: auto 0px;
 
   & label {
     display: block;
-    background: ${props => props.theme.colors.primary};
-    box-shadow: ${props => props.theme.shadows.primary};
-    height: 12px;
-    width: 12px;
-    top: 3px;
+    top: 5px;
+    width: 100%;
+    background: transparent;
     margin: auto;
     ${props => props.theme.transitions.primary("margin-left")};
   }
@@ -31,7 +32,18 @@ const ThemeSwitch = styled.div`
     ${props => props.theme.transitions.primary("margin-left")};
     position: relative;
     border-radius: 100%;
-    margin-left: 46.75px;
+    margin-left: 50px;
+  }
+
+  & svg {
+    border-radius: ${props=>props.theme.corners.borderRadius100};
+    position: absolute;
+    display: inline-block;
+    color: ${props=>props.theme.colors.foreground};
+    height: 20px;
+    width: 20px;
+    top: -2px;
+    left: 0px;
   }
 
   & input {
@@ -52,7 +64,7 @@ export default ({ toggleTheme }) => {
             toggleTheme(checked);
           }}
         />
-{" "}
+        <InlineIcon icon={checked ? dayIcon : nightIcon} />
       </label>
     </ThemeSwitch>
   );

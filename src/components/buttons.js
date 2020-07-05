@@ -5,7 +5,7 @@ import { Global, css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { Icon, InlineIcon } from "@iconify/react";
 import TouchRipple from "@material-ui/core/ButtonBase/TouchRipple";
-import chevronRight from "@iconify/icons-mdi/chevron-right";
+import chevronRight from "@iconify/icons-ic/round-arrow-right";
 import { CSSTransition } from "react-transition-group";
 
 export const test = {
@@ -16,24 +16,24 @@ export const test = {
 };
 
 const Button = styled.button`
-  border-radius: 50px;
+  border-radius: ${props => props.theme.corners.borderRadius2};
   padding: ${props => props.padding};
   border: none;
   font-weight: bolder;
   text-decoration: none;
   font-size: ${props => props.theme.text.sizes.small};
-  ${props => props.theme.corners.borderRadius100};
+  ${props => props.theme.corners.borderRadius2};
 
   &.-primary {
-    color: ${props => props.theme.colors.textColor};
+    color: ${props => props.theme.colors.textSecondary};
     background: ${props => props.theme.colors.primary};
   }
   &.-secondary {
-    color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.textPrimary};
+    color: ${props => props.theme.colors.textPrimary};
+    background: ${props => props.theme.colors.secondary};
   }
   &.-none {
-    color: ${props => props.theme.colors.textPrimary};
+    color: ${props => props.theme.colors.textSecondary};
     background: transparent;
   }
 
@@ -43,33 +43,36 @@ const Button = styled.button`
     position: relative;
     margin: auto 0;
     z-index: 200;
+    margin-left: 25px;
     cursor: pointer;
     ${props => props.theme.transitions.primary("margin-left")};
   }
   &:hover {
     & svg {
-      margin-left: 10px;
+      margin-left: 50px;
       ${props => props.theme.transitions.primary("margin-left")};
     }
   }
 `;
 
-export const BtnPrimary = ({ children, text, theme, padding, color }) => (
+export const defaultPadding = "12.5px 25px";
+
+export const BtnPrimary = ({ children, text, theme, padding, color, bg }) => (
   <Button
-    padding={padding || "15px 35px"}
+    padding={padding || defaultPadding}
     className="-primary"
-    style={{ color: color || "" }}
+    style={{ color: color || "", background: bg || "" }}
   >
     {children}
     {text}
     <Icon icon={chevronRight} />
   </Button>
 );
-export const BtnSecondary = ({ children, text, theme, padding, color }) => (
+export const BtnSecondary = ({ children, text, theme, padding, color, bg }) => (
   <Button
-    padding={padding || "15px 35px"}
+    padding={padding || defaultPadding}
     className="-secondary"
-    style={{ color: color || "" }}
+    style={{ color: color || "", background: bg || "" }}
   >
     {children}
     {text}
@@ -78,7 +81,7 @@ export const BtnSecondary = ({ children, text, theme, padding, color }) => (
 );
 export const Btn = ({ children, text, theme, padding, color }) => (
   <Button
-    padding={padding || "15px 35px"}
+    padding={padding || defaultPadding}
     className="-none"
     style={{ color: color || "" }}
   >

@@ -9,32 +9,33 @@ import { BtnPrimary, BtnSecondary, Btn } from "./buttons.js";
 
 const HeroHeader = styled.section`
   position: fixed;
-  padding: 25px;
-  padding-top: 150px;
+  padding-top: 300px;//185px + 25px
 
   & .headline {
-    font-size: ${props => props.theme.text.sizes.h1};
     font-weight: bolder;
-    line-height: ${props => props.theme.text.details.lineheight3};
+    font-family: poppins-extrabold;
+    color: ${props => props.theme.colors.primary};
   }
 
   & .primary-content {
-    font-family: brown-light;
+    color: ${props => props.theme.colors.black};
+    ${props => props.theme.mixins.contentFont};
     line-height: ${props => props.theme.text.details.lineheight3};
-    font-size: ${props => props.theme.text.sizes.p};
-    margin: 50px 0px;
-    width: 100%;
-    margin-bottom: 25px;
+    font-size: ${props => props.theme.text.sizes.h3};
+    width: 70%;
+    margin-bottom: 50px;
+    margin-top: 25px;
   }
   color: ${props => props.theme.colors.textPrimary};
   & .graphic {
     margin: 0px 25px;
+    margin-bottom: 150px;
     position: relative;
     width: 100%;
     height: 100%;
     top: -100px;
+    bottom: 0px;
     object-fit: contain;
-
 
     //react transition group on graphic, height 0 to 100
     & .-enter {
@@ -63,11 +64,8 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
         query HeadingQuery {
           site {
             siteMetadata {
-              sitePageContent {
-                blog {
-                  title
-                }
-              }
+              description
+              title
             }
           }
         }
@@ -82,32 +80,28 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
         return (
           <HeroHeader>
             <Row>
-              <Col xl={1} lg={1} md={2} sm={2} />
-              <Col xl={4} lg={8} md={8} sm={8}>
-                <div className="headline">
-                {headline}
-                </div>
+              <Col xl={1} lg={1} md={1} sm={1} />
+              <Col xl={6} lg={8} md={8} sm={8}>
+                <h1 className="headline">{headline}</h1>
+
                 <div
                   className="primary-content"
                   dangerouslySetInnerHTML={{
-                    __html:
-                     headlineDescription
+                    __html: headlineDescription
                   }}
                 />
                 <Link to="/contact" className="button -primary">
-                  <BtnSecondary text="Lets work together" />
+                  <BtnSecondary text="Start project" bg="#E5801A" />
                 </Link>
                 <Link to="/contact" className="button -secondary">
-                  <Btn text="Lets connect" />
+                  <Btn text="Connect" />
                 </Link>
               </Col>
-
-              <Col xl={1} lg md sm />
 
               <Col xl lg={12} md={12} sm={12}>
                 <img
                   className="graphic"
-                  src={headerGraphic}//TODO: this will be dynamic per page (with a hero header)
+                  src={headerGraphic} // TODO: this will be dynamic per page (with a hero header)
                 />
               </Col>
 

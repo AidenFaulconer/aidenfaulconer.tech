@@ -28,7 +28,11 @@ const staticStlying = {
   transitions: {
     long: property => `transition: ${property} 3.25s`,
     primary: property => `transition: ${property} .25s`,
-    secondary: property => `transition: ${property} .5s`
+    secondary: property => `transition: ${property} .5s`,
+    third: property => `
+        transition-delay: 0s;
+        transition-duration: .6s;
+        transition-timing-function: cubic-bezier(.19,1,.22,1) .5s;`
   },
   // order matters a lot when using these, from top to bottom we MUST go from SMALLEST to LARGEST or else they will not respond properly
   // DEFAULT STYLING WILL BE FOR MOBILE, THEN BREAKPOINTS DICTACE TABLETS AND DESKTOP STYLING
@@ -42,7 +46,7 @@ const staticStlying = {
   corners: {
     borderRadius1: "5px",
     borderRadius2: "10px",
-    borderRadius3: "25px",
+    borderRadius3: "20px",
     borderRadius4: "50px",
     borderRadius100: "100%"
   },
@@ -68,15 +72,32 @@ const staticStlying = {
       src: url("./fonts/brown/Brown-Light.ttf");
     }
 
-    & h1 { font-size:3.23em;font-weight: bolder;};
-    & h2 { font-size:2.618em;};
+    @font-face {
+    font-family: "poppins-extrabold";
+    src: url("./fonts/poppins/Poppins-ExtraBold.ttf");
+    }
+    @font-face {
+    font-family: "poppins-bold";
+    src: url("./fonts/poppins/Poppins-Bold.ttf");
+    }
+    @font-face {
+    font-family: "poppins-regular";
+    src: url("./fonts/poppins/Poppins-Regular.ttf");
+    }
+    @font-face {
+    font-family: "poppins";
+    src: url("./fonts/poppins/Poppins.ttf");
+    }
+
+    & h1 { font-size:74.24px;font-weight: bolder;font-family:"poppins-extrabold"};
+    & h2 { font-size:2.618em;font-family: 'brown-bold';font-family:"poppins-bold"};
     & h3 { font-size:1.61em;};
-    & p { font-size:1em; font-family:"brown-light"; font-weight: 100;};
-    & a { font-size:1em; font-family:"brown-light"; font-weight: bolder; text-decoration: none;};
+    & p { font-size:1em; font-family:"poppins-regular"; font-weight: 100;};
+    & a { font-size:1em; font-family:"poppins-regular"; font-weight: bolder; text-decoration: none;};
 
     & * {
       font-family:'brown-regular';
-      letter-spacing: 3%;
+      letter-spacing: 15%;
       line-height: 100%;
     };
     `,
@@ -88,7 +109,7 @@ const staticStlying = {
       h3: "1em",
       h2: "2.618em",
       h1: "4.236em",
-      title: "6.854em"
+      title: "4.8em"
     },
     details: {
       lineheight1: "125%",
@@ -112,7 +133,13 @@ const staticStlying = {
     brandoverlay: `
       background: #8EF2D2;
       mix-blend-mode: lighten;
-  `
+  `,
+    boldFont: `
+      font-family: 'brown-bold';
+      font-weight:bolder;`,
+    contentFont: `
+      font-family: 'brown-regular';
+      font-weight:bolder;`
   },
   animations: {
     underline: `
@@ -162,23 +189,21 @@ const staticStlying = {
       background-clip: content-box, padding-box;
     }
     `,
-  test2: `& *{border:2px solid red;};
+  test2: `& *{border:1 px solid red;};
     `
 };
 
 const theme = {
   dark: {
+    name: "dark",
     colors: {
-      black: "#111",
-      foreground: "#21004A",
-      primary: "#6B00FF",
-      secondary: "#8EF2D2",
-      contentForeground: "#2f006f", // D9D9D9 .6 4500A5
-      contentColor: "#3c0090", // D9D9D9 .6
-      innerContentColor: "#5A00DB", // D9D9D9 .1
-      textColor: "#FFFFFF",
-      textPrimary: "#fff",
-      textSecondary: "#D9D9D9"
+      black: "#111111",
+      foreground: "#F0F3FC",
+      primary: "#000064",
+      secondary: "#BAF7E4",
+      textPrimary: "#FFFFFF",
+      textSecondary: "#111111",
+      textThird: "#B2B2B2"
     },
     borders: {
       primary: "1px solid #5A00DB",
@@ -186,8 +211,8 @@ const theme = {
       third: "1px solid #5A00DB"
     },
     shadows: {
-      primary: "0px 5px 25px rgba(25,0,74,0.25)",
-      secondary: "2.5px 0px 12.5px rgba(25,0,74,0.25)"
+      primary: "-5px 0px 30px rgba(255,255,255,.05)",
+      secondary: "2.5px 0px 12.5px rgba(25,0,74,0.75)"
     },
     // #region static styling
     corners: staticStlying.corners,
@@ -210,7 +235,7 @@ const theme = {
       margin: 0px;
       padding: 0px;
       scroll-behaviour: smooth;
-      background: #3c0090;
+      background: #F0F3FC;
       overflow-x: hidden;
       font-size: 12px;
 
@@ -241,26 +266,24 @@ const theme = {
     // #endregion mixins
   },
   light: {
+    name: "light",
     colors: {
-      black: "#fff",
-      foreground: "#ffff",
-      primary: "#996cda",
-      secondary: "#8EF2D2",
-      contentColor: "#c09ef1", // D9D9D9 .6
-      innerContentColor: "#d5bef6", // D9D9D9 .1
-      contentForeground: "#b38aee", // D9D9D9 .1
-      textColor: "#fff",
-      textPrimary: "#21004A",
-      textSecondary: "#D9D9D9"
+      black: "#111111",
+      foreground: "#F0F3FC",
+      primary: "#000064",
+      secondary: "#BAF7E4",
+      textPrimary: "#FFFFFF",
+      textSecondary: "#111111",
+      textThird: "#B2B2B2"
     },
     borders: {
-      primary: "1px solid rgba(1,1,1,0.1);",
-      secondary: "1px solid rgba(255,255,255,.25);",
-      body: ""
+      primary: "1px solid #5A00DB",
+      secondary: "1px solid #8EF2D2",
+      third: "1px solid #5A00DB"
     },
     shadows: {
-      primary: "0px 5px 25px rgba(25,0,74,0.25)",
-      secondary: "2.5px 0px 12.5px rgba(25,0,74,0.25)"
+      primary: "-5px 0px 50px rgba(0,0,0,.25)",
+      secondary: "2.5px 0px 12.5px rgba(25,0,74,0.75)"
     },
     // #region static styling
     corners: staticStlying.corners,
@@ -278,9 +301,8 @@ const theme = {
 
     global: `
     & body {
-    padding: 50px;
       box-sizing: border-box;
-      background: #fff;
+      background: #F0F3FC;
       overflow-x: hidden;
       min-height: 100vh;
       margin: 0px;
@@ -368,18 +390,15 @@ export default class index extends Component {
                   >
                     <h3>useful links</h3>
                     <Link>
-                      <Btn color={"white"} text="Portfolio" padding="12.5px 0px" />
+                      <Btn
+                        color="white"
+                        text="Portfolio"
+                        padding="12.5px 0px"
+                      />
                     </Link>
                     <Link>
-                      <Btn color={"white"} text="Blog" padding="12.5px 0px" />
+                      <Btn color="white" text="Blog" padding="12.5px 0px" />
                     </Link>
-                    <Link>
-                      <Btn color={"white"} text="Services" padding="12.5px 0px" />
-                    </Link>
-                    <Link>
-                      <Btn color={"white"} text="Visualisations" padding="12.5px 0px" />
-                    </Link>
-                    <img lazyLoad src="./assets/svg/footer-graphic.png" alt="footer-graphic" />
                   </Col>
 
                   <Col xl={5} className="footer-section">
@@ -388,6 +407,11 @@ export default class index extends Component {
                     <InlineIcon className="social-link" icon={githubLogo} />
                     <InlineIcon className="social-link" icon={linkedinLogo} />
                     <InlineIcon className="social-link" icon={instagramLogo} />
+                    <img
+                      lazyLoad
+                      src="./assets/svg/footer-graphic.png"
+                      alt="footer-graphic"
+                    />
                   </Col>
                 </Row>
               </Col>
@@ -450,15 +474,15 @@ const Footer = styled.footer`
       margin-right: 12.5px;
       margin-top: 6.25px;
       height: 38px;
-      position:relative;
-      }
-      & img {
-      position: absolute;
-        object-fit: contain;
-        width: 75%;
-        height: 75%;
-        top: 0px;
-        right: 0px;
+      position: relative;
     }
+  }
+  & img {
+    position: absolute;
+    object-fit: contain;
+    width: 100%;
+    height: 65%;
+    top: 12.5px;
+    right: -200px;
   }
 `;

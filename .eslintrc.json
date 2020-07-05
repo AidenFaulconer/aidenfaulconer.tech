@@ -23,6 +23,7 @@
     "react/prop-types": "off",
     "react/jsx-filename-extension": "off",
     "no-underscore-dangle": "off",
-    "no-unused-vars":"warn"
+    "no-unused-vars":"warn",
+    "eslint-disable-next-line": "off"
   }
 }

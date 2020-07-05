@@ -44,46 +44,24 @@ const PageContent = styled.main`
   padding-top: 200px;
   background: linear-gradient(
     0deg,
-    ${props => props.theme.colors.contentForeground} 50%,
-    ${props => props.theme.colors.contentColor} 80%,
+    ${props => props.theme.colors.contentForeground} 80%,
     rgba(0, 0, 0, 0) 80%
   );
 `;
-// &:after {
-//   content: "";
-//   width: 400%;
-//   height: 100%;
-//   position: absolute;
-//   top: 30%;
-//   right: 50%;
-//   ${props => props.theme.animations.blob};
-//   background: ${props => props.theme.colors.contentColor};
-//   box-shadow: ${props => props.theme.colors.primary};
-// }
-// &:before {
-//   content: "";
-//   width: 400%;
-//   height: 50%;
-//   position: absolute;
-//   top: 10%;
-//   left: 50%;
-//   ${props => props.theme.animations.blob};
-//   background: ${props => props.theme.colors.contentColor};
-//   box-shadow: ${props => props.theme.colors.primary};
-// }
 
 // <video preload="true" controls loop autoPlay="true">
 //                       <source src="https://imgur.com/5QFU0PB.mp4" />
 //                     </video>
-const Highlight = styled.div`
-  display: inline-block;
-  border-radius: ${props => props.theme.corners.borderRadius1};
-  background: rgba(90, 0, 219, 60%);
-  height: 25px;
-  margin-left: 25px;
-  padding-top: 25px;
-  z-index: -1;
-`;
+// const Highlight = styled.div`
+//   display: inline;
+//   overflow: hidden;
+//   height: 100%;
+//   font-size: 1.2em;
+//   margin-left: -12.5px;
+//   padding: 0px 12.5px;
+//   ${props => props.theme.mixins.bold};
+//   z-index: -1;
+// `;
 
 const IndexPage = React.memo(
   ({
@@ -108,24 +86,16 @@ const IndexPage = React.memo(
         <HeroHeader
           headerGraphic="./assets/svg/portfolio-graphic.png"
           headlineDescription="I create software applications for online businesses like you, so you can focus on getting your users needs fulfilled"
-          headline={
-            <>
-              <Highlight>SOFTWARE</Highlight>
-              <br />
-              and
-              <Highlight>DESIGN</Highlight>
-            </>
-          }
+          headline={<>Beautiful, scalable<br />software.</>}
         />
 
         <PageContent>
           <Transition />
 
-          <IndexBuilder />
+          <IndexBuilder/>
         </PageContent>
 
         <GraphicWave dangerouslySetInnerHTML={{ __html: herowaves }} />
-        <StickyForeground />
       </Layout>
     );
   }

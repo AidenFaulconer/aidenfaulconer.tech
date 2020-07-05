@@ -10,6 +10,7 @@ import experienceIcon from "@iconify/icons-fa-solid/road";
 import backgroundIcon from "@iconify/icons-ic/sharp-person-pin";
 import contactIcon from "@iconify/icons-bx/bxs-contact";
 import * as ConicGradient from "conic-gradient";
+import { StaticQuery, graph } from "gatsby";
 
 // #region language svg icons
 import javascriptLogo from "@iconify/icons-mdi/language-javascript";
@@ -147,6 +148,7 @@ const ImageGrid = styled.div`
       ${props => props.theme.transitions.primary("transform")};
       box-shadow: ${props => props.theme.shadows.primary};
       transform: scale(1.05);
+      border: ${props => props.theme.borders.secondary};
     }
   }
 `;
@@ -173,6 +175,7 @@ const DisplayImage = styled.article`
   & h3 {
     position: absolute;
     top: 0px;
+    display: none;
   }
   & button {
     position: absolute;
@@ -186,9 +189,9 @@ export const Projects = ({ sectionName }) => {
   return (
     <>
       <DisplayImage>
-        <img src={projectData[selected].imgsrc} />
+        <img src={projectData[selected].imgsrc} alt="display image" />
         <h3>{projectData[selected].title}</h3>
-        <BtnSecondary text="see more" />
+        <BtnPrimary text="see more" />
       </DisplayImage>
       <ImageGrid>
         {projectData.map((project, i) => (
@@ -450,7 +453,8 @@ const SkillGrid = styled.div`
 
         &:hover {
           ${props => props.theme.transitions.primary("all")};
-          background: ${props => props.theme.colors.primary};
+          background: ${props => props.theme.colors.secondary};
+          color: ${props => props.theme.colors.primary};
           box-shadow: ${props => props.theme.shadows.primary};
           ${props => props.theme.animations.blob};
         }
@@ -458,8 +462,9 @@ const SkillGrid = styled.div`
       }
       & .selected {
         max-width: 250px;
+        background: ${props => props.theme.colors.secondary};
+        color: ${props => props.theme.colors.primary};
         ${props => props.theme.animations.blob};
-        background: ${props => props.theme.colors.primary};
       }
     }
   }
@@ -559,7 +564,7 @@ const Timeline = styled.div`
   top: 0px;
   opacity: 0.3;
   z-index: 0;
-  transform: translateZ(-1);//forces this to be below the expereince cards
+  transform: translateZ(-1); //forces this to be below the expereince cards
 
   &:before {
     position: absolute;
@@ -595,18 +600,19 @@ const Experiences = styled.div`
     max-height: 75px;
     margin: 25px;
     padding-top: 12.5px;
-      transform: scale(1.1);
+    transform: scale(1.1);
 
     &:hover {
       transform: scale(1.25);
       ${props => props.theme.animations.blob};
       box-shadow: ${props => props.theme.shadows.primary};
+      border: ${props => props.theme.borders.secondary};
       ${props => props.theme.transitions.primary("border-radius")};
     }
 
     & .active {
       box-shadow: ${props => props.theme.shadows.primary};
-      border: 1px solid ${props => props.theme.colors.secondary};
+      border: ${props => props.theme.borders.secondary};
     }
 
     ${props => props.theme.transitions.primary("border-radius")};
@@ -632,7 +638,6 @@ const SelectedExperience = styled.div`
     padding-bottom: 12.5px;
     display: flex;
     width: auto;
-    border: ${props => props.theme.borders.primary};
     height: auto;
     border-bottom: 1px solid ${props => props.theme.colors.contentColor};
 
@@ -667,6 +672,7 @@ export const Experience = ({ sectionName }) => {
             <div
               onClick={() => selectExperience(experienceName)}
               className=".card"
+              role="select experience"
             >
               <img
                 src={experience.imgSrc}
@@ -730,8 +736,6 @@ const BackgroundColumn = styled.div`
   }
 `;
 
-// <BtnBlob text="How I work fast" />
-// <BtnBlob text="How I work fast" />
 export const Background = ({ sectionName }) => {
   return (
     <>
@@ -754,7 +758,7 @@ export const Background = ({ sectionName }) => {
 };
 // #endregion background
 
-// #region contact
+// #region contacts
 const ContactBranding = styled.div`
     min-width: 40%;
     background: url("./assets/svg/contact-branding.png");
@@ -821,10 +825,10 @@ export const Contact = ({ sectionName }) => (
         <label htmlFor="w3lMessage">Message</label>
         <textarea name="w3lMessage" id="w3lMessage" />
       </div>
-      <BtnPrimary text="Lets get in touch" onClick={() => {}} />
+      <BtnPrimary text="Contact" onClick={() => {}} />
       <div dangerouslySetInnerHTML={{ __html: "" }} />
     </ContactForm>
-    <ContactBranding lazyLoad/>
+    <ContactBranding lazyLoad />
   </>
 );
 // <ContactForm>
@@ -880,7 +884,6 @@ const ContentNavigation = styled.nav`
     overflow: hidden;
     z-index: -1;
     padding: 12.5px;
-    border: ${props => props.theme.borders.primary};
     border-radius: ${props => props.theme.corners.borderRadius2};
     background: ${props => props.theme.colors.contentColor};
     box-shadow: ${props => props.theme.shadows.primary};
@@ -890,7 +893,7 @@ const ContentNavigation = styled.nav`
       position: relative;
       width: 100%;
       height: 100px;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
 
       & img {
         position: absolute;
@@ -898,25 +901,27 @@ const ContentNavigation = styled.nav`
         border-radius: ${props => props.theme.corners.borderRadius100};
         width: 75px;
         height: 75px;
+        background: ${props => props.theme.colors.contentColor};
       }
 
       & p {
-        position: absolute;
-        top: 12.5px;
+        ${props => props.theme.mixins.bold};
+        position: relative;
         margin: auto;
-        left: 100px;
-        border-radius: ${props => props.theme.corners.borderRadius100};
+        width: 100%;
+        top: -125px;
+        text-align: center;
+        border-radius: ${props => props.theme.corners.borderRadius1};
       }
 
       & * {
         fill: ${props => props.theme.colors.primary};
-        color: ${props => props.theme.colors.textColor};
+        color: ${props => props.theme.colors.textSecondary};
       }
 
       & svg {
-        background: ${props => props.theme.colors.innerContentColor};
+        background: ${props => props.theme.colors.contentColor};
         position: relative;
-        ${props => props.theme.animations.blob};
         top: -50px;
         left: -200px;
         width: 750px;
@@ -929,16 +934,21 @@ const ContentNavigation = styled.nav`
       background: none;
       flex-direction: row;
       justify-content: space-between;
-      border-radius: ${props => props.theme.corners.borderRadius4};
+      border-radius: ${props => props.theme.corners.borderRadius2};
       padding: 12.25px;
       border: none;
       width: 100%;
+      margin-bottom: 6.25px;
       z-index: 2;
       color: ${props => props.theme.colors.textColor};
 
+      &:hover {
+        color: ${props => props.theme.colors.foreground};
+        background: ${props => props.theme.colors.secondary};
+        box-shadow: ${props => props.theme.shadows.primary};
+      }
       & p {
         margin: auto;
-        font-size: ${props => props.theme.text.sizes.small};
         visibility: hidden;
         display: none;
 
@@ -971,57 +981,65 @@ const ContentNavigation = styled.nav`
 const ContentContainer = styled.section`
   position: relative;
   z-index: 1;
-  margin-top: 132.5px;
-  padding: 0px 25px;
-  color: ${props => props.theme.colors.textColor};
+  padding: 100px 0px 200px 0px;
+  background: ${props => (props.odd ? props.theme.colors.primary : props.theme.colors.foreground)};
+  color: ${props => (props.odd ? props.theme.colors.textPrimary : props.theme.colors.textSecondary)};
 
   & *[class*="content"] {
     z-index: 2;
     padding: 0px;
+    color:inherit;
     }
 
     & .section-card {
       padding: 25px;
       padding-top: 82px;//offset the heading
-      border: ${props => props.theme.borders.primary};
       margin: 6.25px 0px;
       margin-bottom: 100px;
       max-height: 1000px;
+      min-height: 700px;
       width: 100%;
       display: flex;
       background: ${props => props.theme.colors.contentColor};
       border-radius: ${props => props.theme.corners.borderRadius2};
-      box-shadow: ${props => props.theme.shadows.primary};
 
+      &:hover: {
+        background: black;
+        &::after{
+          background: black;
+          margin-left: -12.5px;
+          ${props => props.theme.transitions.primary("all")};
+        }
+      }
 
     & .header {
       width:100%;
-      border: ${props => props.theme.borders.primary};
-      color: ${props => props.theme.colors.textColor};
-      background: ${props => props.theme.colors.innerContentColor};
+      background: ${props => props.theme.colors.primary};
       border-radius: 10px 10px 0px 0px;
       position: absolute;
-      top:1px;
+      top:-25px;
       left:0px;
-      padding: 12.5px;
-      padding-bottom: 3.125px;
+      padding: 25px;
       z-index: 1;
       overflow: hidden;
+      ${props => props.theme.mixins.bold};
 
       &:before {
         content: "";
         ${props => props.theme.animations.blob};
         position:absolute;
+      box-shadow: ${props => props.theme.shadows.primary};
+
         left:-125px;
         top:-30px;
         z-index: -1;
         height: 250%;
         width: 50%;
-        opacity: .6;
-        background: ${props => props.theme.colors.primary};
       }
       &:after {
         content: "";
+      box-shadow: ${props => props.theme.shadows.primary};
+
         ${props => props.theme.animations.blob};
         position:absolute;
         left: -10%;
@@ -1029,13 +1047,12 @@ const ContentContainer = styled.section`
         z-index: -1;
         height: 450%;
         width: 80%;
-        opacity: .3;
-        background: ${props => props.theme.colors.primary};
       }
 
       & p {
         position: relative;
         display:inline-block;
+        ${props => props.theme.mixins.bold};
         width: 50%;
         margin-top:-3px;
       }
@@ -1076,7 +1093,8 @@ const SectionBreak = styled.hr`
   top: 0px;
 `;
 const Spacer = styled.div`
-  margin-top: 44vh;
+  margin-top: 48vh;
+  height: 185px;
   pointer-events: all;
 `;
 export const waveSvg = `
@@ -1089,9 +1107,7 @@ export default React.memo(({ theme }) => {
   const sectionMeasurements = [];
   const [currentSection, setCurrentSection] = useState("Projects");
   const currentSectionRef = useRef(); // allow usecallbacks to access the current state when they fire
-  const [scrollPos, setScrollPos] = useState(
-    document.body.getBoundingClientRect().y
-  );
+  const [scrollPos, setScrollPos] = useState(0);
   const positionRef = useRef(); // allow usecallbacks to access the current state when they fire
   const sectionRefs = useRef(null);
   const scrollToSection = useCallback(elem => {
@@ -1102,16 +1118,28 @@ export default React.memo(({ theme }) => {
     setCurrentSection(elem);
   });
   const watchScroll = useCallback(() => {
-    const currentScrollPos = document.body.getBoundingClientRect().y; // return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
-    setScrollPos(currentScrollPos);
-
-    Object.keys(sectionRefs.current).map(section => {
-      console.log(section.__yOffset);
-      if (section.__yOffset > Math.abs(currentScrollPos)) {
-        setCurrentSection(section.name);
-        // scrollToSection(section.name);
+    if (sectionRefs.current) {
+      const currentScrollPos = document.body.getBoundingClientRect().y; // return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
+      const scrollRatio = Math.abs(currentScrollPos - scrollPos);
+      // scroll differnce OF 10% permits running through logic
+      console.log(
+        currentScrollPos,
+        "<curr ",
+        scrollPos,
+        "<state ",
+        Math.abs(currentScrollPos - scrollPos)
+      );
+      if (scrollRatio > 100) {
+        setScrollPos(currentScrollPos);
+        console.log("state hit!");
+        Object.keys(sectionRefs.current).map(section => {
+          if (section.__yOffset > Math.abs(currentScrollPos)) {
+            setCurrentSection(section.name);
+            // scrollToSection(section.name);
+          }
+        });
       }
-    });
+    }
   });
 
   const measureSections = useCallback(() => {
@@ -1128,15 +1156,17 @@ export default React.memo(({ theme }) => {
 
   useEffect(() => {
     stickybits("#sticky", { useStickyClasses: true });
-        if (typeof window !== "undefined") {
+    if (typeof window !== "undefined") {
       window.addEventListener("resize", measureSections);
-      window.addEventListener("scroll", watchScroll);
-
     }
   }, []);
 
   useEffect(() => {
     // measureSections();
+    console.log("hit!");
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", watchScroll);
+    }
   }, [sectionRefs.current]);
 
   positionRef.current = scrollPos;
@@ -1144,75 +1174,303 @@ export default React.memo(({ theme }) => {
   sectionRefs.current = {};
 
   return (
-    <>
-      <Spacer />
-      <Row noGutters>
-        <Col xl={1} lg={1} md={1} className="d-sm-none d-md-none d-lg-block" />
-
-        <Col xl lg md>
-          <ContentContainer>
+    <StaticQuery
+      query={pageQuery}
+      render={data => (
+        <>
+          <Spacer />
+          <Row noGutters>
+          <Col xl lg md>
             {Object.keys(sections).map((sectionName, i) => {
               const RenderSection = sections[sectionName];
               return (
-                <Col className="content" xl md>
-                  <div
-                    className="section-card"
-                    key={sectionName}
-                    id={sectionName}
-                    ref={ref => {
-                      sectionRefs.current[sectionName] = ref;
-                    }}
-                  >
-                    <div className="header">
-                      <InlineIcon icon={sectionIcons[sectionName]} />
-                      <p>{sectionName}</p>
-                    </div>
-                    <RenderSection sectionName={sectionName} />
-                  </div>
-                </Col>
+                <ContentContainer odd={i % 2 === 0}>
+                  <Row noGutters>
+                    <Col xl={1} md={1} lg={1} />
+                    <Col className="content" xl md>
+                      <div
+                        className="section-card"
+                        key={sectionName}
+                        id={sectionName}
+                        ref={ref => {
+                          sectionRefs.current[sectionName] = ref;
+                        }}
+                      >
+                        <div className="header">
+                          <h1>{sectionName}</h1>
+                        </div>
+                        <RenderSection sectionName={sectionName} />
+                      </div>
+                    </Col>
+                    <Col xl={2} md={2} lg={2} />
+                  </Row>
+                </ContentContainer>
               );
             })}
-          </ContentContainer>
-        </Col>
-        <Col xl={1} lg={1} md={1} className="d-sm-none d-md-none d-lg-block" />
+          </Col>
 
-        <Col
-          xl={3}
-          lg={1}
-          style={{ marginTop: "0px" }}
-          className="d-xs-none d-md-none d-lg-block "
-        >
-          <ContentNavigation id="sticky">
-            <div className="navigation-container">
-              <div className="navigation-header">
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: waveSvg
-                  }}
-                />
-                <img imgSrc="./assets/svg/profile.png" />
-                <p>portfolio</p>
-              </div>
-              {Object.keys(sections).map(sectionName => (
-                <button
-                  className={currentSection === sectionName ? "active" : ""}
-                  type="submit"
-                  onClick={() => {
-                    setCurrentSection(sectionName);
-                    scrollToSection(sectionName);
-                  }}
-                >
-                  <Icon icon={sectionIcons[sectionName]} />
-                  <p>{sectionName}</p>
-                </button>
-              ))}
-            </div>
-          </ContentNavigation>
-        </Col>
 
-        <Col xl={1} lg={1} md={1} className="d-sm-none d-md-none d-lg-block" />
-      </Row>
-    </>
+            <Col
+              xl={2}
+              lg={2}
+              style={{ marginTop: "0px", background: "black" }}
+              className="d-xs-none d-md-none d-lg-block"
+            >
+              <ContentNavigation id="sticky">
+                <div className="navigation-container">
+                  <div className="navigation-header">
+                    <img src="./assets/svg/wave-graphic.png" />
+                    <img src="./assets/svg/profile.png" />
+                    <p>portfolio</p>
+                  </div>
+                  {Object.keys(sections).map(sectionName => (
+                    <button
+                      className={currentSection === sectionName ? "active" : ""}
+                      type="submit"
+                      onClick={() => {
+                        setCurrentSection(sectionName);
+                        scrollToSection(sectionName);
+                      }}
+                    >
+                      <Icon icon={sectionIcons[sectionName]} />
+                      <p>{sectionName}</p>
+                    </button>
+                  ))}
+                </div>
+              </ContentNavigation>
+            </Col>
+          </Row>
+        </>
+      )}
+    />
   );
 });
 // #endregion section builder
+
+export const pageQuery = graphql`
+  query indexBuilderQuery {
+    site(siteMetadata: { description: {} }) {
+      id
+    }
+  }
+`;
+
+// # projects {
+// #   title
+// #   mediaUrl
+// #   catagory
+// #   description
+// #   blog {
+// #     about
+// #     objectives
+// #     results
+// #   }
+// # }
+// # experience {
+// #   mediaUrl
+// #   description
+// #   location
+// #   title
+// #   role
+// # }
+// # skills {
+// #   skills
+// # }
+// # background {
+// #   title
+// #   description
+// #   mediaUrl
+// # }
+
+// export const skillData = [
+//   {
+//     groupName: "Languages",
+//     skills: [
+//       {
+//         skillName: "javascript",
+//         icon: javascriptLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "typescript",
+//         icon: typescriptLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "html",
+//         icon: htmlLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "css",
+//         icon: cssLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "c",
+//         icon: cLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "c-plus-plus",
+//         icon: cppLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "c#",
+//         icon: cSharpLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "php",
+//         icon: phpLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "python",
+//         icon: pythonLogo,
+//         description: ``
+//       }
+//     ]
+//   },
+//   {
+//     groupName: "Frameworks & API's",
+//     skills: [
+//       {
+//         groupName: "front-end",
+//         skills: [
+//           {
+//             skillName: "vue",
+//             icon: vueLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "react",
+//             icon: reactLogo,
+//             description: ``
+//           }
+//         ]
+//       },
+//       {
+//         groupName: "back-end",
+//         skills: [
+//           {
+//             skillName: "nodejs",
+//             icon: nodejsLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "django",
+//             icon: djangoLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "mongodb",
+//             icon: mongoLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "mysql",
+//             icon: mysqlLogo,
+//             description: ``
+//           }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     groupName: "Tools",
+//     skills: [
+//       {
+//         groupName: "cloud",
+//         skills: [
+//           {
+//             skillName: "netlify",
+//             icon: netlifyLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "aws",
+//             icon: awsLogo,
+//             description: ``
+//           }
+//         ]
+//       },
+//       {
+//         groupName: "office",
+//         skills: [
+//           {
+//             skillName: "excel",
+//             icon: excelLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "google drive",
+//             icon: googledriveLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "microsoft sharepoint",
+//             icon: sharepointLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "microsoft word",
+//             icon: wordLogo,
+//             description: ``
+//           }
+//         ]
+//       },
+//       {
+//         groupName: "cdn",
+//         skills: [
+//           {
+//             skillName: "wordpress",
+//             icon: wordpressLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "drupal",
+//             icon: drupalLogo,
+//             description: ``
+//           }
+//         ]
+//       },
+//       {
+//         groupName: "design",
+//         skills: [
+//           {
+//             skillName: "figma",
+//             icon: figmaLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "photoshop",
+//             icon: photoshopLogo,
+//             description: ``
+//           },
+//           {
+//             skillName: "illustrator",
+//             icon: illustratorLogo,
+//             description: ``
+//           }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     groupName: "3D/CGI",
+//     skills: [
+//       {
+//         skillName: "blender",
+//         icon: blenderLogo,
+//         description: ``
+//       },
+//       {
+//         skillName: "houdini",
+//         icon: houdiniLogo,
+//         description: ``
+//       }
+//     ]
+//   }
+// ];
