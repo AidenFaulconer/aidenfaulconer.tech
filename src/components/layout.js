@@ -44,7 +44,7 @@ const staticStlying = {
     xs: styling => `@media (max-width: 575px) {${styling}}`
   },
   corners: {
-    borderRadius1: "5px",
+    borderRadius1: "2px",
     borderRadius2: "10px",
     borderRadius3: "20px",
     borderRadius4: "50px",
@@ -81,6 +81,10 @@ const staticStlying = {
     src: url("./fonts/poppins/Poppins-Bold.ttf");
     }
     @font-face {
+    font-family: "poppins-semibold";
+    src: url("./fonts/poppins/Poppins-SemiBold.ttf");
+    }
+    @font-face {
     font-family: "poppins-regular";
     src: url("./fonts/poppins/Poppins-Regular.ttf");
     }
@@ -89,10 +93,10 @@ const staticStlying = {
     src: url("./fonts/poppins/Poppins.ttf");
     }
 
-    & h1 { font-size:74.24px;font-weight: bolder;font-family:"poppins-extrabold"};
+    & h1 { font-size:74.24px;font-weight: bolder;font-family:"poppins-semibold"};
     & h2 { font-size:2.618em;font-family: 'brown-bold';font-family:"poppins-bold"};
-    & h3 { font-size:1.61em;};
-    & p { font-size:1em; font-family:"poppins-regular"; font-weight: 100;};
+    & h3 { font-size:17.42px;font-family: 'poppins-bold';};
+    & p { font-size:18px; font-family:"brown-regular"; font-weight: 100;};
     & a { font-size:1em; font-family:"poppins-regular"; font-weight: bolder; text-decoration: none;};
 
     & * {
@@ -105,8 +109,8 @@ const staticStlying = {
     sizes: {
       extraSmall: ".618em", // was .618em
       small: ".818em", // was .618em
-      p: "1em",
-      h3: "1em",
+      p: ".9em",
+      h3: "17.42px",
       h2: "2.618em",
       h1: "4.236em",
       title: "4.8em"
@@ -135,7 +139,7 @@ const staticStlying = {
       mix-blend-mode: lighten;
   `,
     boldFont: `
-      font-family: 'brown-bold';
+      font-family: 'poppins-semibold';
       font-weight:bolder;`,
     contentFont: `
       font-family: 'brown-regular';
@@ -189,7 +193,9 @@ const staticStlying = {
       background-clip: content-box, padding-box;
     }
     `,
-  test2: `& *{border:1 px solid red;};
+  test2: `& *{
+  border: 1px solid red;
+  }
     `
 };
 
@@ -197,12 +203,12 @@ const theme = {
   dark: {
     name: "dark",
     colors: {
-      black: "#111111",
-      foreground: "#F0F3FC",
-      primary: "#000064",
-      secondary: "#BAF7E4",
-      textPrimary: "#FFFFFF",
-      textSecondary: "#111111",
+      foreground: "#0D0D0D",
+      black: "#F0F3FC",
+      secondary: "#000064",
+      primary: "#9ECAFA",
+      textSecondary: "#FFFFFF",
+      textPrimary: "#0D0D0D",
       textThird: "#B2B2B2"
     },
     borders: {
@@ -235,7 +241,7 @@ const theme = {
       margin: 0px;
       padding: 0px;
       scroll-behaviour: smooth;
-      background: #F0F3FC;
+      background: #0D0D0D;
       overflow-x: hidden;
       font-size: 12px;
 
@@ -268,7 +274,7 @@ const theme = {
   light: {
     name: "light",
     colors: {
-      black: "#111111",
+      black: "#0D0D0D",
       foreground: "#F0F3FC",
       primary: "#000064",
       secondary: "#BAF7E4",
@@ -363,7 +369,7 @@ export default class index extends Component {
             toggleTheme={this.toggleTheme}
           />
 
-          <Provider value={this.state}>{children}</Provider>
+           {children}
 
           <Footer>
             <Row>
@@ -407,11 +413,13 @@ export default class index extends Component {
                     <InlineIcon className="social-link" icon={githubLogo} />
                     <InlineIcon className="social-link" icon={linkedinLogo} />
                     <InlineIcon className="social-link" icon={instagramLogo} />
+                    {/**
                     <img
                       lazyLoad
                       src="./assets/svg/footer-graphic.png"
                       alt="footer-graphic"
                     />
+                     */}
                   </Col>
                 </Row>
               </Col>
@@ -440,17 +448,17 @@ export default class index extends Component {
 
 const Footer = styled.footer`
   padding-top: 50px;
+  border-top: 1px solid rgba(255,255,255,.1);
   min-height: 25vh;
   width: 100vw;
   position: relative;
   overflow: hidden;
   background: ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.textColor};
+  color: ${props => props.theme.colors.textPrimary};
   z-index: 1;
   font-size: ${props => props.theme.text.sizes.small};
 
   & h3 {
-    color: ${props => props.theme.colors.secondary};
     margin: 0px;
   }
 
@@ -462,14 +470,13 @@ const Footer = styled.footer`
     margin-bottom: 6.25px;
   }
   & *[class*="footer-section"] {
-    border-top: 1px solid ${props => props.theme.colors.secondary};
+    border-top: 1px solid ${props => props.theme.colors.textPrimary};
     margin-right: 50px;
     padding: 0px;
     padding-top: 6.25px;
     padding-bottom: 100px;
 
     & .social-link {
-      ${props => props.theme.animations.blob};
       width: 38px;
       margin-right: 12.5px;
       margin-top: 6.25px;

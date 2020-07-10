@@ -5,14 +5,6 @@ import Layout from "../components/layout";
 import BlogBuilder from "../components/blog-builder";
 import PostLink from "../components/post-link";
 
-const GraphicWave = styled.img`
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  opacity: 1;
-  z-index: -1;
-`;
-
 // <GraphicWave dangerouslySetInnerHTML={{ __html: lhs }} />
 
 const blogPage = React.memo(
@@ -34,7 +26,6 @@ const blogPage = React.memo(
           <title>{site.siteMetadata.title}</title>
           <meta name="description" content={site.siteMetadata.description} />
         </Helmet>
-        <GraphicWave src={"./assets/svg/blog-graphic.png"}/>
         <BlogBuilder />
       </Layout>
     );

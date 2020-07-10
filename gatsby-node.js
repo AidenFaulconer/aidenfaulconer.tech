@@ -1,9 +1,9 @@
-const path = require(`path`)
+const path = require(`path`);
 
 exports.createPages = async ({ actions, graphql, reporter }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
 
-  const blogPostTemplate = path.resolve(`src/templates/blogTemplate.js`)
+  const blogPostTemplate = path.resolve(`src/templates/blogTemplate.js`);
 
   const result = await graphql(`
     {
@@ -21,22 +21,22 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         }
       }
     }
-  `)
+  `);
 
   // Handle errors
   if (result.errors) {
-    reporter.panicOnBuild(`Error while running GraphQL query.`)
-    return
+    reporter.panicOnBuild(`Error while running GraphQL query.`);
+    return;
   }
 
   result.data.allMarkdownRemark.edges.forEach(({ node }) => {
     createPage({
       path: node.frontmatter.path,
       component: blogPostTemplate,
-      context: {}, // additional data can be passed via context
-    })
-  })
-}
+      context: {} // additional data can be passed via context
+    });
+  });
+};
 
 // const path = require(`path`)
 // const { slash } = require(`gatsby-core-utils`)
@@ -70,3 +70,22 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 //     })
 //   })
 // }
+
+exports.onCreateWebpackConfig = ({
+  stage,
+  rules,
+  loaders,
+  plugins,
+  actions
+}) => {
+  actions.setWebpackConfig({
+    module: {
+      rules: [
+        {
+          test: /\.gltf$/,
+          use: [`url-loader`]
+        }
+      ]
+    }
+  });
+};

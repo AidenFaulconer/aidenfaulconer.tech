@@ -5,7 +5,7 @@ import { Row } from "react-bootstrap";
 import styled from "@emotion/styled";
 import Layout from "../components/layout";
 import PostLink from "../components/post-link";
-import HeroHeader from "../components/heroHeader";
+import HeroHeader from "../components/portfolio/heroHeader";
 import IndexBuilder from "../components/index-builder";
 import Transition from "../components/transition";
 import {

@@ -20,6 +20,7 @@ const Button = styled.button`
   padding: ${props => props.padding};
   border: none;
   font-weight: bolder;
+  z-index: 50;
   text-decoration: none;
   font-size: ${props => props.theme.text.sizes.small};
   ${props => props.theme.corners.borderRadius2};
@@ -29,8 +30,8 @@ const Button = styled.button`
     background: ${props => props.theme.colors.primary};
   }
   &.-secondary {
-    color: ${props => props.theme.colors.textPrimary};
-    background: ${props => props.theme.colors.secondary};
+    color: ${props => props.theme.colors.textSecondary};
+    background: ${props => props.theme.colors.textPrimary};
   }
   &.-none {
     color: ${props => props.theme.colors.textSecondary};
@@ -47,6 +48,7 @@ const Button = styled.button`
     cursor: pointer;
     ${props => props.theme.transitions.primary("margin-left")};
   }
+
   &:hover {
     & svg {
       margin-left: 50px;
@@ -55,7 +57,7 @@ const Button = styled.button`
   }
 `;
 
-export const defaultPadding = "12.5px 25px";
+export const defaultPadding = "12.5px 50px";
 
 export const BtnPrimary = ({ children, text, theme, padding, color, bg }) => (
   <Button

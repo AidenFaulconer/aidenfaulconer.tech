@@ -19,85 +19,6 @@ import GoogleAnalytics from "./apis/google-analytics";
 // TODO: breakpoint disables middle content and removes social links
 const NavigationWrapper = styled.div`
 
-  border-bottom: 1px solid rgba(0,0,0,.1);
-
-  & nav{
-  left:0px;
-  top:0px;
-  z-index: 100;
-  width: 100vw;
-  position: fixed;
-  padding: 13px;
-  background: ${props => props.theme.colors.foreground};//switch on bg color
-
-    & * {
-      text-decoration: none;
-    }
-
-    & a {
-      color: black;
-      margin: auto 75px;
-      margin-left: 0px;
-
-      &::after{
-        content: '';
-        display: inline-block;
-        position:relative;
-        width: 5px;
-        background: black;
-        ${props => props.theme.transitions.third("all")};
-      }
-
-    &:hover{
-      &::after{
-        ${props => props.theme.transitions.third("all")};
-        transform: scale(0,1);
-        margin-left: -5px;
-      }
-    }
-    }
-
-
-    & .branding {
-
-      & svg {
-      fill: black;
-        height: 50px;
-        width: auto;
-
-        & .path {
-          animation: dash 1.5s ease-in-out;
-
-          @keyframes dash {
-            0%,
-            50% {
-              transform: translate(-33%,0%);
-            }
-            to {
-              transform: translate(0%,0%);
-            }
-        }
-      }
-    }
-    }
-
-
-    & .site-links {
-      display: flex;
-      justify-content: flex-end;
-
-        & .active {
-      }
-
-
-      & .theme-switch {
-        margin: auto 75px;
-        margin-left: 0px;
-      }
-    }
-
-
-  //css transition animation
 
   //bring in navbar
   & .enter{//hiding nav
@@ -114,11 +35,103 @@ const NavigationWrapper = styled.div`
   & .exit{//hiding nav
   margin-top: 0px;
   ${props => props.theme.transitions.primary("margin-top")}
-
   }
+
   & .exit-done{//showing nav
   margin-top: -125px;
   ${props => props.theme.transitions.secondary("margin-top")}
+    }
+
+  & nav{
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    left:0px;
+    top:0px;
+    z-index: 100;
+    width: 100vw;
+    position: fixed;
+    padding: 13px;
+    background: ${props => props.theme.colors.foreground};//switch on bg color
+
+
+
+
+    & * {
+      text-decoration: none;
+    }
+
+    & a {
+      color: ${props => props.theme.colors.textSecondary};
+      margin: auto 75px;
+      margin-left: 0px;
+
+      &::after {
+          content: '';
+          display:block;
+          position: relative;
+          top: 27px;
+          background: ${props => props.theme.colors.textSecondary};
+          height: 1.5px;
+          width: 0%;
+          ${props => props.theme.transitions.third("all")};
+        }
+
+        &:hover{
+          &::after{
+            width: 100%;
+            ${props => props.theme.transitions.third("all")};
+            transform: scale(0,1);
+          }
+      }
+    }
+
+
+    & .branding {
+      left:-10px;
+      ${props=>props.theme.transitions.primary("all")};
+      & svg {
+        fill: ${props => props.theme.colors.textSecondary};
+        height: 50px;
+        width: auto;
+        transform: skew(0deg);
+        &:hover {
+      ${props=>props.theme.transitions.primary("all")};
+        skew(12deg);
+        }
+
+
+        & .path {
+          animation: dash 1s ease-in-out;
+          @keyframes dash {
+            0%,
+            50% {
+              transform: translate(-39%,0%) skew(12deg);
+            }
+            to {
+              transform: translate(0%,0%) skew(0deg);
+            }
+        }
+      }
+    }
+    }
+
+
+    & .site-links {
+      display: flex;
+      justify-content: flex-end;
+
+        & .active {
+          &::after{
+          display: block;
+          width: 100%;
+        }
+      }
+
+
+      & .theme-switch {
+        margin: auto 75px;
+        margin-left: 0px;
+      }
+  //css transition animation
   }
 `;
 

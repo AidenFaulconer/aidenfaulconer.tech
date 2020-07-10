@@ -15,6 +15,7 @@ import { StaticQuery, graphql } from "gatsby";
 
 // #region svg icons
 import filterIcon from "@iconify/icons-mdi/filter-variant";
+import { useTheme } from "emotion-theming";
 import { Btn, BtnPrimary, BtnSecondary } from "./buttons";
 // #endregion svg icons
 
@@ -32,143 +33,206 @@ const sections = {
   Projects: React.memo(Projects),
   Test: React.memo(Projects),
   Test1: React.memo(Projects),
-  Test2: React.memo(Projects)
 };
 const sectionIcons = {
   Projects: projectsIcon,
   Test: projectsIcon,
   Test1: projectsIcon,
-  Test2: projectsIcon
 };
-// must exist outside component
-const ContentNavigation = styled.nav`
-  z-index: 100;
-  position: sticky;
-  visibility: visible;
-  ${props => props.theme.transitions.primary("all")};
 
-  & .heading {
+const mockData = [
+  {
+    mediaSrc: "./assets/becca-tapert-sY5RjMB1KkE-unsplash.jpg",
+    title: "title",
+    description: "description"
+  }
+];
+
+export const catagories = ["technology", "design", "workflow", "discovery"];
+
+export default React.memo(() => {
+  const [currentSection, setCurrentSection] = useState("Projects");
+  const [featuredBlog, setFeaturedBlog] = useState(0);
+  const sectionRefs = useRef({});
+
+  const scrollToSection = useCallback(elem => {
+    if (typeof window !== "undefined") {
+      window.scrollBy(0, -115);
+    } // adjust scrolling with negative value
+    sectionRefs.current[elem].scrollIntoView({ behavior: "smooth" });
+    setCurrentSection(elem);
+  });
+
+  useEffect(() => {
+    stickybits("#sticky", { useStickyClasses: true });
+  }, []);
+
+  const theme = useTheme();
+  // https://www.npmjs.com/package/react-intersection-observer#polyfill
+
+  // handle a section coming into view
+  useEffect(() => {
+    console.log(currentSection);
+  }, [currentSection]);
+
+  return (
+    <StaticQuery
+      //       //       query={graphql`
+      query={blogPageQuery}
+      render={data => {
+        const catagoryMappings = {};
+        console.log(data);
+
+        return (
+          <>
+            <Spacer />
+            <Row noGutters>
+              <Col
+                xl={1}
+                lg={1}
+                md={1}
+                className="d-sm-none d-md-none d-lg-block"
+              />
+              <Col xl={6} lg={6} md={6}>
+                <FeaturedBlog src={mockData[featuredBlog].mediaSrc}>
+                  <img src={mockData[featuredBlog].mediaSrc} />
+                  <h1>{mockData[featuredBlog].title}</h1>
+                  <p>{mockData[featuredBlog].description}</p>
+                  <button>read more</button>
+                </FeaturedBlog>
+              </Col>
+
+              <Col xl lg md>
+                <ContentContainer>
+                  {Object.keys(sections).map((sectionName, i) => {
+                    const RenderSection = sections[sectionName];
+                    return (
+                      <div
+                        className="section-card"
+                        key={sectionName}
+                        id={sectionName}
+                        ref={ref => {
+                          sectionRefs.current[sectionName] = ref;
+                        }}
+                      >
+                        <div className="header">
+                          <InlineIcon icon={sectionIcons[sectionName]} />
+                          <p>{sectionName}</p>
+                        </div>
+                        <RenderSection sectionName={sectionName} />
+                      </div>
+                    );
+                  })}
+
+                  <Col xl lg md className="d-sm-none d-md-none d-lg-block" />
+                </ContentContainer>
+              </Col>
+
+              <Col
+                xl={2}
+                lg={2}
+                style={{ marginTop: "0px" }}
+                className="d-xs-none d-sm-none d-md-none d-lg-block "
+              >
+                <img
+                  className="graphic"
+                  src={`./assets/svg/blog-graphic-${theme.name}.png`} // TODO: this will be dynamic per page (with a hero header)
+                />
+              </Col>
+
+              <Col
+                xl={1}
+                lg={1}
+                md={1}
+                className="d-sm-none d-md-none d-lg-block"
+              />
+
+              <Col xl={12}>
+                <FilterBar>
+                  <Icon icon={filterIcon} />
+                  {catagories.map(catagory => (
+                    <p>{catagory}</p>
+                  ))}
+                </FilterBar>
+              </Col>
+            </Row>
+          </>
+        );
+      }}
+    />
+  );
+});
+// #endregion section builder
+const FeaturedBlog = styled.article`
+  position:relative;
+  width: 832px;
+  height: 484px;
+  background: ${props => props.theme.colors.primary};
+  box-shadow: ${props => props.theme.shadows.primary};
+  color: ${props => props.theme.colors.textPrimary};
+
+  & img {
+    object-fit: fit;
+    position: realative;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 35%;
   }
 
-  & .navigation-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
+    &::after {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background-image: url(${props => props.src});
+      left: 0px;
+      top: 0px;
+      opacity: 0.6;
+      z-index: -3;
+      transform: rotate(-2deg);
+      box-shadow: ${props => props.theme.shadows.primary};
+    }
+
+  & h1 {
+    position: absolute;
     top: 0px;
-    height: auto;
-    overflow: hidden;
-    z-index: -1;
-    padding: 12.5px;
-    border-radius: ${props => props.theme.corners.borderRadius2};
-    background: ${props => props.theme.colors.contentColor};
-    box-shadow: ${props => props.theme.shadows.primary};
-
-    & .navigation-header {
-      margin: auto;
-      position: relative;
-      width: 100%;
-      height: 100px;
-      margin-bottom: 25px;
-
-      & img {
-        position: absolute;
-        top: 0px;
-        border-radius: ${props => props.theme.corners.borderRadius100};
-        width: 75px;
-        height: 75px;
-      }
-
-      & p {
-        position: absolute;
-        top: 12.5px;
-        margin: auto;
-        left: 100px;
-        border-radius: ${props => props.theme.corners.borderRadius100};
-      }
-
-      & * {
-        fill: ${props => props.theme.colors.primary};
-        color: ${props => props.theme.colors.textColor};
-      }
-
-      & svg {
-        background: ${props => props.theme.colors.innerContentColor};
-        position: relative;
-        ${props => props.theme.animations.blob};
-        top: -50px;
-        left: -200px;
-        width: 750px;
-        height: 150px;
-      }
-    }
-
-    & button {
-      display: flex;
-      background: none;
-      flex-direction: row;
-      justify-content: space-between;
-      border-radius: ${props => props.theme.corners.borderRadius4};
-      padding: 12.25px;
-      border: none;
-      width: 100%;
-      z-index: 2;
-      color: ${props => props.theme.colors.textColor};
-
-      & p {
-        margin: auto;
-        font-size: ${props => props.theme.text.sizes.small};
-        visibility: hidden;
-        display: none;
-
-        ${props =>
-          props.theme.breakpoints.xl(`
-          margin-right: 10px;
-          visibility: visible;
-          display:block;
-      `)}
-      }
-
-      & svg {
-        width: 25px;
-        height: 25px;
-        margin-right: 10px;
-        margin-left: 10px;
-        fill: ${props => props.theme.colors.textColor};
-      }
-
-      &.active {
-        fill: white;
-        font-weight: bolder;
-        background: ${props => props.theme.colors.primary};
-        ${props => props.theme.transitions.primary("background")};
-      }
-    }
+    right: 0px;
+  }
+  & p {
+    top: 0px;
+    right: 0px;
+    position: absolute;
+  }
+  & button {
+    top: 0px;
+    right: 0px;
+    position: absolute;
   }
 `;
-// wrap all styled components in useCallback so they do not incur render overhead
+
 const ContentContainer = styled.section`
   position: relative;
   z-index: 1;
-  padding: 25px;
+  display: flex;
+  flex-direction: column;
   color: ${props => props.theme.colors.textColor};
 
-  & *[class*="col"] {//add gutters
-         row-gap: 25px;
-         column-gap: 25px;
-         margin-top: 25px;
-    }
+  // & *[class*="col"] {//add gutters
+  //        column-gap: 25px;
+  //        margin-top: 25px;
+  //   }
 
     & .section-card {
-      padding: 25px;
+      background: ${props => props.theme.colors.primary};
       position:relative;
-      padding-top: 82px;//offset the heading
-      max-height: 1000px;
-      width: 100%;
+      margin-bottom: 8px;
+      width: 200px;
+      height: 160px;
       display: flex;
       background: ${props => props.theme.colors.contentColor};
-      border-radius: ${props => props.theme.corners.borderRadius2};
-      box-shadow: ${props => props.theme.shadows.primary};
+      border-radius: ${props => props.theme.corners.borderRadius1};
 
 
     & .header {
@@ -184,30 +248,7 @@ const ContentContainer = styled.section`
       z-index: 1;
       overflow: hidden;
 
-      &:before {
-        content: "";
-        ${props => props.theme.animations.blob};
-        position:absolute;
-        left:-125px;
-        top:-30px;
-        z-index: -1;
-        height: 250%;
-        width: 50%;
-        opacity: .6;
-        background: ${props => props.theme.colors.primary};
-      }
-      &:after {
-        content: "";
-        ${props => props.theme.animations.blob};
-        position:absolute;
-        left: -10%;
-        top:-60px;
-        z-index: -1;
-        height: 450%;
-        width: 80%;
-        opacity: .3;
-        background: ${props => props.theme.colors.primary};
-      }
+
 
       & p {
         position: relative;
@@ -252,11 +293,11 @@ const SectionBreak = styled.hr`
   top: 0px;
 `;
 
-export const waveSvg = `
-  <svg width="368" height="152" viewBox="0 0 368 152" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M-69.8227 16.0676C-70.7273 18.4623 -70.6095 21.0937 -70.8727 23.6401C-72.6875 41.2015 -78.5837 114.079 -53.7778 132.62C2.76013 174.879 78.7487 129.624 163.538 132.62C226.9 134.858 301.436 166.673 325.48 142.629C441.108 27.0013 373.16 -4.16308 355.957 -9.81157C353.556 -10.6003 351.194 -11.4559 348.798 -12.2629C337.535 -16.0571 295.145 -26.1846 163.538 -26.1846C-36.3323 -26.1845 -65.6777 5.09382 -69.8227 16.0676Z" fill="none"/>
-  </svg>
-  `;
+const Spacer = styled.br`
+  width: 100%;
+  margin-top: 250px;
+  position: relative;
+`;
 
 const FilterBar = styled.div`
 border-radius: ${props => props.theme.corners.borderRadius2};
@@ -290,178 +331,6 @@ const Header = styled.div`
   font-weight: bolder;
   font-family: "brown-bold";
 `;
-
-export const catagories = ["technology", "design", "workflow", "discovery"];
-
-export default React.memo(({ theme }) => {
-  const sectionMeasurements = [];
-  const [currentSection, setCurrentSection] = useState("Projects");
-  const currentSectionRef = useRef(); // allow usecallbacks to access the current state when they fire
-  const [scrollPos, setScrollPos] = useState(
-    document.body.getBoundingClientRect().y
-  );
-  const positionRef = useRef(); // allow usecallbacks to access the current state when they fire
-  const sectionRefs = useRef(null);
-  const scrollToSection = useCallback(elem => {
-    if (typeof window !== "undefined") {
-      window.scrollBy(0, -115);
-    } // adjust scrolling with negative value
-    sectionRefs.current[elem].scrollIntoView({ behavior: "smooth" });
-    setCurrentSection(elem);
-  });
-  const watchScroll = useCallback(() => {
-    const currentScrollPos = document.body.getBoundingClientRect().y; // return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
-    setScrollPos(currentScrollPos);
-
-    Object.keys(sectionRefs.current).map(section => {
-      console.log(section.__yOffset);
-      if (section.__yOffset > Math.abs(currentScrollPos)) {
-        setCurrentSection(section.name);
-        // scrollToSection(section.name);
-      }
-    });
-  });
-
-  const measureSections = useCallback(() => {
-    const sectionRefKeys = Object.keys(sectionRefs.current);
-
-    // adds a __yOffset value to each element
-    sectionRefKeys
-      .map(elementName => sectionRefs.current[elementName].clientHeight) // get all the heights (in backward order)
-      .reduce((accumulatedHeight, nextSectionHeight, i) => {
-        sectionRefs.current[sectionRefKeys[i]].__yOffset = accumulatedHeight; // create a new property on the object
-        return accumulatedHeight + nextSectionHeight;
-      });
-  });
-
-  useEffect(() => {
-    stickybits("#sticky", { useStickyClasses: true });
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", measureSections);
-      window.addEventListener("scroll", watchScroll);
-    }
-  }, []);
-
-  useEffect(() => {
-    // measureSections();
-  }, [sectionRefs.current]);
-
-  positionRef.current = scrollPos;
-  currentSectionRef.current = currentSection;
-  sectionRefs.current = {};
-
-  return (
-    <StaticQuery
-      //       //       query={graphql`
-      query={blogPageQuery}
-      render={data => {
-
-        const catagoryMappings = {};
-        console.log(data);
-
-        return (
-          <>
-            <Row noGutters>
-              <Col
-                xl={1}
-                lg={1}
-                md={1}
-                className="d-sm-none d-md-none d-lg-block"
-              />
-
-              <Col xl lg md>
-                <ContentContainer>
-                  <Header>BLOG</Header>
-                  <FilterBar>
-                    <Icon icon={filterIcon} />
-                    {catagories.map(catagory => (
-                      <p>{catagory}</p>
-                    ))}
-                  </FilterBar>
-                  <Row>
-                    {Object.keys(sections).map((sectionName, i) => {
-                      const RenderSection = sections[sectionName];
-                      return (
-                        <Col
-                          className="content"
-                          xl={5}
-                          lg={5}
-                          md={6}
-                          sm={12}
-                          xs={12}
-                        >
-                          <div
-                            className="section-card"
-                            key={sectionName}
-                            id={sectionName}
-                            ref={ref => {
-                              sectionRefs.current[sectionName] = ref;
-                            }}
-                          >
-                            <div className="header">
-                              <InlineIcon icon={sectionIcons[sectionName]} />
-                              <p>{sectionName}</p>
-                            </div>
-                            <RenderSection sectionName={sectionName} />
-                          </div>
-                        </Col>
-                      );
-                    })}
-
-                    <Col
-                      xl={2}
-                      lg={2}
-                      style={{ marginTop: "0px" }}
-                      className="d-xs-none d-sm-none d-md-none d-lg-block "
-                    >
-                      <ContentNavigation id="sticky">
-                        <div className="navigation-container">
-                          <div className="navigation-header">
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: waveSvg
-                              }}
-                            />
-                            <img imgSrc="./assets/svg/profile.png" />
-                            <p>portfolio</p>
-                          </div>
-                          {Object.keys(sections).map(sectionName => (
-                            <button
-                              className={
-                                currentSection === sectionName ? "active" : ""
-                              }
-                              type="submit"
-                              onClick={() => {
-                                setCurrentSection(sectionName);
-                                scrollToSection(sectionName);
-                              }}
-                            >
-                              <Icon icon={sectionIcons[sectionName]} />
-                              <p>{sectionName}</p>
-                            </button>
-                          ))}
-                        </div>
-                      </ContentNavigation>
-                    </Col>
-                  </Row>
-                </ContentContainer>
-              </Col>
-
-              <Col
-                xl={1}
-                lg={1}
-                md={1}
-                className="d-sm-none d-md-none d-lg-block"
-              />
-            </Row>
-          </>
-        );
-      }}
-    />
-  );
-});
-// #endregion section builder
-
 export const blogPageQuery = graphql`
   query BlogQuery {
     allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date] }) {
