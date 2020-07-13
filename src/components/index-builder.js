@@ -24,7 +24,7 @@ import { BtnPrimary, BtnBlob, BtnSecondary } from "./buttons";
 
 // used by all child components to config there intersection observer
 export const INVIEWCONFIG = {
-  threshold: [.6],
+  threshold: [0.6],
   rootMargin: "0px" // account for nav bar
 }; // not working... why??????
 
@@ -45,7 +45,10 @@ const sectionIcons = {
 };
 
 export default React.memo(({ theme }) => {
-  const [currentSection, setCurrentSection] = useState({name:"Projects",odd:true});
+  const [currentSection, setCurrentSection] = useState({
+    name: "Projects",
+    odd: true
+  });
   const sectionRefs = useRef({});
 
   const scrollToSection = useCallback(elem => {
@@ -70,7 +73,6 @@ export default React.memo(({ theme }) => {
       query={pageQuery}
       render={data => (
         <>
-          <Spacer />
           <Row noGutters>
             <Col xl lg md>
               {Object.keys(sections).map((sectionName, i) => {
@@ -172,7 +174,7 @@ const ContentNavigation = styled.nav`
     opacity: 0.9;
     z-index: -1;
     width: 100%;
-  ${props => props.theme.transitions.primary("all")};
+    ${props => props.theme.transitions.primary("all")};
     background: ${props =>
       props.odd ? props.theme.colors.primary : props.theme.colors.foreground};
     color: ${props =>
@@ -234,7 +236,7 @@ const ContentNavigation = styled.nav`
       border: none;
       opacity: 0.3;
       margin-bottom: 8px;
-      margin: 4px 30px;
+      margin: 4px 50px;
       z-index: 2;
       color: ${props => props.theme.colors.textSecondary};
 
@@ -357,13 +359,6 @@ const SectionBreak = styled.hr`
   position: relative;
   top: 0px;
 `;
-const Spacer = styled.div`
-  margin-top: 52vh;
-  height: 185px;
-  // pointer-events: all;
-  pointer-events: none;
-`;
-
 export const pageQuery = graphql`
   query indexBuilderQuery {
     site(siteMetadata: { description: {} }) {

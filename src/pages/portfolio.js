@@ -6,7 +6,6 @@ export default ({}) => {
   return (
     <Layout>
       <Helmet />
-
     </Layout>
   );
 };

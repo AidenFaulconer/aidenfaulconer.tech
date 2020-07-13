@@ -43,13 +43,13 @@ const NavigationWrapper = styled.div`
     }
 
   & nav{
-    border-bottom: 1px solid rgba(0,0,0,.1);
+    border-bottom: 1px solid rgba(0,0,0,.25);
     left:0px;
     top:0px;
     z-index: 100;
     width: 100vw;
     position: fixed;
-    padding: 13px;
+    padding: 25px;
     background: ${props => props.theme.colors.foreground};//switch on bg color
 
 
@@ -68,18 +68,18 @@ const NavigationWrapper = styled.div`
           content: '';
           display:block;
           position: relative;
-          top: 27px;
+          top: 40px;
           background: ${props => props.theme.colors.textSecondary};
-          height: 1.5px;
-          width: 0%;
+          height: 0px;
+          width: 100%;
           ${props => props.theme.transitions.third("all")};
         }
 
         &:hover{
           &::after{
-            width: 100%;
+            // width: 100%;
             ${props => props.theme.transitions.third("all")};
-            transform: scale(0,1);
+            transform: scale(1,0);
           }
       }
     }
@@ -87,14 +87,14 @@ const NavigationWrapper = styled.div`
 
     & .branding {
       left:-10px;
-      ${props=>props.theme.transitions.primary("all")};
+      ${props => props.theme.transitions.primary("all")};
       & svg {
         fill: ${props => props.theme.colors.textSecondary};
         height: 50px;
         width: auto;
         transform: skew(0deg);
         &:hover {
-      ${props=>props.theme.transitions.primary("all")};
+      ${props => props.theme.transitions.primary("all")};
         skew(12deg);
         }
 
@@ -122,7 +122,7 @@ const NavigationWrapper = styled.div`
         & .active {
           &::after{
           display: block;
-          width: 100%;
+          height: 2.5px;
         }
       }
 
@@ -176,15 +176,15 @@ export default ({ toggleTheme, theme }) => {
         <CSSTransition in={hide} timeout={15}>
           <nav>
             <Row>
-              <Col xl={1} lg={1} md={1} />
-              <Col xl={6} lg={6} md={6} sm={3} xs={4} className="branding">
+              <Col xl={1} lg={1} md={1} className="d-md-block d-sm-none" />
+              <Col xl={6} lg={6} md={6} sm={1} className="branding">
                 <div
                   style={{ fill: theme.colors.secondary }}
                   dangerouslySetInnerHTML={{ __html: logo }}
                 />
               </Col>
 
-              <Col xl={4} lg={4} md={3} className="site-links">
+              <Col xl={4} lg={4} md={3} sm={11} className="site-links">
                 <Link className={selected === "/" ? "active" : ""} to="./">
                   Portfolio
                 </Link>
@@ -202,7 +202,7 @@ export default ({ toggleTheme, theme }) => {
                 />
               </Col>
 
-              <Col xl={1} lg={1} md={1} />
+              <Col xl={1} lg={1} md={1} className="d-md-block d-sm-none" />
             </Row>
           </nav>
         </CSSTransition>

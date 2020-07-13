@@ -49,13 +49,7 @@ export default ({ sectionName, odd, setCurrentSection }) => {
   }, [inView]);
 
   return (
-    <>
-      <DisplayImage ref={ref} src={projectData[selected].imgsrc}>
-        <img src={projectData[selected].imgsrc} alt="display image" />
-        <h3>{projectData[selected].title}</h3>
-        <p>{projectData[selected].description}</p>
-        <BtnSecondary text="see more" />
-      </DisplayImage>
+    <motion.div>
       <ImageGrid>
         {projectData.map((project, i) => (
           <div className="preview-content">
@@ -64,14 +58,18 @@ export default ({ sectionName, odd, setCurrentSection }) => {
               src={project.imgsrc}
               onClick={() => selectProject(i)}
             />
-            <h3>{i}
-.
-</h3>
+            <h3>{i}.</h3>
             <p>descripton</p>
           </div>
         ))}
       </ImageGrid>
-    </>
+      <DisplayImage ref={ref} src={projectData[selected].imgsrc}>
+        <img src={projectData[selected].imgsrc} alt="display image" />
+        <h3>{projectData[selected].title}</h3>
+        <p>{projectData[selected].description}</p>
+        <BtnSecondary text="see more" />
+      </DisplayImage>
+    </motion.div>
   );
 };
 
@@ -91,7 +89,7 @@ const ImageGrid = styled.div`
     & img {
       border-radius: ${props => props.theme.corners.borderRadius1};
       width: 250px;
-      height: 223px;
+      height: 350px;
       max-height: 125px;
       object-fit: cover;
       opacity: 0.9;
@@ -105,12 +103,14 @@ const ImageGrid = styled.div`
       ${props =>
         props.theme.breakpoints.lg(`
       `)}
+    }
 
     &:hover {
-        ${props => props.theme.transitions.primary("transform")};
+      transform: scale(1.05);
+      ${props => props.theme.transitions.primary("transform")};
+      border: ${props => props.theme.borders.primary};
+      & img {
         box-shadow: ${props => props.theme.shadows.primary};
-        transform: scale(1.05);
-        border: ${props => props.theme.borders.secondary};
       }
     }
 
@@ -128,7 +128,7 @@ const ImageGrid = styled.div`
 const DisplayImage = styled.article`
   left: 0px;
   display: flex;
-  margin-right: 100px;
+  margin-left: 100px;
   position: relative;
   flex-direction: column;
   max-height: 600px;
@@ -151,10 +151,27 @@ const DisplayImage = styled.article`
     z-index: -1;
     transform: rotate(-3deg);
     box-shadow: ${props => props.theme.shadows.primary};
+    ${props => props.theme.transitions.primary("transform")};
+  }
+
+  &:hover {
+    & img {
+    cursor: pointer;
+      ${props => props.theme.mixins.transform3dPrimary};
+      box-shadow: ${props => props.theme.shadows.primary};
+      ${props => props.theme.transitions.primary("transform")};
+    }
+    &::after {
+    cursor: pointer;
+      ${props => props.theme.mixins.transform3dSecondary};
+      box-shadow: ${props => props.theme.shadows.primary};
+      ${props => props.theme.transitions.primary("transform")};
+    }
   }
 
   & img {
     box-shadow: ${props => props.theme.shadows.primary};
+    ${props => props.theme.transitions.primary("transform")};
     width: 595px;
     height: 434px;
     margin: 0px 0px;

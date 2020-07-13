@@ -11,27 +11,47 @@ import { BtnPrimary, BtnSecondary, Btn } from "../buttons.js";
 import ThreePortfolio from "./three-portfolio";
 
 const HeroHeader = styled.section`
-  position: fixed;
-  pointer-events: all;
   padding-top: 250px; //185px + 25px
+  height: 75vh;
+  z-index: 0;
+
+  //breakpoint overrides (mobile in sm, tablet / desktop in md)
+  ${props =>
+    props.theme.breakpoints.sm(`
+  & .headline {text-align: center;}
+  & .primary-content {width: 100%;}
+  `)}
+  ${props =>
+    props.theme.breakpoints.md(`
+  & .headline {text-align: left;}
+  & .primary-content {width: 74%;}
+  `)}
 
   & .headline {
+    z-index: 3;
     font-weight: bolder;
     text-transform: capitalcase;
     font-family: poppins-bold;
     color: ${props => props.theme.colors.textSecondary};
   }
 
+  & a {
+    position: relative;
+    z-index: 2;
+  } //fix buttons
+
   & .primary-content {
     color: ${props => props.theme.colors.textSecondary};
     ${props => props.theme.mixins.contentFont};
     line-height: ${props => props.theme.text.details.lineheight3};
-    font-size: 25px;
-    font-family: "poppins-regular";
-    width: 74%;
+    font-size: 1.25em;
+    font-family: "poppins-light";
+    // width: 74%;
     margin-bottom: 25px;
     margin-top: 40px;
+    z-index: 30;
   }
+
   color: ${props => props.theme.colors.textPrimary};
   & .graphic {
     margin: 0px 25px;
@@ -62,8 +82,8 @@ const HeroHeader = styled.section`
 
 const ThreeWrapper = styled.div`
   position: absolute;
-  width: 100%;
   height: 100%;
+  width: 100%;
   overflow: hidden;
   top: 0px;
   z-index: 1;
@@ -101,9 +121,8 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
             <HeroHeader id="hero-header">
               <Row>
                 <Col xl={1} lg={1} md={1} sm={1} />
-                <Col xl={6} lg={8} md={8} sm={8}>
+                <Col xl={6} lg={8} md={5} sm={10}>
                   <h1 className="headline">{headline}</h1>
-
                   <div
                     className="primary-content"
                     dangerouslySetInnerHTML={{
@@ -122,9 +141,9 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                   </Link>
                 </Col>
 
-                <Col xl lg={12} md={12} sm={12}>
+                <Col xl lg={12} md={5} sm={2}>
                   <img
-                    className="graphic"
+                    className="graphic d-md-block d-sm-none"
                     src={`./assets/svg/portfolio-graphic-${theme.name}.png`} // TODO: this will be dynamic per page (with a hero header)
                   />
                 </Col>

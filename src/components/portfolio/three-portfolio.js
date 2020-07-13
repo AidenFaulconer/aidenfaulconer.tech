@@ -2,66 +2,93 @@ import * as THREE from "three";
 import { TextureLoader, WebGLRenderTarget, Object3D } from "three";
 import React, { Suspense, useMemo, useState, useCallback, useRef } from "react";
 import { Canvas, useFrame, useThree, useLoader } from "react-three-fiber";
-import { Physics, usePlane, useSphere } from "use-cannon";
+import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import BackfaceMaterial from "../threejs/materials/backface";
 import RefractionMaterial from "../threejs/materials/refraction";
 
 export const Mouse = () => {
   const { viewport } = useThree();
-  const [, api] = useSphere(() => ({ type: "Kinematic", args: 4.5 }));
-  return useFrame(state =>
+  const ref = useRef();
+  const [_, api] = useBox(() => ({
+    type: "Kinematic",
+    // mass: 10,
+    args: dimensions,
+    position: [viewport.width / 2 + 3, viewport.height / 2, 10]
+  }));
+  const dimensions = [6, 6, 6];
+  useFrame(state => {
     api.position.set(
       (state.mouse.x * viewport.width) / 2,
       (state.mouse.y * viewport.height) / 2,
-      7
-    )
+      10
+    );
+    ref.current.position.set(
+      (state.mouse.x * viewport.width) / 2,
+      (state.mouse.y * viewport.height) / 2,
+      9
+    );
+  });
+  return (
+    <instancedMesh ref={ref} castShadow>
+      <boxBufferGeometry attatch="geometry" args={dimensions} />
+      <meshPhysicalMaterial flatShading attatch="material" color="111111" />
+    </instancedMesh>
   );
 };
 
 // A physical plane without visual representation
 export const Plane = ({ color, ...props }) => {
+  const { viewport } = useThree();
   const [ref] = usePlane(() => ({ ...props }));
   return (
-    <instancedMesh
-receiveShadow ref={ref}>
-      <planeBufferGeometry attatch="geometry" {...props} />
-      <meshPhysicalMaterial roughness={0} attatch="material" color={color} />
-    </instancedMesh>
+    <mesh receiveShadow ref={ref} {...props}>
+      <planeBufferGeometry
+        attatch="geometry"
+        args={[viewport.width * 2, viewport.width * 2, viewport.height * 2]}
+      />
+      <meshPhysicalMaterial
+        roughness={0}
+        attatch="material"
+        transparent
+        opacity={color != null}
+        color={color || color}
+      />
+    </mesh>
   );
 };
 
 // Creates a crate that catches the spheres
-export const Borders = () => {
+export const Borders = ({ theme }) => {
   const { viewport } = useThree();
   return (
     <>
       <Plane
-        position={[0, -viewport.height / 2, 0]}
+        position={[0, -viewport.height / 2 + 1.75, -150]} // ground
         rotation={[-Math.PI / 2, 0, 0]}
       />
       <Plane
-        position={[-viewport.width / 2 - 1, 0, 0]}
+        position={[-viewport.width / 2 + 2, 0, 0]} // r
         rotation={[0, Math.PI / 2, 0]}
       />
       <Plane
-        position={[viewport.width / 2 + 1, 0, 0]}
+        position={[viewport.width / 2 - 2, 0, 0]} // l
         rotation={[0, -Math.PI / 2, 0]}
       />
-      <Plane position={[0, 0, 6]} rotation={[0, 0, 0]} />
-      <Plane position={[0, 0, 12]} rotation={[0, -Math.PI, 0]} />
+      <Plane position={[0, 0, 8]} rotation={[0, 0, 0]} /** back */ />
+      <Plane position={[0, 0, 12]} rotation={[0, -Math.PI, 0]} /** front */ />
     </>
   );
 };
 
 // Spheres falling down
-export const InstancedSpheres = ({ color = "black", count = 50 }) => {
+export const InstancedBoxs = ({ color = "black", count = 50 }) => {
   const { size, viewport, gl, scene, camera, clock } = useThree();
-
+  const dimensions = [1.75, 1.75, 1.75];
   // use react reference to generate the mesh
-  const [ref] = useSphere(index => ({
-    mass: 50,
-    position: [4 - Math.random() * 8, viewport.height, 0, 0],
-    args: 1
+  const [ref] = useBox(index => ({
+    mass: 1000,
+    args: dimensions, // with use sphere there isnt an array passed
+    position: [viewport.width - Math.random(), -viewport.height, 0, 0]
     // onCollide: e => play(index, e.contact.impactVelocity),
   }));
   // #region deprecated
@@ -111,16 +138,16 @@ export const InstancedSpheres = ({ color = "black", count = 50 }) => {
 
   return (
     <instancedMesh
+      castShadows
+      receiveShadows
       ref={ref}
-      castShadow
-      receiveShadow
       args={[null, null, count]}
     >
-      <sphereBufferGeometry attatch="geometry" args={[1, 32, 32]} />
+      <boxBufferGeometry attatch="geometry" args={dimensions} />
       <meshPhysicalMaterial
+        flatShading
         transparent
-        opacity={0.3}
-        clearcoat={1}
+        opacity={0.6}
         attatch="material"
         color={color}
       />
@@ -128,37 +155,36 @@ export const InstancedSpheres = ({ color = "black", count = 50 }) => {
   );
 };
 
+// https://inspiring-wiles-b4ffe0.netlify.app/2-objects-and-properties
 export default ({ theme }) => {
+  const ref = useRef();
+  const { viewport } = useThree();
+
   return (
     <Canvas
+      ref={ref}
       concurrent
       shadowMap
       gl={{ alpha: true, antialias: true }}
       camera={{ position: [0, 0, 20], fov: 50, near: 17, far: 40 }}
     >
-      <fog attach="fog" args={[theme.colors.primary, 15, 40]} />
-      {/**
-      <color attach="background" args={[theme.colors.foreground]} />
-      */}
-      <ambientLight color={theme.colors.foreground} intensity={0.5} />
+      <fog attach="fog" args={[theme.colors.foreground, 0, 60]} />
+      <ambientLight color={theme.colors.foreground} intensity={0} />
       <directionalLight
-        position={[100, 150, 400]}
-        angle={0.7}
-        intensity={2.5}
-        color={theme.colors.foreground}
-        shadow-radius={50}
+        position={[50, 150, 400]}
+        angle={0.25}
+        intensity={1}
+        color={theme.name === 'dark' ? '384654' : theme.colors.foreground}
         castShadow
-        shadow-mapSize-width={100}
-        shadow-mapSize-height={100}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
-      />
-      <directionalLight
-        position={[-10, -10, -5]}
-        color={theme.colors.foreground}
-        intensity={1.5}
+        // shadow-bias={0.01}
+        shadow-radius={10}
+        shadow-mapSize-width={7000} // fidelity of shadow maps (higher is sharper)
+        shadow-mapSize-height={7000}
+        // move shadows to cameras perspective instead of light
+        shadow-camera-left={-50}
+        shadow-camera-right={50}
+        shadow-camera-top={50}
+        shadow-camera-bottom={-50}
       />
       {/**
        */}
@@ -169,14 +195,14 @@ export default ({ theme }) => {
         >
           <group position={[0, 0, -10]}>
             <Mouse />
-            <Borders />
-            <InstancedSpheres
+            <Borders theme={theme} />
+            <InstancedBoxs
               color={
                 theme.name === "dark"
                   ? theme.colors.primary
                   : theme.colors.foreground
               }
-              count={100}
+              count={6}
             />
           </group>
         </Physics>

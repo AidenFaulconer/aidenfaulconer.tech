@@ -20,9 +20,10 @@ const Button = styled.button`
   padding: ${props => props.padding};
   border: none;
   font-weight: bolder;
-  z-index: 50;
   text-decoration: none;
   font-size: ${props => props.theme.text.sizes.small};
+  pointer-events: all;
+  z-index: 100;
   ${props => props.theme.corners.borderRadius2};
 
   &.-primary {
@@ -43,13 +44,13 @@ const Button = styled.button`
     height: 25px;
     position: relative;
     margin: auto 0;
-    z-index: 200;
     margin-left: 25px;
-    cursor: pointer;
+    z-index: 100;
     ${props => props.theme.transitions.primary("margin-left")};
   }
 
   &:hover {
+    cursor: pointer;
     & svg {
       margin-left: 50px;
       ${props => props.theme.transitions.primary("margin-left")};
@@ -57,7 +58,7 @@ const Button = styled.button`
   }
 `;
 
-export const defaultPadding = "12.5px 50px";
+export const defaultPadding = "12.5px 35px";
 
 export const BtnPrimary = ({ children, text, theme, padding, color, bg }) => (
   <Button

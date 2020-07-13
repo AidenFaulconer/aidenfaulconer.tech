@@ -32,18 +32,19 @@ export const Projects = ({ sectionName }) => {
 const sections = {
   Projects: React.memo(Projects),
   Test: React.memo(Projects),
-  Test1: React.memo(Projects),
+  Test1: React.memo(Projects)
 };
 const sectionIcons = {
   Projects: projectsIcon,
   Test: projectsIcon,
-  Test1: projectsIcon,
+  Test1: projectsIcon
 };
 
 const mockData = [
   {
     mediaSrc: "./assets/becca-tapert-sY5RjMB1KkE-unsplash.jpg",
     title: "title",
+    catagory: "technology",
     description: "description"
   }
 ];
@@ -51,29 +52,36 @@ const mockData = [
 export const catagories = ["technology", "design", "workflow", "discovery"];
 
 export default React.memo(() => {
-  const [currentSection, setCurrentSection] = useState("Projects");
   const [featuredBlog, setFeaturedBlog] = useState(0);
-  const sectionRefs = useRef({});
-
-  const scrollToSection = useCallback(elem => {
-    if (typeof window !== "undefined") {
-      window.scrollBy(0, -115);
-    } // adjust scrolling with negative value
-    sectionRefs.current[elem].scrollIntoView({ behavior: "smooth" });
-    setCurrentSection(elem);
-  });
-
-  useEffect(() => {
-    stickybits("#sticky", { useStickyClasses: true });
-  }, []);
-
+  const [filteredBlogs, setFilteredBlogs] = useState([0, 1, 2, 3, 4]);
   const theme = useTheme();
+
+  const [selectedFilters, selectFilters] = useState({
+    design: true,
+    technology: true
+  }); // toggle filters by default
+
+  const filterBlogs = useCallback((data, filters) => {
+    return data.filter((current, i) => filters.includes(current));
+  });
   // https://www.npmjs.com/package/react-intersection-observer#polyfill
 
   // handle a section coming into view
   useEffect(() => {
-    console.log(currentSection);
-  }, [currentSection]);
+    console.log(filteredBlogs);
+  }, [filteredBlogs]);
+
+  function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+
+  useEffect(() => {
+    console.log(selectedFilters);
+  }, [selectedFilters]);
 
   return (
     <StaticQuery
@@ -84,87 +92,123 @@ export default React.memo(() => {
         console.log(data);
 
         return (
-          <>
-            <Spacer />
-            <Row noGutters>
-              <Col
-                xl={1}
-                lg={1}
-                md={1}
-                className="d-sm-none d-md-none d-lg-block"
-              />
-              <Col xl={6} lg={6} md={6}>
-                <FeaturedBlog src={mockData[featuredBlog].mediaSrc}>
-                  <img src={mockData[featuredBlog].mediaSrc} />
-                  <h1>{mockData[featuredBlog].title}</h1>
-                  <p>{mockData[featuredBlog].description}</p>
-                  <button>read more</button>
-                </FeaturedBlog>
-              </Col>
+          <Row>
+            <Col
+              xl={1}
+              lg={1}
+              md={1}
+              className="d-sm-none d-md-none d-lg-block"
+            />
 
-              <Col xl lg md>
-                <ContentContainer>
-                  {Object.keys(sections).map((sectionName, i) => {
-                    const RenderSection = sections[sectionName];
-                    return (
-                      <div
-                        className="section-card"
-                        key={sectionName}
-                        id={sectionName}
-                        ref={ref => {
-                          sectionRefs.current[sectionName] = ref;
-                        }}
-                      >
-                        <div className="header">
-                          <InlineIcon icon={sectionIcons[sectionName]} />
-                          <p>{sectionName}</p>
-                        </div>
-                        <RenderSection sectionName={sectionName} />
-                      </div>
-                    );
-                  })}
+            <Col xs={10} lg={10} md={10}>
+              <Spacer />
+              <Row noGutters>
+                <Col xl={3} lg={6} md={10}>
+                  <FeaturedBlog src={mockData[featuredBlog].mediaSrc}>
+                    <img src={mockData[featuredBlog].mediaSrc} />
+                    <div className="featured-content">
+                      <h2>{mockData[featuredBlog].title}</h2>
+                      <p>{mockData[featuredBlog].description}</p>
+                      <h3>read more</h3>
+                    </div>
+                  </FeaturedBlog>
+                </Col>
 
-                  <Col xl lg md className="d-sm-none d-md-none d-lg-block" />
-                </ContentContainer>
-              </Col>
-
-              <Col
-                xl={2}
-                lg={2}
-                style={{ marginTop: "0px" }}
-                className="d-xs-none d-sm-none d-md-none d-lg-block "
-              >
-                <img
-                  className="graphic"
-                  src={`./assets/svg/blog-graphic-${theme.name}.png`} // TODO: this will be dynamic per page (with a hero header)
+                <Col
+                  xl={1}
+                  lg={1}
+                  md={1}
+                  className="d-sm-none d-md-none d-lg-block"
                 />
-              </Col>
 
-              <Col
-                xl={1}
-                lg={1}
-                md={1}
-                className="d-sm-none d-md-none d-lg-block"
-              />
+                <Col xl lg md={12}>
+                  <ContentContainer>
+                    {Object.keys(sections).map((sectionName, i) => {
+                      const RenderSection = sections[sectionName];
+                      return (
+                        <div
+                          className="section-card"
+                          key={sectionName}
+                          id={sectionName}
+                        >
+                          <div className="header">
+                            <InlineIcon icon={sectionIcons[sectionName]} />
+                            <p>{sectionName}</p>
+                          </div>
+                          <RenderSection sectionName={sectionName} />
+                        </div>
+                      );
+                    })}
+                  </ContentContainer>
+                </Col>
 
-              <Col xl={12}>
-                <FilterBar>
-                  <Icon icon={filterIcon} />
-                  {catagories.map(catagory => (
-                    <p>{catagory}</p>
-                  ))}
-                </FilterBar>
-              </Col>
-            </Row>
-          </>
+                <Col
+                  xl={2}
+                  lg={2}
+                  style={{ marginTop: "0px" }}
+                  className="d-xs-none d-sm-none d-md-none d-xl-block "
+                >
+                  <img
+                    className="graphic"
+                    src={`./assets/svg/blog-graphic-${theme.name}.png`}
+                  />
+                </Col>
+
+                <Col xl={12}>
+                  <FilterBar>
+                    <h3>Catagories</h3>
+                    {catagories.map(catagory => {
+                      return (
+                        <>
+                          <label htmlFor={catagory}>{catagory}</label>
+                          <input
+                            checked={false}
+                            ref={ref => {
+                              if (ref != null) {
+                                // React.memo(
+                                //   selectFilters(
+                                //     prevState =>
+                                //       (prevState[catagory] = ref.checked)
+                                //   ), // toggle checked state for catagory
+                                //   ref.checked // only use when checked is changed
+                                // );
+                              }
+                            }}
+                            type="submit"
+                            id={catagory}
+                          />
+                        </>
+                      );
+                    })}
+                  </FilterBar>
+                </Col>
+              </Row>
+            </Col>
+
+            <Col
+              xl={1}
+              lg={1}
+              md={1}
+              className="d-sm-none d-md-none d-lg-block"
+            />
+          </Row>
         );
       }}
     />
   );
 });
 // #endregion section builder
+
+const FilteredBlogs = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-gap: 25px;
+`;
+
 const FeaturedBlog = styled.article`
-  position:relative;
+  position: relative;
   width: 832px;
   height: 484px;
   background: ${props => props.theme.colors.primary};
@@ -173,42 +217,58 @@ const FeaturedBlog = styled.article`
 
   & img {
     object-fit: fit;
-    position: realative;
+    position: relative;
     top: 0px;
     left: 0px;
     height: 100%;
     width: 35%;
+    // background-image: url(${props => props.src});
   }
 
-    &::after {
-      position: absolute;
-      content: "";
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      background-image: url(${props => props.src});
-      left: 0px;
-      top: 0px;
-      opacity: 0.6;
-      z-index: -3;
-      transform: rotate(-2deg);
+      ${props => props.theme.transitions.primary("transform")};
+    &:hover {
+    cursor: pointer;
+      ${props => props.theme.mixins.transform3dSecondary};
       box-shadow: ${props => props.theme.shadows.primary};
+      ${props => props.theme.transitions.primary("transform")};
+    &::after {
+    cursor: pointer;
+      ${props => props.theme.mixins.transform3dSecondary};
+      box-shadow: ${props => props.theme.shadows.primary};
+      ${props => props.theme.transitions.primary("transform")};
     }
+  }
 
-  & h1 {
+  & .featured-content {
+    padding: 12.5px;
     position: absolute;
-    top: 0px;
+    content: "";
+    width: 65%;
+    height: 100%;
+    object-fit: cover;
     right: 0px;
-  }
-  & p {
     top: 0px;
-    right: 0px;
-    position: absolute;
-  }
-  & button {
-    top: 0px;
-    right: 0px;
-    position: absolute;
+    z-index: 0;
+    background: ${props => props.theme.colors.primary};
+    // box-shadow: ${props => props.theme.shadows.primary};
+
+    & h2 {
+      position: relative;
+      top: 0px;
+      left: 0px;
+    }
+    & p {
+      top: 0px;
+      right: 0px;
+      position: relative;
+    }
+    & h3 {
+      bottom: 0px;
+      left: 0px;
+      margin: 12.5px;
+      position: absolute;
+      text-transform: capitalize;
+    }
   }
 `;
 
@@ -216,8 +276,15 @@ const ContentContainer = styled.section`
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   color: ${props => props.theme.colors.textColor};
+
+
+  ${props =>
+    props.theme.breakpoints.md(`
+  flex-direction: column;
+  `)}
+
 
   // & *[class*="col"] {//add gutters
   //        column-gap: 25px;
@@ -287,11 +354,6 @@ const ContentContainer = styled.section`
   & *[class*="row"] {
   }
 `;
-const SectionBreak = styled.hr`
-  z-index: 2;
-  position: relative;
-  top: 0px;
-`;
 
 const Spacer = styled.br`
   width: 100%;
@@ -301,25 +363,34 @@ const Spacer = styled.br`
 
 const FilterBar = styled.div`
 border-radius: ${props => props.theme.corners.borderRadius2};
-background: ${props => props.theme.colors.textPrimary};
 flex-direction: row:
-display:relative;
-margin-bottom: 75px;
-color: ${props => props.theme.colors.contentForeground};
+position: relative;
+margin-top: 75px;
+margin-left: 100px;
 display:flex;
+color: ${props => props.theme.colors.textPrimary};
 
-& svg {
-border-right: 1px solid currentColor;
-height: 100%;
-padding: 6.125px;
-min-width: 50px;
-};
 
-& p {
-margin: 12.5px 25px;
-font-weight: bolder;
-text-transform: capitalize;
-}
+ & h3 {
+ position: absolute;
+ margin-left: 12px;
+ top: 35px;//17 + 25
+color: ${props => props.theme.colors.primary};
+ }
+  & input {
+    visibility: hidden;
+    display: none;
+  }
+  & label {
+    background: ${props => props.theme.colors.primary};
+    border-radius: ${props => props.theme.corners.borderRadius1};
+    text-align: center;
+    padding: 25px;
+    margin-left: 12.5px;
+    margin-bottom: 12.5px;
+    font-weight: bolder;
+    text-transform: capitalize;
+  }
 
 `;
 

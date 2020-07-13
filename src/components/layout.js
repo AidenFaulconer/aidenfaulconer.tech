@@ -55,7 +55,14 @@ const staticStlying = {
     padding:0px;
   }
   img {
-  object-fit: cover;
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-position: center;
+   height: 100%;
+    object-fit: cover;
+    &::hover{
+    transform: scale(.5);
+    }
   }
     `,
   fonts: `
@@ -89,6 +96,10 @@ const staticStlying = {
     src: url("./fonts/poppins/Poppins-Regular.ttf");
     }
     @font-face {
+    font-family: "poppins-light";
+    src: url("./fonts/poppins/Poppins-Light.ttf");
+    }
+    @font-face {
     font-family: "poppins";
     src: url("./fonts/poppins/Poppins.ttf");
     }
@@ -105,12 +116,14 @@ const staticStlying = {
       line-height: 100%;
     };
     `,
+
+    //px to em
   text: {
     sizes: {
       extraSmall: ".618em", // was .618em
       small: ".818em", // was .618em
       p: ".9em",
-      h3: "17.42px",
+      h3: "1.451em",//17px
       h2: "2.618em",
       h1: "4.236em",
       title: "4.8em"
@@ -134,6 +147,12 @@ const staticStlying = {
     xl1: "250px"
   },
   mixins: {
+    transform3dPrimary: `
+      transform: rotateX(2deg) rotateY(4deg) rotateZ(3deg) translateX(-3px) translateY(4px);
+    `,
+    transform3dSecondary: `
+      transform: rotateX(-12deg) rotateY(-3deg) rotateZ(2deg) translateX(23px) translateY(-8px);
+    `,
     brandoverlay: `
       background: #8EF2D2;
       mix-blend-mode: lighten;
@@ -218,7 +237,7 @@ const theme = {
     },
     shadows: {
       primary: "-5px 0px 30px rgba(255,255,255,.05)",
-      secondary: "2.5px 0px 12.5px rgba(25,0,74,0.75)"
+      secondary: "2.5px 0px 12.5px rgba(255,255,255,.75)"
     },
     // #region static styling
     corners: staticStlying.corners,
@@ -243,13 +262,13 @@ const theme = {
       scroll-behaviour: smooth;
       background: #0D0D0D;
       overflow-x: hidden;
-      font-size: 12px;
+      font-size: 20px;
 
       ${staticStlying.breakpoints.sm(`
-      font-size: 16px;
+      font-size: 12px;
       `)}
       ${staticStlying.breakpoints.md(`
-      font-size: 17px;
+      font-size: 15px;
       `)}
       ${staticStlying.breakpoints.lg(`
       font-size: 20px;
@@ -289,7 +308,7 @@ const theme = {
     },
     shadows: {
       primary: "-5px 0px 50px rgba(0,0,0,.25)",
-      secondary: "2.5px 0px 12.5px rgba(25,0,74,0.75)"
+      secondary: "2.5px 0px 12.5px rgba(0,0,0,0.75)"
     },
     // #region static styling
     corners: staticStlying.corners,
@@ -313,7 +332,7 @@ const theme = {
       min-height: 100vh;
       margin: 0px;
       padding: 0px;
-      font-size: 21px;
+      font-size: 20px;
     }
 
     ${staticStlying.fonts};
@@ -369,7 +388,7 @@ export default class index extends Component {
             toggleTheme={this.toggleTheme}
           />
 
-           {children}
+          {children}
 
           <Footer>
             <Row>
@@ -433,22 +452,9 @@ export default class index extends Component {
   }
 }
 
-//  <p
-//       dangerouslySetInnerHTML={{
-//         __html: `&copy; ${new Date().getFullYear()} AidenFaulconer, Crafted with ❤️`
-//       }}/>
-
-// <Toast>
-//   <Toast.Header>
-//     <strong>This site uses cookies</strong>
-//     <small>aiden faulconer</small>
-//   </Toast.Header>
-//   <Toast.Body>This site uses cookies</Toast.Body>
-// </Toast>
-
 const Footer = styled.footer`
   padding-top: 50px;
-  border-top: 1px solid rgba(255,255,255,.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   min-height: 25vh;
   width: 100vw;
   position: relative;
