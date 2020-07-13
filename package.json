@@ -1,11 +1,11 @@
 {
-  "name": "gatsby-starter-delog",
+  "name": "aidenfaulconer.com",
   "description": "Design and software services, the time is now",
-  "author": "W3Layouts Team <info@w3layouts.com>",
-  "version": "1.6.0",
+  "author": "Aiden Faulconer",
+  "version": "0.1",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/W3Layouts/gatsby-starter-delog/issues"
+    "url": "https://github.com/AidenFaulconer/aidenfaulconer.com"
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
@@ -72,7 +72,7 @@
   "devDependencies": {
     "prettier": "^1.19.1"
   },
-  "homepage": "https://github.com/W3Layouts/gatsby-starter-delog#readme",
+  "homepage": "https://aidenfaulconer.com/home",
   "keywords": [
     "gatsby",
     "netlify cms"
