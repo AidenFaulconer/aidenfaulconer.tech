@@ -1,7 +1,7 @@
 ---
 template: BlogPost
 catagory: Blog
-path: /Blog/remark-kitchen-sink
+path: /blog/remark-kitchen-sink
 date: 2020-02-21T12:12:25.364Z
 title: 'Hello World: The remark Kitchen Sink'
 'thumbnail,': /assets/becca-tapert-sY5RjMB1KkE-unsplash.jpg
