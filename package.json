@@ -2,10 +2,10 @@
   "name": "aidenfaulconer.com",
   "description": "Design and software services, the time is now",
   "author": "Aiden Faulconer",
-  "version": "0.1",
+  "version": "1.6.0",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AidenFaulconer/aidenfaulconer.com"
+    "url": "https://github.com/AidenFaulconer/aidenfaulconer.com/issues"
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
@@ -26,6 +26,7 @@
     "@iconify/icons-simple-icons": "^1.0.37",
     "@iconify/react": "^1.1.3",
     "@material-ui/core": "^4.10.2",
+    "@pake/react-color": "^3.0.0",
     "anime": "^0.1.2",
     "bootstrap": "^4.5.0",
     "conic-gradient": "^1.0.0",
@@ -43,6 +44,7 @@
     "gatsby-plugin-netlify-cms": "^4.1.38",
     "gatsby-plugin-offline": "^3.2.0",
     "gatsby-plugin-react-helmet": "^3.1.22",
+    "gatsby-plugin-remove-trailing-slashes": "^2.3.11",
     "gatsby-plugin-sass": "^2.1.28",
     "gatsby-plugin-sitemap": "^2.4.0",
     "gatsby-remark-emojis": "^0.4.2",

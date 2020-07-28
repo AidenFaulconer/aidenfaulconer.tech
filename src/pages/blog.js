@@ -19,7 +19,7 @@ const blogPage = React.memo(
       .map(edge => <PostLink key={edge.node.id} post={edge.node} />);
 
     return (
-      <Layout>
+      <Layout pageType={"blog"}>
         <script src="https://cdn.rawgit.com/LeaVerou/conic-gradient/609dc5f4/conic-gradient.js" />
 
         <Helmet>
@@ -51,7 +51,7 @@ export const pageQuery = graphql`
             date(formatString: "MMMM DD, YYYY")
             path
             title
-            thumbnail
+            thumbnail_
           }
         }
       }

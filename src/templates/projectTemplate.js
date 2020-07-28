@@ -3,27 +3,6 @@ import Helmet from "react-helmet";
 import { graphql } from "gatsby";
 import Layout from "../components/layout";
 
-const Post = styled.div`
-  & article {
-    & .headline {
-    }
-    & .description {
-    }
-  }
-  & .main-image {
-    height: 90vh;
-    width: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-  }
-
-  & .reccomended {
-    & img {
-    }
-  }
-`;
-
 export default function Template({
   data // this prop will be injected by the GraphQL query below.
 }) {
@@ -64,15 +43,9 @@ export default function Template({
           />
         </article>
       </div>
-      <div className="reccomended">
-        <div />
-        <div />
-        <div />
-      </div>
     </Layout>
   );
 }
-// determine order of other blogs
 
 export const pageQuery = graphql`
   query($path: String!) {
@@ -87,8 +60,8 @@ export const pageQuery = graphql`
         date(formatString: "MMMM DD, YYYY")
         path
         title
-        thumbnail
-        metaDescription
+        thumbnail_
+        # metaDescription
       }
     }
   }

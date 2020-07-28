@@ -21,12 +21,12 @@ export const ScaleBox = ({
 
   const variants = {
     hidden: {
-      scale: 0,
+      transform: "translateX(-1000)",
       opacity: 0,
       transition
     },
     show: {
-      scale: 1,
+      transform: "translateX(0)",
       opacity: 1,
       transition
     }

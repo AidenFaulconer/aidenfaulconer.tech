@@ -4,6 +4,7 @@ import React, { Suspense, useMemo, useState, useCallback, useRef } from "react";
 import { Canvas, useFrame, useThree, useLoader } from "react-three-fiber";
 import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import BackfaceMaterial from "../threejs/materials/backface";
+import Post from "./three-post-processing.js";
 import RefractionMaterial from "../threejs/materials/refraction";
 
 export const Mouse = () => {
@@ -81,60 +82,28 @@ export const Borders = ({ theme }) => {
 };
 
 // Spheres falling down
-export const InstancedBoxs = ({ color = "black", count = 50 }) => {
+export const InstancedBoxs = ({ choice, color = "black", count = 50 }) => {
   const { size, viewport, gl, scene, camera, clock } = useThree();
-  const dimensions = [1.75, 1.75, 1.75];
+  const dimensions = [1.25, 1.25, 1.25];
   // use react reference to generate the mesh
-  const [ref] = useBox(index => ({
-    mass: 1000,
-    args: dimensions, // with use sphere there isnt an array passed
-    position: [viewport.width - Math.random(), -viewport.height, 0, 0]
-    // onCollide: e => play(index, e.contact.impactVelocity),
-  }));
-  // #region deprecated
-  // Create Fbo's and materials
-  //   const [
-  //     envFbo,
-  //     backfaceFbo,
-  //     backfaceMaterial,
-  //     refractionMaterial
-  //   ] = useMemo(() => {
-  //     const envFbo = new WebGLRenderTarget(size.width, size.height);
-  //     const backfaceFbo = new WebGLRenderTarget(size.width, size.height);
-  //     const backfaceMaterial = new BackfaceMaterial();
-  //     const refractionMaterial = new RefractionMaterial({
-  //       envMap: envFbo.texture,
-  //       backfaceMap: backfaceFbo.texture,
-  //       resolution: [size.width, size.height]
-  //     });
-  //     return [envFbo, backfaceFbo, backfaceMaterial, refractionMaterial];
-  //   }, [size]);
-
-  // Render-loop
-  //   useFrame(() => {
-  //     ref.current.instanceMatrix.needsUpdate = true;
-  //     // Render env to fbo
-  //     gl.autoClear = false;
-  //     camera.layers.set(1);
-  //     gl.setRenderTarget(envFbo);
-  //     gl.render(scene, camera);
-  //     // Render cube backfaces to fbo
-  //     camera.layers.set(0);
-  //     ref.current.material = backfaceMaterial;
-  //     gl.setRenderTarget(backfaceFbo);
-  //     gl.clearDepth();
-  //     gl.render(scene, camera);
-  //     // Render env to screen
-  //     camera.layers.set(1);
-  //     gl.setRenderTarget(null);
-  //     gl.render(scene, camera);
-  //     gl.clearDepth();
-  //     // Render cube with refraction material to screen
-  //     camera.layers.set(0);
-  //     ref.current.material = refractionMaterial;
-  //     gl.render(scene, camera);
-  //   }, 1);
-  // #endregion deprecated
+  const [ref] = useBox(index => {
+    const options = {
+      // used to ensure box's stack in a pyrimid like shape, (2 on top, 3 on bottom)
+      rightOffset: [
+        viewport.width - Math.random() - 1,
+        -viewport.height + 1.5,
+        0,
+        0
+      ],
+      right: [viewport.width - Math.random(), -viewport.height, 0, 0]
+    };
+    return {
+      mass: 1000,
+      args: dimensions, // with use sphere there isnt an array passed
+      position: options[choice]
+      // onCollide: e => play(index, e.contact.impactVelocity),
+    };
+  });
 
   return (
     <instancedMesh
@@ -147,7 +116,6 @@ export const InstancedBoxs = ({ color = "black", count = 50 }) => {
       <meshPhysicalMaterial
         flatShading
         transparent
-        opacity={0.6}
         attatch="material"
         color={color}
       />
@@ -174,7 +142,7 @@ export default ({ theme }) => {
         position={[50, 150, 400]}
         angle={0.25}
         intensity={1}
-        color={theme.name === 'dark' ? '384654' : theme.colors.foreground}
+        color={theme.name === "dark" ? "384654" : theme.colors.foreground}
         castShadow
         // shadow-bias={0.01}
         shadow-radius={10}
@@ -197,12 +165,22 @@ export default ({ theme }) => {
             <Mouse />
             <Borders theme={theme} />
             <InstancedBoxs
+              choice="rightOffset"
               color={
                 theme.name === "dark"
                   ? theme.colors.primary
                   : theme.colors.foreground
               }
-              count={6}
+              count={2}
+            />
+            <InstancedBoxs
+              choice="right"
+              color={
+                theme.name === "dark"
+                  ? theme.colors.primary
+                  : theme.colors.foreground
+              }
+              count={3}
             />
           </group>
         </Physics>

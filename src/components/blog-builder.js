@@ -413,8 +413,8 @@ export const blogPageQuery = graphql`
             date(formatString: "MMMM DD, YYYY")
             path
             title
-            thumbnail
-            metaDescription
+            thumbnail_
+            # metaDescription
           }
         }
       }

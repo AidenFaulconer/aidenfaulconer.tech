@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+  useReducer
+} from "react";
 import styled from "@emotion/styled";
 import { InlineIcon } from "@iconify/react";
 import nightIcon from "@iconify/icons-ic/baseline-bedtime";
 import dayIcon from "@iconify/icons-ic/baseline-wb-sunny";
-import { globalThemeState } from "./layout";
+import { GlobalStore } from "./layout.js";
 
 const ThemeSwitch = styled.div`
   border-radius: ${props => props.theme.corners.borderRadius3};
@@ -36,10 +42,10 @@ const ThemeSwitch = styled.div`
   }
 
   & svg {
-    border-radius: ${props=>props.theme.corners.borderRadius100};
+    border-radius: ${props => props.theme.corners.borderRadius100};
     position: absolute;
     display: inline-block;
-    color: ${props=>props.theme.colors.foreground};
+    color: ${props => props.theme.colors.foreground};
     height: 20px;
     width: 20px;
     top: -2px;
@@ -52,19 +58,18 @@ const ThemeSwitch = styled.div`
 `;
 
 export default ({ toggleTheme }) => {
-  const [checked, checkInput] = useState(globalThemeState !== "dark");
+  const { setThemeState, themeState } = useContext(GlobalStore); // consume and use method declared in layout to change theme
+
   return (
     <ThemeSwitch>
-      <label className={checked ? "active" : "inactive"}>
+      <label className={themeState !== "dark" ? "active" : "inactive"}>
         <input
           type="checkbox"
-          checked={checked}
           onChange={e => {
-            checkInput(!checked);
-            toggleTheme(checked);
+            setThemeState(e.target.checked ? "dark" : "light");
           }}
         />
-        <InlineIcon icon={checked ? dayIcon : nightIcon} />
+        <InlineIcon icon={themeState !== "dark" ? dayIcon : nightIcon} />
       </label>
     </ThemeSwitch>
   );

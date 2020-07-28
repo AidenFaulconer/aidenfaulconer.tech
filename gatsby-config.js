@@ -28,7 +28,7 @@ module.exports = {
               showLineNumbers: false,
               noInlineHighlight: false
             }
-          },//512 //384 //256 //192 //48 /144
+          }, // 512 //384 //256 //192 //48 /144
           {
             resolve: "gatsby-remark-emojis"
           }
@@ -61,6 +61,7 @@ module.exports = {
     "gatsby-plugin-dark-mode",
     // siteURL is a must for sitemap generation
     `gatsby-plugin-sitemap`,
-    `gatsby-plugin-offline`
+    `gatsby-plugin-offline`,
+    `gatsby-plugin-remove-trailing-slashes` // remove pesky /'s at the end of routes ie: localhost/x/
   ]
 };

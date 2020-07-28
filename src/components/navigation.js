@@ -43,7 +43,11 @@ const NavigationWrapper = styled.div`
     }
 
   & nav{
-    border-bottom: 1px solid rgba(0,0,0,.25);
+    border-bottom: 1px solid
+    ${props =>
+      props.theme.name === "dark"
+        ? "rgba(255, 255, 255, 0.25)"
+        : "rgba(0, 0, 0, 0.25)"};
     left:0px;
     top:0px;
     z-index: 100;
@@ -63,6 +67,7 @@ const NavigationWrapper = styled.div`
       color: ${props => props.theme.colors.textSecondary};
       margin: auto 75px;
       margin-left: 0px;
+      font-family: 'brown-regular';
 
       &::after {
           content: '';
@@ -88,6 +93,17 @@ const NavigationWrapper = styled.div`
     & .branding {
       left:-10px;
       ${props => props.theme.transitions.primary("all")};
+
+      & .page-type {
+      position: absolute;
+      left: 18%;
+      top: -0%;
+      display: inline-block;
+      font-size: ${props => props.theme.text.sizes.extraSmall};
+      color:  ${props => props.theme.colors.textSecondary};
+      font-family: "poppins-light";
+      }
+
       & svg {
         fill: ${props => props.theme.colors.textSecondary};
         height: 50px;
@@ -137,7 +153,7 @@ const NavigationWrapper = styled.div`
 
 // TODO:
 // scrolltop > 55vh then background: ${props=>props.theme.colors.contentColor};
-export default ({ toggleTheme, theme }) => {
+export default ({ toggleTheme, theme, pageType }) => {
   const [selected, selectedPage] = useState(
     typeof window !== "undefined" ? window.location.pathname : ""
   );
@@ -182,6 +198,7 @@ export default ({ toggleTheme, theme }) => {
                   style={{ fill: theme.colors.secondary }}
                   dangerouslySetInnerHTML={{ __html: logo }}
                 />
+                <div className="page-type">{pageType}</div>
               </Col>
 
               <Col xl={4} lg={4} md={3} sm={11} className="site-links">

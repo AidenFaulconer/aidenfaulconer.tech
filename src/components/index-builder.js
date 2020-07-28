@@ -12,7 +12,7 @@ import skillsIcon from "@iconify/icons-fa-solid/clipboard-list";
 import experienceIcon from "@iconify/icons-fa-solid/road";
 import backgroundIcon from "@iconify/icons-ic/sharp-person-pin";
 import contactIcon from "@iconify/icons-bx/bxs-contact";
-import { StaticQuery, graph } from "gatsby";
+import { StaticQuery, graphql } from "gatsby";
 
 // section components
 import Projects from "./portfolio/projects";
@@ -116,8 +116,8 @@ export default React.memo(({ theme }) => {
             </Col>
 
             <Col
-              xl={2}
-              lg={2}
+              xl={1}
+              lg={1}
               style={{ marginTop: "0px", background: "rgba(1,1,1,1)" }}
               className="d-xs-none d-md-none d-lg-block"
             >
@@ -160,7 +160,6 @@ export default React.memo(({ theme }) => {
 const Test = styled.div`
   ${props => props.theme.test2}
 `;
-// must exist outside component
 const ContentNavigation = styled.nav`
   z-index: 100;
   padding-top: 125px;
@@ -236,7 +235,7 @@ const ContentNavigation = styled.nav`
       border: none;
       opacity: 0.3;
       margin-bottom: 8px;
-      margin: 4px 50px;
+      margin: 4px 0px;
       z-index: 2;
       color: ${props => props.theme.colors.textSecondary};
 
@@ -248,6 +247,7 @@ const ContentNavigation = styled.nav`
 
       & p {
         margin: auto;
+        font-size: 0.5em;
         visibility: hidden;
         display: none;
         text-align: center;
@@ -278,7 +278,6 @@ const ContentNavigation = styled.nav`
     }
   }
 `;
-// wrap all styled components in useCallback so they do not incur render overhead
 const ContentContainer = styled.section`
   position: relative;
   z-index: 1;
@@ -361,8 +360,19 @@ const SectionBreak = styled.hr`
 `;
 export const pageQuery = graphql`
   query indexBuilderQuery {
-    site(siteMetadata: { description: {} }) {
-      id
+    allMarkdownRemark(
+      filter: { frontmatter: { catagory: { regex: "/P|projects/" } } }
+    ) {
+      edges {
+        node {
+          id
+          html
+          frontmatter {
+            catagory
+            path
+          }
+        }
+      }
     }
   }
 `;

@@ -5,7 +5,7 @@ import { Row, Col } from "react-bootstrap";
 import { TransitionGroup } from "react-transition-group";
 
 import { useTheme } from "emotion-theming";
-import { TypeWriter } from "../typewriter";
+import { TypeWriter } from "../util/typewriter";
 import { BtnPrimary, BtnSecondary, Btn } from "../buttons.js";
 
 import ThreePortfolio from "./three-portfolio";

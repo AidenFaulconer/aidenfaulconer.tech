@@ -3,18 +3,19 @@ const path = require(`path`);
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
-  const blogPostTemplate = path.resolve(`src/templates/blogTemplate.js`);
-
-  const result = await graphql(`
-    {
+  async function buildPageFromQuery(regex, template) {
+    // further code is not executed ontul this graphql query executes as per the 'await'
+    const result = await graphql(`
+    query blogBuilderQuery {
       allMarkdownRemark(
-        sort: { order: DESC, fields: [frontmatter___date] }
-        limit: 1000
+        filter: { frontmatter: { catagory: { regex: "/${regex}/" } } }
       ) {
         edges {
           node {
             id
+            html
             frontmatter {
+              catagory
               path
             }
           }
@@ -23,54 +24,31 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     }
   `);
 
-  // Handle errors
-  if (result.errors) {
-    reporter.panicOnBuild(`Error while running GraphQL query.`);
-    return;
+    // Handle errors
+    if (result.errors) {
+      reporter.panicOnBuild(`Error while running GraphQL query.`);
+      return;
+    }
+    result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+      // console.log(node.frontmatter.path);
+
+      createPage({
+        path: node.frontmatter.path,
+        component: template,
+        context: {} // additional data can be passed via context
+      });
+    });
   }
 
-  result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-    createPage({
-      path: node.frontmatter.path,
-      component: blogPostTemplate,
-      context: {} // additional data can be passed via context
-    });
-  });
+  buildPageFromQuery("b|Blog", path.resolve(`src/templates/blogTemplate.js`)); // build blog pages
+
+  buildPageFromQuery(
+    "P|projects",
+    path.resolve(`src/templates/projectTemplate.js`)
+  ); // build project pages
 };
 
-// const path = require(`path`)
-// const { slash } = require(`gatsby-core-utils`)
-// exports.createPages = async ({ graphql, actions }) => {
-//   const { createPage } = actions
-//   // query content for WordPress posts
-//   const result = await graphql(`
-//     query {
-//       allWordpressPost {
-//         edges {
-//           node {
-//             id
-//             slug
-//           }
-//         }
-//       }
-//     }
-//   `)
-//   const postTemplate = path.resolve(`./src/templates/post.js`)
-//   result.data.allWordpressPost.edges.forEach(edge => {
-//     createPage({
-//       // will be the url for the page
-//       path: edge.node.slug,
-//       // specify the component template of your choice
-//       component: slash(postTemplate),
-//       // In the ^template's GraphQL query, 'id' will be available
-//       // as a GraphQL variable to query for this posts's data.
-//       context: {
-//         id: edge.node.id,
-//       },
-//     })
-//   })
-// }
-
+// enable loading of gltf models for a future site update
 exports.onCreateWebpackConfig = ({
   stage,
   rules,
