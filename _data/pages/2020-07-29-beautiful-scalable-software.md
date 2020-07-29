@@ -1,5 +1,5 @@
 ---
-page-name: Index
+catagory: pageConfig
 title: 'Beautiful, scalable, software.'
 pagePath: /
 description: >-
@@ -7,13 +7,13 @@ description: >-
   focus on getting your users needs fulfilled
 cta:
   main-cta: /start-project
-  main-cta-label: Start Project
+  mainCTALabel: start project
   secondary-cta: '#contact'
-  secondary-cta-label: click me
-project-section:
+  secondaryCTALabel: 'contact '
+projectSection:
   author: aiden faulconer
   post_limit: 6
-skill-section:
+skillSection:
   cgi:
     - icon-name: javscriptIcon
       skill-name: javascript
@@ -40,19 +40,10 @@ skill-section:
     - icon-name: javscriptIcon
       skill-name: javascript
       skillDescription: 3 years
+    - icon-name: javscriptIcon
+      skill-name: javascript
+      skillDescription: 3 years
   languages:
-    - icon-name: javscriptIcon
-      skill-name: javascript
-      skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
-      skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
-      skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
-      skillDescription: 3 years
     - icon-name: javscriptIcon
       skill-name: javascript
       skillDescription: 3 years
@@ -96,15 +87,12 @@ skill-section:
     - icon-name: javscriptIcon
       skill-name: javascript
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
-      skillDescription: 3 years
-experience-section:
+experienceSection:
   languages:
-    - endDate: 2020-07-29T00:47:11.015Z
+    - endDate: 2020-07-29T01:49:03.097Z
       experienceDescription: loreum ipsum
-      experienceEmployer: Australian War Memorial
-      experienceRole: Full stack developer
+      experienceEmployer: google
+      experienceRole: Developer
       image: /assets/Frame 168.png
       skillsUsed:
         - skill: javascript
@@ -112,9 +100,8 @@ experience-section:
         - skill: javascript
         - skill: javascript
         - skill: javascript
-        - skill: javascript
-      startDate: 2020-07-29T00:47:10.944Z
-contact-section:
-  formPrefill: enter some text here
+      startDate: 2020-07-29T01:49:03.029Z
+contactSection:
+  formPrefill: test input
 ---
 
