@@ -1,6 +1,7 @@
 ---
+page-name: Index
 title: 'Beautiful, scalable, software.'
-pagePath: /test
+pagePath: /
 description: >-
   I create software applications for online buisinesses like you, so you can
   focus on getting your users needs fulfilled
