@@ -14,159 +14,147 @@
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "4 years experience"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "typescript",
         "icon-name": "typescriptIcon",
-        "description": "2 years experience"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "html",
         "icon-name": "htmlIcon",
-        "description": "4 years"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "css",
         "icon-name": "cssIcon",
-        "description": "4 years"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "C",
         "icon-name": "cIcon",
-        "description": "4 years"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "c-plus-plus",
         "icon-name": "cppIcon",
-        "description": "3 years"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "php",
         "icon-name": "phpIcon",
-        "description": "2 years"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "python",
         "icon-name": "pythonIcon",
-        "description": "3 years"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       }
     ],
     "tools": [
       {
-        "skill-name": "excel",
+        "skill-name": "3 years",
         "icon-name": "excelIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       }
     ],
     "framework-apis": [
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "javascript",
         "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
-      },
-      {
-        "skill-name": "javascript",
-        "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
-      },
-      {
-        "skill-name": "javascript",
-        "icon-name": "javscriptIcon",
-        "description": "loreum ipsum"
+        "skillDescription": "3 years"
       }
     ],
     "cgi": [
       {
         "skill-name": "blender",
         "icon-name": "blenderIcon",
-        "description": "1 year"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "maya",
         "icon-name": "mayaIcon",
-        "description": "2 years"
+        "skillDescription": "3 years"
       },
       {
         "skill-name": "houdini",
         "icon-name": "houdiniIcon",
-        "description": "6 months"
+        "skillDescription": "3 years"
       }
     ]
   },
-  "experience-section": {
-    "experiences": []
-  },
+  "experience-section": {},
   "contact-section": {
     "post_limit": 1,
     "author": "aiden faulconer"
