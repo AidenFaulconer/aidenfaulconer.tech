@@ -154,7 +154,38 @@
       }
     ]
   },
-  "experience-section": {},
+  "experience-section": {
+    "languages": [
+      {
+        "startDate": "2020-07-29T00:30:49.466Z",
+        "endDate": "2020-07-29T00:30:49.532Z",
+        "experienceDescription": "loreum ipsum",
+        "experienceRole": "Full stack developer",
+        "experienceEmployer": "Australian War Memorial",
+        "image": "/assets/Frame 168.png",
+        "skillsUsed": [
+          {
+            "skill": "drupal"
+          },
+          {
+            "skill": "javascript"
+          },
+          {
+            "skill": "php"
+          },
+          {
+            "skill": "unity"
+          },
+          {
+            "skill": "css"
+          },
+          {
+            "skill": "react vr"
+          }
+        ]
+      }
+    ]
+  },
   "contact-section": {
     "post_limit": 1,
     "author": "aiden faulconer"
