@@ -1,98 +1,193 @@
 {
-  "title": "Aiden Faulconer",
-  "siteUrl": "https://aidenfaulconer.com/",
-  "description": "Delog, a GatsbyJS and Netlify CMS starter for Designers and Developers",
-  "home": {
-    "title": "Aiden Faulconer. Graphic designer, software developer, UIUX designer",
-    "description": "I have been specifically designed to become a digital home for designers and developers, help them build amazing professional looking websites with ease. You don't have to worry about nitty gritty of web hosting services to run a blog and yet take full advantage of CMS to manage content :)"
+  "title": "Beautiful, scalable software",
+  "description": "I create software applications for online businesses like you, so you can focus on getting your users needs fulfilled",
+  "cta": {
+    "main-cta": "/start-project",
+    "secondary-cta": "#contact"
   },
-  "portfolioPage": {
-    "heroHeader": {},
-    "projects": [
+  "project-section": {
+    "post_limit": 6,
+    "author": "aiden faulconer"
+  },
+  "skill-section": {
+    "languages": [
       {
-        "postLink": "",
-        "name": "",
-        "title": "",
-        "mediaUrl": "",
-        "catagory": "",
-        "description": ""
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
       },
       {
-        "postLink": "",
-        "name": "",
-        "title": "",
-        "mediaUrl": "",
-        "catagory": "",
-        "description": ""
+        "skill-name": "typescript",
+        "icon-name": "typescriptIcon",
+        "skillDescription": "3 years"
       },
       {
-        "postLink": "",
-        "name": "",
-        "title": "",
-        "mediaUrl": "",
-        "catagory": "",
-        "description": ""
+        "skill-name": "html",
+        "icon-name": "htmlIcon",
+        "skillDescription": "3 years"
       },
       {
-        "postLink": "",
-        "name": "",
-        "title": "",
-        "mediaUrl": "",
-        "catagory": "",
-        "description": ""
+        "skill-name": "css",
+        "icon-name": "cssIcon",
+        "skillDescription": "3 years"
       },
       {
-        "postLink": "",
-        "name": "",
-        "title": "",
-        "mediaUrl": "",
-        "catagory": "",
-        "description": ""
+        "skill-name": "C",
+        "icon-name": "cIcon",
+        "skillDescription": "3 years"
       },
       {
-        "postLink": "",
-        "name": "",
-        "title": "",
-        "mediaUrl": "",
-        "catagory": "",
-        "description": ""
+        "skill-name": "c-plus-plus",
+        "icon-name": "cppIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "php",
+        "icon-name": "phpIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "python",
+        "icon-name": "pythonIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
       }
     ],
-    "skills": [],
-    "background": [
+    "tools": [
       {
-        "name": "",
-        "location": "",
-        "employer": "",
-        "mediaSrc": "",
-        "date": "",
-        "role": ""
+        "skill-name": "3 years",
+        "icon-name": "excelIcon",
+        "skillDescription": "3 years"
       },
       {
-        "name": "",
-        "location": "",
-        "employer": "",
-        "mediaSrc": "",
-        "date": "",
-        "role": ""
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
       },
       {
-        "name": "",
-        "location": "",
-        "employer": "",
-        "mediaSrc": "",
-        "date": "",
-        "role": ""
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
       },
       {
-        "name": "",
-        "location": "",
-        "employer": "",
-        "mediaSrc": "",
-        "date": "",
-        "role": ""
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
       }
     ],
-    "experience": {}
+    "framework-apis": [
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "javascript",
+        "icon-name": "javscriptIcon",
+        "skillDescription": "3 years"
+      }
+    ],
+    "cgi": [
+      {
+        "skill-name": "blender",
+        "icon-name": "blenderIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "maya",
+        "icon-name": "mayaIcon",
+        "skillDescription": "3 years"
+      },
+      {
+        "skill-name": "houdini",
+        "icon-name": "houdiniIcon",
+        "skillDescription": "3 years"
+      }
+    ]
+  },
+  "experience-section": {
+    "languages": [
+      {
+        "startDate": "2020-07-29T00:30:49.466Z",
+        "endDate": "2020-07-29T00:30:49.532Z",
+        "experienceDescription": "loreum ipsum",
+        "experienceRole": "Full stack developer",
+        "experienceEmployer": "Australian War Memorial",
+        "image": "/assets/Frame 168.png",
+        "skillsUsed": [
+          {
+            "skill": "drupal"
+          },
+          {
+            "skill": "javascript"
+          },
+          {
+            "skill": "php"
+          },
+          {
+            "skill": "unity"
+          },
+          {
+            "skill": "css"
+          },
+          {
+            "skill": "react vr"
+          }
+        ]
+      }
+    ]
+  },
+  "contact-section": {
+    "post_limit": 1,
+    "author": "aiden faulconer"
   }
 }
