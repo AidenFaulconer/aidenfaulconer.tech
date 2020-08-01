@@ -113,6 +113,17 @@ experienceSection:
         - skill: empathy
         - skill: interpersonal
       startDate: 2020-07-29T01:49:03.029Z
+    - endDate: 2020-08-01T04:06:19.818Z
+      experienceDescription: loreum ipsum
+      experienceEmployer: Australian War Memorial
+      experienceRole: Full stack developer
+      image: /assets/Frame 168.png
+      skillsUsed:
+        - skill: javascript
+        - skill: drupal
+        - skill: unity
+        - skill: 'C#'
+      startDate: 2020-08-01T04:06:19.750Z
 contactSection:
   formPrefill: test input
   thumb: /assets/Frame 168.png
