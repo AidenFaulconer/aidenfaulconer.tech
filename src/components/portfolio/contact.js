@@ -2,16 +2,16 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "@emotion/styled";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
-import { INVIEWCONFIG } from "../index-builder";
+import { INVIEWCONFIG } from "../page-builders/index-builder";
 
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 // #region contact
-export default ({ sectionName,odd, setCurrentSection }) => {
+export default ({ data, sectionName, odd, setCurrentSection }) => {
   const [selected, selectProject] = useState(0);
   const [ref, inView, entry] = useInView(INVIEWCONFIG);
   useEffect(() => {
     if (typeof entry !== "undefined") {
-      setCurrentSection({name:sectionName,odd:odd}); // entry.target.id)
+      setCurrentSection({ name: sectionName, odd }); // entry.target.id)
     }
   }, [inView]);
 

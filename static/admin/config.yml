@@ -35,6 +35,7 @@ collections:
     files:
       - name: config
         label: Config
+        # file cannot be deleted or duplicated, and there is not a managable list to add and remove from, its fixed to the file referenced (if not exisint its created)
         file: site-meta-data.json
         fields:
           - widget: string
@@ -176,148 +177,148 @@ collections:
 
 
   #portfolio page configuration
-  - label: Portfolio Page
-    name: portfolio-page
-    files:
-      - name: config
-        label: Config
-        file: site-meta-data.json
+  - label: Page Configuration
+    name: page-configuration
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    folder: _data/pages
+    create: true
+    fields:
+      - widget: string
+        label: Catagory
+        name: catagory
+        required: true
+        default: pageConfiguration
+      - widget: string
+        label: Page title
+        name: title
+        required: true
+        default: Beautiful, scalable, software.
+      - widget: string
+        label: Page path
+        name: pagePath
+        pattern: ['^(\/[-_a-z|0-9]*)+',"Path must start with /projects and NOT end with / and be lowercased"]
+        default: "/"
+      - widget: text
+        label: Title description
+        name: description
+        default: "I create software applications for online buisinesses like you, so you can focus on getting your users needs fulfilled"
+        required: true
+      - widget: object
+        name: cta
+        label: cta
         fields:
           - widget: string
-            label: Page title
-            name: title
+            label: main cta label
+            name: mainCTALabel
             required: true
-            default: Beautiful, scalable, software.
-          - widget: text
-            label: Title description
-            name: description
-            default: "I create software applications for online buisinesses like you, so you can focus on getting your users needs fulfilled"
+            default: "click me"
+          - widget: string
+            name: main-cta
+            label: Main call to action
+            default: "/"
             required: true
-          - widget: object
-            name: cta
-            label: cta
-            fields:
-              - widget: string
-                name: main-cta
-                label: Main call to action
-                default: "./"
-                required: true
-                pattern: ['^(\/[-_a-z|0-9]+|\#[-_a-z|0-9]+)+',"Must be a valid path located on the page or a valid route, lowercased, and NOT end with /, if an html ID only use # at the BEGINNING ONCE"]
-              - widget: string
-                name: secondary-cta
-                label: Secondary call to action
-                default: "./"
-                required: true
-                pattern: ['^(\/[-_a-z|0-9]+|\#[-_a-z|0-9]+)+',"Must be a valid path located on the page or a valid route, lowercased, and NOT end with /, if an html ID only use # at the BEGINNING ONCE"]
+            pattern: ['^(\/[-_a-z|0-9]*|\#[-_a-z|0-9]+)+',"Must be a valid path located on the page or a valid route, lowercased, and NOT end with /, if an html ID only use # at the BEGINNING ONCE"]
+          - widget: string
+            label: secondary cta label
+            name: secondaryCTALabel
+            required: true
+            default: "click me"
+          - widget: string
+            name: secondary-cta
+            label: Secondary call to action
+            default: "/"
+            required: true
+            pattern: ['^(\/[-_a-z|0-9]+|\#[-_a-z|0-9]+)+',"Must be a valid path located on the page or a valid route, lowercased, and NOT end with /, if an html ID only use # at the BEGINNING ONCE"]
 
-          #projects
-          - label: "project post Settings"
-            name: project-section
-            widget: "object"
-            fields:
-              - {
-                  label: "Number of posts on portfolio page",
-                  name: post_limit,
-                  widget: number,
-                  min: 1,
-                  max: 6,
-                  required: true,
-                }
-              - { label: "Default Author", name: author,default: 'aiden faulconer', widget: string, required: true}
+      #projects
+      - label: "project post Settings"
+        name: projectSection
+        widget: "object"
+        fields:
+          - {
+              label: "Number of posts on portfolio page",
+              name: post_limit,
+              widget: number,
+              min: 1,
+              max: 6,
+              required: true,
+            }
+          - { label: "Default Author", name: author,default: 'aiden faulconer', widget: string, required: true}
 
-          #skills
-          - label: "skills section"
-            name: skill-section
-            widget: "object"
-            label_singular: "skill group"
+      #skills
+      - label: "skills section"
+        name: skillSection
+        widget: "object"
+        label_singular: "skill group"
+        fields:
+          - label: "Languages"
+            name: languages
+            widget: "list"
+            label_singular: "skill"
             fields:
-              - label: "Languages"
-                name: languages
-                widget: "list"
-                label_singular: "skill"
-                fields:
-                  - {label: Skill name, name: skill-name, widget: string, default: "javascript"}
-                  - {label: Icon name, name: icon-name, widget: string, default: "javscriptIcon"}
-                  - {label: Description, name: description, widget: string, default: "loreum ipsum"}
-              - label: "Tools"
-                name: tools
-                widget: "list"
-                label_singular: "skill"
-                fields:
-                  - {label: Skill name, name: skill-name, widget: string, default: "javascript"}
-                  - {label: Icon name, name: icon-name, widget: string, default: "javscriptIcon"}
-                  - {label: Description, name: description, widget: string, default: "loreum ipsum"}
-              - label: "Frameworks & API's'"
-                name: framework-apis
-                widget: "list"
-                label_singular: "skill"
-                fields:
-                  - {label: Skill name, name: skill-name, widget: string, default: "javascript"}
-                  - {label: Icon name, name: icon-name, widget: string, default: "javscriptIcon"}
-                  - {label: Description, name: description, widget: string, default: "loreum ipsum"}
-              - label: "3D & CGI"
-                name: cgi
-                widget: "list"
-                label_singular: "skill"
-                fields:
-                  - {label: Skill name, name: skill-name, widget: string, default: "javascript"}
-                  - {label: Icon name, name: icon-name, widget: string, default: "javscriptIcon"}
-                  - {label: Description, name: description, widget: string, default: "loreum ipsum"}
-          #experience
-          - label: "experience"
-            name: experience-section
-            widget: "object"
+              - {label: Skill name, name: skill-name, widget: string, default: "javascript"}
+              - {label: Icon name, name: icon-name, widget: string, default: "javscriptIcon"}
+              - {label: Skill description, name: skillDescription, widget: string, default: "3 years"}
+          - label: "Tools"
+            name: tools
+            widget: "list"
+            label_singular: "skill"
             fields:
-              - label: "Experiences"
-                name: experiences
-                widget: "list"
-                label_singular: "experiences"
-                field:
-                  - label: experience
-                    name: experience
-                    widget: "object"
-                    label_singular: "Experience"
-                    fields:
-                      # - label: image
-                      #   name: image
-                      #   widget: "image"
-                      #   media_library:
-                      #     config:
-                      #       multiple: false
-                      - label: description
-                        name: description
-                        widget: "markdown"
-                      - label: role
-                        name: role
-                        widget: "string"
-                      - label: employer
-                        name: employer
-                        widget: "string"
-                      - label: Skills used
-                        name: skills-used
-                        widget: "list"
-                        label_singular: "experience-skills"
-                        field:
-                          - {label: skill, name: skill, widget: string, default: "javascript"}
-
-          #contact form
-          - label: "contact"
-            name: contact-section
-            widget: "object"
+              - {label: Skill name, name: skill-name, widget: string, default: "javascript"}
+              - {label: Icon name, name: icon-name, widget: string, default: "javscriptIcon"}
+              - {label: Skill description, name: skillDescription, widget: string, default: "3 years"}
+          - label: "Frameworks & API's'"
+            name: framework-apis
+            widget: "list"
+            label_singular: "skill"
             fields:
-              - {
-                  label: "Number of posts on portfolio page",
-                  name: post_limit,
-                  widget: number,
-                  min: 1,
-                  max: 6,
-                }
-              - { label: "Default Author", name: author, widget: string }
-              # image widget
-              - {
-                  label: "Default Thumbnail",
-                  name: thumb,
-                  widget: image,
-                  class: "thumb",
-                  required: false,
-                }
+              - {label: Skill name, name: skill-name, widget: string, default: "javascript"}
+              - {label: Icon name, name: icon-name, widget: string, default: "javscriptIcon"}
+              - {label: Skill description, name: skillDescription, widget: string, default: "3 years"}
+          - label: "3D & CGI"
+            name: cgi
+            widget: "list"
+            label_singular: "skill"
+            fields:
+              - {label: Skill name, name: skill-name, widget: string, default: "javascript"}
+              - {label: Icon name, name: icon-name, widget: string, default: "javscriptIcon"}
+              - {label: Skill description, name: skillDescription, widget: string, default: "3 years"}
+      #experience ar: Experience section
+      - label: "skills section"
+        name: experienceSection
+        widget: "object"
+        label_singular: "experience type"
+        fields:
+          - label: "experience 1"
+            name: languages
+            widget: "list"
+            label_singular: "experience"
+            fields:
+              - {label: Start date, name: startDate, widget: date,required: true}
+              - {label: End date, name: endDate, widget: date,required: true}
+              - {label: Description, name: experienceDescription, widget: markdown, default: "loreum ipsum"}
+              - {label: Role, name: experienceRole, widget: string, required: true}
+              - {label: Employer, name: experienceEmployer, widget: string, required: true, default: "google"}
+              - {label: Location, name: location, widget: map, required: false}
+              - {label: Company logo, name: image, widget: image, required: true}
+              - label: Skills used
+                name: skillsUsed
+                label_singular: "skills"
+                widget: list
+                required: false
+                fields:
+                  - {label: skill, name: skill, widget: string, default: "javascript"}
+      #contact form
+      - label: "contact"
+        name: contactSection
+        widget: "object"
+        fields:
+          # contact bg image
+          - {
+              label: "Default Thumbnail",
+              name: thumb,
+              widget: image,
+              class: "thumb",
+              required: false,
+            }
+          - {label: Form Prefill, name: formPrefill, default: "enter some text here"}

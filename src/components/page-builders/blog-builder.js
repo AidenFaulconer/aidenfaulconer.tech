@@ -16,7 +16,7 @@ import { StaticQuery, graphql } from "gatsby";
 // #region svg icons
 import filterIcon from "@iconify/icons-mdi/filter-variant";
 import { useTheme } from "emotion-theming";
-import { Btn, BtnPrimary, BtnSecondary } from "./buttons";
+import { Btn, BtnPrimary, BtnSecondary } from "../buttons";
 // #endregion svg icons
 
 // #region blog card

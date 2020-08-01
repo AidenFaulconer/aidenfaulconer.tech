@@ -12,10 +12,12 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `markdown-pages`,
+        //everything netlify cms outputs is now accessible under markdown-pages
         path: `${__dirname}/_data`
       }
     },
     {
+      //makes markdown consumable in graphql
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [

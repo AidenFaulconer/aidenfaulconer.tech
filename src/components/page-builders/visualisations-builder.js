@@ -67,7 +67,7 @@ import blenderLogo from "@iconify/icons-cib/blender";
 import houdiniLogo from "@iconify/icons-simple-icons/houdini";
 // #endregion 3d svg icons
 
-import { BtnPrimary, BtnBlob, BtnSecondary } from "./buttons";
+import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 
 // importing conic gradient implicityly generates this
 const gradient = new window.ConicGradient({

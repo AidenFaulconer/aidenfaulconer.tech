@@ -64,7 +64,7 @@ export const Borders = ({ theme }) => {
   return (
     <>
       <Plane
-        position={[0, -viewport.height / 2 + 1.75, -150]} // ground
+        position={[0, -viewport.height / 2 + .75, -150]} // ground
         rotation={[-Math.PI / 2, 0, 0]}
       />
       <Plane
@@ -90,12 +90,12 @@ export const InstancedBoxs = ({ choice, color = "black", count = 50 }) => {
     const options = {
       // used to ensure box's stack in a pyrimid like shape, (2 on top, 3 on bottom)
       rightOffset: [
-        viewport.width - Math.random() - 1,
+        (viewport.width - Math.random() - 1) / 2,
         -viewport.height + 1.5,
         0,
         0
       ],
-      right: [viewport.width - Math.random(), -viewport.height, 0, 0]
+      right: [(viewport.width - Math.random()) / 2, -viewport.height, 0, 0]
     };
     return {
       mass: 1000,

@@ -24,7 +24,7 @@ import linkedinLogo from "@iconify/icons-mdi/linkedin";
 import instagramLogo from "@iconify/icons-mdi/instagram";
 import Navigation from "./navigation";
 import { logo } from "../../static/assets/svg/hardcoded-svgs";
-import IndexBuilder from "./index-builder";
+import IndexBuilder from "./page-builders/index-builder";
 import { Btn, BtnPrimary } from "./buttons";
 import THEME from "./state/theme";
 

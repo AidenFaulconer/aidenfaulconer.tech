@@ -4,260 +4,110 @@ import { InView, useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 
 // #region language svg icons
-import javascriptLogo from "@iconify/icons-mdi/language-javascript";
-import cppLogo from "@iconify/icons-mdi/language-cpp";
-import cSharpLogo from "@iconify/icons-mdi/language-csharp";
-import cLogo from "@iconify/icons-mdi/language-c";
-import cssLogo from "@iconify/icons-mdi/language-css3";
-import htmlLogo from "@iconify/icons-mdi/language-html5";
-import javaLogo from "@iconify/icons-mdi/language-java";
-import phpLogo from "@iconify/icons-mdi/language-php";
-import pythonLogo from "@iconify/icons-mdi/language-python";
-import typescriptLogo from "@iconify/icons-mdi/language-typescript";
+import javascriptIcon from "@iconify/icons-mdi/language-javascript";
+import cppIcon from "@iconify/icons-mdi/language-cpp";
+import cSharpIcon from "@iconify/icons-mdi/language-csharp";
+import cIcon from "@iconify/icons-mdi/language-c";
+import cssIcon from "@iconify/icons-mdi/language-css3";
+import htmlIcon from "@iconify/icons-mdi/language-html5";
+import javaIcon from "@iconify/icons-mdi/language-java";
+import phpIcon from "@iconify/icons-mdi/language-php";
+import pythonIcon from "@iconify/icons-mdi/language-python";
+import typescriptIcon from "@iconify/icons-mdi/language-typescript";
 // #end region language svg icons
 // #region backend svg icons
-import nodejsLogo from "@iconify/icons-ion/logo-nodejs";
-import expressLogo from "@iconify/icons-logos/express";
-import djangoLogo from "@iconify/icons-cib/django";
+import nodejsIcon from "@iconify/icons-ion/logo-nodejs";
+import expressIcon from "@iconify/icons-logos/express";
+import djangoIcon from "@iconify/icons-cib/django";
 // #endregion backend svg icons
 
 // #region cloud svg icons
-import awsLogo from "@iconify/icons-cib/amazon-aws";
-import netlifyLogo from "@iconify/icons-cib/netlify";
+import awsIcon from "@iconify/icons-cib/amazon-aws";
+import netlifyIcon from "@iconify/icons-cib/netlify";
 // #endregion cloud svg icons
 
 // #region frontend svg icons
-import vueLogo from "@iconify/icons-ion/logo-vue";
-import reactLogo from "@iconify/icons-ion/logo-react";
+import vueIcon from "@iconify/icons-ion/logo-vue";
+import reactIcon from "@iconify/icons-ion/logo-react";
+import angularIcon from "@iconify/icons-ion/logo-angular";
 // #endregion frontend svg icons
 
 // #region database svg icons
-import mongoLogo from "@iconify/icons-cib/mongodb";
-import mysqlLogo from "@iconify/icons-cib/mysql";
+import mongoIcon from "@iconify/icons-cib/mongodb";
+import mysqlIcon from "@iconify/icons-cib/mysql";
 // #endregion database svg icons
 
 // #region office svg icons
-import excelLogo from "@iconify/icons-mdi/microsoft-excel";
-import wordLogo from "@iconify/icons-mdi/microsoft-word";
-import sharepointLogo from "@iconify/icons-mdi/microsoft-sharepoint";
-import googledriveLogo from "@iconify/icons-mdi/google-drive";
+import excelIcon from "@iconify/icons-mdi/microsoft-excel";
+import wordIcon from "@iconify/icons-mdi/microsoft-word";
+import sharepointIcon from "@iconify/icons-mdi/microsoft-sharepoint";
+import googledriveIcon from "@iconify/icons-mdi/google-drive";
 // #endregion office svg icons
 
 // #region cdn svg icons
-import wordpressLogo from "@iconify/icons-mdi/wordpress";
-import drupalLogo from "@iconify/icons-mdi/drupal";
+import wordpressIcon from "@iconify/icons-mdi/wordpress";
+import drupalIcon from "@iconify/icons-mdi/drupal";
 // #endregion cdn svg icons
 
 // #region design svg icons
-import illustratorLogo from "@iconify/icons-cib/adobe-illustrator";
-import photoshopLogo from "@iconify/icons-cib/adobe-photoshop";
-import figmaLogo from "@iconify/icons-cib/figma";
+import illustratorIcon from "@iconify/icons-cib/adobe-illustrator";
+import photoshopIcon from "@iconify/icons-cib/adobe-photoshop";
+import figmaIcon from "@iconify/icons-cib/figma";
 // #endregion design svg icons
 
 // #region 3d svg icons
-import blenderLogo from "@iconify/icons-cib/blender";
-import houdiniLogo from "@iconify/icons-simple-icons/houdini";
+import blenderIcon from "@iconify/icons-cib/blender";
+import houdiniIcon from "@iconify/icons-simple-icons/houdini";
 // #endregion 3d svg icons
 
 import { Icon, InlineIcon } from "@iconify/react";
-import { INVIEWCONFIG } from "../index-builder";
+import { INVIEWCONFIG } from "../page-builders/index-builder";
+
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 
-// #region skills
-export const skillData = [
-  {
-    groupName: "Languages",
-    skills: [
-      {
-        skillName: "javascript",
-        icon: javascriptLogo,
-        description: ``
-      },
-      {
-        skillName: "typescript",
-        icon: typescriptLogo,
-        description: ``
-      },
-      {
-        skillName: "html",
-        icon: htmlLogo,
-        description: ``
-      },
-      {
-        skillName: "css",
-        icon: cssLogo,
-        description: ``
-      },
-      {
-        skillName: "c",
-        icon: cLogo,
-        description: ``
-      },
-      {
-        skillName: "c-plus-plus",
-        icon: cppLogo,
-        description: ``
-      },
-      {
-        skillName: "c#",
-        icon: cSharpLogo,
-        description: ``
-      },
-      {
-        skillName: "php",
-        icon: phpLogo,
-        description: ``
-      },
-      {
-        skillName: "python",
-        icon: pythonLogo,
-        description: ``
-      }
-    ]
-  },
-  {
-    groupName: "Frameworks & API's",
-    skills: [
-      {
-        groupName: "front-end",
-        skills: [
-          {
-            skillName: "vue",
-            icon: vueLogo,
-            description: ``
-          },
-          {
-            skillName: "react",
-            icon: reactLogo,
-            description: ``
-          }
-        ]
-      },
-      {
-        groupName: "back-end",
-        skills: [
-          {
-            skillName: "nodejs",
-            icon: nodejsLogo,
-            description: ``
-          },
-          {
-            skillName: "django",
-            icon: djangoLogo,
-            description: ``
-          },
-          {
-            skillName: "mongodb",
-            icon: mongoLogo,
-            description: ``
-          },
-          {
-            skillName: "mysql",
-            icon: mysqlLogo,
-            description: ``
-          }
-        ]
-      }
-    ]
-  },
-  {
-    groupName: "Tools",
-    skills: [
-      {
-        groupName: "cloud",
-        skills: [
-          {
-            skillName: "netlify",
-            icon: netlifyLogo,
-            description: ``
-          },
-          {
-            skillName: "aws",
-            icon: awsLogo,
-            description: ``
-          }
-        ]
-      },
-      {
-        groupName: "office",
-        skills: [
-          {
-            skillName: "excel",
-            icon: excelLogo,
-            description: ``
-          },
-          {
-            skillName: "google drive",
-            icon: googledriveLogo,
-            description: ``
-          },
-          {
-            skillName: "microsoft sharepoint",
-            icon: sharepointLogo,
-            description: ``
-          },
-          {
-            skillName: "microsoft word",
-            icon: wordLogo,
-            description: ``
-          }
-        ]
-      },
-      {
-        groupName: "cdn",
-        skills: [
-          {
-            skillName: "wordpress",
-            icon: wordpressLogo,
-            description: ``
-          },
-          {
-            skillName: "drupal",
-            icon: drupalLogo,
-            description: ``
-          }
-        ]
-      },
-      {
-        groupName: "design",
-        skills: [
-          {
-            skillName: "figma",
-            icon: figmaLogo,
-            description: ``
-          },
-          {
-            skillName: "photoshop",
-            icon: photoshopLogo,
-            description: ``
-          },
-          {
-            skillName: "illustrator",
-            icon: illustratorLogo,
-            description: ``
-          }
-        ]
-      }
-    ]
-  },
-  {
-    groupName: "3D/CGI",
-    skills: [
-      {
-        skillName: "blender",
-        icon: blenderLogo,
-        description: ``
-      },
-      {
-        skillName: "houdini",
-        icon: houdiniLogo,
-        description: ``
-      }
-    ]
-  }
-];
+// name referenced in CMS project page configuration
+export const skillIcons = {
+  // languages
+  javascriptIcon,
+  typescriptIcon,
+  htmlIcon,
+  cssIcon,
+  cIcon,
+  cppIcon,
+  cSharpIcon,
+  phpIcon,
+  pythonIcon,
+  // frontend
+  vueIcon,
+  reactIcon,
+  angularIcon,
+  // backend
+  nodejsIcon,
+  djangoIcon,
+  mongoIcon,
+  mysqlIcon,
+  // cloud
+  netlifyIcon,
+  awsIcon,
+  // office
+  excelIcon,
+  googledriveIcon,
+  sharepointIcon,
+  wordIcon,
+  // cms
+  wordpressIcon,
+  drupalIcon,
+  // design
+  figmaIcon,
+  photoshopIcon,
+  illustratorIcon,
+  // cgi
+  blenderIcon,
+  houdiniIcon
+};
 
-export default ({ sectionName, odd, setCurrentSection }) => {
+// #region skills
+export default ({ data, sectionName, odd, setCurrentSection }) => {
   const [selected, selectSkill] = useState("javascript");
   const [ref, inView, entry] = useInView(INVIEWCONFIG);
   useEffect(() => {
@@ -270,37 +120,22 @@ export default ({ sectionName, odd, setCurrentSection }) => {
   return (
     <>
       <SkillGrid ref={ref}>
-        {skillData.map((group, i) => {
+        {Object.keys(data).map((groupName, i) => {
+          const group = data[groupName];
           return (
             <div className="skill-row">
-              <h3 className="heading">{group.groupName}</h3>
+              <h3 className="heading">{groupName}</h3>
               <div className="skill-group">
-                {group.skills.map((skillGroup, i) => {
-                  if (typeof skillGroup.skills !== "undefined") {
-                    return skillGroup.skills.map((secondSkillGrouping, i) => (
-                      <div
-                        onClick={() =>
-                          selectSkill(secondSkillGrouping.skillName)}
-                        className={`skill ${
-                          secondSkillGrouping.skillName === selected
-                            ? "selected"
-                            : ""
-                        }`}
-                      >
-                        <InlineIcon icon={secondSkillGrouping.icon} />
-                        <p>{secondSkillGrouping.skillName}</p>
-                      </div>
-                    ));
-                  }
+                {group.map((skill, i) => {
                   return (
                     <div
-                      onClick={() => selectSkill(skillGroup.skillName)}
+                      onClick={() => selectSkill(skill.skill_name)}
                       className={`skill ${
-                        skillGroup.skillName === selected ? "selected" : ""
+                        skill.skillName === selected ? "selected" : ""
                       }`}
                     >
-                      <InlineIcon icon={skillGroup.icon} />
-                      {skillGroup.skillName}
+                      <InlineIcon icon={skillIcons[skill.skill_name]} />
+                      {skill.skill_name}
                     </div>
                   );
                 })}

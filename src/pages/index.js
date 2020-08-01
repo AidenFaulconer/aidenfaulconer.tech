@@ -4,9 +4,8 @@ import { graphql } from "gatsby";
 import { Row } from "react-bootstrap";
 import styled from "@emotion/styled";
 import Layout from "../components/layout";
-import PostLink from "../components/post-link";
 import HeroHeader from "../components/portfolio/heroHeader";
-import IndexBuilder from "../components/index-builder";
+import IndexBuilder from "../components/page-builders/index-builder";
 import Transition from "../components/util/transition";
 import {
   angularGradient,
@@ -70,10 +69,6 @@ const IndexPage = React.memo(
       allMarkdownRemark: { edges }
     }
   }) => {
-    const Posts = edges
-      .filter(edge => !!edge.node.frontmatter.date) // You can filter your posts based on some criteria
-      .map(edge => <PostLink key={edge.node.id} post={edge.node} />);
-
     return (
       <Layout pageType="">
         <script src="https://cdn.rawgit.com/LeaVerou/conic-gradient/609dc5f4/conic-gradient.js" />
@@ -86,13 +81,19 @@ const IndexPage = React.memo(
         <HeroHeader
           headerGraphic="./assets/svg/portfolio-graphic.png"
           headlineDescription="I create software applications for online businesses like you, so you can focus on getting your users needs fulfilled"
-          headline={<>Beautiful, scalable<br />software.</>}
+          headline={(
+            <>
+              Beautiful, scalable
+              <br />
+              software.
+            </>
+          )}
         />
 
         <PageContent>
           <Transition />
 
-          <IndexBuilder/>
+          <IndexBuilder />
         </PageContent>
 
         <GraphicWave dangerouslySetInnerHTML={{ __html: herowaves }} />

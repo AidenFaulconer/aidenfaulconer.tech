@@ -2,77 +2,44 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "@emotion/styled";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
+import data from "@iconify/icons-ic/round-arrow-right";
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
-import {INVIEWCONFIG} from "../index-builder"
+import { INVIEWCONFIG } from "../page-builders/index-builder";
 
-// #region experience
-export const experienceData = {
-  australianwarmemorial: {
-    description: `I create software applications for online businesses like you, so you can focus on getting your users needs fulfilled`,
-    location: "canberra",
-    employer: "Australian War Memorial",
-    imgSrc: "./assets/image-2.jpg",
-    date: "april 2020",
-    role: "developer"
-  },
-  yum: {
-    description: `I create software applications for online businesses like you, so you can focus on getting your users needs fulfilled`,
-    employer: "Australian War Memorial",
-    location: "canberra",
-    imgSrc: "./assets/image-3.jpg",
-    date: "december 2020",
-    role: "developer"
-  },
-  icn: {
-    description: ``,
-    employer: "Australian War Memorial",
-    location: "",
-    imgSrc: "./assets/image-2.jpg",
-    date: "",
-    role: ""
-  },
-  larchegenesaret: {
-    description: ``,
-    employer: "Australian War Memorial",
-    location: "",
-    imgSrc: "./assets/image-2.jpg",
-    date: "",
-    role: ""
-  }
-};
-
-export default ({ sectionName,odd,setCurrentSection }) => {
-  const [selectedExperience, selectExperience] = useState(
-    "australianwarmemorial"
-  );
+export default ({ data, sectionName, odd, setCurrentSection }) => {
+  const [selectedExperience, selectExperience] = useState(0);
 
   const [ref, inView, entry] = useInView(INVIEWCONFIG);
   useEffect(() => {
     if (typeof entry !== "undefined") {
-      setCurrentSection({name:sectionName,odd:odd});
+      setCurrentSection({ name: sectionName, odd });
     }
   }, [inView]);
+
+  const experiences = data.languages;
 
   return (
     <>
       <Experiences ref={ref}>
         <Timeline />
-        {Object.keys(experienceData).map(experienceName => {
-          const experience = experienceData[experienceName];
+        {data.languages.map((experience, index) => {
           return (
             <div
-              onClick={() => selectExperience(experienceName)}
-              className=".card"
+              onClick={() => selectExperience(index)}
+              className=".experience"
               role="select experience"
             >
+              <h3>{experience.experienceRole}</h3>
+              <p>{experience.experienceEmployer}</p>
               <img
-                src={experience.imgSrc}
+                src={experience.image}
                 alt="experience selection preview"
                 className={
-                  experienceName === selectedExperience ? "active" : ""
+                  experience.experienceEmployer === selectedExperience
+                    ? "active"
+                    : ""
                 }
               />
-              <p>{experience.role}</p>
             </div>
           );
         })}
@@ -80,53 +47,43 @@ export default ({ sectionName,odd,setCurrentSection }) => {
       <SelectedExperience>
         <div className="experience-heading">
           <img
-            src={experienceData[selectedExperience].imgSrc}
+            src={experiences[selectedExperience].image}
             alt="experience selection preview"
           />
           <div>
-            <h3>{experienceData[selectedExperience].employer}</h3>
-            <h3>{experienceData[selectedExperience].role}</h3>
+            <h3>{experiences[selectedExperience].experienceEmployer}</h3>
+            <h3>{experiences[selectedExperience].experienceRole}</h3>
           </div>
         </div>
-        <p>{experienceData[selectedExperience].description}</p>
+        <p>{experiences[selectedExperience].experienceDescription}</p>
       </SelectedExperience>
     </>
   );
 };
 
 const Timeline = styled.div`
-  position: absolute;
-  margin: auto 0px;
-  height: 50%;
+  height: 100%;
   width: 100%;
-  border-bottom: 1px solid white;
   top: 0px;
-  opacity: 0.3;
   z-index: 0;
   transform: translateZ(-1); //forces this to be below the expereince cards
-
-  &:before {
-    position: absolute;
-    height: 100%;
-    top: 50%;
-    content: "";
-    border-right: 1px solid white;
-    left: 0px;
+  & .experience {
+    width: 100%;
+    opacity: 0.3;
+    background: white;
+    border-radius: 10px 30px 30px 10px;
   }
-  &:after {
-    position: absolute;
-    height: 100%;
-    top: 50%;
-    content: "";
-    border-right: 1px solid white;
+  & img {
     right: 0px;
   }
 `;
 const Experiences = styled.div`
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
-  width: 100%;
+  width: 50%;
+  height: 100%;
 
   z-index: 0;
 
@@ -168,7 +125,7 @@ const SelectedExperience = styled.div`
   min-height: 350px;
   padding: 12.5px;
   margin: 6.25px;
-  width: 100%;
+  width: 50%;
   background: ${props => props.theme.colors.innerContentColor};
 
   & .experience-heading {
@@ -196,4 +153,3 @@ const SelectedExperience = styled.div`
     }
   }
 `;
-// #endregion experience

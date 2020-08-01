@@ -2,8 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "@emotion/styled";
 import { InView, useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
+import { graphql } from "gatsby";
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
-import { INVIEWCONFIG } from "../index-builder";
+import { INVIEWCONFIG } from "../page-builders/index-builder";
 
 // #region projects
 export const projectData = [
@@ -39,7 +40,7 @@ export const projectData = [
   }
 ];
 
-export default ({ sectionName, odd, setCurrentSection }) => {
+export default ({ data, sectionName, odd, setCurrentSection }) => {
   const [selected, selectProject] = useState(0);
   const [ref, inView, entry] = useInView(INVIEWCONFIG);
   useEffect(() => {
@@ -49,19 +50,24 @@ export default ({ sectionName, odd, setCurrentSection }) => {
   }, [inView]);
 
   return (
-    <motion.div>
+    <>
       <ImageGrid>
-        {projectData.map((project, i) => (
-          <div className="preview-content">
-            <img
-              alt="Selectable project view"
-              src={project.imgsrc}
-              onClick={() => selectProject(i)}
-            />
-            <h3>{i}.</h3>
-            <p>descripton</p>
-          </div>
-        ))}
+        {projectData.map((project, i) => {
+          return (
+            <div className="preview-content">
+              <img
+                alt="Selectable project view"
+                src={project.imgsrc}
+                onClick={() => selectProject(i)}
+              />
+              <h3>
+{i}
+.
+              </h3>
+              <p>descripton</p>
+            </div>
+          );
+        })}
       </ImageGrid>
       <DisplayImage ref={ref} src={projectData[selected].imgsrc}>
         <img src={projectData[selected].imgsrc} alt="display image" />
@@ -69,7 +75,7 @@ export default ({ sectionName, odd, setCurrentSection }) => {
         <p>{projectData[selected].description}</p>
         <BtnSecondary text="see more" />
       </DisplayImage>
-    </motion.div>
+    </>
   );
 };
 
@@ -156,13 +162,13 @@ const DisplayImage = styled.article`
 
   &:hover {
     & img {
-    cursor: pointer;
+      cursor: pointer;
       ${props => props.theme.mixins.transform3dPrimary};
       box-shadow: ${props => props.theme.shadows.primary};
       ${props => props.theme.transitions.primary("transform")};
     }
     &::after {
-    cursor: pointer;
+      cursor: pointer;
       ${props => props.theme.mixins.transform3dSecondary};
       box-shadow: ${props => props.theme.shadows.primary};
       ${props => props.theme.transitions.primary("transform")};
@@ -194,3 +200,22 @@ const DisplayImage = styled.article`
 `;
 // #endregion projecet styles
 // #endregion projects
+
+export const projectsQuery = graphql`
+  query indexPageProjectsQuery {
+    allMarkdownRemark(
+      filter: { frontmatter: { catagory: { regex: "/P|projects/" } } }
+    ) {
+      edges {
+        node {
+          id
+          html
+          frontmatter {
+            catagory
+            path
+          }
+        }
+      }
+    }
+  }
+`;
