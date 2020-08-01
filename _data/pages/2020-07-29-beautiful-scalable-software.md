@@ -15,93 +15,106 @@ projectSection:
   post_limit: 6
 skillSection:
   cgi:
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: blenderIcon
+      skill-name: blender
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
-      skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: houdiniIcon
+      skill-name: houdini
       skillDescription: 3 years
   framework-apis:
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: reactIcon
+      skill-name: react
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: vueIcon
+      skill-name: vue
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: angularIcon
+      skill-name: angular
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: nodejsIcon
+      skill-name: nodejs
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: djangoIcon
+      skill-name: django
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: drupalIcon
+      skill-name: drupal
+      skillDescription: 3 years
+    - icon-name: wordpressIcon
+      skill-name: wordpress
       skillDescription: 3 years
   languages:
-    - icon-name: javscriptIcon
+    - icon-name: javascriptIcon
       skill-name: javascript
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: typescriptIcon
+      skill-name: typescript
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: htmlIcon
+      skill-name: html
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: cssIcon
+      skill-name: css
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: cIcon
+      skill-name: c
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: cppIcon
+      skill-name: cpp
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: phpIcon
+      skill-name: php
+      skillDescription: 3 years
+    - icon-name: pythonIcon
+      skill-name: python
+      skillDescription: 3 years
+    - icon-name: mysqlIcon
+      skill-name: mysql
+      skillDescription: 3 years
+    - icon-name: csharpIcon
+      skill-name: 'c#'
       skillDescription: 3 years
   tools:
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: netlifyIcon
+      skill-name: netlify
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: awsIcon
+      skill-name: aws
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: excelIcon
+      skill-name: excel
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: googledriveIcon
+      skill-name: google drive
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: sharepointIcon
+      skill-name: sharepoint
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: wordIcon
+      skill-name: word
       skillDescription: 3 years
-    - icon-name: javscriptIcon
-      skill-name: javascript
+    - icon-name: figmaIcon
+      skill-name: figma
+      skillDescription: 3 years
+    - icon-name: photoshopIcon
+      skill-name: photoshop
       skillDescription: 3 years
 experienceSection:
   languages:
     - endDate: 2020-07-29T01:49:03.097Z
       experienceDescription: loreum ipsum
-      experienceEmployer: google
-      experienceRole: Developer
+      experienceEmployer: Larche Genesaret
+      experienceRole: Disability support worker
       image: /assets/Frame 168.png
       skillsUsed:
-        - skill: javascript
-        - skill: javascript
-        - skill: javascript
-        - skill: javascript
-        - skill: javascript
+        - skill: excel
+        - skill: conflict resolution
+        - skill: leadership
+        - skill: empathy
+        - skill: interpersonal
       startDate: 2020-07-29T01:49:03.029Z
 contactSection:
   formPrefill: test input
+  thumb: /assets/Frame 168.png
 ---
 
