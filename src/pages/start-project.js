@@ -4,8 +4,13 @@ import Layout from "../components/layout";
 
 export default ({}) => {
   return (
-    <Layout pageType="portfolio">
+    <Layout pageType="project">
       <Helmet />
+
     </Layout>
   );
 };
+
+
+//design look (web app like)
+//weekly

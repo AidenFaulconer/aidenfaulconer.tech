@@ -57,8 +57,6 @@ const NavigationWrapper = styled.div`
     background: ${props => props.theme.colors.foreground};//switch on bg color
 
 
-
-
     & * {
       text-decoration: none;
     }
@@ -67,13 +65,13 @@ const NavigationWrapper = styled.div`
       color: ${props => props.theme.colors.textSecondary};
       margin: auto 75px;
       margin-left: 0px;
-      font-family: 'brown-regular';
+      font-family: 'brown';
 
       &::after {
           content: '';
           display:block;
           position: relative;
-          top: 40px;
+          top: 37px;
           background: ${props => props.theme.colors.textSecondary};
           height: 0px;
           width: 100%;
@@ -89,10 +87,10 @@ const NavigationWrapper = styled.div`
       }
     }
 
-
     & .branding {
-      left:-10px;
+      left:-19px;//offset padding
       ${props => props.theme.transitions.primary("all")};
+
 
       & .page-type {
       position: absolute;
@@ -105,17 +103,24 @@ const NavigationWrapper = styled.div`
       }
 
       & svg {
+        display: inline-block;
         fill: ${props => props.theme.colors.textSecondary};
-        height: 50px;
+        height: 45px;
         width: auto;
         transform: skew(0deg);
         &:hover {
-      ${props => props.theme.transitions.primary("all")};
         skew(12deg);
+        ${props => props.theme.transitions.primary("all")};
+        ${props => props.theme.breakpoints.md(`max-width: 50px;`)}
+        }
         }
 
 
         & .path {
+        &:hover {
+          animation: dash 1s ease-in-out;
+          transform: scale(1);
+        }
           animation: dash 1s ease-in-out;
           @keyframes dash {
             0%,
@@ -141,13 +146,6 @@ const NavigationWrapper = styled.div`
           height: 2.5px;
         }
       }
-
-
-      & .theme-switch {
-        margin: auto 75px;
-        margin-left: 0px;
-      }
-  //css transition animation
   }
 `;
 
@@ -189,11 +187,12 @@ export default ({ toggleTheme, theme, pageType }) => {
       <GoogleAnalytics/>
        */}
       <NavigationWrapper>
-        <CSSTransition in={hide} timeout={15}>
+        <CSSTransition in={hide} timeout={10}>
           <nav>
             <Row>
               <Col xl={1} lg={1} md={1} className="d-md-block d-sm-none" />
-              <Col xl={6} lg={6} md={6} sm={1} className="branding">
+
+              <Col xl={6} lg={6} md={5} sm={1} xs={8} className="branding">
                 <div
                   style={{ fill: theme.colors.secondary }}
                   dangerouslySetInnerHTML={{ __html: logo }}
@@ -201,7 +200,7 @@ export default ({ toggleTheme, theme, pageType }) => {
                 <div className="page-type">{pageType}</div>
               </Col>
 
-              <Col xl={4} lg={4} md={3} sm={11} className="site-links">
+              <Col xl={4} lg={4} md={5} sm={10} xs={4} className="site-links">
                 <Link className={selected === "/" ? "active" : ""} to="./">
                   Portfolio
                 </Link>
@@ -215,7 +214,7 @@ export default ({ toggleTheme, theme, pageType }) => {
 
                 <ThemeChanger
                   toggleTheme={toggleTheme}
-                  className="theme-switch d-sm-none d-none d-lg-block"
+                  className="d-sm-none d-none d-lg-block"
                 />
               </Col>
 

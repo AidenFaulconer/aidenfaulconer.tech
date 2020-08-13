@@ -191,9 +191,9 @@ export default {
       secondary: "1px solid #8EF2D2",
       third: "1px solid #5A00DB"
     },
-    shadows: {
-      primary: "-5px 0px 30px rgba(255,255,255,.05)",
-      secondary: "2.5px 0px 12.5px rgba(255,255,255,.75)"
+     shadows: {
+      primary: "-5px 0px 50px rgba(0,0,0,.25)",
+      secondary: "2.5px 0px 12.5px rgba(0,0,0,0.75)"
     },
     // #region static styling
     corners: staticStlying.corners,

@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "@emotion/styled";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
+import { useTheme } from "emotion-theming";
 import { INVIEWCONFIG } from "../page-builders/index-builder";
 
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
@@ -14,6 +15,8 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
       setCurrentSection({ name: sectionName, odd }); // entry.target.id)
     }
   }, [inView]);
+
+  const theme = useTheme();
 
   return (
     <>
@@ -39,7 +42,11 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
           <label htmlFor="w3lMessage">Message</label>
           <textarea name="w3lMessage" id="w3lMessage" />
         </div>
-        <BtnPrimary text="Contact" onClick={() => {}} />
+        <BtnPrimary
+          text="Contact"
+          color={theme.colors.textPrimary}
+          onClick={() => {}}
+        />
         <div dangerouslySetInnerHTML={{ __html: "" }} />
       </ContactForm>
       {/**
@@ -59,11 +66,11 @@ const ContactBranding = styled.div`
   }
 `;
 const ContactForm = styled.form`
-  color: white;
   min-width: 100%;
   padding-right: 25px;
 
   & label {
+    color: ${props => props.theme.colors.textSecondary};
     font-size: ${props => props.theme.text.sizes.extraSmall};
     margin-right: 50px;
     margin-bottom: 6.25px;
@@ -71,24 +78,27 @@ const ContactForm = styled.form`
   }
 
   & input {
+    padding: 6.25px;
     background: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.textPrimary};
     border: none;
-    padding: 3.125px;
     width: 100%;
     margin-bottom: 12.5px;
     border-radius: ${props => props.theme.corners.borderRadius1};
   }
   & textarea {
+    padding: 6.25px;
+    color: ${props => props.theme.colors.textPrimary};
     width: 100%;
     background: ${props => props.theme.colors.primary};
     border: none;
-    padding: 3.125px;
     border-radius: ${props => props.theme.corners.borderRadius1};
     min-height: 125px;
     margin-bottom: 25px;
   }
 
-  & .button {
+  & button {
+    color: white;
   }
 `;
 // <ContactForm>

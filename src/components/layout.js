@@ -6,6 +6,8 @@ import React, {
   useCallback
 } from "react";
 
+import { useCookies } from "react-cookie";
+
 import { Link, useStaticQuery, graphql } from "gatsby";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,9 +21,10 @@ import "prismjs/themes/prism-okaidia.css";
 
 import { InlineIcon } from "@iconify/react";
 import chevronRight from "@iconify/icons-mdi/chevron-right";
-import githubLogo from "@iconify/icons-mdi/github";
-import linkedinLogo from "@iconify/icons-mdi/linkedin";
-import instagramLogo from "@iconify/icons-mdi/instagram";
+import githubLogo from "@iconify/icons-fa-brands/github-square";
+import linkedinLogo from "@iconify/icons-ion/logo-linkedin";
+import instagramLogo from "@iconify/icons-ri/instagram-fill";
+import { Helmet } from "react-helmet";
 import Navigation from "./navigation";
 import { logo } from "../../static/assets/svg/hardcoded-svgs";
 import IndexBuilder from "./page-builders/index-builder";
@@ -43,8 +46,14 @@ export const GlobalStore = createContext(initGlobalState); // referenced frequen
 // #endregion global context implementation
 
 export default ({ children, pageType }) => {
+  // user specific state saved in cookies
+  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  // user specific state saved in cookies
+
   // used in global context
-  const [themeState, setThemeState] = useState("light");
+  const [themeState, setThemeState] = useState(
+    typeof cookies.themeState === "undefined" ? "light" : cookies.themeState
+  );
   const [theme, setTheme] = useState(THEME[themeState]);
   const [scrollPos, setScrollPos] = useState(0);
   // used in global context
@@ -72,7 +81,10 @@ export default ({ children, pageType }) => {
   // update theme in accordance with themeState
   useEffect(() => {
     setTheme(THEME[themeState]);
+    setCookie("themeState", themeState);
   }, [themeState]);
+
+  // alert(JSON.stringify(theme))
 
   return (
     <Container fluid>
@@ -87,6 +99,7 @@ export default ({ children, pageType }) => {
             scrollPos
           }} /** use state from here and modify the global context to match it */
         >
+          <Helmet />
           <Navigation
             pageType={pageType}
             showNav={showNav}
@@ -185,14 +198,14 @@ const Footer = styled.footer`
     border-top: 1px solid ${props => props.theme.colors.textPrimary};
     margin-right: 50px;
     padding: 0px;
-    padding-top: 6.25px;
+    padding-top: 12.5px;
     padding-bottom: 100px;
 
     & .social-link {
-      width: 38px;
-      margin-right: 12.5px;
+      width: 30px;
+      margin-right: 6.25px;
       margin-top: 6.25px;
-      height: 38px;
+      height: 30px;
       position: relative;
     }
   }

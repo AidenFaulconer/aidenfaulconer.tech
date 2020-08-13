@@ -17,66 +17,53 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
   }, [inView]);
 
   const experiences = data.languages;
-
+  const currentExpereince = experiences[selectedExperience];
   return (
     <>
+      <SelectedExperience src="./assets/svg/wave-graphic.png">
+        <div className="experience-heading">
+          <img
+            src={currentExpereince.image}
+            alt="experience selection preview"
+          />
+          <div>
+            <h3>{currentExpereince.experienceRole}</h3>
+            <p>{currentExpereince.experienceEmployer}</p>
+            <div className="experience-date">{`${currentExpereince.startDate} - ${currentExpereince.endDate}`}</div>
+          </div>
+        </div>
+        <h3>Skills Used</h3>
+        <div className="skills-used">
+          {currentExpereince.skillsUsed.map(skill => (
+            <div className="skill">{skill.skill}</div>
+          ))}
+        </div>
+        <h3>About the role</h3>
+        <p className="experience-description">
+          {currentExpereince.experienceDescription}
+        </p>
+      </SelectedExperience>
       <Experiences ref={ref}>
-        <Timeline />
         {data.languages.map((experience, index) => {
           return (
             <div
               onClick={() => selectExperience(index)}
-              className=".experience"
+              className={`experience ${
+                selectedExperience === index ? "active" : ""
+              }}`}
               role="select experience"
             >
               <h3>{experience.experienceRole}</h3>
               <p>{experience.experienceEmployer}</p>
-              <img
-                src={experience.image}
-                alt="experience selection preview"
-                className={
-                  experience.experienceEmployer === selectedExperience
-                    ? "active"
-                    : ""
-                }
-              />
+              <img src={experience.image} alt="experience selection preview" />
             </div>
           );
         })}
       </Experiences>
-      <SelectedExperience>
-        <div className="experience-heading">
-          <img
-            src={experiences[selectedExperience].image}
-            alt="experience selection preview"
-          />
-          <div>
-            <h3>{experiences[selectedExperience].experienceEmployer}</h3>
-            <h3>{experiences[selectedExperience].experienceRole}</h3>
-          </div>
-        </div>
-        <p>{experiences[selectedExperience].experienceDescription}</p>
-      </SelectedExperience>
     </>
   );
 };
 
-const Timeline = styled.div`
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  z-index: 0;
-  transform: translateZ(-1); //forces this to be below the expereince cards
-  & .experience {
-    width: 100%;
-    opacity: 0.3;
-    background: white;
-    border-radius: 10px 30px 30px 10px;
-  }
-  & img {
-    right: 0px;
-  }
-`;
 const Experiences = styled.div`
   position: relative;
   display: flex;
@@ -84,40 +71,50 @@ const Experiences = styled.div`
   justify-content: space-evenly;
   width: 50%;
   height: 100%;
-
   z-index: 0;
 
-  & img {
-    z-index: 2;
-    border-radius: ${props => props.theme.corners.borderRadius100};
-    height: 80px;
-    width: 80px;
-    max-width: 75px;
-    max-height: 75px;
+  & .experience {
+    background: white;
     margin: 25px;
-    padding-top: 12.5px;
-    transform: scale(1.1);
+    padding: 25px;
+    border-radius: 10px 50px 50px 10px;
+    max-height: 100px;
+    height: 100px;
+    color: black;
+    position: relative;
+    & img {
+      z-index: 2;
+      border-radius: ${props => props.theme.corners.borderRadius100};
+      position: absolute;
+      max-height: 100%;
+      right: 0px;
+      margin: auto;
+      top: 0px;
+      transform: scale(1.04);
+    }
 
+    & p {
+      text-align: left;
+      margin: auto;
+      font-size: ${props => props.theme.text.sizes.small};
+    }
+
+    & h3 {
+      text-align: left;
+      margin: auto;
+    }
+
+    ${props => props.theme.transitions.primary("transform")};
     &:hover {
-      transform: scale(1.25);
-      ${props => props.theme.animations.blob};
+      transform: scale(1.04);
       box-shadow: ${props => props.theme.shadows.primary};
       border: ${props => props.theme.borders.secondary};
-      ${props => props.theme.transitions.primary("border-radius")};
     }
 
     & .active {
       box-shadow: ${props => props.theme.shadows.primary};
       border: ${props => props.theme.borders.secondary};
     }
-
-    ${props => props.theme.transitions.primary("border-radius")};
-  }
-
-  & p {
-    margin-top: -12.5px;
-    text-align: center;
-    font-size: ${props => props.theme.text.sizes.small};
   }
 `;
 const SelectedExperience = styled.div`
@@ -126,30 +123,68 @@ const SelectedExperience = styled.div`
   padding: 12.5px;
   margin: 6.25px;
   width: 50%;
+  background: white;
+  color: black;
+  overflow: hidden;
   background: ${props => props.theme.colors.innerContentColor};
 
   & .experience-heading {
     margin-bottom: 25px;
-    min-width: 100px;
+    min-width: 104%;
+    margin-top: -12.5px;
+    margin-left: -12.5px;
     padding-bottom: 12.5px;
     display: flex;
     width: auto;
+    background: url(${props => props.src});
+    background-repeat: no-repeat;
+    background-size: 100%;
     height: auto;
-    border-bottom: 1px solid ${props => props.theme.colors.contentColor};
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 
     & img {
-      margin-right: 25px;
+      margin: 25px;
       display: inline-block;
       border-radius: ${props => props.theme.corners.borderRadius1};
       object-fit: fit;
-      width: 15%;
+      width: 10%;
       max-height: 100px;
+    }
+    & .experience-date {
+      font-size: ${props => props.theme.text.sizes.extraSmall};
+      opacity: 0.6;
     }
     & p {
       font-size: ${props => props.theme.text.sizes.extraSmall};
-      display: inline-block;
-      padding-left: 100px;
-      width: 90%;
+      margin-bottom: 25px;
+    }
+    & h3 {
+      margin-top: 25px;
+    }
+  }
+  & .experience-description {
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  }
+  & .skills-used {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    column-gap: 8px;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+
+    & .skill {
+      text-align: center;
+      background: #0d7bf2;
+      color: white;
+      vertical-align: middle;
+      border-radius: ${props => props.theme.corners.borderRadius1};
+      padding: 8.25px;
+      font-size: ${props => props.theme.text.sizes.extraSmall};
+      ${props => props.theme.borderRadius1};
     }
   }
 `;

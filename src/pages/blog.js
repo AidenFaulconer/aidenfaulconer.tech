@@ -1,59 +1,43 @@
 import React from "react";
 import Helmet from "react-helmet";
 import styled from "@emotion/styled";
+import { StaticQuery } from "gatsby";
 import Layout from "../components/layout";
 import BlogBuilder from "../components/page-builders/blog-builder";
-
 // <GraphicWave dangerouslySetInnerHTML={{ __html: lhs }} />
+import ThreeBlog from "../components/blog/three-blog";
 
-const blogPage = React.memo(
-  ({
-    data: {
-      site,
-      allMarkdownRemark: { edges }
-    }
-  }) => {
-    // const Posts = edges
-    //   .filter(edge => !!edge.node.frontmatter.date) // You can filter your posts based on some criteria
-    //   .map(edge => <PostLink key={edge.node.id} post={edge.node} />);
+const ThreeWrapper = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  top: 0px;
+  z-index: 1;
+`;
 
-    return (
-      <Layout pageType="blog">
-        <script src="https://cdn.rawgit.com/LeaVerou/conic-gradient/609dc5f4/conic-gradient.js" />
+const blogPage = React.memo(() => {
+  // const Posts = edges
+  //   .filter(edge => !!edge.node.frontmatter.date) // You can filter your posts based on some criteria
+  //   .map(edge => <PostLink key={edge.node.id} post={edge.node} />);
 
-        <Helmet>
-          <title>{site.siteMetadata.title}</title>
-          <meta name="description" content={site.siteMetadata.description} />
-        </Helmet>
-        <BlogBuilder />
-      </Layout>
-    );
-  }
-);
+  return (
+    <Layout pageType="blog">
+      <Spacer />
+      <BlogBuilder />
+    </Layout>
+  );
+});
+
+// <ThreeWrapper id="three-blog">
+//   <ThreeBlog />
+// </ThreeWrapper>
+
+
+const Spacer = styled.br`
+  width: 100%;
+  margin-top: 250px;
+  position: relative;
+`;
 
 export default blogPage;
-
-export const pageQuery = graphql`
-  query visualisationsPageQuery {
-    site {
-      siteMetadata {
-        title
-        description
-      }
-    }
-    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date] }) {
-      edges {
-        node {
-          id
-          excerpt(pruneLength: 250)
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            path
-            title
-            thumbnail_
-          }
-        }
-      }
-    }
-  }
-`;

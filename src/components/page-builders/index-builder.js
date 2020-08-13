@@ -180,6 +180,7 @@ const ContentNavigation = styled.nav`
   padding-top: 125px;
   position: sticky;
   visibility: visible;
+
   &:after {
     content: "";
     position: absolute;
@@ -213,6 +214,7 @@ const ContentNavigation = styled.nav`
 
     & .navigation-header {
       border-radius: ${props => props.theme.corners.borderRadius1};
+      overflow: hidden;
       margin: auto;
       position: relative;
       width: 100%;
@@ -226,8 +228,8 @@ const ContentNavigation = styled.nav`
         top: 5px;
         position: relative;
         border-radius: ${props => props.theme.corners.borderRadius100};
-        width: 90px;
-        height: 90px;
+        max-width: 100%;
+        max-height: 90px;
       }
 
       & svg {
@@ -245,7 +247,7 @@ const ContentNavigation = styled.nav`
       flex-direction: row;
       background: ${props => props.theme.colors.textPrimary};
       justify-content: space-between;
-      border-radius: ${props => props.theme.corners.borderRadius2};
+      border-radius: ${props => props.theme.corners.borderRadius1};
       padding: 12.25px;
       border: none;
       opacity: 0.3;
@@ -278,8 +280,8 @@ const ContentNavigation = styled.nav`
       }
 
       & svg {
-        width: 25px;
-        height: 25px;
+        width: 12.5px;
+        height: 12.5px;
         margin-right: 10px;
         margin-left: 10px;
         fill: ${props => props.theme.colors.textColor};
@@ -328,6 +330,12 @@ const ContentContainer = styled.section`
       display: flex;
       background: ${props => props.theme.colors.contentColor};
       border-radius: ${props => props.theme.corners.borderRadius2};
+      flex-direction: column;
+
+    ${props =>
+      props.theme.breakpoints.md(`
+flex-direction: row;
+      `)}
 
       &:hover: {
         background: black;
@@ -346,26 +354,9 @@ const ContentContainer = styled.section`
 
     ${props =>
       props.theme.breakpoints.lg(`
+
       `)}
-    //customize the responsiveness of each section card
-      & #Projects {
-    }
-    & #Skills {
-    display: flex;
-    flex-direction: row;
-    }
-    & #Experience {
-      flex-direction: column;
-      justify-content: space-evenly;
-    }
-    & #Background {
-      flex-direction: row;
-    }
-    & #Contact {
-      flex-direction: row;
-    }
-  }
-  & *[class*="row"] {
+
   }
 `;
 const SectionBreak = styled.hr`
@@ -388,12 +379,12 @@ export const pageQuery = graphql`
             }
             experienceSection {
               languages {
-                endDate
+                endDate(formatString: "DD MMMM YYYY")
                 image
                 experienceRole
                 experienceEmployer
                 experienceDescription
-                startDate
+                startDate(formatString: "DD MMMM YYYY")
                 skillsUsed {
                   skill
                 }

@@ -2,43 +2,43 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "@emotion/styled";
 import { InView, useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
-import { graphql } from "gatsby";
+import { graphql, StaticQuery, Link } from "gatsby";
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 import { INVIEWCONFIG } from "../page-builders/index-builder";
 
 // #region projects
-export const projectData = [
-  {
-    imgsrc: "./assets/755729.jpg",
-    title: "loreum ipsum",
-    description: "a description"
-  },
-  {
-    imgsrc: "./assets/image-1.jpg",
-    title: "hello world",
-    description: "a description"
-  },
-  {
-    imgsrc: "./assets/755729.jpg",
-    title: "loreum ipsum",
-    description: "a description"
-  },
-  {
-    imgsrc: "./assets/755729.jpg",
-    title: "loreum ipsum",
-    description: "a description"
-  },
-  {
-    imgsrc: "./assets/755729.jpg",
-    title: "loreum ipsum",
-    description: "a description"
-  },
-  {
-    imgsrc: "./assets/755729.jpg",
-    title: "loreum ipsum",
-    description: "a description"
-  }
-];
+// export const projectData = [
+//   {
+//     imgsrc: "./assets/755729.jpg",
+//     title: "loreum ipsum",
+//     description: "a description"
+//   },
+//   {
+//     imgsrc: "./assets/image-1.jpg",
+//     title: "hello world",
+//     description: "a description"
+//   },
+//   {
+//     imgsrc: "./assets/755729.jpg",
+//     title: "loreum ipsum",
+//     description: "a description"
+//   },
+//   {
+//     imgsrc: "./assets/755729.jpg",
+//     title: "loreum ipsum",
+//     description: "a description"
+//   },
+//   {
+//     imgsrc: "./assets/755729.jpg",
+//     title: "loreum ipsum",
+//     description: "a description"
+//   },
+//   {
+//     imgsrc: "./assets/755729.jpg",
+//     title: "loreum ipsum",
+//     description: "a description"
+//   }
+// ];
 
 export default ({ data, sectionName, odd, setCurrentSection }) => {
   const [selected, selectProject] = useState(0);
@@ -50,32 +50,44 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
   }, [inView]);
 
   return (
-    <>
-      <ImageGrid>
-        {projectData.map((project, i) => {
-          return (
-            <div className="preview-content">
-              <img
-                alt="Selectable project view"
-                src={project.imgsrc}
-                onClick={() => selectProject(i)}
-              />
-              <h3>
-{i}
-.
-              </h3>
-              <p>descripton</p>
-            </div>
-          );
-        })}
-      </ImageGrid>
-      <DisplayImage ref={ref} src={projectData[selected].imgsrc}>
-        <img src={projectData[selected].imgsrc} alt="display image" />
-        <h3>{projectData[selected].title}</h3>
-        <p>{projectData[selected].description}</p>
-        <BtnSecondary text="see more" />
-      </DisplayImage>
-    </>
+    <StaticQuery
+      query={projectsQuery}
+      render={data => {
+        const rawProjectData = data.allMarkdownRemark.edges;
+        const selectedProject =
+          data.allMarkdownRemark.edges[selected].node.frontmatter;
+        return (
+          <>
+            <DisplayImage ref={ref} src={selectedProject.thumbnail_}>
+              <Link to={selectedProject.path}>
+                <img src={selectedProject.thumbnail_} alt="display image" />
+              </Link>
+              <h3>{selectedProject.title}</h3>
+              <p>{selectedProject.metaDescription}</p>
+              <Link to={selectedProject.path}>
+                <BtnSecondary text="see more" />
+              </Link>
+            </DisplayImage>
+            <ImageGrid>
+              {rawProjectData.map((project, i) => {
+                const { frontmatter } = project.node;
+                return (
+                  <div className="preview-content">
+                    <img
+                      alt="Selectable project view"
+                      src={frontmatter.thumbnail_}
+                      onClick={() => selectProject(i)}
+                    />
+                    <h3>{i}.</h3>
+                    <p>{frontmatter.title}</p>
+                  </div>
+                );
+              })}
+            </ImageGrid>
+          </>
+        );
+      }}
+    />
   );
 };
 
@@ -92,16 +104,19 @@ const ImageGrid = styled.div`
       `)}
 
   & .preview-content {
+    padding: 8px;
+    background: ${props => props.theme.colors.textSecondary};
+    ${props => props.theme.transitions.primary("transform")};
+
     & img {
       border-radius: ${props => props.theme.corners.borderRadius1};
-      width: 250px;
       height: 350px;
-      max-height: 125px;
-      object-fit: cover;
+      width: 106%;
+      max-height: 200px;
+      object-fit: contain;
       opacity: 0.9;
       margin: -8px;
       margin-bottom: 8px;
-      ${props => props.theme.transitions.primary("transform")};
 
       ${props =>
         props.theme.breakpoints.md(`
@@ -112,20 +127,19 @@ const ImageGrid = styled.div`
     }
 
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.04);
       ${props => props.theme.transitions.primary("transform")};
-      border: ${props => props.theme.borders.primary};
+      border: 1px solid ${props => props.theme.colors.secondary};
       & img {
         box-shadow: ${props => props.theme.shadows.primary};
       }
     }
 
-    padding: 8px;
-    background: ${props => props.theme.colors.textSecondary};
     & h3 {
     }
 
     & p {
+      margin-top: 25px;
       text-align: center;
     }
   }
@@ -134,7 +148,7 @@ const ImageGrid = styled.div`
 const DisplayImage = styled.article`
   left: 0px;
   display: flex;
-  margin-left: 100px;
+  margin-right: 100px;
   position: relative;
   flex-direction: column;
   max-height: 600px;
@@ -149,6 +163,7 @@ const DisplayImage = styled.article`
     content: "";
     width: 595px;
     height: 434px;
+    max-width: 100%;
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -180,6 +195,7 @@ const DisplayImage = styled.article`
     ${props => props.theme.transitions.primary("transform")};
     width: 595px;
     height: 434px;
+    max-width: 100%;
     margin: 0px 0px;
   }
   & h3 {
@@ -187,7 +203,7 @@ const DisplayImage = styled.article`
     position: realtive;
   }
   & p {
-    margin-top: 8px;
+    margin-top: 12.5px;
     position: realtive;
   }
   & button {
@@ -202,16 +218,20 @@ const DisplayImage = styled.article`
 // #endregion projects
 
 export const projectsQuery = graphql`
-  query indexPageProjectsQuery {
+  query projectSectionQuery {
     allMarkdownRemark(
-      filter: { frontmatter: { catagory: { regex: "/P|projects/" } } }
+      filter: { frontmatter: { catagory: { regex: "/P|project/" } } }
+      limit: 6
+      sort: { fields: frontmatter___date }
     ) {
       edges {
         node {
-          id
-          html
           frontmatter {
             catagory
+            thumbnail_
+            title
+            date
+            metaDescription
             path
           }
         }

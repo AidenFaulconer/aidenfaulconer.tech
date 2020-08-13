@@ -14,31 +14,18 @@ import { GlobalStore } from "./layout.js";
 const ThemeSwitch = styled.div`
   border-radius: ${props => props.theme.corners.borderRadius3};
   background: ${props => props.theme.colors.black};
-  height: 25px;
-  width: 75px;
+  height: 22px;
+  width: 65px;
   position: relative;
   margin: auto 0px;
 
   & label {
-    display: block;
-    top: 5px;
     width: 100%;
+    position: relative;
+    height: auto;
     background: transparent;
     margin: auto;
     ${props => props.theme.transitions.primary("margin-left")};
-  }
-
-  & label.active {
-    ${props => props.theme.transitions.primary("margin-left")};
-    position: relative;
-    border-radius: 100%;
-    margin-left: 6.25px;
-  }
-  & label.inactive {
-    ${props => props.theme.transitions.primary("margin-left")};
-    position: relative;
-    border-radius: 100%;
-    margin-left: 50px;
   }
 
   & svg {
@@ -46,10 +33,16 @@ const ThemeSwitch = styled.div`
     position: absolute;
     display: inline-block;
     color: ${props => props.theme.colors.foreground};
-    height: 20px;
-    width: 20px;
-    top: -2px;
-    left: 0px;
+    height: 15px;
+    top: 3.75px;
+    width: 15px;
+    ${props => props.theme.transitions.primary("left")};
+  }
+  & .active {
+    left: 5px;
+  }
+  & .inactive {
+    left: 47px;
   }
 
   & input {
@@ -62,14 +55,18 @@ export default ({ toggleTheme }) => {
 
   return (
     <ThemeSwitch>
-      <label className={themeState !== "dark" ? "active" : "inactive"}>
+      <label>
         <input
           type="checkbox"
+          checked={themeState === "dark"}
           onChange={e => {
             setThemeState(e.target.checked ? "dark" : "light");
           }}
         />
-        <InlineIcon icon={themeState !== "dark" ? dayIcon : nightIcon} />
+        <InlineIcon
+          className={themeState !== "dark" ? "active" : "inactive"}
+          icon={themeState !== "dark" ? dayIcon : nightIcon}
+        />
       </label>
     </ThemeSwitch>
   );

@@ -131,10 +131,10 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
                     <div
                       onClick={() => selectSkill(skill.skill_name)}
                       className={`skill ${
-                        skill.skillName === selected ? "selected" : ""
+                        skill.skill_name === selected ? "selected" : ""
                       }`}
                     >
-                      <InlineIcon icon={skillIcons[skill.skill_name]} />
+                      <InlineIcon icon={skillIcons[skill.icon_name]} />
                       {skill.skill_name}
                     </div>
                   );

@@ -16,15 +16,17 @@ export const test = {
 };
 
 const Button = styled.button`
-  border-radius: ${props => props.theme.corners.borderRadius2};
+  border-radius: ${props => props.theme.corners.borderRadius1};
   padding: ${props => props.padding};
   border: none;
   font-weight: bolder;
   text-decoration: none;
   font-size: ${props => props.theme.text.sizes.small};
   pointer-events: all;
+  font-family: brown-regular;
   z-index: 100;
-  ${props => props.theme.corners.borderRadius2};
+  display: flex;
+  flex-direction: row;
 
   &.-primary {
     color: ${props => props.theme.colors.textSecondary};
@@ -44,7 +46,6 @@ const Button = styled.button`
     height: 25px;
     position: relative;
     margin: auto 0;
-    margin-left: 25px;
     z-index: 100;
     ${props => props.theme.transitions.primary("margin-left")};
   }
@@ -58,7 +59,7 @@ const Button = styled.button`
   }
 `;
 
-export const defaultPadding = "12.5px 35px";
+export const defaultPadding = "12.5px 25px";
 
 export const BtnPrimary = ({ children, text, theme, padding, color, bg }) => (
   <Button

@@ -1,38 +1,45 @@
 import * as THREE from "three";
 import { TextureLoader, WebGLRenderTarget, Object3D } from "three";
 import React, { Suspense, useMemo, useState, useCallback, useRef } from "react";
-import { Canvas, useFrame, useThree, useLoader } from "react-three-fiber";
+import {
+  Canvas,
+  useFrame,
+  useThree,
+  useLoader,
+  Renderer
+} from "react-three-fiber";
 import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import BackfaceMaterial from "../threejs/materials/backface";
 import Post from "./three-post-processing.js";
 import RefractionMaterial from "../threejs/materials/refraction";
+import linesUrl from "../../../static/assets/lines.png";
 
 export const Mouse = () => {
+  const viewportOffset = 2;
   const { viewport } = useThree();
-  const ref = useRef();
-  const [_, api] = useBox(() => ({
+  const position = [-viewport.width, -viewport.height, 8.7];
+  const dimensions = [5, 5, 5, 5];
+  const [_, api] = useBox(index => ({
     type: "Kinematic",
-    // mass: 10,
     args: dimensions,
-    position: [viewport.width / 2 + 3, viewport.height / 2, 10]
+    position
   }));
-  const dimensions = [6, 6, 6];
   useFrame(state => {
+    if (state.mouse.x === 0) return;
     api.position.set(
       (state.mouse.x * viewport.width) / 2,
       (state.mouse.y * viewport.height) / 2,
-      10
-    );
-    ref.current.position.set(
-      (state.mouse.x * viewport.width) / 2,
-      (state.mouse.y * viewport.height) / 2,
-      9
+      8
     );
   });
   return (
-    <instancedMesh ref={ref} castShadow>
-      <boxBufferGeometry attatch="geometry" args={dimensions} />
-      <meshPhysicalMaterial flatShading attatch="material" color="111111" />
+    <instancedMesh castShadow>
+      <sphereBufferGeometry
+        attatch="geometry"
+        args={dimensions}
+        position={position}
+      />
+      <meshStandardMaterial flatShading attatch="material" color="black" />
     </instancedMesh>
   );
 };
@@ -47,12 +54,11 @@ export const Plane = ({ color, ...props }) => {
         attatch="geometry"
         args={[viewport.width * 2, viewport.width * 2, viewport.height * 2]}
       />
-      <meshPhysicalMaterial
-        roughness={0}
+      <meshBasicMaterial
         attatch="material"
         transparent
-        opacity={color != null}
-        color={color || color}
+        opacity={0}
+        color="fff"
       />
     </mesh>
   );
@@ -64,47 +70,72 @@ export const Borders = ({ theme }) => {
   return (
     <>
       <Plane
-        position={[0, -viewport.height / 2 + .75, -150]} // ground
+        position={[0, -viewport.height / 2 + 3.45, -150]} // ground
         rotation={[-Math.PI / 2, 0, 0]}
       />
       <Plane
-        position={[-viewport.width / 2 + 2, 0, 0]} // r
+        position={[-viewport.width / 2 + 2, 0, 0]} // left
         rotation={[0, Math.PI / 2, 0]}
       />
       <Plane
-        position={[viewport.width / 2 - 2, 0, 0]} // l
+        position={[viewport.width / 2 - 2, 0, 0]} // right
         rotation={[0, -Math.PI / 2, 0]}
       />
-      <Plane position={[0, 0, 8]} rotation={[0, 0, 0]} /** back */ />
-      <Plane position={[0, 0, 12]} rotation={[0, -Math.PI, 0]} /** front */ />
+      <Plane position={[0, 0, 7]} rotation={[0, 0, 0]} /** back */ />
+      <Plane position={[0, 0, 11.5]} rotation={[0, -Math.PI, 0]} /** front */ />
     </>
   );
 };
 
 // Spheres falling down
-export const InstancedBoxs = ({ choice, color = "black", count = 50 }) => {
+export const InstancedBoxs = ({
+  dims,
+  choice,
+  color = "black",
+  count = 50
+}) => {
   const { size, viewport, gl, scene, camera, clock } = useThree();
-  const dimensions = [1.25, 1.25, 1.25];
+
+  const texture = useLoader(THREE.TextureLoader, linesUrl);
+  texture.anisotropy = 15; // high res textures, no matter the distance
+
+  const dimensions = dims;
+  const viewportOffset = -16;
   // use react reference to generate the mesh
   const [ref] = useBox(index => {
     const options = {
       // used to ensure box's stack in a pyrimid like shape, (2 on top, 3 on bottom)
+      // right
       rightOffset: [
-        (viewport.width - Math.random() - 1) / 2,
-        -viewport.height + 1.5,
+        viewport.width + viewportOffset - 1.85,
+        -viewport.height + 2,
+        0,
+        8.7
+      ],
+      right: [viewport.width + viewportOffset - 1.5, -viewport.height, 0, 8.7],
+      // left
+      leftOffset: [
+        -(viewport.width / viewportOffset - Math.random() - 1),
+        -viewport.height + 1,
         0,
         0
       ],
-      right: [(viewport.width - Math.random()) / 2, -viewport.height, 0, 0]
+      left: [
+        -(viewport.width / viewportOffset - Math.random() - 1),
+        -viewport.height,
+        0,
+        8.7
+      ]
     };
     return {
-      mass: 1000,
+      mass: 20,
+      material: { friction: 0.09, restitution: 0.09 },
       args: dimensions, // with use sphere there isnt an array passed
       position: options[choice]
       // onCollide: e => play(index, e.contact.impactVelocity),
     };
   });
-
+  // alert(JSON.stringify(texture));
   return (
     <instancedMesh
       castShadows
@@ -113,11 +144,16 @@ export const InstancedBoxs = ({ choice, color = "black", count = 50 }) => {
       args={[null, null, count]}
     >
       <boxBufferGeometry attatch="geometry" args={dimensions} />
-      <meshPhysicalMaterial
+      <meshBasicMaterial
         flatShading
-        transparent
         attatch="material"
         color={color}
+        map={texture}
+        alphaMap={texture}
+        transparent
+        opacity={1}
+        depthTest
+        toneMapped={false}
       />
     </instancedMesh>
   );
@@ -129,62 +165,83 @@ export default ({ theme }) => {
   const { viewport } = useThree();
 
   return (
-    <Canvas
-      ref={ref}
-      concurrent
-      shadowMap
-      gl={{ alpha: true, antialias: true }}
-      camera={{ position: [0, 0, 20], fov: 50, near: 17, far: 40 }}
-    >
-      <fog attach="fog" args={[theme.colors.foreground, 0, 60]} />
-      <ambientLight color={theme.colors.foreground} intensity={0} />
-      <directionalLight
-        position={[50, 150, 400]}
-        angle={0.25}
-        intensity={1}
-        color={theme.name === "dark" ? "384654" : theme.colors.foreground}
-        castShadow
-        // shadow-bias={0.01}
-        shadow-radius={10}
-        shadow-mapSize-width={7000} // fidelity of shadow maps (higher is sharper)
-        shadow-mapSize-height={7000}
-        // move shadows to cameras perspective instead of light
-        shadow-camera-left={-50}
-        shadow-camera-right={50}
-        shadow-camera-top={50}
-        shadow-camera-bottom={-50}
-      />
-      {/**
-       */}
-      <Suspense fallback={null}>
-        <Physics
-          gravity={[0, -50, 0]}
-          defaultContactMaterial={{ restitution: 0.6 }}
-        >
-          <group position={[0, 0, -10]}>
-            <Mouse />
-            <Borders theme={theme} />
-            <InstancedBoxs
-              choice="rightOffset"
-              color={
-                theme.name === "dark"
-                  ? theme.colors.primary
-                  : theme.colors.foreground
-              }
-              count={2}
-            />
-            <InstancedBoxs
-              choice="right"
-              color={
-                theme.name === "dark"
-                  ? theme.colors.primary
-                  : theme.colors.foreground
-              }
-              count={3}
-            />
-          </group>
-        </Physics>
-      </Suspense>
-    </Canvas>
+    <div id="three-portfolio">
+      <Canvas
+        ref={ref}
+        concurrent
+        shadowMap
+        pixelRatio={window.devicePixelRatio}
+        gl={{ alpha: true, antialias: true }}
+        camera={{ position: [0, 0, 20], fov: 50, near: 17, far: 40 }}
+      >
+        <ambientLight
+          color={
+            theme.name === "dark"
+              ? theme.colors.primary
+              : theme.colors.foreground
+          }
+          intensity={0.5}
+        />
+        <directionalLight
+          position={[50, 150, 400]}
+          angle={0.25}
+          intensity={theme.name === "dark" ? 1 : 1}
+          color={
+            theme.name === "dark"
+              ? theme.colors.primary
+              : theme.colors.foreground
+          }
+          castShadow
+          // shadow-bias={0.01}
+          shadow-radius={10}
+          shadow-mapSize-width={7000} // fidelity of shadow maps (higher is sharper)
+          shadow-mapSize-height={7000}
+          // move shadows to cameras perspective instead of light
+          shadow-camera-left={-10}
+          shadow-camera-right={10}
+          shadow-camera-top={10}
+          shadow-camera-bottom={-10}
+        />
+        {/**
+         */}
+        <Suspense fallback={null}>
+          <Physics
+            gravity={[0, -50, 0]}
+            defaultContactMaterial={{ restitution: 0.6 }}
+          >
+            <group position={[0, 0, -10]}>
+              <Mouse />
+              <Borders theme={theme} />
+              {/** right group */}
+
+              {/** left group */}
+              <InstancedBoxs
+                dims={[4, 2.25, 2.25]}
+                choice="rightOffset"
+                color={theme.colors.primary}
+                count={1}
+              />
+              <InstancedBoxs
+                dims={[4.25, 2.5, 2.5]}
+                choice="right"
+                color={theme.colors.primary}
+                count={1}
+              />
+            </group>
+          </Physics>
+        </Suspense>
+      </Canvas>
+    </div>
   );
 };
+
+//  <fog
+//     attach="fog"
+//     args={[
+//       theme.name === "dark"
+//         ? theme.colors.textSecondary
+//         : theme.colors.foreground,
+//       50,
+//       60
+//     ]}
+//   />

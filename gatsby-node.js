@@ -43,7 +43,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   buildPageFromQuery("b|Blog", path.resolve(`src/templates/blogTemplate.js`)); // build blog pages
 
   buildPageFromQuery(
-    "P|projects",
+    "P|project",
     path.resolve(`src/templates/projectTemplate.js`)
   ); // build project pages
 };
