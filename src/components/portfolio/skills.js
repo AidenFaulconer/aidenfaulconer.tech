@@ -157,14 +157,10 @@ const SkillGrid = styled.div`
 
   & .skill-row {
     background: ${props => props.theme.colors.textSecondary};
-    position: relative;
+    width: auto;
     left: 0px;
+    flex: 45%;
     border-radius: ${props => props.theme.corners.borderRadius1};
-    width: 45%;
-
-    ${props =>
-      props.theme.breakpoints.lg(`
-      `)}
 
     & .heading {
       position: relative;
@@ -173,15 +169,20 @@ const SkillGrid = styled.div`
     }
 
     & .skill-group {
-      padding: 0px 8px;
+      margin-top: -25px;
+      margin-right: -8px;
+      padding: 8px 8px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      row-gap: 8px;
-      column-gap: 8px;
+
+      ${props =>
+        props.theme.breakpoints.md(`
+      // grid-template-columns: 1fr 1fr 1fr;
+      `)}
+      row-gap: 4px;
       align-self: center;
 
       & .skill {
-        margin: 4px;
         display: flex;
         justify-content: center;
         flex-direction: column;

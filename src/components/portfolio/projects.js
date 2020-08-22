@@ -96,34 +96,25 @@ const ImageGrid = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 8px;
   display: grid;
-  width: 20%;
+  position: relative;
+  overflow: hidden;
 
   ${props =>
     props.theme.breakpoints.lg(`
-  width: 50%;
+  width: 100%;
       `)}
-
   & .preview-content {
-    padding: 8px;
     background: ${props => props.theme.colors.textSecondary};
     ${props => props.theme.transitions.primary("transform")};
 
     & img {
       border-radius: ${props => props.theme.corners.borderRadius1};
-      height: 350px;
-      width: 106%;
+      width: 100%;
+      position: relative;
       max-height: 200px;
       object-fit: contain;
       opacity: 0.9;
-      margin: -8px;
       margin-bottom: 8px;
-
-      ${props =>
-        props.theme.breakpoints.md(`
-      `)}
-      ${props =>
-        props.theme.breakpoints.lg(`
-      `)}
     }
 
     &:hover {
@@ -134,13 +125,11 @@ const ImageGrid = styled.div`
         box-shadow: ${props => props.theme.shadows.primary};
       }
     }
-
     & h3 {
+      margin: 8px 25px;
     }
-
     & p {
-      margin-top: 25px;
-      text-align: center;
+      margin: 12.5px 25px;
     }
   }
 `;
@@ -148,14 +137,20 @@ const ImageGrid = styled.div`
 const DisplayImage = styled.article`
   left: 0px;
   display: flex;
-  margin-right: 100px;
   position: relative;
   flex-direction: column;
   max-height: 600px;
   color: inherit;
 
   ${props =>
-    props.theme.breakpoints.lg(`
+    props.theme.breakpoints.sm(`
+  width: 50%;
+    margin: 50px auto;
+      `)}
+
+  ${props =>
+    props.theme.breakpoints.md(`
+  margin-right: 100px;
   width: 50%;
       `)}
 

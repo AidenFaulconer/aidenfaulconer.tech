@@ -105,8 +105,9 @@ export default React.memo(({ theme }) => {
                             <h1>{sectionName}</h1>
                           </div>
                           <div
-                            className="section-card"
+                            className="section-container"
                             key={sectionName}
+                            id={sectionName}
                             // ref={ref => {
                             //   sectionRefs.current[sectionName] = ref;
                             // }}
@@ -121,7 +122,7 @@ export default React.memo(({ theme }) => {
                             />
                           </div>
                         </Col>
-                        <Col xl={2} md={2} lg={2} />
+                        <Col xl={2} md={1} lg={1} />
                       </Row>
                     </ContentContainer>
                   );
@@ -133,7 +134,7 @@ export default React.memo(({ theme }) => {
                 lg={1}
                 // css to be overriden programatically
                 style={{ marginTop: "0px", background: "rgba(1,1,1,1)" }}
-                className="d-xs-none d-md-none d-lg-block"
+                className="d-xs-none d-md-none d-lg-block d-xl-block"
               >
                 <ContentNavigation
                   odd={currentSection.odd}
@@ -298,7 +299,8 @@ const ContentNavigation = styled.nav`
 const ContentContainer = styled.section`
   position: relative;
   z-index: 1;
-  padding: 100px 0px 200px 0px;
+  padding: 100px 25px 200px 25px;
+
   background: ${props =>
     props.odd ? props.theme.colors.primary : props.theme.colors.foreground};
   color: ${props =>
@@ -319,12 +321,20 @@ const ContentContainer = styled.section`
       margin-bottom: 34px;//17+17
       z-index: 1;
       overflow: hidden;
-    }
+      color: inherit;
+      margin: auto;
+      position: absolute
+      ${props =>
+        props.theme.breakpoints.sm(`
+        text-align: left;
+          `)}
+      }
 
-    & .section-card {
+    //expereince section needs the two items to go on top of eachother
+
+    & .section-container {
       margin: 6.25px 0px;
       margin-bottom: 100px;
-      max-height: 1000px;
       min-height: 700px;
       width: 100%;
       display: flex;
@@ -332,10 +342,11 @@ const ContentContainer = styled.section`
       border-radius: ${props => props.theme.corners.borderRadius2};
       flex-direction: column;
 
-    ${props =>
-      props.theme.breakpoints.md(`
-flex-direction: row;
-      `)}
+      ${props =>
+        props.theme.breakpoints.md(`
+        flex-direction: row;
+        flex-wrap: no-wrap;
+        `)}
 
       &:hover: {
         background: black;
@@ -345,6 +356,15 @@ flex-direction: row;
           ${props => props.theme.transitions.primary("all")};
         }
       }
+          & #Experience {
+      display: flex;
+      flex-wrap: wrap;
+      ${props =>
+        props.theme.breakpoints.lg(`
+        flex-wrap: no-wrap;
+        `)}
+    }
+
 
       }
     }

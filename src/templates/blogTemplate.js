@@ -91,7 +91,11 @@ const BlogContent = styled.section`
   margin-top: 25px;
   font-family: "brown";
   padding: 100px 15vw;
-  line-height: 150%;
+  color: ${props => props.theme.colors.textSecondary};
+
+  & * {
+    line-height: 175%;
+  }
 
   & .carousel {
     display: flex;
@@ -107,14 +111,17 @@ const BlogContent = styled.section`
     margin-bottom: 25px;
     margin-top: 50px;
     font-family: "brown";
+    font-weight: bolder;
   }
   & h2 {
     font-size: 1.5em;
     margin-top: 50px;
+    font-weight: bolder;
     margin-bottom: 25px;
     font-family: "brown";
   }
   & h3 {
+    font-weight: bolder;
     font-size: 1.5em;
     margin-top: 50px;
     margin-bottom: 25px;

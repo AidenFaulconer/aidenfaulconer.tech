@@ -19,30 +19,37 @@ const ThemeSwitch = styled.div`
   position: relative;
   margin: auto 0px;
 
+  display: none;
+  visibility: hidden;
+  ${props =>
+    props.theme.breakpoints.lg(`
+  display: block;
+  visibility: visible;
+  `)}
+
   & label {
     width: 100%;
     position: relative;
-    height: auto;
+    height: 100%;
     background: transparent;
     margin: auto;
     ${props => props.theme.transitions.primary("margin-left")};
-  }
 
-  & svg {
-    border-radius: ${props => props.theme.corners.borderRadius100};
-    position: absolute;
-    display: inline-block;
-    color: ${props => props.theme.colors.foreground};
-    height: 15px;
-    top: 3.75px;
-    width: 15px;
-    ${props => props.theme.transitions.primary("left")};
-  }
-  & .active {
-    left: 5px;
-  }
-  & .inactive {
-    left: 47px;
+    & svg {
+      border-radius: ${props => props.theme.corners.borderRadius100};
+      position: absolute;
+      color: ${props => props.theme.colors.foreground};
+      height: 15px;
+      width: 15px;
+      top: 3.5px;
+      ${props => props.theme.transitions.primary("left")};
+    }
+    & .active {
+      left: 10%;
+    }
+    & .inactive {
+      left: 70%;
+    }
   }
 
   & input {

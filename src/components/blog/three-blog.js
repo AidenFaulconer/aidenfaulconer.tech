@@ -6,6 +6,7 @@ import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import { useTheme } from "emotion-theming";
 import BackfaceMaterial from "../threejs/materials/backface";
 import RefractionMaterial from "../threejs/materials/refraction";
+import linesUrl from "../../../static/assets/circles.png";
 
 export const Mouse = () => {
   const { viewport } = useThree();
@@ -75,20 +76,30 @@ export const Borders = ({ theme }) => {
   );
 };
 
-// Spheres falling down
-export const InstancedSpheres = ({ choice, color = "black", count = 50 }) => {
+export const InstancedBoxs = ({
+  dims,
+  choice,
+  color = "black",
+  count = 50
+}) => {
   const { size, viewport, gl, scene, camera, clock } = useThree();
-  const dimensions = [0.5, 15, 15];
+
+  const texture = useLoader(THREE.TextureLoader, linesUrl);
+  texture.anisotropy = 15; // high res textures, no matter the distance
+
+  const dimensions = dims;
+  const viewportOffset = -16;
   // use react reference to generate the mesh
-  const [ref] = useSphere(index => {
+  const [ref] = useBox(index => {
     return {
-      mass: 100,
-      args: dimensions[0], // with use sphere there isnt an array passed
-      position: [(viewport.width - Math.random()) / 2, viewport.height, 0, 0]
+      mass: 20,
+      material: { friction: 0.09, restitution: 0.09 },
+      args: dimensions, // with use sphere there isnt an array passed
+      position: [index - Math.random() - viewport.width /2, viewport.height, 0]
       // onCollide: e => play(index, e.contact.impactVelocity),
     };
   });
-
+  // alert(JSON.stringify(texture));
   return (
     <instancedMesh
       castShadows
@@ -96,8 +107,18 @@ export const InstancedSpheres = ({ choice, color = "black", count = 50 }) => {
       ref={ref}
       args={[null, null, count]}
     >
-      <sphereBufferGeometry attatch="geometry" args={dimensions} />
-      <meshPhysicalMaterial attatch="material" color={color} />
+      <boxBufferGeometry attatch="geometry" args={dimensions} />
+      <meshBasicMaterial
+        flatShading
+        attatch="material"
+        color={color}
+        map={texture}
+        alphaMap={texture}
+        transparent
+        opacity={1}
+        depthTest
+        toneMapped={false}
+      />
     </instancedMesh>
   );
 };
@@ -117,13 +138,19 @@ export default () => {
       gl={{ alpha: true, antialias: true }}
       camera={{ position: [0, 0, 20], fov: 50, near: 17, far: 40 }}
     >
-      <fog attach="fog" args={[theme.colors.foreground, 0, 60]} />
-      <ambientLight color={theme.colors.foreground} intensity={3.25} />
+      <ambientLight
+        color={
+          theme.name === "dark" ? theme.colors.primary : theme.colors.foreground
+        }
+        intensity={0.5}
+      />
       <directionalLight
-        position={[150, 150, 500]}
-        angle={.25}
-        intensity={22}
-        color={theme.name === "dark" ? "384654" : theme.colors.foreground}
+        position={[50, 150, 400]}
+        angle={0.25}
+        intensity={theme.name === "dark" ? 1 : 1}
+        color={
+          theme.name === "dark" ? theme.colors.primary : theme.colors.foreground
+        }
         castShadow
         // shadow-bias={0.01}
         shadow-radius={10}
@@ -148,13 +175,11 @@ export default () => {
             {/** right group */}
 
             {/** left group */}
-            <InstancedSpheres
-              color={
-                theme.name === "dark"
-                  ? theme.colors.primary
-                  : theme.colors.foreground
-              }
-              count={20}
+            <InstancedBoxs
+              color={theme.colors.primary}
+              count={4}
+              dims={[1.25, 1.25, 1.25]}
+              choice="right"
             />
           </group>
         </Physics>

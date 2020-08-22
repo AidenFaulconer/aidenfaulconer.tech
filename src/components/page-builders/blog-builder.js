@@ -89,7 +89,7 @@ export default React.memo(() => {
         const featuredBlog = rawBlogData[0].node.frontmatter;
         return (
           <>
-            <Row noGutters>
+            <Row noGutters style={{paddingTop: "0px"}}>
               <Col
                 xl={1}
                 lg={1}

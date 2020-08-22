@@ -20,6 +20,30 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
   const currentExpereince = experiences[selectedExperience];
   return (
     <>
+      <Experiences ref={ref}>
+        {data.languages.map((experience, index) => {
+          return (
+            <div
+              onClick={() => selectExperience(index)}
+              className={`experience ${
+                selectedExperience === index ? "active" : ""
+              }}`}
+              role="select experience"
+            >
+              <div style={{ display: "flex", flexWrap: "nowrap" }}>
+                <div>
+                  <h3>{experience.experienceRole}</h3>
+                  <p>{experience.experienceEmployer}</p>
+                </div>
+                <img
+                  src={experience.image}
+                  alt="experience selection preview"
+                />
+              </div>
+            </div>
+          );
+        })}
+      </Experiences>
       <SelectedExperience src="./assets/svg/wave-graphic.png">
         <div className="experience-heading">
           <img
@@ -43,54 +67,46 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
           {currentExpereince.experienceDescription}
         </p>
       </SelectedExperience>
-      <Experiences ref={ref}>
-        {data.languages.map((experience, index) => {
-          return (
-            <div
-              onClick={() => selectExperience(index)}
-              className={`experience ${
-                selectedExperience === index ? "active" : ""
-              }}`}
-              role="select experience"
-            >
-              <h3>{experience.experienceRole}</h3>
-              <p>{experience.experienceEmployer}</p>
-              <img src={experience.image} alt="experience selection preview" />
-            </div>
-          );
-        })}
-      </Experiences>
     </>
   );
 };
 
 const Experiences = styled.div`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  width: 50%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
   height: 100%;
   z-index: 0;
+  order: 2;
+
+  ${props =>
+    props.theme.breakpoints.md(`
+    flex-direction: column;
+    order: 0;
+    display: flex;
+    margin-right: 100px;
+      `)}
 
   & .experience {
     background: white;
     margin: 25px;
     padding: 25px;
-    border-radius: 10px 50px 50px 10px;
-    max-height: 100px;
-    height: 100px;
+    width: 100%;
+    border-radius: ${props => props.theme.corners.borderRadius1};
     color: black;
     position: relative;
+    ${props => props.theme.transitions.primary("transform")};
+
     & img {
       z-index: 2;
       border-radius: ${props => props.theme.corners.borderRadius100};
-      position: absolute;
-      max-height: 100%;
-      right: 0px;
+      max-height: 75px;
       margin: auto;
-      top: 0px;
-      transform: scale(1.04);
+      ${props =>
+        props.theme.breakpoints.lg(`
+    display: block;
+      `)}
     }
 
     & p {
@@ -100,11 +116,11 @@ const Experiences = styled.div`
     }
 
     & h3 {
+      min-width: 150px;
       text-align: left;
       margin: auto;
     }
 
-    ${props => props.theme.transitions.primary("transform")};
     &:hover {
       transform: scale(1.04);
       box-shadow: ${props => props.theme.shadows.primary};
@@ -117,13 +133,15 @@ const Experiences = styled.div`
     }
   }
 `;
+
 const SelectedExperience = styled.div`
-  border-radius: ${props => props.theme.corners.borderRadius2};
+  border-radius: ${props => props.theme.corners.borderRadius1};
   min-height: 350px;
   padding: 12.5px;
-  margin: 6.25px;
-  width: 50%;
+  width: 100%;
+  order: 1;
   background: white;
+  position: relative;
   color: black;
   overflow: hidden;
   background: ${props => props.theme.colors.innerContentColor};
@@ -131,24 +149,35 @@ const SelectedExperience = styled.div`
   & .experience-heading {
     margin-bottom: 25px;
     min-width: 104%;
+    //offset padding so background covers the card
     margin-top: -12.5px;
     margin-left: -12.5px;
+    margin-right: -12.5px;
     padding-bottom: 12.5px;
+    //make sure content is still padded appropriately
+    padding: 12.5px;
+
     display: flex;
     width: auto;
     background: url(${props => props.src});
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
     height: auto;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 
     & img {
       margin: 25px;
-      display: inline-block;
+      display: none;
       border-radius: ${props => props.theme.corners.borderRadius1};
       object-fit: fit;
-      width: 10%;
+      // width: 10%;
+      height: 100%;
       max-height: 100px;
+
+      ${props =>
+        props.theme.breakpoints.lg(`
+    display: inline-block;
+      `)}
     }
     & .experience-date {
       font-size: ${props => props.theme.text.sizes.extraSmall};

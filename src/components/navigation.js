@@ -61,7 +61,9 @@ const NavigationWrapper = styled.div`
       text-decoration: none;
     }
 
-    & a {
+
+
+    & .link {
       color: ${props => props.theme.colors.textSecondary};
       margin: auto 75px;
       margin-left: 0px;
@@ -70,19 +72,21 @@ const NavigationWrapper = styled.div`
       &::after {
           content: '';
           display:block;
+          visibility: hidden;
           position: relative;
           top: 37px;
-          background: ${props => props.theme.colors.textSecondary};
-          height: 0px;
-          width: 100%;
-          ${props => props.theme.transitions.third("all")};
+          background:
+          ${props => props.theme.colors.primary};
+          ;
+          height: 1.5px;
+          width: 0%;
+          ${props => props.theme.transitions.secondary("all")};
         }
-
         &:hover{
           &::after{
-            // width: 100%;
-            ${props => props.theme.transitions.third("all")};
-            transform: scale(1,0);
+          visibility: visible;
+            width: 100%;
+            ${props => props.theme.transitions.third("width")};
           }
       }
     }
@@ -133,19 +137,22 @@ const NavigationWrapper = styled.div`
         }
       }
     }
-    }
+
 
 
     & .site-links {
       display: flex;
       justify-content: flex-end;
-
+      font-size: 1.2rem;
+        ${props => props.theme.breakpoints.md(`font-size: 1.25rem;`)}
         & .active {
           &::after{
-          display: block;
-          height: 2.5px;
+          visibility: visible;
+          width: 100%;
         }
       }
+    }
+
   }
 `;
 
@@ -190,35 +197,54 @@ export default ({ toggleTheme, theme, pageType }) => {
         <CSSTransition in={hide} timeout={10}>
           <nav>
             <Row>
-              <Col xl={1} lg={1} md={1} className="d-md-block d-sm-none" />
+              <Col
+                xl={1}
+                lg={1}
+                md={1}
+                sm={1}
+                xs={1}
+                className="d-lg-block d-md-block"
+              />
 
               <Col xl={6} lg={6} md={5} sm={1} xs={8} className="branding">
-                <div
-                  style={{ fill: theme.colors.secondary }}
-                  dangerouslySetInnerHTML={{ __html: logo }}
-                />
-                <div className="page-type">{pageType}</div>
+                <Link to="/">
+                  <div
+                    style={{ fill: theme.colors.secondary }}
+                    dangerouslySetInnerHTML={{ __html: logo }}
+                  />
+                </Link>
               </Col>
 
-              <Col xl={4} lg={4} md={5} sm={10} xs={4} className="site-links">
-                <Link className={selected === "/" ? "active" : ""} to="./">
+              <Col
+                xl={4}
+                lg={4}
+                md
+                sm={10}
+                xs={4}
+                className="site-links d-sm-none d-md-block d-lg-block"
+              >
+                <Link
+                  className={`link ${selected === "/" ? "active" : ""}`}
+                  to="./"
+                >
                   Portfolio
                 </Link>
 
                 <Link
-                  className={selected === "/blog" ? "active" : ""}
+                  className={`link ${
+                    selected.match(`(^/blog/*\w*)|(^/projects/*\w*)`)
+                      ? "active"
+                      : ""
+                  }`}
                   to="./blog"
                 >
                   Blog
                 </Link>
 
-                <ThemeChanger
-                  toggleTheme={toggleTheme}
-                  className="d-sm-none d-none d-lg-block"
-                />
+                <ThemeChanger toggleTheme={toggleTheme} />
               </Col>
 
-              <Col xl={1} lg={1} md={1} className="d-md-block d-sm-none" />
+              <Col xl={1} lg={1} md={1} className="d-md-block d-lg-block" />
             </Row>
           </nav>
         </CSSTransition>

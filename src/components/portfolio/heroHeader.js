@@ -12,7 +12,8 @@ import ThreePortfolio from "./three-portfolio";
 
 const HeroHeader = styled.section`
   padding-top: 250px; //185px + 25px
-  max-height: 69vh;
+  // max-height: 80vh;
+  // padding-bottom: 25px;
   z-index: 0;
 
   & .headline {
@@ -22,14 +23,7 @@ const HeroHeader = styled.section`
     text-transform: capitalcase;
     font-family: poppins-bold;
     text-align: center;
-    margin: auto;
 
-    ${props =>
-      props.theme.breakpoints.md(`
-      text-align: left;
-      font-size: 3em;
-      width: 80%;
-  `)}
     ${props =>
       props.theme.breakpoints.lg(`
       text-align: left;
@@ -55,20 +49,12 @@ const HeroHeader = styled.section`
     margin-top: 75px;
     z-index: 30;
     text-align: center;
+    font-size: 0.35em;
 
     ${props =>
       props.theme.breakpoints.lg(`
       text-align: left;
       margin-left: 0px;
-  `)}
-    ${props =>
-      props.theme.breakpoints.md(`
-      text-align: left;
-      font-size: .35em;
-  `)}
-    ${props =>
-      props.theme.breakpoints.sm(`
-      font-size: .35em;
   `)}
   }
 
@@ -81,7 +67,6 @@ const HeroHeader = styled.section`
     `)}
   }
   color: ${props => props.theme.colors.textPrimary};
-
 `;
 
 const ThreeWrapper = styled.div`
@@ -97,8 +82,8 @@ const ThreeWrapper = styled.div`
   `)}
     ${props =>
       props.theme.breakpoints.md(`
-      width: 350px;
-      height: 350px;
+      width: 380px;
+      height: 380px;
   `)}
       ${props =>
         props.theme.breakpoints.lg(`
@@ -161,11 +146,11 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                 <Col
                   xl={1}
                   lg={1}
-                  md={0}
+                  md={1}
                   sm={1}
-                  className="d-md-none d-lg-block"
+                  className="d-xs-none d-lg-block"
                 />
-                <Col xl={5} lg={5} md={7} sm={10}>
+                <Col xl={5} lg={5} md={10} sm={10}>
                   <h1 className="headline">
                     {headline}
                     <div
@@ -193,13 +178,20 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                   <ThreeWrapper>
                     <ThreePortfolio theme={theme} />
                     <img
-                      className="graphic d-xl-block d-lg-block d-md-block d-sm-none d-none"
+                      className="graphic d-xl-block d-lg-block d-md-none d-sm-none d-none"
                       src={`./assets/svg/portfolio-graphic-${theme.name}.png`} // TODO: this will be dynamic per page (with a hero header)
                     />
                   </ThreeWrapper>
                 </Col>
 
-                <Col xl={1} lg={1} md={2} sm={2} xs={2} />
+                <Col
+                  xl={1}
+                  lg={1}
+                  md={1}
+                  sm={1}
+                  xs={0}
+                  className="d-sm-block -xs-none"
+                />
               </Row>
             </HeroHeader>
           </>

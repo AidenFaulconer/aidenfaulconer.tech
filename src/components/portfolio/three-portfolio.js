@@ -9,9 +9,7 @@ import {
   Renderer
 } from "react-three-fiber";
 import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
-import BackfaceMaterial from "../threejs/materials/backface";
 import Post from "./three-post-processing.js";
-import RefractionMaterial from "../threejs/materials/refraction";
 import linesUrl from "../../../static/assets/lines.png";
 
 export const Mouse = () => {
@@ -87,7 +85,6 @@ export const Borders = ({ theme }) => {
   );
 };
 
-// Spheres falling down
 export const InstancedBoxs = ({
   dims,
   choice,
