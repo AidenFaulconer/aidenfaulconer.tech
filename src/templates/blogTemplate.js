@@ -90,7 +90,7 @@ export const pageQuery = graphql`
 const BlogContent = styled.section`
   margin-top: 25px;
   font-family: "brown";
-  padding: 100px 15vw;
+  padding: 100px 7vw;
   color: ${props => props.theme.colors.textSecondary};
 
   & * {
@@ -132,6 +132,7 @@ const BlogContent = styled.section`
 const Post = styled.article`
   margin-top: 150px;
   color: ${props => props.theme.colors.textSecondary};
+  padding: 100px 7vw;
   display: flex;
   flex-direction: row;
   order: 0;

@@ -16,7 +16,7 @@ export const Mouse = () => {
   const viewportOffset = 2;
   const { viewport } = useThree();
   const position = [-viewport.width, -viewport.height, 8.7];
-  const dimensions = [5, 5, 5, 5];
+  const dimensions = [6, 6, 6, 6];
   const [_, api] = useBox(index => ({
     type: "Kinematic",
     args: dimensions,
@@ -167,7 +167,7 @@ export default ({ theme }) => {
         ref={ref}
         concurrent
         shadowMap
-        pixelRatio={window.devicePixelRatio}
+      pixelRatio={typeof window !== "undefined" && window.devicePixelRatio}
         gl={{ alpha: true, antialias: true }}
         camera={{ position: [0, 0, 20], fov: 50, near: 17, far: 40 }}
       >

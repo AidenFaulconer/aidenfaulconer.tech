@@ -64,7 +64,7 @@ export default ({ children, pageType }) => {
 
   const handleScroll = useCallback(() => {
     const _scrollPos = scrollPos;
-    const { top } = document.body.getBoundingClientRect(); // return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
+    const { top } = typeof document !== "undefined" ? document.body.getBoundingClientRect() : 0; // return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
     toggleNav(top > _scrollPos);
     setScrollPos(top);
   }, []);
@@ -135,13 +135,13 @@ export default ({ children, pageType }) => {
                     <h3>useful links</h3>
                     <Link>
                       <Btn
-                        color="white"
+                        color={theme.colors.textPrimary}
                         text="Portfolio"
                         padding="12.5px 0px"
                       />
                     </Link>
                     <Link>
-                      <Btn color="white" text="Blog" padding="12.5px 0px" />
+                      <Btn color={theme.colors.textPrimary} text="Blog" padding="12.5px 0px" />
                     </Link>
                   </Col>
 
@@ -195,7 +195,6 @@ const Footer = styled.footer`
     margin-bottom: 6.25px;
   }
   & *[class*="footer-section"] {
-    border-top: 1px solid ${props => props.theme.colors.textPrimary};
     margin-right: 50px;
     padding: 0px;
     padding-top: 12.5px;

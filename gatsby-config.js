@@ -62,7 +62,7 @@ module.exports = {
     `gatsby-plugin-netlify-cms`,
     "gatsby-plugin-dark-mode",
     // siteURL is a must for sitemap generation
-    `gatsby-plugin-sitemap`,
+    // `gatsby-plugin-sitemap`,
     `gatsby-plugin-offline`,
     `gatsby-plugin-remove-trailing-slashes` // remove pesky /'s at the end of routes ie: localhost/x/
   ]

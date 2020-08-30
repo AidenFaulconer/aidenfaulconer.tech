@@ -118,12 +118,9 @@ const ImageGrid = styled.div`
     }
 
     &:hover {
-      transform: scale(1.04);
+      transform: scale(1.05);
       ${props => props.theme.transitions.primary("transform")};
-      border: 1px solid ${props => props.theme.colors.secondary};
-      & img {
         box-shadow: ${props => props.theme.shadows.primary};
-      }
     }
     & h3 {
       margin: 8px 25px;

@@ -6,17 +6,17 @@ import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import { useTheme } from "emotion-theming";
 import BackfaceMaterial from "../threejs/materials/backface";
 import RefractionMaterial from "../threejs/materials/refraction";
-import linesUrl from "../../../static/assets/circles.png";
+import linesUrl from "../../../static/assets/lines.png";
 
 export const Mouse = () => {
   const { viewport } = useThree();
+  const dimensions = [4, 32, 32];
   const [_, api] = useSphere(index => ({
     // type: "Kinematic",
     mass: 500,
     args: dimensions[0],
-    position: [viewport.width / 2 + 3, viewport.height / 2, 10]
+    position: [viewport.width / 2 + 3, viewport.height / 2, 11]
   }));
-  const dimensions = [2, 32, 32];
   useFrame(state => {
     api.position.set(
       (state.mouse.x * viewport.width) / 2,
@@ -90,12 +90,12 @@ export const InstancedBoxs = ({
   const dimensions = dims;
   const viewportOffset = -16;
   // use react reference to generate the mesh
-  const [ref] = useBox(index => {
+  const [ref] = useSphere(index => {
     return {
       mass: 20,
       material: { friction: 0.09, restitution: 0.09 },
-      args: dimensions, // with use sphere there isnt an array passed
-      position: [index - Math.random() - viewport.width /2, viewport.height, 0]
+      args: dimensions[0], // with use sphere there isnt an array passed
+      position: [index - Math.random() - viewport.width, viewport.height, 0]
       // onCollide: e => play(index, e.contact.impactVelocity),
     };
   });
@@ -107,13 +107,11 @@ export const InstancedBoxs = ({
       ref={ref}
       args={[null, null, count]}
     >
-      <boxBufferGeometry attatch="geometry" args={dimensions} />
+      <icosahedronBufferGeometry attatch="geometry" args={[dimensions[0], 2]} />
       <meshBasicMaterial
         flatShading
         attatch="material"
         color={color}
-        map={texture}
-        alphaMap={texture}
         transparent
         opacity={1}
         depthTest
@@ -134,7 +132,7 @@ export default () => {
       ref={ref}
       concurrent
       shadowMap
-      pixelRatio={window.devicePixelRatio}
+      pixelRatio={typeof window !== "undefined" && window.devicePixelRatio}
       gl={{ alpha: true, antialias: true }}
       camera={{ position: [0, 0, 20], fov: 50, near: 17, far: 40 }}
     >
@@ -177,8 +175,8 @@ export default () => {
             {/** left group */}
             <InstancedBoxs
               color={theme.colors.primary}
-              count={4}
-              dims={[1.25, 1.25, 1.25]}
+              count={50}
+              dims={[.25, .25, .25]}
               choice="right"
             />
           </group>

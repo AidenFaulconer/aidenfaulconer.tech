@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import { useTheme } from "emotion-theming";
 import { INVIEWCONFIG } from "../page-builders/index-builder";
+const axios = require('axios').default;
 
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 // #region contact
@@ -15,6 +16,16 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
       setCurrentSection({ name: sectionName, odd }); // entry.target.id)
     }
   }, [inView]);
+
+  const SubmitForm = (firstName,lastName,subject,message) => {
+  //sanitize input
+  alert("submitting form...")
+  axios({
+  method: "post",
+  url: "localhost:8181/api/v1/email",
+  data: {firstName,lastName,subject,message}
+  }).then(()=>alert("message sent successfully"))
+  }
 
   const theme = useTheme();
 
@@ -45,8 +56,12 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
         <BtnPrimary
           text="Contact"
           color={theme.colors.textPrimary}
-          onClick={() => {}}
         />
+        <button
+          onClick={() => SubmitForm("test","test","test","test")}
+        >
+        testing
+        </button>
         <div dangerouslySetInnerHTML={{ __html: "" }} />
       </ContactForm>
       {/**
@@ -57,17 +72,14 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
 };
 
 const ContactBranding = styled.div`
-    min-width: 40%;
-    background: url("./assets/svg/contact-branding.png");
-    height: auto;
-    background-repeat: no-repeat;
-    background-size: contain;
-
-  }
+  min-width: 40%;
+  background: url("./assets/svg/contact-branding.png");
+  height: auto;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 const ContactForm = styled.form`
-  min-width: 100%;
-  padding-right: 25px;
+  width: 100%;
 
   & label {
     color: ${props => props.theme.colors.textSecondary};

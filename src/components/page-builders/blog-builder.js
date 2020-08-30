@@ -9,7 +9,6 @@ import skillsIcon from "@iconify/icons-fa-solid/clipboard-list";
 import experienceIcon from "@iconify/icons-fa-solid/road";
 import backgroundIcon from "@iconify/icons-ic/sharp-person-pin";
 import contactIcon from "@iconify/icons-bx/bxs-contact";
-import * as ConicGradient from "conic-gradient";
 
 import { StaticQuery, graphql, Link } from "gatsby";
 
@@ -89,58 +88,66 @@ export default React.memo(() => {
         const featuredBlog = rawBlogData[0].node.frontmatter;
         return (
           <>
-            <Row noGutters style={{paddingTop: "0px"}}>
+            <Row noGutters style={{ paddingTop: "0px" }}>
               <Col
                 xl={1}
                 lg={1}
                 md={1}
-                className="d-sm-none d-md-none d-lg-block"
+                className="d-sm-none d-md-block d-lg-block"
               />
 
-              <Col xl={6} lg={6} md={10}>
-                <Link to={featuredBlog.path}>
-                  <FeaturedBlog src={featuredBlog.thumbnail_}>
-                    <img src={featuredBlog.thumbnail_} />
-                    <div className="featured-content">
-                      <h2>{featuredBlog.title}</h2>
-                      <p>{featuredBlog.metaDescription}</p>
-                      <h3>read more</h3>
-                    </div>
-                  </FeaturedBlog>
-                </Link>
-              </Col>
-
-              <Col xl={2} lg md={10}>
-                <OtherBlogs>
-                  {rawBlogData.map((blog, i) => {
-                    const blogData = blog.node.frontmatter;
-                    return (
-                      <Link to={blogData.path}>
-                        <div className="card">
-                          <img src={blogData.thumbnail_} />
-                          <p>{blogData.title}</p>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </OtherBlogs>
-              </Col>
-
               <Col
-                xl={2}
-                lg={2}
-                style={{ marginTop: "0px" }}
-                className="d-xs-none d-sm-none d-md-none d-xl-block "
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap"
+                }}
               >
-                <img
-                  style={{
-                    width: "100%",
-                    objectFit: "contain",
-                    marginTop: "-100px"
-                  }}
-                  className="graphic"
-                  src={`./assets/svg/blog-graphic-${theme.name}.png`}
-                />
+                <Col xl={6} lg={6} md={11}>
+                  <Link to={featuredBlog.path}>
+                    <FeaturedBlog src={featuredBlog.thumbnail_}>
+                      <img src={featuredBlog.thumbnail_} />
+                      <div className="featured-content">
+                        <h2>{featuredBlog.title}</h2>
+                        <p>{featuredBlog.metaDescription}</p>
+                        <h3>read more</h3>
+                      </div>
+                    </FeaturedBlog>
+                  </Link>
+                </Col>
+
+                <Col xl={4} lg md={11}>
+                  <OtherBlogs>
+                    {rawBlogData.map((blog, i) => {
+                      const blogData = blog.node.frontmatter;
+                      return (
+                        <Link to={blogData.path}>
+                          <div className="card">
+                            <img src={blogData.thumbnail_} />
+                            <p>{blogData.title}</p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </OtherBlogs>
+                </Col>
+
+                <Col
+                  xl={2}
+                  lg={2}
+                  style={{ marginTop: "0px" }}
+                  className="d-xs-none d-sm-none d-md-none d-lg-block d-xl-block "
+                >
+                  <img
+                    style={{
+                      width: "100%",
+                      objectFit: "contain",
+                      marginTop: "-100px"
+                    }}
+                    className="graphic"
+                    src={`./assets/svg/blog-graphic-${theme.name}.png`}
+                  />
+                </Col>
               </Col>
 
               <Col
@@ -161,14 +168,15 @@ const Test = styled.div``;
 
 const FeaturedBlog = styled.article`
   position: relative;
-  width: 832px;
   height: 484px;
+  width: 100%;
   z-index: 2;
-  background: ${props => props.theme.colors.primary};
-  box-shadow: ${props => props.theme.shadows.primary};
+  background: ${props => props.theme.colors.secondary};
   color: ${props => props.theme.colors.textPrimary};
   border-radius: ${props => props.theme.corners.borderRadius1};
   overflow: hidden;
+  ${props => props.theme.transitions.primary("transform")};
+
 
   & img {
     object-fit: fit;
@@ -179,24 +187,21 @@ const FeaturedBlog = styled.article`
     width: 35%;
   }
 
-
   &:hover {
-      cursor: pointer;
-      box-shadow: ${props => props.theme.shadows.primary};
+    cursor: pointer;
+    box-shadow: ${props => props.theme.shadows.primary};
   }
 
-
+  &:hover {
+    cursor: pointer;
+    box-shadow: ${props => props.theme.shadows.primary};
     ${props => props.theme.transitions.primary("transform")};
-    &:hover {
-      cursor: pointer;
-      box-shadow: ${props => props.theme.shadows.primary};
-      ${props => props.theme.transitions.primary("transform")};
-      transform: scale(1.025);
+    transform: scale(1.025);
   }
 
   & .featured-content {
     padding: 12.5px;
-  z-index: 2;
+    z-index: 2;
     position: absolute;
     content: "";
     width: 65%;
@@ -206,7 +211,6 @@ const FeaturedBlog = styled.article`
     top: 0px;
     z-index: 0;
     background: ${props => props.theme.colors.primary};
-    // box-shadow: ${props => props.theme.shadows.primary};
 
     & h2 {
       position: relative;
@@ -230,11 +234,16 @@ const FeaturedBlog = styled.article`
 
 const OtherBlogs = styled.div`
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
   margin-bottom: 200px;
   width: 100%;
-  margin-left: -50px;
+
+  ${props =>
+    props.theme.breakpoints.lg(`
+  flex-direction: column;
+  `)}
+
   & .card {
     z-index: 2;
     postiion: relative;
@@ -244,6 +253,7 @@ const OtherBlogs = styled.div`
     border: none;
     border-radius: ${props => props.theme.corners.borderRadius1};
     color: ${props => props.theme.colors.textPrimary};
+    ${props => props.theme.transitions.primary("all")};
 
     & img {
       width: 100%;
@@ -256,7 +266,6 @@ const OtherBlogs = styled.div`
       width: 100%;
     }
 
-    ${props => props.theme.transitions.primary("all")};
     &:hover {
       cursor: pointer;
       ${props => props.theme.mixins.transform3dPrimary};

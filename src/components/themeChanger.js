@@ -22,7 +22,7 @@ const ThemeSwitch = styled.div`
   display: none;
   visibility: hidden;
   ${props =>
-    props.theme.breakpoints.lg(`
+    props.theme.breakpoints.xl(`
   display: block;
   visibility: visible;
   `)}

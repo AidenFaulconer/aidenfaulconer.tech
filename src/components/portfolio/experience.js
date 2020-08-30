@@ -73,9 +73,10 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
 
 const Experiences = styled.div`
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
   height: 100%;
   z-index: 0;
   order: 2;
@@ -83,30 +84,32 @@ const Experiences = styled.div`
   ${props =>
     props.theme.breakpoints.md(`
     flex-direction: column;
-    order: 0;
+    order: 1;
     display: flex;
     margin-right: 100px;
-      `)}
+  `)}
 
   & .experience {
-    background: white;
-    margin: 25px;
-    padding: 25px;
     width: 100%;
     border-radius: ${props => props.theme.corners.borderRadius1};
-    color: black;
-    position: relative;
+    display: flex;
+    justify-content: space-between;
     ${props => props.theme.transitions.primary("transform")};
+    background: white;
+    margin: 25px 0;
+    color: black;
+    padding: 25px;
+
+    ${props =>
+      props.theme.breakpoints.md(`
+    margin: 25px;
+    `)}
 
     & img {
       z-index: 2;
       border-radius: ${props => props.theme.corners.borderRadius100};
-      max-height: 75px;
-      margin: auto;
-      ${props =>
-        props.theme.breakpoints.lg(`
-    display: block;
-      `)}
+      max-height: 50px;
+      margin: auto 50px;
     }
 
     & p {
@@ -124,12 +127,10 @@ const Experiences = styled.div`
     &:hover {
       transform: scale(1.04);
       box-shadow: ${props => props.theme.shadows.primary};
-      border: ${props => props.theme.borders.secondary};
     }
 
     & .active {
       box-shadow: ${props => props.theme.shadows.primary};
-      border: ${props => props.theme.borders.secondary};
     }
   }
 `;
@@ -139,16 +140,15 @@ const SelectedExperience = styled.div`
   min-height: 350px;
   padding: 12.5px;
   width: 100%;
-  order: 1;
+  order: 0;
   background: white;
   position: relative;
   color: black;
-  overflow: hidden;
   background: ${props => props.theme.colors.innerContentColor};
 
   & .experience-heading {
     margin-bottom: 25px;
-    min-width: 104%;
+    min-width: 100%;
     //offset padding so background covers the card
     margin-top: -12.5px;
     margin-left: -12.5px;

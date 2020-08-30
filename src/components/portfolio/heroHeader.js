@@ -12,7 +12,7 @@ import ThreePortfolio from "./three-portfolio";
 
 const HeroHeader = styled.section`
   padding-top: 250px; //185px + 25px
-  // max-height: 80vh;
+  max-height:69vh;
   // padding-bottom: 25px;
   z-index: 0;
 
@@ -49,10 +49,9 @@ const HeroHeader = styled.section`
     margin-top: 75px;
     z-index: 30;
     text-align: center;
-    font-size: 0.35em;
+    font-size: 0.30em;
 
-    ${props =>
-      props.theme.breakpoints.lg(`
+    ${props => props.theme.breakpoints.lg(`
       text-align: left;
       margin-left: 0px;
   `)}
@@ -61,9 +60,8 @@ const HeroHeader = styled.section`
   & .buttons {
     display: flex;
     justify-content: center;
-    ${props =>
-      props.theme.breakpoints.lg(`
-    justify-content: flex-start;
+    ${props => props.theme.breakpoints.lg(`
+      justify-content: flex-start;
     `)}
   }
   color: ${props => props.theme.colors.textPrimary};
@@ -87,16 +85,21 @@ const ThreeWrapper = styled.div`
   `)}
       ${props =>
         props.theme.breakpoints.lg(`
-      width: 450px;
-      height: 450px;
-      top: 0px;
+      width: 1000px;
+      height: 1000px;
+      top: -265px;
+      left: -275px;
+      margin-bottom: -1000px;
+      & .graphic {display: none;}
   `)}
       ${props =>
         props.theme.breakpoints.xl(`
       width: 600px;
       height: 600px;
-      margin-right: 0px;
+      left: 0px;
+      margin-bottom: 0px;
       top: -70px;
+      & .graphic {display: block;}
   `)}
 
   & #three-portfolio {
@@ -161,6 +164,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                     />
                   </h1>
                   <div className="buttons">
+                  {/**
                     <Link to="/contact" className="button -primary">
                       <BtnSecondary
                         text="Start project"
@@ -168,17 +172,20 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                         color="white"
                       />
                     </Link>
-                    <Link to="/contact" className="button -secondary">
-                      <Btn text="Connect" />
+                   */}
+                    <Link to="#Contact" className="button -primary">
+                      <BtnSecondary bg="#0D7BF2"
+                        color="white"
+                        text="Let's Connect" />
                     </Link>
                   </div>
                 </Col>
 
-                <Col xl lg md>
+                <Col xl lg md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
                   <ThreeWrapper>
                     <ThreePortfolio theme={theme} />
                     <img
-                      className="graphic d-xl-block d-lg-block d-md-none d-sm-none d-none"
+                      className="graphic"
                       src={`./assets/svg/portfolio-graphic-${theme.name}.png`} // TODO: this will be dynamic per page (with a hero header)
                     />
                   </ThreeWrapper>

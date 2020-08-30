@@ -153,6 +153,7 @@ const SkillGrid = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   row-gap: 100px;
+  margin-top: 25px;
   column-gap: 100px;
 
   & .skill-row {

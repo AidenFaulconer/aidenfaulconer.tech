@@ -18,92 +18,106 @@ import GoogleAnalytics from "./apis/google-analytics";
 
 // TODO: breakpoint disables middle content and removes social links
 const NavigationWrapper = styled.div`
-
-
   //bring in navbar
-  & .enter{//hiding nav
-  margin-top: -125px;
-  ${props => props.theme.transitions.primary("margin-top")}
+  & .enter {
+    //hiding nav
+    margin-top: -125px;
+    ${props => props.theme.transitions.primary("margin-top")}
   }
 
-  & .enter-done{//showing nav
-  margin-top: 0px;
-  ${props => props.theme.transitions.primary("margin-top")}
+  & .enter-done {
+    //showing nav
+    margin-top: 0px;
+    ${props => props.theme.transitions.primary("margin-top")}
   }
 
   //retract navbar
-  & .exit{//hiding nav
-  margin-top: 0px;
-  ${props => props.theme.transitions.primary("margin-top")}
+  & .exit {
+    //hiding nav
+    margin-top: 0px;
+    ${props => props.theme.transitions.primary("margin-top")}
   }
 
-  & .exit-done{//showing nav
-  margin-top: -125px;
-  ${props => props.theme.transitions.secondary("margin-top")}
-    }
+  & .exit-done {
+    //showing nav
+    margin-top: -125px;
+    ${props => props.theme.transitions.secondary("margin-top")}
+  }
 
-  & nav{
+  & nav {
     border-bottom: 1px solid
-    ${props =>
-      props.theme.name === "dark"
-        ? "rgba(255, 255, 255, 0.25)"
-        : "rgba(0, 0, 0, 0.25)"};
-    left:0px;
-    top:0px;
+      ${props =>
+        props.theme.name === "dark"
+          ? "rgba(255, 255, 255, 0.25)"
+          : "rgba(0, 0, 0, 0.25)"};
+    left: 0px;
+    top: 0px;
     z-index: 100;
-    width: 100vw;
+    width: 100%;
     position: fixed;
-    padding: 25px;
-    background: ${props => props.theme.colors.foreground};//switch on bg color
-
+    padding: 25px 0px;
+    background: ${props => props.theme.colors.foreground}; //switch on bg color
 
     & * {
       text-decoration: none;
     }
-
-
-
     & .link {
       color: ${props => props.theme.colors.textSecondary};
-      margin: auto 75px;
-      margin-left: 0px;
-      font-family: 'brown';
+      margin: auto 0;
+      padding-left: 0px;
+      font-family: "brown";
 
       &::after {
-          content: '';
-          display:block;
-          visibility: hidden;
-          position: relative;
-          top: 37px;
-          background:
-          ${props => props.theme.colors.primary};
-          ;
-          height: 1.5px;
-          width: 0%;
-          ${props => props.theme.transitions.secondary("all")};
-        }
-        &:hover{
-          &::after{
+        content: "";
+        display: block;
+        visibility: hidden;
+        position: relative;
+        bottom: -38px;
+        background: ${props => props.theme.colors.primary};
+        height: 1.75px;
+        width: 0%;
+        ${props => props.theme.transitions.secondary("all")};
+      }
+      &:hover {
+        &::after {
           visibility: visible;
-            width: 100%;
-            ${props => props.theme.transitions.third("width")};
-          }
+          width: 100%;
+          ${props => props.theme.transitions.third("width")};
+        }
+      }
+    }
+
+    & .site-links {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 1.2rem;
+      ${props => props.theme.breakpoints.md(`font-size: 1.25rem;`)}
+      & .active-link {
+        color: ${props => props.theme.colors.primary};
+        &::after {
+          visibility: visible;
+          width: 100%;
+        }
       }
     }
 
     & .branding {
-      left:-19px;//offset padding
+      ${props =>
+        props.theme.breakpoints.xs(`
+      padding: 0px 25px;
+      `)}
       ${props => props.theme.transitions.primary("all")};
-
+      &:hover {
+      }
 
       & .page-type {
-      position: absolute;
-      left: 18%;
-      top: -0%;
-      display: inline-block;
-      font-size: ${props => props.theme.text.sizes.extraSmall};
-      color:  ${props => props.theme.colors.textSecondary};
-      font-family: "poppins-light";
+        position: absolute;
+        left: 18%;
+        top: -0%;
+        display: inline-block;
+        font-size: ${props => props.theme.text.sizes.extraSmall};
+        color: ${props => props.theme.colors.textSecondary};
+        font-family: "poppins-light";
       }
 
       & svg {
@@ -112,47 +126,26 @@ const NavigationWrapper = styled.div`
         height: 45px;
         width: auto;
         transform: skew(0deg);
-        &:hover {
-        skew(12deg);
         ${props => props.theme.transitions.primary("all")};
-        ${props => props.theme.breakpoints.md(`max-width: 50px;`)}
-        }
-        }
-
-
-        & .path {
         &:hover {
-          animation: dash 1s ease-in-out;
-          transform: scale(1);
+          transform: skew(-12.5deg);
+          ${props => props.theme.transitions.primary("all")};
         }
-          animation: dash 1s ease-in-out;
-          @keyframes dash {
-            0%,
-            50% {
-              transform: translate(-39%,0%) skew(12deg);
-            }
-            to {
-              transform: translate(0%,0%) skew(0deg);
-            }
+      }
+
+      & .path {
+        animation: dash 1s ease-in-out;
+        @keyframes dash {
+          0%,
+          50% {
+            transform: translate(-39%, 0%) skew(12deg);
+          }
+          to {
+            transform: translate(0%, 0%) skew(0deg);
+          }
         }
       }
     }
-
-
-
-    & .site-links {
-      display: flex;
-      justify-content: flex-end;
-      font-size: 1.2rem;
-        ${props => props.theme.breakpoints.md(`font-size: 1.25rem;`)}
-        & .active {
-          &::after{
-          visibility: visible;
-          width: 100%;
-        }
-      }
-    }
-
   }
 `;
 
@@ -163,7 +156,7 @@ export default ({ toggleTheme, theme, pageType }) => {
     typeof window !== "undefined" ? window.location.pathname : ""
   );
   const [scrollPos, setScrollPos] = useState(
-    document.body.getBoundingClientRect().y
+  typeof document !== "undefined" ? document.body.getBoundingClientRect().y : 0
   );
   const [hide, showNav] = useState(true); // triggers css animation to hide or hide navbar
 
@@ -174,7 +167,7 @@ export default ({ toggleTheme, theme, pageType }) => {
   hideRef.current = hide;
 
   const watchScroll = useCallback(() => {
-    const currentScrollPos = document.body.getBoundingClientRect().y; // return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
+    const currentScrollPos = typeof document !== "undefined" ? document.body.getBoundingClientRect().y : 0;// return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
     const prevScrollPos = positionRef.current; // state refs
     const prevHide = hideRef.current;
     showNav(currentScrollPos - prevScrollPos > 0); // if negative, we hide, if positive we show
@@ -202,7 +195,6 @@ export default ({ toggleTheme, theme, pageType }) => {
                 lg={1}
                 md={1}
                 sm={1}
-                xs={1}
                 className="d-lg-block d-md-block"
               />
 
@@ -215,16 +207,9 @@ export default ({ toggleTheme, theme, pageType }) => {
                 </Link>
               </Col>
 
-              <Col
-                xl={4}
-                lg={4}
-                md
-                sm={10}
-                xs={4}
-                className="site-links d-sm-none d-md-block d-lg-block"
-              >
+              <Col xl={4} lg={4} md sm={10} xs={4} style={{display: "flex",justifyContent: "space-evenly"}}className="site-links">
                 <Link
-                  className={`link ${selected === "/" ? "active" : ""}`}
+                  className={`link ${selected === "/" ? "active-link" : ""}`}
                   to="./"
                 >
                   Portfolio
@@ -233,7 +218,7 @@ export default ({ toggleTheme, theme, pageType }) => {
                 <Link
                   className={`link ${
                     selected.match(`(^/blog/*\w*)|(^/projects/*\w*)`)
-                      ? "active"
+                      ? "active-link"
                       : ""
                   }`}
                   to="./blog"

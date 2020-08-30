@@ -134,7 +134,7 @@ export default React.memo(({ theme }) => {
                 lg={1}
                 // css to be overriden programatically
                 style={{ marginTop: "0px", background: "rgba(1,1,1,1)" }}
-                className="d-xs-none d-md-none d-lg-block d-xl-block"
+                className="d-none d-md-none d-lg-none d-xl-block"
               >
                 <ContentNavigation
                   odd={currentSection.odd}
@@ -318,14 +318,13 @@ const ContentContainer = styled.section`
       width:100%;
       position: relative;
       left:0px;
-      margin-bottom: 34px;//17+17
       z-index: 1;
       overflow: hidden;
       color: inherit;
-      margin: auto;
-      position: absolute
+      margin-bottom: 34px;//17+17
+      text-align: center;
       ${props =>
-        props.theme.breakpoints.sm(`
+        props.theme.breakpoints.lg(`
         text-align: left;
           `)}
       }
