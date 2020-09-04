@@ -57,6 +57,19 @@ export default React.memo(({ theme }) => {
     name: "Projects",
     odd: true
   });
+
+  const colorMapping = {
+  "odd":{
+  background: "",
+  textSecondary: "",
+  },
+  "even":{
+  text: "",
+  textSecondary: "",
+  background: "",
+  }
+  }
+
   const sectionRefs = useRef({});
 
   const scrollToSection = useCallback(elem => {
@@ -90,6 +103,7 @@ export default React.memo(({ theme }) => {
                   const odd = i % 2 === 0; // create alternating pattern on page for styling and animations
                   return (
                     <ContentContainer
+                      colorSwap={currentSection.odd}
                       odd={odd}
                       id={sectionName}
                       ref={ref => {
@@ -137,7 +151,7 @@ export default React.memo(({ theme }) => {
                 className="d-none d-md-none d-lg-none d-xl-block"
               >
                 <ContentNavigation
-                  odd={currentSection.odd}
+                  colorSwap={currentSection.odd}
                   id="sticky"
                   src="./assets/svg/wave-graphic.png"
                 >
@@ -192,9 +206,9 @@ const ContentNavigation = styled.nav`
     width: 100%;
     ${props => props.theme.transitions.primary("all")};
     background: ${props =>
-      props.odd ? props.theme.colors.primary : props.theme.colors.foreground};
+      props.colorSwap ? props.theme.colors.primary : props.theme.colors.foreground};
     color: ${props =>
-      props.odd
+      props.colorSwap
         ? props.theme.colors.textPrimary
         : props.theme.colors.textSecondary};
   }
@@ -301,10 +315,16 @@ const ContentContainer = styled.section`
   z-index: 1;
   padding: 100px 25px 200px 25px;
 
+    border-bottom: 1.75px solid
+      ${props =>
+        props.theme.name === "dark"
+          ? "rgba(255, 255, 255, 0.25)"
+          : "rgba(0, 0, 0, 0.25)"};
+
   background: ${props =>
-    props.odd ? props.theme.colors.primary : props.theme.colors.foreground};
+    props.colorSwap ? props.theme.colors.primary : props.theme.colors.foreground};
   color: ${props =>
-    props.odd
+    props.colorSwap
       ? props.theme.colors.textPrimary
       : props.theme.colors.textSecondary};
           ${props => props.theme.transitions.primary("all")};
@@ -321,7 +341,7 @@ const ContentContainer = styled.section`
       z-index: 1;
       overflow: hidden;
       color: inherit;
-      margin-bottom: 34px;//17+17
+      margin-bottom: 25px;
       text-align: center;
       ${props =>
         props.theme.breakpoints.lg(`

@@ -151,32 +151,30 @@ const Post = styled.article`
       text-align: left;
       margin: auto;
       font-size: 3em;
-      margin-bottom: 25px;
+      text-align: center;
+      margin-bottom: 6.125px;
       font-family: "brown";
     }
     & .post-meta {
+      text-align: center;
       font-family: "brown";
-      color: ${props => props.theme.colors.textThird};
+      color: ${props => props.theme.colors.textSecondary};
     }
   }
+
   & .post-thumbnail {
     flex: 75%;
-    position: relative;
+    position: absolute;
     order: 1;
-    height: 500px;
+    left: 0px;
+    opacity: .5;
+    top:0px;
+    z-index: -1;
+    height: 600px;
+    width: 100%;
     background-image: url(${props => props.src});
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    // &:before {
-    //   content: "";
-    //   position: absolute;
-    //   top: 0;
-    //   opacity: 0.25;
-    //   left: 0;
-    //   width: 100%;
-    //   height: 100%;
-    //   z-index: 1;
-    // }
   }
 `;

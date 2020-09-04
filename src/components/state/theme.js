@@ -216,13 +216,16 @@ export default {
       overflow-x: hidden;
       margin: 0px;
       padding: 0px;
-      font-size: 20px;
+      font-size: 10px;
+
+      & h1 {font-size:50.24px;}
 
       ${staticStlying.breakpoints.sm(`
       font-size: 12px;
       `)}
       ${staticStlying.breakpoints.md(`
       font-size: 15px;
+      & h1 {font-size:74.24px;}
       `)}
       ${staticStlying.breakpoints.lg(`
       font-size: 20px;
@@ -284,11 +287,15 @@ export default {
       padding: 0px;
       font-size: 20px;
 
+      & h1 {font-size:50.24px;}
+
        ${staticStlying.breakpoints.sm(`
       font-size: 12px;
+
       `)}
       ${staticStlying.breakpoints.md(`
       font-size: 15px;
+      & h1 {font-size:74.24px;}
       `)}
       ${staticStlying.breakpoints.lg(`
       font-size: 20px;

@@ -18,7 +18,7 @@ import GoogleAnalytics from "./apis/google-analytics";
 
 // TODO: breakpoint disables middle content and removes social links
 const NavigationWrapper = styled.div`
-  //bring in navbar
+  //css transition styling
   & .enter {
     //hiding nav
     margin-top: -125px;
@@ -41,59 +41,69 @@ const NavigationWrapper = styled.div`
   & .exit-done {
     //showing nav
     margin-top: -125px;
-    ${props => props.theme.transitions.secondary("margin-top")}
+    ${props => props.theme.transitions.primary("margin-top")}
   }
+  //css transition styling
 
   & nav {
-    border-bottom: 1px solid
+    left: 0px;
+    top: 0px;
+    z-index: 100;
+    width: 100vw;
+    position: fixed;
+    padding: 12.5px;
+    border-bottom: 1.75px solid
       ${props =>
         props.theme.name === "dark"
           ? "rgba(255, 255, 255, 0.25)"
           : "rgba(0, 0, 0, 0.25)"};
-    left: 0px;
-    top: 0px;
-    z-index: 100;
-    width: 100%;
-    position: fixed;
-    padding: 25px 0px;
+
+    ${props=>props.theme.breakpoints.md(`padding: 25px 0px;`)}
     background: ${props => props.theme.colors.foreground}; //switch on bg color
 
     & * {
       text-decoration: none;
     }
-    & .link {
-      color: ${props => props.theme.colors.textSecondary};
-      margin: auto 0;
-      padding-left: 0px;
-      font-family: "brown";
-
-      &::after {
-        content: "";
-        display: block;
-        visibility: hidden;
-        position: relative;
-        bottom: -38px;
-        background: ${props => props.theme.colors.primary};
-        height: 1.75px;
-        width: 0%;
-        ${props => props.theme.transitions.secondary("all")};
-      }
-      &:hover {
-        &::after {
-          visibility: visible;
-          width: 100%;
-          ${props => props.theme.transitions.third("width")};
-        }
-      }
-    }
 
     & .site-links {
       display: flex;
       justify-content: flex-end;
-      font-size: 1.2rem;
+      font-family: "brown-regular";
       ${props => props.theme.breakpoints.md(`font-size: 1.25rem;`)}
+      padding-right: 25px;
+
+      & .link {
+          margin: auto;
+          margin-right: 0px;
+          margin-left: 12.5px;
+          padding-left: 0px;
+          font-family: "brown";
+          color: ${props => props.theme.colors.textSecondary};
+
+          &::after {
+            content: "";
+            display: block;
+            visibility: hidden;
+            position: relative;
+            bottom: -23.5px;
+            height: 1.75px;
+            width: 0%;
+            background: ${props => props.theme.colors.primary};
+            ${props => props.theme.transitions.secondary("all")};
+            ${props=>props.theme.breakpoints.md(`bottom:-38px;`)}
+          }
+          &:hover {
+            &::after {
+              visibility: visible;
+              width: 100%;
+              ${props => props.theme.transitions.third("width")};
+            }
+          }
+        }
+
       & .active-link {
         color: ${props => props.theme.colors.primary};
+
         &::after {
           visibility: visible;
           width: 100%;
@@ -102,31 +112,27 @@ const NavigationWrapper = styled.div`
     }
 
     & .branding {
-      ${props =>
-        props.theme.breakpoints.xs(`
-      padding: 0px 25px;
-      `)}
       ${props => props.theme.transitions.primary("all")};
-      &:hover {
-      }
 
       & .page-type {
         position: absolute;
         left: 18%;
         top: -0%;
         display: inline-block;
+        font-family: "poppins-light";
         font-size: ${props => props.theme.text.sizes.extraSmall};
         color: ${props => props.theme.colors.textSecondary};
-        font-family: "poppins-light";
       }
 
       & svg {
         display: inline-block;
-        fill: ${props => props.theme.colors.textSecondary};
-        height: 45px;
+        height: 40px;
         width: auto;
         transform: skew(0deg);
+        fill: ${props => props.theme.colors.textSecondary};
         ${props => props.theme.transitions.primary("all")};
+        ${props=>props.theme.breakpoints.md(`height: 45px;`)}
+
         &:hover {
           transform: skew(-12.5deg);
           ${props => props.theme.transitions.primary("all")};
@@ -169,25 +175,33 @@ export default ({ toggleTheme, theme, pageType }) => {
   const watchScroll = useCallback(() => {
     const currentScrollPos = typeof document !== "undefined" ? document.body.getBoundingClientRect().y : 0;// return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
     const prevScrollPos = positionRef.current; // state refs
+
+    //for performance only update state when needed, otherwise drop out before we call showNav
+    //only update state every 100px scrolled by user
+    const thisScrollOffset = currentScrollPos - prevScrollPos;
+    if (Math.abs(thisScrollOffset) < 0) return;
+    // alert(thisScrollOffset)
+
     const prevHide = hideRef.current;
-    showNav(currentScrollPos - prevScrollPos > 0); // if negative, we hide, if positive we show
+    showNav(thisScrollOffset > 0); // if negative, we hide, if positive we show
     setScrollPos(currentScrollPos);
   });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) return//we do not hide and unhide navbar on mobile devices
       window.addEventListener("scroll", watchScroll);
     }
   }, []);
 
   return (
     <header>
-      <GoogleAds />
       {/**
+      <GoogleAds />
       <GoogleAnalytics/>
        */}
       <NavigationWrapper>
-        <CSSTransition in={hide} timeout={10}>
+        <CSSTransition in={hide} timeout={15}>
           <nav>
             <Row>
               <Col
@@ -207,12 +221,12 @@ export default ({ toggleTheme, theme, pageType }) => {
                 </Link>
               </Col>
 
-              <Col xl={4} lg={4} md sm={10} xs={4} style={{display: "flex",justifyContent: "space-evenly"}}className="site-links">
+              <Col xl={4} lg={4} md sm={10} xs={3} style={{display: "flex",justifyContent: "space-evenly"}}className="site-links">
                 <Link
                   className={`link ${selected === "/" ? "active-link" : ""}`}
-                  to="./"
+                  to="/"
                 >
-                  Portfolio
+                  {"Portfolio"}
                 </Link>
 
                 <Link
@@ -221,9 +235,9 @@ export default ({ toggleTheme, theme, pageType }) => {
                       ? "active-link"
                       : ""
                   }`}
-                  to="./blog"
+                  to="/blog"
                 >
-                  Blog
+                  {"Blog"}
                 </Link>
 
                 <ThemeChanger toggleTheme={toggleTheme} />
@@ -233,6 +247,7 @@ export default ({ toggleTheme, theme, pageType }) => {
             </Row>
           </nav>
         </CSSTransition>
+
       </NavigationWrapper>
     </header>
   );

@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { useTheme } from "emotion-theming";
 import { INVIEWCONFIG } from "../page-builders/index-builder";
 const axios = require('axios').default;
-
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
+
 // #region contact
 export default ({ data, sectionName, odd, setCurrentSection }) => {
   const [selected, selectProject] = useState(0);
@@ -21,10 +21,16 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
   //sanitize input
   alert("submitting form...")
   axios({
+  headers: { 'Content-Type': 'application/json;charset=UTF-8',
+      "Access-Control-Allow-Origin": "*",},
   method: "post",
-  url: "localhost:8181/api/v1/email",
+  url: "192.168.0.210:8181/api/v1/email",
   data: {firstName,lastName,subject,message}
-  }).then(()=>alert("message sent successfully"))
+  }).then(
+  (response)=>alert(JSON.stringify(response.data)),
+  (error)=>alert(JSON.stringify(error)))
+
+  return(false)
   }
 
   const theme = useTheme();
@@ -56,12 +62,8 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
         <BtnPrimary
           text="Contact"
           color={theme.colors.textPrimary}
+          callback={() => SubmitForm("test","test","test","test")}
         />
-        <button
-          onClick={() => SubmitForm("test","test","test","test")}
-        >
-        testing
-        </button>
         <div dangerouslySetInnerHTML={{ __html: "" }} />
       </ContactForm>
       {/**

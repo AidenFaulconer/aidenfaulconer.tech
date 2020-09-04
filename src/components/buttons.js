@@ -26,7 +26,10 @@ const Button = styled.button`
   font-family: brown-regular;
   z-index: 100;
   display: flex;
+  flex: 2 1;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
 
   &.-primary {
     color: ${props => props.theme.colors.textSecondary};
@@ -45,8 +48,9 @@ const Button = styled.button`
     width: 25px;
     height: 25px;
     position: relative;
-    margin: auto 0;
-    z-index: 100;
+    margin: auto;
+    margin-left: 0px;
+    z-index: 1;
     ${props => props.theme.transitions.primary("margin-left")};
   }
 
@@ -57,40 +61,56 @@ const Button = styled.button`
       ${props => props.theme.transitions.primary("margin-left")};
     }
   }
+
+  & p {
+    margin: auto;
+  }
 `;
 
 export const defaultPadding = "12.5px 25px";
 
-export const BtnPrimary = ({ children, text, theme, padding, color, bg }) => (
+export const BtnPrimary = ({children, callback, text, theme, padding, color, bg }) => (
   <Button
+    type="button"
+    onClick={callback}
     padding={padding || defaultPadding}
     className="-primary"
     style={{ color: color || "", background: bg || "" }}
   >
     {children}
+    <p>
     {text}
+    </p>
     <Icon icon={chevronRight} />
   </Button>
 );
-export const BtnSecondary = ({ children, text, theme, padding, color, bg }) => (
+export const BtnSecondary = ({children, callback, text, theme, padding, color, bg }) => (
   <Button
+    type="button"
+    onClick={callback}
     padding={padding || defaultPadding}
     className="-secondary"
     style={{ color: color || "", background: bg || "" }}
   >
     {children}
+    <p>
     {text}
+    </p>
     <Icon icon={chevronRight} />
   </Button>
 );
-export const Btn = ({ children, text, theme, padding, color }) => (
+export const Btn = ({ children, text,theme, callback, padding, color }) => (
   <Button
+    type="button"
+    onClick={callback}
     padding={padding || defaultPadding}
     className="-none"
     style={{ color: color || "" }}
   >
     {children}
+    <p>
     {text}
+    </p>
     <Icon icon={chevronRight} />
   </Button>
 );

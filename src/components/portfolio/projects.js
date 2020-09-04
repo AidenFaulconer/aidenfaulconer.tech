@@ -97,22 +97,31 @@ const ImageGrid = styled.div`
   grid-gap: 8px;
   display: grid;
   position: relative;
+  padding: 8px;
   overflow: hidden;
+  color: ${props=>props.theme.colors.textSecondary};
 
   ${props =>
     props.theme.breakpoints.lg(`
   width: 100%;
+  grid-template-columns: 1fr 1fr;
       `)}
+
   & .preview-content {
-    background: ${props => props.theme.colors.textSecondary};
+  border-radius: ${props => props.theme.corners.borderRadius1};
+    background: ${props => props.theme.colors.textPrimary};
     ${props => props.theme.transitions.primary("transform")};
 
     & img {
-      border-radius: ${props => props.theme.corners.borderRadius1};
       width: 100%;
       position: relative;
+
+      max-height: 50px;
+      ${props=>props.theme.breakpoints.md(`
       max-height: 200px;
-      object-fit: contain;
+      `)}
+
+      object-fit: fit;
       opacity: 0.9;
       margin-bottom: 8px;
     }
@@ -123,10 +132,10 @@ const ImageGrid = styled.div`
         box-shadow: ${props => props.theme.shadows.primary};
     }
     & h3 {
-      margin: 8px 25px;
+      margin: 8px 12.5px;
     }
     & p {
-      margin: 12.5px 25px;
+      margin: 8px 12.5px;
     }
   }
 `;
@@ -136,11 +145,11 @@ const DisplayImage = styled.article`
   display: flex;
   position: relative;
   flex-direction: column;
-  max-height: 600px;
   color: inherit;
 
   ${props =>
     props.theme.breakpoints.sm(`
+  max-height: 600px;
   width: 50%;
     margin: 50px auto;
       `)}
@@ -148,24 +157,8 @@ const DisplayImage = styled.article`
   ${props =>
     props.theme.breakpoints.md(`
   margin-right: 100px;
-  width: 50%;
+  width: 100%;
       `)}
-
-  &::after {
-    content: "";
-    width: 595px;
-    height: 434px;
-    max-width: 100%;
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    background-image: url(${props => props.src});
-    opacity: 0.6;
-    z-index: -1;
-    transform: rotate(-3deg);
-    box-shadow: ${props => props.theme.shadows.primary};
-    ${props => props.theme.transitions.primary("transform")};
-  }
 
   &:hover {
     & img {
@@ -185,10 +178,30 @@ const DisplayImage = styled.article`
   & img {
     box-shadow: ${props => props.theme.shadows.primary};
     ${props => props.theme.transitions.primary("transform")};
-    width: 595px;
-    height: 434px;
     max-width: 100%;
     margin: 0px 0px;
+      max-height: 200px;
+
+      ${props=>props.theme.breakpoints.md(`
+    width: 595px;
+    height: 434px;
+      `)}
+
+    &::after {
+      content: "";
+      width: 595px;
+      height: 434px;
+      max-width: 100%;
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      background-image: url(${props => props.src});
+      opacity: 0.6;
+      z-index: -1;
+      transform: rotate(-3deg);
+      box-shadow: ${props => props.theme.shadows.primary};
+      ${props => props.theme.transitions.primary("transform")};
+    }
   }
   & h3 {
     margin-top: 25px;

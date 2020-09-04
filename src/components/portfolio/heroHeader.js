@@ -9,6 +9,7 @@ import { TypeWriter } from "../util/typewriter";
 import { BtnPrimary, BtnSecondary, Btn } from "../buttons.js";
 
 import ThreePortfolio from "./three-portfolio";
+import ThreeBlog from "../blog/three-blog";
 
 const HeroHeader = styled.section`
   padding-top: 250px; //185px + 25px
@@ -24,6 +25,12 @@ const HeroHeader = styled.section`
     font-family: poppins-bold;
     text-align: center;
 
+    ${props =>
+      props.theme.breakpoints.xs(`
+      font-size: 2.5em;
+      width: 100%;
+      margin-top: -100px;
+  `)}
     ${props =>
       props.theme.breakpoints.lg(`
       text-align: left;
@@ -70,8 +77,8 @@ const HeroHeader = styled.section`
 const ThreeWrapper = styled.div`
   position: relative;
   margin: auto;
-  width: 400px;
-  height: 400px;
+  width: 200px;
+  height: 200px;
 
     ${props =>
       props.theme.breakpoints.sm(`
