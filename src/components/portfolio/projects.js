@@ -62,11 +62,15 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
               <Link to={selectedProject.path}>
                 <img src={selectedProject.thumbnail_} alt="display image" />
               </Link>
-              <h3>{selectedProject.title}</h3>
-              <p>{selectedProject.metaDescription}</p>
-              <Link to={selectedProject.path}>
-                <BtnSecondary text="see more" />
-              </Link>
+              <div>
+                <div>
+                  <h3>{selectedProject.title}</h3>
+                  <p>{selectedProject.metaDescription}</p>
+                </div>
+                <Link to={selectedProject.path}>
+                  <BtnSecondary text="see more" padding="12.5px"/>
+                </Link>
+              </div>
             </DisplayImage>
             <ImageGrid>
               {rawProjectData.map((project, i) => {
@@ -100,6 +104,7 @@ const ImageGrid = styled.div`
   padding: 8px;
   overflow: hidden;
   color: ${props=>props.theme.colors.textSecondary};
+  margin-top: 50px;
 
   ${props =>
     props.theme.breakpoints.lg(`
@@ -108,14 +113,13 @@ const ImageGrid = styled.div`
       `)}
 
   & .preview-content {
-  border-radius: ${props => props.theme.corners.borderRadius1};
+    border-radius: ${props => props.theme.corners.borderRadius1};
     background: ${props => props.theme.colors.textPrimary};
     ${props => props.theme.transitions.primary("transform")};
 
     & img {
       width: 100%;
       position: relative;
-
       max-height: 50px;
       ${props=>props.theme.breakpoints.md(`
       max-height: 200px;
@@ -133,9 +137,11 @@ const ImageGrid = styled.div`
     }
     & h3 {
       margin: 8px 12.5px;
+      font-size: ${props => props.theme.text.sizes.small};
     }
     & p {
       margin: 8px 12.5px;
+      font-size: ${props => props.theme.text.sizes.extraSmall};
     }
   }
 `;
@@ -146,12 +152,20 @@ const DisplayImage = styled.article`
   position: relative;
   flex-direction: column;
   color: inherit;
+  text-align: center;
+
+  & a {
+  align-self: center;
+  display: inline-block;
+  }
 
   ${props =>
     props.theme.breakpoints.sm(`
-  max-height: 600px;
-  width: 50%;
+    text-align: left;
+    max-height: 600px;
+    width: 50%;
     margin: 50px auto;
+    & a { align-self: flex-start;}
       `)}
 
   ${props =>
@@ -180,11 +194,15 @@ const DisplayImage = styled.article`
     ${props => props.theme.transitions.primary("transform")};
     max-width: 100%;
     margin: 0px 0px;
-      max-height: 200px;
+    max-height: 100px;
 
-      ${props=>props.theme.breakpoints.md(`
+      ${props=>props.theme.breakpoints.sm(`
+    max-height: 200px;
     width: 595px;
     height: 434px;
+      `)}
+      ${props=>props.theme.breakpoints.md(`
+    max-height: 600px;
       `)}
 
     &::after {
@@ -205,11 +223,10 @@ const DisplayImage = styled.article`
   }
   & h3 {
     margin-top: 25px;
-    position: realtive;
   }
   & p {
     margin-top: 12.5px;
-    position: realtive;
+    position: relative;
   }
   & button {
     margin-top: 8px;

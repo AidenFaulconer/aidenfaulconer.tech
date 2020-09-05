@@ -107,6 +107,7 @@ export default ({ children, pageType }) => {
             themeState={themeState} // used by theme switch
           />
 
+          <Spacer/>
           {children}
 
           <Footer>
@@ -170,6 +171,15 @@ export default ({ children, pageType }) => {
     </Container>
   );
 };
+
+const Spacer = styled.div`
+  width: 100vw;
+  position: relative;
+  padding: 125px;
+  ${props=>props.theme.breakpoints.sm(`
+  padding: 125px;
+  `)}
+`;
 
 const Footer = styled.footer`
   padding-top: 50px;

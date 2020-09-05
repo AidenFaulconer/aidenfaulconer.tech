@@ -7,6 +7,7 @@ import { INVIEWCONFIG } from "../page-builders/index-builder";
 const axios = require('axios').default;
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 
+
 // #region contact
 export default ({ data, sectionName, odd, setCurrentSection }) => {
   const [selected, selectProject] = useState(0);

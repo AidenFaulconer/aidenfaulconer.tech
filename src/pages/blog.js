@@ -25,19 +25,12 @@ const blogPage = React.memo(() => {
 
   return (
     <Layout pageType="blog">
-      <Spacer />
-      <ThreeWrapper id="three-blog">
+      <ThreeWrapper id="three-blog" className="d-none d-md-block">
         <ThreeBlog theme={theme} />
       </ThreeWrapper>
       <BlogBuilder />
     </Layout>
   );
 });
-
-const Spacer = styled.br`
-  width: 100%;
-  margin-top: 250px;
-  position: relative;
-`;
 
 export default blogPage;

@@ -87,7 +87,7 @@ export default React.memo(() => {
         const rawBlogData = data.allMarkdownRemark.edges;
         const featuredBlog = rawBlogData[0].node.frontmatter;
         return (
-          <>
+          <Test>
             <Row noGutters style={{ paddingTop: "0px" }}>
               <Col
                 xl={1}
@@ -100,10 +100,13 @@ export default React.memo(() => {
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  flexWrap: "wrap"
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  border: "2px solid transparent"
                 }}
               >
-                <Col xl={6} lg={6} md={11}>
+                <Col
+                xl={6} lg={6} md={11} xs={0} sm={11} className="d-none d-xs-none d-sm-block">
                   <Link to={featuredBlog.path}>
                     <FeaturedBlog src={featuredBlog.thumbnail_}>
                       <img src={featuredBlog.thumbnail_} />
@@ -116,7 +119,8 @@ export default React.memo(() => {
                   </Link>
                 </Col>
 
-                <Col xl={4} lg md={11}>
+                <Col xl={4} lg md={10} sm={10} xs={5}
+                >
                   <OtherBlogs>
                     {rawBlogData.map((blog, i) => {
                       const blogData = blog.node.frontmatter;
@@ -136,7 +140,7 @@ export default React.memo(() => {
                   xl={2}
                   lg={2}
                   style={{ marginTop: "0px" }}
-                  className="d-xs-none d-sm-none d-md-none d-lg-block d-xl-block "
+                  className="d-none d-xs-none d-sm-none d-md-none d-lg-block d-xl-block "
                 >
                   <img
                     style={{
@@ -154,17 +158,18 @@ export default React.memo(() => {
                 xl={1}
                 lg={1}
                 md={1}
-                className="d-sm-none d-md-none d-lg-block"
+                className="d-sm-none d-md-block d-lg-block"
               />
             </Row>
-          </>
+          </Test>
         );
       }}
     />
   );
 });
 // #endregion section builder
-const Test = styled.div``;
+const Test = styled.div`
+`;
 
 const FeaturedBlog = styled.article`
   position: relative;
@@ -176,7 +181,6 @@ const FeaturedBlog = styled.article`
   border-radius: ${props => props.theme.corners.borderRadius1};
   overflow: hidden;
   ${props => props.theme.transitions.primary("transform")};
-
 
   & img {
     object-fit: fit;
@@ -233,18 +237,27 @@ const FeaturedBlog = styled.article`
 `;
 
 const OtherBlogs = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr;
   justify-content: space-evenly;
-  margin-bottom: 200px;
-  width: 100%;
+  margin-bottom: 175px;
 
-  ${props =>
-    props.theme.breakpoints.lg(`
-  flex-direction: column;
+  ${props=>props.theme.breakpoints.sm(`
+  margin-bottom: 0px;
+  padding: 25px 0px;
+  grid-template-columns: 1fr 1fr 1fr;
+  `)}
+
+  ${props=>props.theme.breakpoints.lg(`
+  padding: 0px 25px;
+  margin-bottom: 200px;
+  grid-template-columns: 1fr;
   `)}
 
   & .card {
+    align-self: center;
+    justiyf-self: center;
+
     z-index: 2;
     postiion: relative;
     height: 150px;

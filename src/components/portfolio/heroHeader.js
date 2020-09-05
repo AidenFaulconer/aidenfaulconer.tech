@@ -12,8 +12,7 @@ import ThreePortfolio from "./three-portfolio";
 import ThreeBlog from "../blog/three-blog";
 
 const HeroHeader = styled.section`
-  padding-top: 250px; //185px + 25px
-  max-height:69vh;
+  max-height:45vh;
   // padding-bottom: 25px;
   z-index: 0;
 

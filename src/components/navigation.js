@@ -62,6 +62,7 @@ const NavigationWrapper = styled.div`
     background: ${props => props.theme.colors.foreground}; //switch on bg color
 
     & * {
+    z-index: 5;
       text-decoration: none;
     }
 

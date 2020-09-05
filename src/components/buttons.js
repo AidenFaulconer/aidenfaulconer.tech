@@ -31,6 +31,7 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
 
+
   &.-primary {
     color: ${props => props.theme.colors.textSecondary};
     background: ${props => props.theme.colors.primary};
