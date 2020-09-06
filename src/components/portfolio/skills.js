@@ -123,12 +123,13 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
         {Object.keys(data).map((groupName, i) => {
           const group = data[groupName];
           return (
-            <div className="skill-row">
+            <div className="skill-row" key={`${groupName}-catagory`}>
               <h3 className="heading">{groupName}</h3>
-              <div className="skill-group">
+              <div className="skill-group" key={`group-${i}`}>
                 {group.map((skill, i) => {
                   return (
                     <div
+                      key={`skill-${skill.skill_name}`}
                       onClick={() => selectSkill(skill.skill_name)}
                       className={`skill ${
                         skill.skill_name === selected ? "selected" : ""

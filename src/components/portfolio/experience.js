@@ -24,6 +24,7 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
         {data.languages.map((experience, index) => {
           return (
             <div
+              key={`${experience.experienceRole}-index`}
               onClick={() => selectExperience(index)}
               className={`experience ${
                 selectedExperience === index ? "active" : ""
@@ -59,7 +60,7 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
         <h3>Skills Used</h3>
         <div className="skills-used">
           {currentExpereince.skillsUsed.map(skill => (
-            <div className="skill">{skill.skill}</div>
+            <div className="skill" key={`${skill.skill}`}>{skill.skill}</div>
           ))}
         </div>
         <h3>About the role</h3>

@@ -134,14 +134,14 @@ export default ({ children, pageType }) => {
                     style={{ display: "flex", flexDirection: "column" }}
                   >
                     <h3>useful links</h3>
-                    <Link>
+                    <Link to={"/portfolio"}>
                       <Btn
                         color={theme.colors.textPrimary}
                         text="Portfolio"
                         padding="12.5px 0px"
                       />
                     </Link>
-                    <Link>
+                    <Link to={"/blog"}>
                       <Btn color={theme.colors.textPrimary} text="Blog" padding="12.5px 0px" />
                     </Link>
                   </Col>
@@ -175,7 +175,7 @@ export default ({ children, pageType }) => {
 const Spacer = styled.div`
   width: 100vw;
   position: relative;
-  padding: 125px;
+  padding: 75px;
   ${props=>props.theme.breakpoints.sm(`
   padding: 125px;
   `)}

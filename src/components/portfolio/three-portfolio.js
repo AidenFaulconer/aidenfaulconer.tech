@@ -158,13 +158,11 @@ export const InstancedBoxs = ({
 
 // https://inspiring-wiles-b4ffe0.netlify.app/2-objects-and-properties
 export default ({ theme }) => {
-  const ref = useRef();
   const { viewport } = useThree();
 
   return (
     <div id="three-portfolio">
       <Canvas
-        ref={ref}
         concurrent
         shadowMap
       pixelRatio={typeof window !== "undefined" && window.devicePixelRatio}

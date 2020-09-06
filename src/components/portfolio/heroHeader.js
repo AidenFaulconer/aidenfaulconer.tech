@@ -25,7 +25,7 @@ const HeroHeader = styled.section`
     text-align: center;
 
     ${props =>
-      props.theme.breakpoints.xs(`
+      props.theme.breakpoints.sm(`
       font-size: 2.5em;
       width: 100%;
       margin-top: -100px;
@@ -33,6 +33,7 @@ const HeroHeader = styled.section`
     ${props =>
       props.theme.breakpoints.lg(`
       text-align: left;
+      margin-top: 0px;
       margin-left: 0px;
       font-size: 3.5em;
       width: 100%;

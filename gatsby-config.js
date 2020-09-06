@@ -46,6 +46,12 @@ module.exports = {
       }
     },
     {
+    resolve: `gatsby-plugin-preload-fonts`,
+    options: {
+      crossOrigin: `use-credentials`,
+    }
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Aiden Faulconer`,

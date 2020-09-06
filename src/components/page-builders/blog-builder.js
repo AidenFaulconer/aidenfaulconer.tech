@@ -125,7 +125,9 @@ export default React.memo(() => {
                     {rawBlogData.map((blog, i) => {
                       const blogData = blog.node.frontmatter;
                       return (
-                        <Link to={blogData.path}>
+                        <Link to={blogData.path}
+                          key={`${blog.title}-${i}`}
+                        >
                           <div className="card">
                             <img src={blogData.thumbnail_} />
                             <p>{blogData.title}</p>

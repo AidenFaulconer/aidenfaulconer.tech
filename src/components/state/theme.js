@@ -2,20 +2,20 @@
 const fontFace = (fontFamily, src) =>
   `@font-face {
     font-family: ${fontFamily};
-    src: url(${src});
+    src: url(${src}), format('woff2');
   };
   `;
+//map any used fonts with the css name and the resource url woff2 is the chosen format
 const fonts = [
   // brown
-  ["brown-regular", "./fonts/brown/Brown-Regular.ttf"],
-  ["brown-light", "./fonts/brown/Brown-Regular.ttf"],
-  ["brown-bold", "./fonts/brown/Brown-Regular.ttf"],
+  ["brown-regular", "./fonts/Brown/Brown-Regular.woff2"],
+  ["brown-light", "./fonts/Brown/Brown-Regular.woff2"],
+  ["brown-bold", "./fonts/Brown/Brown-Bold.woff2"],
   // poppins
-  ["poppins-bold", "./fonts/poppins/Poppins-Bold.ttf"],
-  ["poppins-semibold", "./fonts/poppins/Poppins-SemiBold.ttf"],
-  ["poppins-light", "./fonts/poppins/Poppins-Light.ttf"],
-  ["poppins", "./fonts/poppins/Poppins-Regular.ttf"],
-  ["popins-extrabold", "./fonts/poppins/Poppins-ExtraBold.ttf"]
+  ["poppins-bold", "./fonts/Poppins/Poppins-Bold.woff2"],
+  ["poppins-light", "./fonts/Poppins/Poppins-Light.woff2"],
+  ["poppins", "./fonts/Poppins/Poppins-Regular.woff2"],
+  ["popins-extrabold", "./fonts/Poppins/Poppins-ExtraBold.woff2"]
 ];
 
 const staticStlying = {
@@ -69,6 +69,7 @@ const staticStlying = {
     & p { font-size:18px; font-family:"brown-regular"; font-weight: 100;};
     & a { font-size:1em; font-family:"poppins-regular"; font-weight: bolder; text-decoration: none;};
 
+    //default font
     & * {
       font-family:'brown-regular';
       letter-spacing: 15%;

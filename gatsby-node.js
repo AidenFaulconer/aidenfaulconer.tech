@@ -23,6 +23,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       }
     }
   `);
+    //further execution awaited from asynchronous result query
 
     // Handle errors
     if (result.errors) {

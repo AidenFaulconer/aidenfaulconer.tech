@@ -46,6 +46,7 @@
     "gatsby-plugin-netlify-cms": "^4.1.38",
     "gatsby-plugin-nprogress": "^2.3.10",
     "gatsby-plugin-offline": "^3.2.0",
+    "gatsby-plugin-preload-fonts": "^1.2.23",
     "gatsby-plugin-react-helmet": "^3.1.22",
     "gatsby-plugin-remove-trailing-slashes": "^2.3.11",
     "gatsby-plugin-sass": "^2.1.28",
@@ -88,10 +89,12 @@
     "url": "git+https://github.com/W3Layouts/gatsby-starter-delog.git"
   },
   "scripts": {
+    "preload-fonts": "gatsby-preload-fonts",
+    "debug-fonts": "gatsby-preload-fonts -- --no-sandbox",
     "debug": "set DEBUG=*& gatsby develop --host 0.0.0.0",
-    "build": "gatsby build --log-pages",
+    "build": "gatsby build --log-pages && npm run preload-fonts",
     "build2": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build --log-pages",
-    "develop": "gatsby develop  --host 0.0.0.0",
+    "develop": "gatsby develop  --host 0.0.0.0 && npm run preload-fonts",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",

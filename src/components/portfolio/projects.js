@@ -76,7 +76,9 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
               {rawProjectData.map((project, i) => {
                 const { frontmatter } = project.node;
                 return (
-                  <div className="preview-content">
+                  <div className="preview-content"
+                  key={`${frontmatter.title}-project`}
+                  >
                     <img
                       alt="Selectable project view"
                       src={frontmatter.thumbnail_}

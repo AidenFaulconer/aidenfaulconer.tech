@@ -24,7 +24,7 @@ import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 
 // used by all child components to config there intersection observer
 export const INVIEWCONFIG = {
-  threshold: [0.6],
+  threshold: [0.6],//offset vertically where intersection observer detects a new section
   rootMargin: "0px" // account for nav bar
 }; // not working... why??????
 
@@ -106,6 +106,7 @@ export default React.memo(({ theme }) => {
                       colorSwap={currentSection.odd}
                       odd={odd}
                       id={sectionName}
+                      key={`${sectionName} ${i}`}
                       ref={ref => {
                         if (ref !== null) {
                           sectionRefs.current[sectionName] = ref;
@@ -114,19 +115,20 @@ export default React.memo(({ theme }) => {
                     >
                       <Row noGutters>
                         <Col xl={1} md={1} lg={1} />
-                        <Col className="content" xl md>
-                          <div className="header">
+                        <Col className="content" xl md key={`${sectionName} content`}>
+                          <div className="header" key={`${sectionName} header`}>
                             <h1>{sectionName}</h1>
                           </div>
                           <div
                             className="section-container"
-                            key={sectionName}
+                            key={`${sectionName} content-container`}
                             id={sectionName}
                             // ref={ref => {
                             //   sectionRefs.current[sectionName] = ref;
                             // }}
                           >
                             <RenderSection
+                              key={`${sectionName} component`}
                               sectionName={sectionName}
                               odd={odd}
                               data={
@@ -161,6 +163,7 @@ export default React.memo(({ theme }) => {
                     </div>
                     {Object.keys(sections).map(sectionName => (
                       <button
+                        key={`navigate-to ${sectionName}`}
                         className={
                           currentSection.name === sectionName ? "active" : ""
                         }
@@ -354,7 +357,7 @@ const ContentContainer = styled.section`
     & .section-container {
       margin: 6.25px 0px;
       margin-bottom: 100px;
-      min-height: 700px;
+      min-height: 500px;//required to ensure intersection observer is detecting the corrent current section
       width: 100%;
       display: flex;
       background: ${props => props.theme.colors.contentColor};

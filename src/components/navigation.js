@@ -192,6 +192,7 @@ export default ({ toggleTheme, theme, pageType }) => {
     if (typeof window !== "undefined") {
       if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) return//we do not hide and unhide navbar on mobile devices
       window.addEventListener("scroll", watchScroll);
+      return ()=>window.removeEventListener("scroll",watchScroll);
     }
   }, []);
 

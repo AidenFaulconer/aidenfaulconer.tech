@@ -17,8 +17,8 @@ export default function Template({
   return (
     <Layout pageType="blog">
       <Row noGutters>
-        <Col xl={1} />
-        <Col xl={10}>
+        <Col xl={1} sm={1} xs={1} />
+        <Col xl={10} xs={10}>
           <Post src={frontmatter.thumbnail_}>
             {!frontmatter.thumbnail_ && (
               <>
@@ -41,7 +41,17 @@ export default function Template({
           </Post>
           <BlogContent dangerouslySetInnerHTML={{ __html: html }} />
         </Col>
-        <Col xl={1} />
+        <Col xl={1} sm={1} xs={1} />
+      </Row>
+      <Row>
+        <Col xl={1} sm={1} xs={1} />
+        <Col xl md sm xs lg>
+          <Reccomendations img={"./"}>
+            <h1>{}</h1>
+            <p>{}</p>
+          </Reccomendations>
+        </Col>
+        <Col xl={1} sm={1} xs={1} />
       </Row>
     </Layout>
   );
@@ -86,6 +96,18 @@ export const pageQuery = graphql`
 //     props.theme.name === "dark"
 //       ? "rgba(255, 255, 255, 0.25)"
 //       : "rgba(0, 0, 0, 0.25)"};
+
+const Reccomendations = styled.div`
+display: grid;
+grid-template-columns: 1fr 1fr;
+width: 100%;
+height: auto;
+
+// background: url(${props=>props.img});
+
+& h1 {}
+& p {}
+`
 
 const BlogContent = styled.section`
   margin-top: 25px;
