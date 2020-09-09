@@ -25,10 +25,10 @@ const blogPage = React.memo(() => {
 
   return (
     <Layout pageType="blog">
+      <BlogBuilder />
       <ThreeWrapper id="three-blog" className="d-none d-md-block">
         <ThreeBlog theme={theme} />
       </ThreeWrapper>
-      <BlogBuilder />
     </Layout>
   );
 });

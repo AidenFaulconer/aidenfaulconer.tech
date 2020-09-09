@@ -10,14 +10,11 @@ import { useCookies } from "react-cookie";
 
 import { Link, useStaticQuery, graphql } from "gatsby";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Row, Col, Container, Toast } from "react-bootstrap";
 
 import { ThemeProvider, useTheme } from "emotion-theming";
 import { Global, css } from "@emotion/core";
 import styled from "@emotion/styled";
-
-import "prismjs/themes/prism-okaidia.css";
 
 import { InlineIcon } from "@iconify/react";
 import chevronRight from "@iconify/icons-mdi/chevron-right";
@@ -33,8 +30,6 @@ import THEME from "./state/theme";
 
 const { Provider, Consumer } = createContext();
 export { Provider, Consumer };
-
-// eslint-disable-next-line import/no-mutable-exports
 
 // #region global context implementation
 const initGlobalState = {
@@ -134,7 +129,7 @@ export default ({ children, pageType }) => {
                     style={{ display: "flex", flexDirection: "column" }}
                   >
                     <h3>useful links</h3>
-                    <Link to={"/portfolio"}>
+                    <Link to={"/"}>
                       <Btn
                         color={theme.colors.textPrimary}
                         text="Portfolio"
@@ -188,12 +183,14 @@ const Footer = styled.footer`
   width: 100vw;
   position: relative;
   overflow: hidden;
+
   background: ${props => props.theme.colors.primary};
   color: ${props => props.theme.colors.textPrimary};
   z-index: 1;
   font-size: ${props => props.theme.text.sizes.small};
 
   & h3 {
+    font-family: "brown";
     margin: 0px;
   }
 

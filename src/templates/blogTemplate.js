@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { Row, Col } from "react-bootstrap";
 import Layout from "../components/layout";
 
+
 export default function Template({
   data // this prop will be injected by the GraphQL query below.
 }) {
@@ -40,16 +41,6 @@ export default function Template({
             )}
           </Post>
           <BlogContent dangerouslySetInnerHTML={{ __html: html }} />
-        </Col>
-        <Col xl={1} sm={1} xs={1} />
-      </Row>
-      <Row>
-        <Col xl={1} sm={1} xs={1} />
-        <Col xl md sm xs lg>
-          <Reccomendations img={"./"}>
-            <h1>{}</h1>
-            <p>{}</p>
-          </Reccomendations>
         </Col>
         <Col xl={1} sm={1} xs={1} />
       </Row>
@@ -97,22 +88,11 @@ export const pageQuery = graphql`
 //       ? "rgba(255, 255, 255, 0.25)"
 //       : "rgba(0, 0, 0, 0.25)"};
 
-const Reccomendations = styled.div`
-display: grid;
-grid-template-columns: 1fr 1fr;
-width: 100%;
-height: auto;
-
-// background: url(${props=>props.img});
-
-& h1 {}
-& p {}
-`
-
 const BlogContent = styled.section`
   margin-top: 25px;
-  font-family: "brown";
+  font-family: "poppins";
   padding: 100px 7vw;
+  font-weight: 500;
   color: ${props => props.theme.colors.textSecondary};
 
   & * {
@@ -132,7 +112,7 @@ const BlogContent = styled.section`
     font-size: 1.5em;
     margin-bottom: 25px;
     margin-top: 50px;
-    font-family: "brown";
+    font-family: "poppins";
     font-weight: bolder;
   }
   & h2 {
@@ -140,14 +120,14 @@ const BlogContent = styled.section`
     margin-top: 50px;
     font-weight: bolder;
     margin-bottom: 25px;
-    font-family: "brown";
+    font-family: "poppins";
   }
   & h3 {
     font-weight: bolder;
     font-size: 1.5em;
     margin-top: 50px;
     margin-bottom: 25px;
-    font-family: "brown";
+    font-family: "poppins";
   }
 `;
 
@@ -168,7 +148,6 @@ const Post = styled.article`
       z-index: 3;
       font-weight: bolder;
       text-transform: capitalcase;
-      font-family: "brown-bold";
 
       text-align: left;
       margin: auto;

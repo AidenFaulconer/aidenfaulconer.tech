@@ -178,7 +178,7 @@ const FeaturedBlog = styled.article`
   height: 484px;
   width: 100%;
   z-index: 2;
-  background: ${props => props.theme.colors.secondary};
+  background: ${props => props.theme.colors.primary};
   color: ${props => props.theme.colors.textPrimary};
   border-radius: ${props => props.theme.corners.borderRadius1};
   overflow: hidden;
@@ -240,6 +240,8 @@ const FeaturedBlog = styled.article`
 
 const OtherBlogs = styled.div`
   display: grid;
+  position: relative;
+  z-index: 2;
   grid-template-columns: 1fr;
   justify-content: space-evenly;
   margin-bottom: 175px;
@@ -259,8 +261,7 @@ const OtherBlogs = styled.div`
   & .card {
     align-self: center;
     justiyf-self: center;
-
-    z-index: 2;
+    z-index: 200;
     postiion: relative;
     height: 150px;
     width: 200px;
@@ -274,9 +275,10 @@ const OtherBlogs = styled.div`
       width: 100%;
     }
     & p {
-      position: absolute;
-      bottom: -16px;
+      position: relative;
       padding: 6.125px;
+      height: 50px;
+      bottom: 50px;
       background: ${props => props.theme.colors.primary};
       width: 100%;
     }

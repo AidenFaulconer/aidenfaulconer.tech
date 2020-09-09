@@ -284,10 +284,11 @@ const ContentNavigation = styled.nav`
         margin: auto;
         font-size: 0.5em;
         visibility: hidden;
+        font-family: poppins;
         display: none;
         text-align: center;
         text-transform: uppercase;
-        ${props => props.theme.mixins.boldFont};
+        font-weight: 400;
 
         ${props =>
           props.theme.breakpoints.xl(`
@@ -324,13 +325,13 @@ const ContentContainer = styled.section`
           ? "rgba(255, 255, 255, 0.25)"
           : "rgba(0, 0, 0, 0.25)"};
 
+  ${props => props.theme.transitions.secondary("all")};
   background: ${props =>
     props.colorSwap ? props.theme.colors.primary : props.theme.colors.foreground};
   color: ${props =>
     props.colorSwap
       ? props.theme.colors.textPrimary
       : props.theme.colors.textSecondary};
-          ${props => props.theme.transitions.primary("all")};
 
   & *[class*="content"] {
     z-index: 2;
@@ -357,7 +358,7 @@ const ContentContainer = styled.section`
     & .section-container {
       margin: 6.25px 0px;
       margin-bottom: 100px;
-      min-height: 500px;//required to ensure intersection observer is detecting the corrent current section
+      min-height: 600px;//required to ensure intersection observer is detecting the corrent current section
       width: 100%;
       display: flex;
       background: ${props => props.theme.colors.contentColor};

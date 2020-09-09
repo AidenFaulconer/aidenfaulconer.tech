@@ -19,11 +19,9 @@ const Button = styled.button`
   border-radius: ${props => props.theme.corners.borderRadius1};
   padding: ${props => props.padding};
   border: none;
-  font-weight: bolder;
   text-decoration: none;
   font-size: ${props => props.theme.text.sizes.small};
   pointer-events: all;
-  font-family: brown-regular;
   z-index: 100;
   display: flex;
   flex: 2 1;
@@ -64,6 +62,8 @@ const Button = styled.button`
   }
 
   & p {
+    font-family: poppins;
+    font-weight: 400;
     margin: auto;
   }
 `;

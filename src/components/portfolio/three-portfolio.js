@@ -56,7 +56,7 @@ export const Plane = ({ color, ...props }) => {
         attatch="material"
         transparent
         opacity={0}
-        color="fff"
+        color="white"
       />
     </mesh>
   );

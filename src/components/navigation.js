@@ -69,7 +69,6 @@ const NavigationWrapper = styled.div`
     & .site-links {
       display: flex;
       justify-content: flex-end;
-      font-family: "brown-regular";
       ${props => props.theme.breakpoints.md(`font-size: 1.25rem;`)}
       padding-right: 25px;
 
@@ -180,7 +179,7 @@ export default ({ toggleTheme, theme, pageType }) => {
     //for performance only update state when needed, otherwise drop out before we call showNav
     //only update state every 100px scrolled by user
     const thisScrollOffset = currentScrollPos - prevScrollPos;
-    if (Math.abs(thisScrollOffset) < 0) return;
+    if (Math.abs(thisScrollOffset) < 30) return;
     // alert(thisScrollOffset)
 
     const prevHide = hideRef.current;

@@ -13,7 +13,6 @@ import ThreeBlog from "../blog/three-blog";
 
 const HeroHeader = styled.section`
   max-height:45vh;
-  // padding-bottom: 25px;
   z-index: 0;
 
   & .headline {
@@ -21,12 +20,12 @@ const HeroHeader = styled.section`
     z-index: 3;
     font-weight: bolder;
     text-transform: capitalcase;
-    font-family: poppins-bold;
+    font-family: poppins;
     text-align: center;
 
     ${props =>
       props.theme.breakpoints.sm(`
-      font-size: 2.5em;
+      font-size: 4.5em;
       width: 100%;
       margin-top: -100px;
   `)}
@@ -49,7 +48,8 @@ const HeroHeader = styled.section`
     color: ${props => props.theme.colors.textSecondary};
     ${props => props.theme.mixins.contentFont};
     line-height: ${props => props.theme.text.details.lineheight3};
-    font-family: "poppins-light";
+    font-family: "poppins";
+    font-weight: 300;
     width: 100%;
     margin: 0 auto;
     margin-bottom: 25px;
@@ -180,11 +180,11 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                       />
                     </Link>
                    */}
-                    <Link to="#Contact" className="button -primary">
+                    <a href="#Contact" className="button -primary">
                       <BtnSecondary bg="#0D7BF2"
                         color="white"
                         text="Let's Connect" />
-                    </Link>
+                    </a>
                   </div>
                 </Col>
 

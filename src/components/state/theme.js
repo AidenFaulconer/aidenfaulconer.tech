@@ -1,24 +1,55 @@
-// styles that remain fixed for the entire site, injected into the dynamic site stylings
-const fontFace = (fontFamily, src) =>
-  `@font-face {
-    font-family: ${fontFamily};
-    src: url(${src}), format('woff2');
-  };
-  `;
-//map any used fonts with the css name and the resource url woff2 is the chosen format
-const fonts = [
-  // brown
-  ["brown-regular", "./fonts/Brown/Brown-Regular.woff2"],
-  ["brown-light", "./fonts/Brown/Brown-Regular.woff2"],
-  ["brown-bold", "./fonts/Brown/Brown-Bold.woff2"],
-  // poppins
-  ["poppins-bold", "./fonts/Poppins/Poppins-Bold.woff2"],
-  ["poppins-light", "./fonts/Poppins/Poppins-Light.woff2"],
-  ["poppins", "./fonts/Poppins/Poppins-Regular.woff2"],
-  ["popins-extrabold", "./fonts/Poppins/Poppins-ExtraBold.woff2"]
-];
+// // import fontFiles from "../../styles/fonts";
+
+// // styles that remain fixed for the entire site, injected into the dynamic site stylings
+// const fontFace = (fontFamily, format) =>
+//   `@font-face {
+//    font-family: ${fontFamily};
+//    src: url(${fontFiles[fontFamily]}) format('${format}');
+//   };
+//   `;
+// //map any used fonts with the css name and the resource url woff2 is the chosen format
+// const fonts = [
+//   // poppins
+//   ["poppinsbold", "opentype"],
+//   ["poppinslight", "opentype"],
+//   ["poppinsregular", "opentype"],
+//   ["poppinsextrabold", "opentype"],
+//   // brown
+//   ["brownregular", "woff2"],
+//   ["brownlight", "woff2"],
+//   ["brownbold", "woff2"],
+// ];
+
+// ${fonts.reduce(
+//       (allFonts, currentFont, index) =>
+//         allFonts + fontFace(currentFont[0], currentFont[1], currentFont[2]),
+//       ""
+//     )}
 
 const staticStlying = {
+  //webpack wont compile fonts properly unless each font imported with js
+   fonts: `
+
+    & h1 { font-size:74.24px;font-family:"poppins";font-weight: bolder;};
+    & h2 { font-size:2.618em;font-family: "poppins": font-weight: 500;};
+    & h3 { font-size:17.42px;font-family: "poppins"; font-weight: 400;};
+    & p { font-size:18px; font-family:"brown"; font-weight: 300;};
+    & a { font-size:1em; font-family:"poppins"; font-weight: bolder; text-decoration: none;};
+
+    //default font
+    & * {
+      letter-spacing: 15%;
+      line-height: 100%;
+    };
+    `,
+  // order matters a lot when referencing them, from top to bottom we MUST go from SMALLEST to LARGEST or else they will not respond properly
+  breakpoints: {
+    xl: styling => `@media (min-width: 1200px) {${styling}}`,
+    lg: styling => `@media (min-width: 992px)  {${styling}}`,
+    md: styling => `@media (min-width: 786px)  {${styling}}`,
+    sm: styling => `@media (min-width: 575px)  {${styling}}`,
+    xs: styling => `@media (max-width: 575px)  {${styling}}`
+  },
   transitions: {
     long: property => `transition: ${property} 3.25s`,
     primary: property => `transition: ${property} .25s`,
@@ -27,14 +58,6 @@ const staticStlying = {
         transition-delay: 0s;
         transition-duration: .6s;
         transition-timing-function: cubic-bezier(.19,1,.22,1) .5s;`
-  },
-  // order matters a lot when referencing them, from top to bottom we MUST go from SMALLEST to LARGEST or else they will not respond properly
-  breakpoints: {
-    xl: styling => `@media (min-width: 1200px) {${styling}}`,
-    lg: styling => `@media (min-width: 992px)  {${styling}}`,
-    md: styling => `@media (min-width: 786px)  {${styling}}`,
-    sm: styling => `@media (min-width: 575px)  {${styling}}`,
-    xs: styling => `@media (max-width: 575px)  {${styling}}`
   },
   corners: {
     borderRadius1: "2px",
@@ -56,26 +79,6 @@ const staticStlying = {
    object-fit: cover;
    &::hover{transform: scale(.5);}
   }`,
-  fonts: `
-   ${fonts.reduce(
-     (allFonts, currentFont, index) =>
-       allFonts + fontFace(currentFont[0], currentFont[1]),
-     ""
-   )}
-
-    & h1 { font-size:74.24px;font-weight: bolder;font-family:"poppins-semibold"};
-    & h2 { font-size:2.618em;font-family: 'brown-bold';font-family:"poppins-bold"};
-    & h3 { font-size:17.42px;font-family: 'poppins-bold';};
-    & p { font-size:18px; font-family:"brown-regular"; font-weight: 100;};
-    & a { font-size:1em; font-family:"poppins-regular"; font-weight: bolder; text-decoration: none;};
-
-    //default font
-    & * {
-      font-family:'brown-regular';
-      letter-spacing: 15%;
-      line-height: 100%;
-    };
-    `,
   text: {
     sizes: {
       extraSmall: ".618em", // was .618em
@@ -92,18 +95,6 @@ const staticStlying = {
       lineheight3: "150%"
     }
   },
-  spacing: {
-    s1: "5px",
-    s2: "15px",
-    s3: "10px",
-    s4: "20px",
-    m1: "25px",
-    m2: "50px",
-    l1: "100px",
-    l2: "125px",
-    l3: "180px",
-    xl1: "250px"
-  },
   mixins: {
     transform3dPrimary: `
       transform: rotateX(2deg) rotateY(4deg) rotateZ(3deg) translateX(-3px) translateY(4px);
@@ -113,13 +104,13 @@ const staticStlying = {
     `,
     brandoverlay: `
       background: #8EF2D2;
-      mix-blend-mode: lighten;
+      mix-blend-mode: light;
   `,
     boldFont: `
-      font-family: 'poppins-semibold';
+      font-family: 'poppinsbold';
       font-weight:bolder;`,
     contentFont: `
-      font-family: 'brown-regular';
+      font-family: 'brownregular';
       font-weight:bolder;`
   },
   animations: {
@@ -200,7 +191,6 @@ export default {
     corners: staticStlying.corners,
     transitions: staticStlying.transitions,
     text: staticStlying.text,
-    spacing: staticStlying.spacing,
     test: staticStlying.test,
     test2: staticStlying.test2,
     breakpoints: staticStlying.breakpoints,
@@ -208,10 +198,9 @@ export default {
     mixins: staticStlying.mixins,
     // #endregion static styling
 
-    // #region mixins
-    animation1: ``,
     global: `
     & body {
+      ${staticStlying.fonts};
       box-sizing: border-box;
       background: #0D0D0D;
       overflow-x: hidden;
@@ -236,10 +225,8 @@ export default {
       `)}
     }
 
-    ${staticStlying.fonts};
     ${staticStlying.externalStyleAdjustments};
   `
-    // #endregion mixins
   },
   // #endregion DARK THEME
 
@@ -268,18 +255,16 @@ export default {
     corners: staticStlying.corners,
     transitions: staticStlying.transitions,
     text: staticStlying.text,
-    spacing: staticStlying.spacing,
     test: staticStlying.test,
     test2: staticStlying.test2,
     breakpoints: staticStlying.breakpoints,
     animations: staticStlying.animations,
     mixins: staticStlying.mixins,
     // #endregion static styling
-    // #region mixins
-    animation1: ``,
-
     global: `
+
     & body {
+      ${staticStlying.fonts};
       box-sizing: border-box;
       background: #F0F3FC;
       overflow-x: hidden;
@@ -290,9 +275,8 @@ export default {
 
       & h1 {font-size:50.24px;}
 
-       ${staticStlying.breakpoints.sm(`
+      ${staticStlying.breakpoints.sm(`
       font-size: 12px;
-
       `)}
       ${staticStlying.breakpoints.md(`
       font-size: 15px;
@@ -305,12 +289,9 @@ export default {
       font-size: 21px;
       `)}
     }
-    }
 
-    ${staticStlying.fonts};
     ${staticStlying.externalStyleAdjustments};
   `
-    // #endregion mixins
   }
   // #endregion LIGHT THEME
 };
