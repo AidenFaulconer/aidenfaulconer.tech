@@ -93,7 +93,7 @@
     "preload-fonts": "set LOG_LEVEL=info & gatsby-preload-fonts",
     "debug-fonts": "gatsby-preload-fonts -- --no-sandbox",
     "debug": "set DEBUG=*& gatsby develop --host 0.0.0.0",
-    "build": "gatsby build --log-pages && npm run preload-fonts",
+    "build": "gatsby build --log-pages",
     "build2": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build --log-pages",
     "develop": "gatsby develop  --host 0.0.0.0 & npm run preload-fonts",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",

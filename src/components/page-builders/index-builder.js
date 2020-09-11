@@ -24,7 +24,7 @@ import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 
 // used by all child components to config there intersection observer
 export const INVIEWCONFIG = {
-  threshold: [0.6],//offset vertically where intersection observer detects a new section
+  threshold: [0.65],//offset vertically where intersection observer detects a new section
   rootMargin: "0px" // account for nav bar
 }; // not working... why??????
 
@@ -358,7 +358,7 @@ const ContentContainer = styled.section`
     & .section-container {
       margin: 6.25px 0px;
       margin-bottom: 100px;
-      min-height: 600px;//required to ensure intersection observer is detecting the corrent current section
+      min-height: 700px;//required to ensure intersection observer is detecting the corrent current section
       width: 100%;
       display: flex;
       background: ${props => props.theme.colors.contentColor};
