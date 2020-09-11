@@ -43,6 +43,7 @@ export const GlobalStore = createContext(initGlobalState); // referenced frequen
 export default ({ children, pageType }) => {
   // user specific state saved in cookies
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  //https://www.npmjs.com/package/react-cookie
   // user specific state saved in cookies
 
   // used in global context
@@ -76,7 +77,7 @@ export default ({ children, pageType }) => {
   // update theme in accordance with themeState
   useEffect(() => {
     setTheme(THEME[themeState]);
-    setCookie("themeState", themeState);
+    setCookie("themeState", themeState, {sameSite:"strict",path:"/",secure:true});
   }, [themeState]);
 
   // alert(JSON.stringify(theme))

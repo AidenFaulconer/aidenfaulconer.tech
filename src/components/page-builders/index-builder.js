@@ -14,6 +14,8 @@ import backgroundIcon from "@iconify/icons-ic/sharp-person-pin";
 import contactIcon from "@iconify/icons-bx/bxs-contact";
 import { StaticQuery, graphql } from "gatsby";
 
+import { CSSTransition } from "react-transition-group";
+
 // section components
 import Projects from "../portfolio/projects";
 import Experience from "../portfolio/experience";

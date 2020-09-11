@@ -112,8 +112,7 @@ collections:
           default: blog,
           required: true,
         }
-      - { name: path, label: Path, widget: string, pattern: ['^(\/[-_a-z|0-9]+)+',"Path must start with /projects and NOT end with / and be lowercased"],
- default: "/blog" }
+      - { name: path, label: Path, widget: string, pattern: ['^(\/[-_a-z|0-9]+)+',"Path must start with /projects and NOT end with / and be lowercased"], default: "/blog" }
       - { label: Date, name: date, widget: datetime }
       - { label: Title, name: title, widget: string }
       - {
