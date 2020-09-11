@@ -1,7 +1,7 @@
 ---
 template: BlogPost
 catagory: Blog
-path: /blog/fillerama
+path: /blog/learn-gatsby
 date: 2020-09-11T09:45:29.025Z
 title: Gatsby beginner to advanced guide
 metaDescription: A comprehensive guide to gatsby, the leader of the webs latest
