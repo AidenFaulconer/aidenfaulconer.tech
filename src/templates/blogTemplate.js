@@ -91,10 +91,16 @@ export const pageQuery = graphql`
 const BlogContent = styled.section`
   margin-top: 25px;
   font-family: "poppins";
-  padding: 100px 7vw;
-  font-weight: 500;
+  padding: 100px 15vw;
+  overflow-x: hidden;
   color: ${props => props.theme.colors.textSecondary};
-
+  & img {
+  display: block;
+  object-fit: contain;
+  max-width: 100%;
+  background-origin: center;
+  margin: 25px auto;
+  }
   & * {
     line-height: 175%;
   }
@@ -134,7 +140,7 @@ const BlogContent = styled.section`
 const Post = styled.article`
   margin-top: 150px;
   color: ${props => props.theme.colors.textSecondary};
-  padding: 100px 7vw;
+  padding: 100px 12vw;
   display: flex;
   flex-direction: row;
   order: 0;

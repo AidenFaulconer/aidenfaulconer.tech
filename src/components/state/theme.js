@@ -43,6 +43,12 @@ const staticStlying = {
     };
     `,
   // order matters a lot when referencing them, from top to bottom we MUST go from SMALLEST to LARGEST or else they will not respond properly
+  pointerInputs: {
+    mouse: styling => `@media (pointer: coarse) and (any-pointer: fine){${styling}}`,
+    touchscreen: styling => `@media (pointer: fine) and (any-pointer: coarse){${styling}}`,
+    other: styling => `@media (hover:none) and (any-hover: hover) {${styling}}`,
+  },
+
   breakpoints: {
     xl: styling => `@media (min-width: 1200px) {${styling}}`,
     lg: styling => `@media (min-width: 992px)  {${styling}}`,
@@ -81,6 +87,16 @@ const staticStlying = {
   }`,
   text: {
     sizes: {
+//main
+      headline: "70px",
+      body: "15px",
+      detail: "13px",
+      heading: "70px",
+//main
+
+//blog
+
+//blog
       extraSmall: ".618em", // was .618em
       small: ".818em", // was .618em
       p: ".9em",
@@ -106,12 +122,6 @@ const staticStlying = {
       background: #8EF2D2;
       mix-blend-mode: light;
   `,
-    boldFont: `
-      font-family: 'poppinsbold';
-      font-weight:bolder;`,
-    contentFont: `
-      font-family: 'brownregular';
-      font-weight:bolder;`
   },
   animations: {
     underline: `
@@ -235,7 +245,7 @@ export default {
     name: "light",
     colors: {
       black: "#0D0D0D",
-      foreground: "#F0F3FC",
+      foreground: "#FFFFFF",//F0F3FC
       primary: "#000064",
       secondary: "#BAF7E4",
       textPrimary: "#FFFFFF",

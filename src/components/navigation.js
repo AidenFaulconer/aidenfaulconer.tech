@@ -49,34 +49,42 @@ const NavigationWrapper = styled.div`
     left: 0px;
     top: 0px;
     z-index: 100;
-    width: 100vw;
+    width: 100%;
     position: fixed;
-    padding: 12.5px;
+    fled-direction: space-evenly;
     border-bottom: 1.75px solid
       ${props =>
         props.theme.name === "dark"
           ? "rgba(255, 255, 255, 0.25)"
           : "rgba(0, 0, 0, 0.25)"};
 
-    ${props=>props.theme.breakpoints.md(`padding: 25px 0px;`)}
+    ${props=>props.theme.breakpoints.md(`padding: 20px 35px;`)}
     background: ${props => props.theme.colors.foreground}; //switch on bg color
 
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center
+
+    & .navigation-item {
+      flex: 1 1 auto;
+      margin: 12.5px 25px;
+    }
+
     & * {
-    z-index: 5;
+      z-index: 5;
       text-decoration: none;
     }
 
     & .site-links {
       display: flex;
-      justify-content: flex-end;
-      ${props => props.theme.breakpoints.md(`font-size: 1.25rem;`)}
-      padding-right: 25px;
+      justify-content: space-evenly;
+      ${props => props.theme.breakpoints.md(`font-size: 1.15rem;`)}
 
       & .link {
-          margin: auto;
-          margin-right: 0px;
-          margin-left: 12.5px;
-          padding-left: 0px;
+          margin: 0px 25px;
           font-family: "brown";
           color: ${props => props.theme.colors.textSecondary};
 
@@ -85,13 +93,13 @@ const NavigationWrapper = styled.div`
             display: block;
             visibility: hidden;
             position: relative;
-            bottom: -23.5px;
-            height: 1.75px;
+            height: 1px;
             width: 0%;
             background: ${props => props.theme.colors.primary};
             ${props => props.theme.transitions.secondary("all")};
             ${props=>props.theme.breakpoints.md(`bottom:-38px;`)}
           }
+
           &:hover {
             &::after {
               visibility: visible;
@@ -113,9 +121,9 @@ const NavigationWrapper = styled.div`
 
     & .branding {
       ${props => props.theme.transitions.primary("all")};
+      display: block;
 
       & .page-type {
-        position: absolute;
         left: 18%;
         top: -0%;
         display: inline-block;
@@ -204,25 +212,16 @@ export default ({ toggleTheme, theme, pageType }) => {
       <NavigationWrapper>
         <CSSTransition in={hide} timeout={15}>
           <nav>
-            <Row>
-              <Col
-                xl={1}
-                lg={1}
-                md={1}
-                sm={1}
-                className="d-lg-block d-md-block"
-              />
-
-              <Col xl={6} lg={6} md={5} sm={1} xs={8} className="branding">
+              <div className="branding navigation-item">
                 <Link to="/">
                   <div
                     style={{ fill: theme.colors.secondary }}
                     dangerouslySetInnerHTML={{ __html: logo }}
                   />
                 </Link>
-              </Col>
+              </div>
 
-              <Col xl={4} lg={4} md sm={10} xs={3} style={{display: "flex",justifyContent: "space-evenly"}}className="site-links">
+              <div className="site-links navigation-item">
                 <Link
                   className={`link ${selected === "/" ? "active-link" : ""}`}
                   to="/"
@@ -240,15 +239,11 @@ export default ({ toggleTheme, theme, pageType }) => {
                 >
                   {"Blog"}
                 </Link>
+              </div>
 
-                <ThemeChanger toggleTheme={toggleTheme} />
-              </Col>
-
-              <Col xl={1} lg={1} md={1} className="d-md-block d-lg-block" />
-            </Row>
+              <ThemeChanger toggleTheme={toggleTheme} className="navigation-item" />
           </nav>
         </CSSTransition>
-
       </NavigationWrapper>
     </header>
   );

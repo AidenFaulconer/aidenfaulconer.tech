@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { TextureLoader, WebGLRenderTarget, Object3D } from "three";
-import React, { Suspense, useMemo, useState, useCallback, useRef } from "react";
+import { TextureLoader, WebGLRenderTarget, Object3D, Vector3 } from "three";
+import React, { Suspense, useMemo, useState, useCallback, useRef, useEffect } from "react";
 import {
   Canvas,
   useFrame,
@@ -11,6 +11,7 @@ import {
 import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import Post from "./three-post-processing.js";
 import linesUrl from "../../../static/assets/lines.png";
+import * as SimplexNoise from "simplex-noise"
 
 export const Mouse = () => {
   const viewportOffset = 2;
@@ -54,8 +55,7 @@ export const Plane = ({ color, ...props }) => {
       />
       <meshBasicMaterial
         attatch="material"
-        transparent
-        opacity={0}
+        opacity={.25}
         color="white"
       />
     </mesh>
@@ -72,11 +72,11 @@ export const Borders = ({ theme }) => {
         rotation={[-Math.PI / 2, 0, 0]}
       />
       <Plane
-        position={[-viewport.width / 2 + 2, 0, 0]} // left
+        position={[-viewport.width / 2, 0, 0]} // left
         rotation={[0, Math.PI / 2, 0]}
       />
       <Plane
-        position={[viewport.width / 2 - 2, 0, 0]} // right
+        position={[viewport.width / 2, 0, 0]} // right
         rotation={[0, -Math.PI / 2, 0]}
       />
       <Plane position={[0, 0, 7]} rotation={[0, 0, 0]} /** back */ />
@@ -84,6 +84,54 @@ export const Borders = ({ theme }) => {
     </>
   );
 };
+
+// Creates a crate that catches the spheres
+export const MovingColumns = ({ theme }) => {
+  const { viewport, clock } = useThree();
+  const noise = new SimplexNoise(Math.random);
+
+  const ref = useRef()
+  const Columns = useRef([]);
+
+  const GenerateMappings = () => {
+    let result= []//vec3 array
+    for (let x=0;x<25;x++) {
+      for (let z=0;z<25;z++) result.push(new Vector3(x,Math.random(),z))
+    }
+    return result
+  }
+  let ColumnMappings = GenerateMappings();
+
+  const ModulateColumn = (objectRef) => {
+    let time = clock.elapsedTime;
+    let newY = noise.noise2D(position.x + time * 0.0001, position.y + time * 0.0003);
+    objectRef.position.set(position.x,newY,position.z);//is of type object3d
+  }
+
+  useEffect(() => {
+
+      alert(JSON.stringify(JSON.stringify(Columns.current)))
+    return () => {
+    }
+  }, [])
+
+  useFrame(state=>{
+    // Columns.current.forEach(ModulateColumn);
+  })
+
+  return (
+
+  <>{
+  ColumnMappings.forEach(position=>{
+      return(
+        <instancedMesh receiveShadow ref={(r)=>{ alert(r)}>
+          <boxBufferGeometry attatch="geometry" parameters={[1,position.y,4]} posiiton={position}/>
+          <meshBasicMaterial attatch="material" opacity={1} color="grey" toneMapped={false} flatShading/>
+        </instancedMesh>)
+      })}
+  </>);
+};
+
 
 export const InstancedBoxs = ({
   dims,
@@ -165,9 +213,9 @@ export default ({ theme }) => {
       <Canvas
         concurrent
         shadowMap
-      pixelRatio={typeof window !== "undefined" && window.devicePixelRatio}
+        pixelRatio={typeof window !== "undefined" && window.devicePixelRatio}
         gl={{ alpha: true, antialias: true }}
-        camera={{ position: [0, 0, 20], fov: 50, near: 17, far: 40 }}
+        camera={{ position: [0, 0, -10], fov: 50, near: 17, far: 100 }}
       >
         <ambientLight
           color={
@@ -208,20 +256,7 @@ export default ({ theme }) => {
               <Mouse />
               <Borders theme={theme} />
               {/** right group */}
-
-              {/** left group */}
-              <InstancedBoxs
-                dims={[4, 2.25, 2.25]}
-                choice="rightOffset"
-                color={theme.colors.primary}
-                count={1}
-              />
-              <InstancedBoxs
-                dims={[4.25, 2.5, 2.5]}
-                choice="right"
-                color={theme.colors.primary}
-                count={1}
-              />
+              <MovingColumns/>
             </group>
           </Physics>
         </Suspense>
@@ -229,7 +264,19 @@ export default ({ theme }) => {
     </div>
   );
 };
-
+//  {/** left group */}
+//               <InstancedBoxs
+//                 dims={[4, 2.25, 2.25]}
+//                 choice="rightOffset"
+//                 color={theme.colors.primary}
+//                 count={1}
+//               />
+//               <InstancedBoxs
+//                 dims={[4.25, 2.5, 2.5]}
+//                 choice="right"
+//                 color={theme.colors.primary}
+//                 count={1}
+//               />
 //  <fog
 //     attach="fog"
 //     args={[
