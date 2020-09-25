@@ -85,18 +85,20 @@ export const Borders = ({ theme }) => {
   );
 };
 
+//https://discourse.threejs.org/t/how-to-change-texture-color-per-object-instance-in-instancedmesh/11271/3
+
 // Creates a crate that catches the spheres
 export const MovingColumns = ({ theme }) => {
   const { viewport, clock } = useThree();
   const noise = new SimplexNoise(Math.random);
 
-  const ref = useRef()
+  let columnAmount = 12;
   const Columns = useRef([]);
 
   const GenerateMappings = () => {
     let result= []//vec3 array
-    for (let x=0;x<25;x++) {
-      for (let z=0;z<25;z++) result.push(new Vector3(x,Math.random(),z))
+    for (let x=0;x<columnAmount;x++) {
+      for (let z=0;z<columnAmount;z++) result.push(new Vector3(x,Math.random(),z))
     }
     return result
   }
@@ -109,8 +111,7 @@ export const MovingColumns = ({ theme }) => {
   }
 
   useEffect(() => {
-
-      alert(JSON.stringify(JSON.stringify(Columns.current)))
+      alert(Columns.current.forEach((obj)=>obj));
     return () => {
     }
   }, [])
@@ -124,7 +125,9 @@ export const MovingColumns = ({ theme }) => {
   <>{
   ColumnMappings.forEach(position=>{
       return(
-        <instancedMesh receiveShadow ref={(r)=>{ alert(r)}>
+        <instancedMesh
+         receiveShadow
+         ref={ref => {Columns.current.push(ref)}}>
           <boxBufferGeometry attatch="geometry" parameters={[1,position.y,4]} posiiton={position}/>
           <meshBasicMaterial attatch="material" opacity={1} color="grey" toneMapped={false} flatShading/>
         </instancedMesh>)

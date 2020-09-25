@@ -30,7 +30,7 @@ const staticStlying = {
   //webpack wont compile fonts properly unless each font imported with js
    fonts: `
 
-    & h1 { font-size:74.24px;font-family:"poppins";font-weight: bolder;};
+    & h1 { font-size:80.24px;font-family:"poppins";font-weight: bolder;};
     & h2 { font-size:2.618em;font-family: "poppins": font-weight: 500;};
     & h3 { font-size:17.42px;font-family: "poppins"; font-weight: 400;};
     & p { font-size:18px; font-family:"brown"; font-weight: 300;};
@@ -99,10 +99,10 @@ const staticStlying = {
 //blog
       extraSmall: ".618em", // was .618em
       small: ".818em", // was .618em
-      p: ".9em",
+      p: "15px",
       h3: "1.451em", // 17px
       h2: "2.618em",
-      h1: "4.236em",
+      h1: "100px",
       title: "4.8em"
     },
     details: {
@@ -212,7 +212,7 @@ export default {
     & body {
       ${staticStlying.fonts};
       box-sizing: border-box;
-      background: #0D0D0D;
+      background: #111111;//#0D0D0D
       overflow-x: hidden;
       margin: 0px;
       padding: 0px;
@@ -276,17 +276,17 @@ export default {
     & body {
       ${staticStlying.fonts};
       box-sizing: border-box;
-      background: #F0F3FC;
+      background: #FFFFFF;
       overflow-x: hidden;
       min-height: 100vh;
       margin: 0px;
       padding: 0px;
       font-size: 20px;
 
-      & h1 {font-size:50.24px;}
+      & h1 {font-size:70.24px;}
 
       ${staticStlying.breakpoints.sm(`
-      font-size: 12px;
+      font-size: 16px;
       `)}
       ${staticStlying.breakpoints.md(`
       font-size: 15px;

@@ -91,6 +91,7 @@ const NavigationWrapper = styled.div`
           &::after {
             content: "";
             display: block;
+            margin-top: -9px;
             visibility: hidden;
             position: relative;
             height: 1px;

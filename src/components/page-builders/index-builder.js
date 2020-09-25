@@ -117,7 +117,7 @@ export default React.memo(({ theme }) => {
                       }} // use the inview api to update the current ref state on viewport enter
                     >
                       <Row noGutters>
-                        <Col xl={2} md={1} lg={1} />
+                        <Col xl={3} md={2} lg={2} />
                         <Col className="content" xl md key={`${sectionName} content`}>
                           <div className="header" key={`${sectionName} header`}>
                             <h1>{sectionName}</h1>

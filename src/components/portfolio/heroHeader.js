@@ -9,6 +9,8 @@ import { TypeWriter } from "../util/typewriter";
 import { BtnPrimary, BtnSecondary, Btn } from "../buttons.js";
 
 import ThreePortfolio from "./three-portfolio";
+
+import { portfolioGraphic} from "../../../static/assets/svg/hardcoded-svgs";
 import ThreeBlog from "../blog/three-blog";
 
 const HeroHeader = styled.section`
@@ -24,6 +26,7 @@ const HeroHeader = styled.section`
   }
   & .headline {
     color: ${props => props.theme.colors.textSecondary};
+    font-size: ${props=>props.theme.text.sizes.headline};
     z-index: 3;
     font-weight: bolder;
     text-transform: capitalcase;
@@ -41,7 +44,7 @@ const HeroHeader = styled.section`
       text-align: left;
       margin-top: 0px;
       margin-left: 0px;
-      font-size: 3.5em;
+      font-size: 85px;
       width: 80%;
   `)}
   }
@@ -63,7 +66,7 @@ const HeroHeader = styled.section`
     margin-top: 20px;
     z-index: 30;
     text-align: center;
-    font-size: 0.30em;
+    font-size: 20px;
 
     ${props => props.theme.breakpoints.lg(`
       text-align: left;
@@ -130,7 +133,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                   </ThreeWrapper>
               <Row>
                 <Col
-                  xl={3}
+                  xl={{span:2,offset:1}}
                   lg={3}
                   md={3}
                   sm={3}
@@ -157,7 +160,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                     </Link>
                    */}
                     <a href="#Contact" className="button -primary">
-                      <BtnSecondary bg="#0D7BF2"
+                      <BtnSecondary bg={theme.colors.primary}
                         color="white"
                         text="Let's Connect" />
                     </a>
@@ -165,14 +168,16 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                 </Col>
 
                 <Col xl lg md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
-                    <img
-                      className="graphic"
-                      src={`./assets/svg/portfolio-graphic-${theme.name}.png`} // TODO: this will be dynamic per page (with a hero header)
+                    <Graphic>
+                      <div
+                      style={{ fill: theme.colors.secondary }}
+                      dangerouslySetInnerHTML={{ __html: portfolioGraphic }}
                     />
+                    </Graphic>
                 </Col>
 
                 <Col
-                  xl={3}
+                  xl={{span:2,offset:1}}
                   lg={3}
                   md={3}
                   sm={3}
@@ -187,3 +192,27 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
     />
   );
 };
+
+// <ThreeWrapper>
+//       <ThreePortfolio theme={theme} />
+//     </ThreeWrapper>
+
+export const Graphic = styled.div`
+
+& svg {
+height: 100%;
+width: 80%;
+  & #blue {
+  fill: ${props=>props.theme.colors.primary};
+  }
+  & #white {
+  fill: ${props=>props.theme.colors.foreground};
+}
+}
+
+`
+
+//  <img
+//                       className="graphic"
+//                       src={`./assets/svg/portfolio-graphic-${theme.name}.png`} // TODO: this will be dynamic per page (with a hero header)
+//                     />

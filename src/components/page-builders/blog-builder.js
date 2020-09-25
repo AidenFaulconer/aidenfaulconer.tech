@@ -17,6 +17,7 @@ import { useTheme } from "emotion-theming";
 import ThreeBlog from "../blog/three-blog";
 import { Btn, BtnPrimary, BtnSecondary } from "../buttons";
 
+import {blogGraphic} from "../../../static/assets/svg/hardcoded-svgs.js"
 // #region blog card
 export const BlogCard = ({ data }) => {
   const [selected, selectProject] = useState(0);
@@ -144,15 +145,12 @@ export default React.memo(() => {
                   style={{ marginTop: "0px" }}
                   className="d-none d-xs-none d-sm-none d-md-none d-lg-block d-xl-block "
                 >
-                  <img
-                    style={{
-                      width: "100%",
-                      objectFit: "contain",
-                      marginTop: "-100px"
-                    }}
-                    className="graphic"
-                    src={`./assets/svg/blog-graphic-${theme.name}.png`}
-                  />
+                  <Graphic>
+                    <div
+                      style={{ fill: theme.colors.secondary }}
+                      dangerouslySetInnerHTML={{ __html: blogGraphic }}
+                    />
+                  </Graphic>
                 </Col>
               </Col>
 
@@ -172,6 +170,27 @@ export default React.memo(() => {
 // #endregion section builder
 const Test = styled.div`
 `;
+
+export const Graphic = styled.div`
+
+& svg {
+  height: 100%;
+  width: 100%;
+  margin: auto;
+
+  & #dark-blue {
+    fill: ${props=>props.theme.colors.primary};
+  }
+
+  & #blue {
+    fill: ${props=>props.theme.colors.primary};
+  }
+
+  & #white {
+    fill: ${props=>props.theme.colors.foreground};
+  }
+}
+`
 
 const FeaturedBlog = styled.article`
   position: relative;
