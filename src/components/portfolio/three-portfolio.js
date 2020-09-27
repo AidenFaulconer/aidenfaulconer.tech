@@ -11,7 +11,7 @@ import {
 import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import Post from "./three-post-processing.js";
 import linesUrl from "../../../static/assets/lines.png";
-import * as SimplexNoise from "simplex-noise"
+import SimplexNoise from "simplex-noise"
 
 export const Mouse = () => {
   const viewportOffset = 2;
@@ -87,127 +87,121 @@ export const Borders = ({ theme }) => {
 
 //https://discourse.threejs.org/t/how-to-change-texture-color-per-object-instance-in-instancedmesh/11271/3
 
-// Creates a crate that catches the spheres
-export const MovingColumns = ({ theme }) => {
-  const { viewport, clock } = useThree();
-  const noise = new SimplexNoise(Math.random);
 
-  let columnAmount = 12;
-  const Columns = useRef([]);
+function MovingColumns() {
+  const { viewport, clock, gl, camera, size } = useThree();
+  const instancedColumns = useRef();
 
-  const GenerateMappings = () => {
-    let result= []//vec3 array
-    for (let x=0;x<columnAmount;x++) {
-      for (let z=0;z<columnAmount;z++) result.push(new Vector3(x,Math.random(),z))
-    }
-    return result
-  }
-  let ColumnMappings = GenerateMappings();
+  //#region maintain position with shader
+  // const vertexShader = `
+  //   precision highp float;
+  //   uniform mat4 modelViewMatrix;
+  //   uniform mat4 projectionMatrix;
 
-  const ModulateColumn = (objectRef) => {
-    let time = clock.elapsedTime;
-    let newY = noise.noise2D(position.x + time * 0.0001, position.y + time * 0.0003);
-    objectRef.position.set(position.x,newY,position.z);//is of type object3d
-  }
+  //   attribute vec3 position;
+  //   attribute vec3 cubePos;
 
-  useEffect(() => {
-      alert(Columns.current.forEach((obj)=>obj));
-    return () => {
-    }
-  }, [])
+  //   void main(){
+  //     gl_position = projectionMatrix * modelViewMatrix * vec4(cudePos+position, 1,0);
+  //   }
+  // `;
+  // <rawShaderMaterial
+  // attatch="material"
+  // vertexShader={vertexShader}
+  // fragmentShader={fragmentShader}
+  // />
 
-  useFrame(state=>{
-    // Columns.current.forEach(ModulateColumn);
-  })
+  // const fragmentShader = `
+  //     precision highp float;
+  //     void main(){
+  //       gl_FragColor = vec4(1.0,0.0,0.0,1.0);
+  //     }
+  // `
+  // useEffect(() => {
+  //   if (instancedColumns.current.length > 3)
+  //     instancedColumns.current = instancedColumns.current.slice(0, 2);
+  //   let obj = instancedColumns.current;
+  //   // if (obj)//attributes are hanadled and maintained by a shader
+  //   //   obj.setAttribute("cubePos",new THREE.InstancedBufferAttribute(new Float32Array([
+  //   //     25, 25, 25,
+  //   //     25, 25, -25, -25, 25, 25, -25, 25, -25,
+  //   //     25, -25, 25,
+  //   //     25, -25, -25, -25, -25, 25, -25, -25, -25
+  //   //   ]),3,true/**vectors normalized? */, 1/**mesh per attribute*/));
+  //   console.log(obj);
+  // }, [instancedColumns]);
+  //#endregion
 
-  return (
+  const noise = new SimplexNoise(Math.random()); //only instance once, hence use of usememo
 
-  <>{
-  ColumnMappings.forEach(position=>{
-      return(
-        <instancedMesh
-         receiveShadow
-         ref={ref => {Columns.current.push(ref)}}>
-          <boxBufferGeometry attatch="geometry" parameters={[1,position.y,4]} posiiton={position}/>
-          <meshBasicMaterial attatch="material" opacity={1} color="grey" toneMapped={false} flatShading/>
-        </instancedMesh>)
-      })}
-  </>);
-};
+  //create position data
+  const dummyObj = useMemo(() => new Object3D(), []); //used to generate a matrix we can use based on the ref'ed blueprint of the object
 
+  const cubeSize = 4;
+  const columnDepth = 15;
+  const generatedGrid = useMemo(() => {
+    let result = []; //vec3 array
+    for (let x = 0; x < viewport.width; x += cubeSize)
+      for (let z = 0; z < (columnDepth * cubeSize); z += cubeSize)
+        result.push({ position: [x, Math.random(), z] });
+    return result;
+  }, []);
 
-export const InstancedBoxs = ({
-  dims,
-  choice,
-  color = "black",
-  count = 50
-}) => {
-  const { size, viewport, gl, scene, camera, clock } = useThree();
+  useFrame(() => {
+    //update objects
+    generatedGrid.forEach((data, i) => {
+      const t = clock.getElapsedTime()/2;
 
-  const texture = useLoader(THREE.TextureLoader, linesUrl);
-  texture.anisotropy = 15; // high res textures, no matter the distance
+      const { position } = data; //get prefitted positions on the grid
+      dummyObj.position.set(
+        position[0],
+        noise.noise2D(position[1]+t, position[0]+t),
+        position[2]
+      );
+      dummyObj.updateMatrix();
+      //place created object in instancedMesh for management
+      instancedColumns.current.setMatrixAt(i, dummyObj.matrix);
+    });
+    instancedColumns.current.instanceMatrix.needsUpdate = true; //force update of matrix
+  }, 1 /**number 1 render priority */);
 
-  const dimensions = dims;
-  const viewportOffset = -16;
-  // use react reference to generate the mesh
-  const [ref] = useBox(index => {
-    const options = {
-      // used to ensure box's stack in a pyrimid like shape, (2 on top, 3 on bottom)
-      // right
-      rightOffset: [
-        viewport.width + viewportOffset - 1.85,
-        -viewport.height + 2,
-        0,
-        8.7
-      ],
-      right: [viewport.width + viewportOffset - 1.5, -viewport.height, 0, 8.7],
-      // left
-      leftOffset: [
-        -(viewport.width / viewportOffset - Math.random() - 1),
-        -viewport.height + 1,
-        0,
-        0
-      ],
-      left: [
-        -(viewport.width / viewportOffset - Math.random() - 1),
-        -viewport.height,
-        0,
-        8.7
-      ]
-    };
-    return {
-      mass: 20,
-      material: { friction: 0.09, restitution: 0.09 },
-      args: dimensions, // with use sphere there isnt an array passed
-      position: options[choice]
-      // onCollide: e => play(index, e.contact.impactVelocity),
-    };
-  });
-  // alert(JSON.stringify(texture));
   return (
     <instancedMesh
-      castShadows
-      receiveShadows
-      ref={ref}
-      args={[null, null, count]}
+      ref={instancedColumns}
+      castShadow
+      position={[-viewport.width / 2, 0, columnDepth / cubeSize]}
+      receiveShadow
+      args={[null, null, generatedGrid.length]}
     >
-      <boxBufferGeometry attatch="geometry" args={dimensions} />
-      <meshBasicMaterial
-        flatShading
+      <boxBufferGeometry
+        /**we are consistently mapping position data, dont dispose objects
+         * once a frame finishes*/
+        // dispose={false}
+        args={[cubeSize, cubeSize, cubeSize, 1]}
+        attatch="geometry"
+      />
+      <meshPhongMaterial
+        color="white"
+        side={THREE.DoubleSide}
         attatch="material"
-        color={color}
-        map={texture}
-        alphaMap={texture}
-        transparent
-        opacity={1}
-        depthTest
-        toneMapped={false}
       />
     </instancedMesh>
   );
-};
+}
 
-// https://inspiring-wiles-b4ffe0.netlify.app/2-objects-and-properties
+
+function Box({ position, color }) {
+  const ref = useRef();
+  useFrame(() => (ref.current.rotation.x = ref.current.rotation.y += 0.01));
+
+  return (
+    <mesh position={position} ref={ref}>
+      <boxBufferGeometry args={[1, 1, 1]} attach="geometry" />
+      <meshPhongMaterial color={color} attach="material" />
+    </mesh>
+  );
+}
+
 export default ({ theme }) => {
   const { viewport } = useThree();
 
@@ -218,55 +212,36 @@ export default ({ theme }) => {
         shadowMap
         pixelRatio={typeof window !== "undefined" && window.devicePixelRatio}
         gl={{ alpha: true, antialias: true }}
-        camera={{ position: [0, 0, -10], fov: 50, near: 17, far: 100 }}
+        camera={{position: [0, 0, 20], fov: 50, near: 1, far: 70 }}
       >
-        <ambientLight
-          color={
-            theme.name === "dark"
-              ? theme.colors.primary
-              : theme.colors.foreground
-          }
-          intensity={0.5}
-        />
+        <fog attach="fog" args={["white", 10, 100]} />
+        <color attach="background" args={["white"]} />
+        <ambientLight intensity={0.8} />
         <directionalLight
-          position={[50, 150, 400]}
-          angle={0.25}
-          intensity={theme.name === "dark" ? 1 : 1}
-          color={
-            theme.name === "dark"
-              ? theme.colors.primary
-              : theme.colors.foreground
-          }
+          position={[50, 50, 25]}
+          angle={0.3}
+          intensity={2}
           castShadow
-          // shadow-bias={0.01}
-          shadow-radius={10}
-          shadow-mapSize-width={7000} // fidelity of shadow maps (higher is sharper)
-          shadow-mapSize-height={7000}
-          // move shadows to cameras perspective instead of light
-          shadow-camera-left={-10}
-          shadow-camera-right={10}
-          shadow-camera-top={10}
-          shadow-camera-bottom={-10}
         />
-        {/**
-         */}
+        <directionalLight position={[-10, -10, -10]} intensity={0.5} />
         <Suspense fallback={null}>
           <Physics
             gravity={[0, -50, 0]}
             defaultContactMaterial={{ restitution: 0.6 }}
           >
-            <group position={[0, 0, -10]}>
+            <group position={[0, 15, -15]} rotation={[1.5,0,0]}>
               <Mouse />
-              <Borders theme={theme} />
-              {/** right group */}
               <MovingColumns/>
+              <Borders />
             </group>
+            <Post/>
           </Physics>
         </Suspense>
       </Canvas>
     </div>
   );
 };
+// <Post />
 //  {/** left group */}
 //               <InstancedBoxs
 //                 dims={[4, 2.25, 2.25]}

@@ -179,7 +179,7 @@ export const Graphic = styled.div`
   margin: auto;
 
   & #dark-blue {
-    fill: ${props=>props.theme.colors.primary};
+    fill: ${props=>props.theme.colors.textSecondary};
   }
 
   & #blue {

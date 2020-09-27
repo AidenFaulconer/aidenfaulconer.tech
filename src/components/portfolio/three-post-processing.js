@@ -62,3 +62,6 @@ export default () => {
     </Suspense>
   );
 };
+
+
+//required for shader shit

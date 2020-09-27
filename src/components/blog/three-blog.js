@@ -84,8 +84,8 @@ export const InstancedBoxs = ({
 }) => {
   const { size, viewport, gl, scene, camera, clock } = useThree();
 
-  const texture = useLoader(THREE.TextureLoader, linesUrl);
-  texture.anisotropy = 15; // high res textures, no matter the distance
+  // const texture = useLoader(THREE.TextureLoader, linesUrl);
+  // texture.anisotropy = 15; // high res textures, no matter the distance
 
   const dimensions = dims;
   const viewportOffset = -16;
