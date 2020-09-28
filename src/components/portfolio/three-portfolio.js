@@ -201,7 +201,7 @@ export default ({theme}) => {
     <Canvas
       concurrent
       shadowMap
-      pixelRatio={window.devicePixelRatio}
+      pixelRatio={typeof window !== "undefined" ? window.devicePixelRatio : null}
       gl={{ alpha: false, antialias: true }}
       camera={{
         position: [0, 5, 10],
