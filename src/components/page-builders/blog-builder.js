@@ -236,7 +236,6 @@ const FeaturedBlog = styled.article`
     top: 0px;
     z-index: 0;
     background: ${props => props.theme.colors.primary};
-
     & h2 {
       position: relative;
       top: 0px;
@@ -289,6 +288,7 @@ const OtherBlogs = styled.div`
     border-radius: ${props => props.theme.corners.borderRadius1};
     color: ${props => props.theme.colors.textPrimary};
     ${props => props.theme.transitions.primary("all")};
+    overflow:hidden;
 
     & img {
       width: 100%;

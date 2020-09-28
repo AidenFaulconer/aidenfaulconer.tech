@@ -51,6 +51,7 @@ const NavigationWrapper = styled.div`
     z-index: 100;
     width: 100%;
     position: fixed;
+    padding: 12.5px;
     fled-direction: space-evenly;
     border-bottom: 1.75px solid
       ${props =>
@@ -96,6 +97,7 @@ const NavigationWrapper = styled.div`
             position: relative;
             height: 1px;
             width: 0%;
+            bottom: -29px;
             background: ${props => props.theme.colors.primary};
             ${props => props.theme.transitions.secondary("all")};
             ${props=>props.theme.breakpoints.md(`bottom:-38px;`)}

@@ -147,17 +147,15 @@ const Post = styled.article`
 
   & .post-details {
     flex: auto;
-    padding: 25px;
+    padding: 12.5px;
+    margin: auto;
 
     & .post-title {
       color: ${props => props.theme.colors.textSecondary};
       z-index: 3;
       font-weight: bolder;
       text-transform: capitalcase;
-
-      text-align: left;
-      margin: auto;
-      font-size: 3em;
+      font-size: 2.5em;
       text-align: center;
       margin-bottom: 6.125px;
       font-family: "brown";

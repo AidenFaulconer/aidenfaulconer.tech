@@ -141,7 +141,7 @@ export default React.memo(({ theme }) => {
                             />
                           </div>
                         </Col>
-                        <Col xl={2} md={1} lg={1} />
+                        <Col xl={2} md={2} lg={1} />
                       </Row>
                     </ContentContainer>
                   );

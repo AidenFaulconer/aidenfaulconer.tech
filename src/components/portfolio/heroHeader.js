@@ -32,9 +32,10 @@ const HeroHeader = styled.section`
     text-transform: capitalcase;
     font-family: poppins;
     text-align: center;
+    margin: auto;
 
     ${props =>
-      props.theme.breakpoints.sm(`
+      props.theme.breakpoints.md(`
       font-size: 4.5em;
       width: 80%;
       margin-top: -100px;
@@ -135,11 +136,11 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                 <Col
                   xl={{span:2,offset:1}}
                   lg={3}
-                  md={3}
-                  sm={3}
+                  md={2}
+                  sm={1}
                   className="d-xs-none d-lg-block"
                 />
-                <Col xl={3} lg={3} md={10} sm={10}>
+                <Col xl={3} lg={3} md={8} sm={10}>
                   <h1 className="headline">
                     {headline}
                     <div
@@ -167,7 +168,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                   </div>
                 </Col>
 
-                <Col xl lg md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
+                <Col xl={3} lg={6} md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
                     <Graphic>
                       <div
                       style={{ fill: theme.colors.secondary }}
@@ -179,8 +180,8 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                 <Col
                   xl={{span:2,offset:1}}
                   lg={3}
-                  md={3}
-                  sm={3}
+                  md={2}
+                  sm={2}
                   xs={0}
                   className="d-sm-block -xs-none"
                 />
