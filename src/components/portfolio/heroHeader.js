@@ -176,7 +176,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                   </div>
                 </Col>
 
-                <Col xl={3} lg={7} md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
+                <Col xl={3} lg={6} md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
                     <Graphic>
                       <div
                       style={{ fill: theme.colors.secondary }}
