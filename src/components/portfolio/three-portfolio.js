@@ -235,7 +235,7 @@ const {viewport} = useThree();
     <Canvas
       concurrent
       shadowMap
-      pixelRatio={window.devicePixelRatio}
+      pixelRatio={typeof window !== "undefined" && window.devicePixelRatioo}
       gl={{ alpha: true, antialias: false }}
       camera={{
         fov: 50,
