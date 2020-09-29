@@ -209,8 +209,8 @@ const SkillGrid = styled.div`
 
         &:hover {
           ${props => props.theme.transitions.primary("all")};
-          background: ${props => props.theme.colors.secondary};
-          color: ${props => props.theme.colors.primary};
+          background: ${props => props.theme.colors.primary};
+          color: ${props => props.theme.colors.textPrimary};
           box-shadow: ${props => props.theme.shadows.primary};
         }
         ${props => props.theme.transitions.primary("all")};

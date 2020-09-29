@@ -53,6 +53,7 @@ const NavigationWrapper = styled.div`
     position: fixed;
     padding: 12.5px;
     fled-direction: space-evenly;
+    box-shadow: ${props => props.theme.shadows.nav};
     border-bottom: 1.75px solid
       ${props =>
         props.theme.name === "dark"
@@ -60,7 +61,8 @@ const NavigationWrapper = styled.div`
           : "rgba(0, 0, 0, 0.25)"};
 
     ${props=>props.theme.breakpoints.md(`padding: 20px 35px;`)}
-    background: ${props => props.theme.colors.foreground}; //switch on bg color
+    background: ${props => props.theme.colors.foreground };
+; //switch on bg color
 
     display: flex;
     flex-wrap: wrap;
@@ -97,10 +99,10 @@ const NavigationWrapper = styled.div`
             position: relative;
             height: 1px;
             width: 0%;
-            bottom: -29px;
+            bottom: 150%;
+            ${props=>props.theme.breakpoints.md(`bottom:-38px;`)}
             background: ${props => props.theme.colors.primary};
             ${props => props.theme.transitions.secondary("all")};
-            ${props=>props.theme.breakpoints.md(`bottom:-38px;`)}
           }
 
           &:hover {
@@ -114,6 +116,7 @@ const NavigationWrapper = styled.div`
 
       & .active-link {
         color: ${props => props.theme.colors.primary};
+        font-family: 'poppins';
 
         &::after {
           visibility: visible;
@@ -175,6 +178,7 @@ export default ({ toggleTheme, theme, pageType }) => {
   const [scrollPos, setScrollPos] = useState(
   typeof document !== "undefined" ? document.body.getBoundingClientRect().y : 0
   );
+
   const [hide, showNav] = useState(true); // triggers css animation to hide or hide navbar
 
   const positionRef = useRef(); // allow usecallbacks to access the current state when they fire

@@ -26,14 +26,14 @@ function Post() {
       samples: 31, // May get away with less samples
       rings: 4, // Just make sure this isn't a multiple of samples
       distanceThreshold: 0.4,
-      distanceFalloff: 0.5,
-      rangeThreshold: 0.5, // Controls sensitivity based on camera view distance **
+      distanceFalloff: 0.9,
+      rangeThreshold: 10.5, // Controls sensitivity based on camera view distance **
       rangeFalloff: 0.01,
-      luminanceInfluence: 0.5,
-      radius: 5, // Spread range
-      intensity: 10,
+      luminanceInfluence: .25,
+      radius: 45, // Spread range
+      intensity: 15,
       bias: 0.5,
-    })
+    })//ambient occulusion
 
     // SSAO is supposed to be a subtle effect!
     ssaoEffect.blendMode.opacity.value = 1.0 // Debug.

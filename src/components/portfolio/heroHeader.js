@@ -90,10 +90,11 @@ const ThreeWrapper = styled.div`
   position: absolute;
   margin: auto;
   width: 100%;
-  height: 100%;
+  height: 120%;
   top:-150px;
 
   & #three-portfolio {
+  background: transparent;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -105,7 +106,9 @@ const ThreeWrapper = styled.div`
 
 export default ({ context, headerGraphic, headline, headlineDescription }) => {
   const [inProp, setInProp] = useState(false);
-  useEffect(() => setInProp(true), []);
+  useEffect(() => {
+  setInProp(true)
+  }, []);
   const theme = useTheme();
   return (
     <StaticQuery
@@ -135,7 +138,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
               <Row>
                 <Col
                   xl={{span:2,offset:1}}
-                  lg={3}
+                  lg={2}
                   md={2}
                   sm={1}
                   className="d-xs-none d-lg-block"
@@ -165,10 +168,15 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                         color="white"
                         text="Let's Connect" />
                     </a>
+                    <a href="#Contact" className="button -primary">
+                      <BtnSecondary bg={theme.colors.foreground}
+                        color="transparant"
+                        text="Start project" />
+                    </a>
                   </div>
                 </Col>
 
-                <Col xl={3} lg={6} md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
+                <Col xl={3} lg={7} md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
                     <Graphic>
                       <div
                       style={{ fill: theme.colors.secondary }}
@@ -179,7 +187,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
 
                 <Col
                   xl={{span:2,offset:1}}
-                  lg={3}
+                  lg={2}
                   md={2}
                   sm={2}
                   xs={0}

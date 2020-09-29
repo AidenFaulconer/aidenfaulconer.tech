@@ -152,10 +152,10 @@ export default React.memo(({ theme }) => {
                 xl={1}
                 lg={1}
                 // css to be overriden programatically
-                style={{ marginTop: "0px", background: "rgba(1,1,1,1)" }}
-                className="d-none d-md-none d-lg-none d-xl-block"
+                style={{ marginTop: "0px"}}
               >
                 <ContentNavigation
+                className="d-none d-md-none d-lg-none d-xl-block"
                   colorSwap={currentSection.odd}
                   id="sticky"
                   src="./assets/svg/wave-graphic.png"
@@ -198,7 +198,7 @@ const Test = styled.div`
 `;
 const ContentNavigation = styled.nav`
   z-index: 100;
-  padding-top: 125px;
+  padding-top: 250px;
   position: sticky;
   visibility: visible;
 
@@ -211,13 +211,12 @@ const ContentNavigation = styled.nav`
     z-index: -1;
     width: 100%;
     ${props => props.theme.transitions.primary("all")};
-    background: ${props =>
-      props.colorSwap ? props.theme.colors.primary : props.theme.colors.foreground};
     color: ${props =>
       props.colorSwap
         ? props.theme.colors.textPrimary
-        : props.theme.colors.textSecondary};
+        : props.theme.colors.foreground};
   }
+
 
   & .heading {
   }
@@ -228,7 +227,6 @@ const ContentNavigation = styled.nav`
     justify-content: center;
     width: 100%;
     top: 0px;
-    height: auto;
     overflow: hidden;
     z-index: -1;
     padding: 12.5px;
@@ -241,7 +239,7 @@ const ContentNavigation = styled.nav`
       width: 100%;
       height: 100px;
       margin-bottom: 15px;
-      background: url(${props => props.src});
+      background: ${props=>props.theme.textPrimary};
 
       & img {
         display: block;
@@ -266,7 +264,7 @@ const ContentNavigation = styled.nav`
     & button {
       display: flex;
       flex-direction: row;
-      background: ${props => props.theme.colors.textPrimary};
+      background: ${props => props.theme.colors.primary};
       justify-content: space-between;
       border-radius: ${props => props.theme.corners.borderRadius1};
       padding: 12.25px;
@@ -275,11 +273,12 @@ const ContentNavigation = styled.nav`
       margin-bottom: 8px;
       margin: 4px 0px;
       z-index: 2;
-      color: ${props => props.theme.colors.textSecondary};
+      color: ${props => props.theme.colors.textPrimary};
 
       &:hover {
         color: ${props => props.theme.colors.textSecondary};
-        background: ${props => props.theme.colors.secondary};
+        opacity: 1;
+        background: ${props => props.theme.colors.foreground};
         box-shadow: ${props => props.theme.shadows.primary};
       }
 
@@ -304,9 +303,15 @@ const ContentNavigation = styled.nav`
       & svg {
         width: 12.5px;
         height: 12.5px;
+        display: hidden;
+        visibility: hidden;
         margin-right: 10px;
         margin-left: 10px;
         fill: ${props => props.theme.colors.textColor};
+        ${props=>props.theme.breakpoints.lg(`
+        display: block;
+        visibility: visible;
+        `)}
       }
 
       &.active {
@@ -321,12 +326,6 @@ const ContentContainer = styled.section`
   position: relative;
   z-index: 1;
   padding: 100px 25px 200px 25px;
-
-    border-bottom: 1.75px solid
-      ${props =>
-        props.theme.name === "dark"
-          ? "rgba(255, 255, 255, 0.25)"
-          : "rgba(0, 0, 0, 0.25)"};
 
   ${props => props.theme.transitions.secondary("all")};
   background: ${props =>

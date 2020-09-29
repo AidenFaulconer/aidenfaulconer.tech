@@ -115,14 +115,16 @@ const ImageGrid = styled.div`
       `)}
 
   & .preview-content {
-    border-radius: ${props => props.theme.corners.borderRadius1};
     background: ${props => props.theme.colors.textPrimary};
     ${props => props.theme.transitions.primary("transform")};
-
+    overflow:hidden;
     & img {
-      width: 100%;
+      width: 101%;
+      top: -10px;
+      left: -2px;
       position: relative;
       max-height: 50px;
+      ${props => props.theme.transitions.primary("transform")};
       ${props=>props.theme.breakpoints.md(`
       max-height: 200px;
       `)}
@@ -134,6 +136,10 @@ const ImageGrid = styled.div`
 
     &:hover {
       transform: scale(1.05);
+      & img {
+        transform: scale(1.08);
+        ${props => props.theme.transitions.primary("transform")};
+      }
       ${props => props.theme.transitions.primary("transform")};
         box-shadow: ${props => props.theme.shadows.primary};
     }
@@ -183,16 +189,10 @@ const DisplayImage = styled.article`
       box-shadow: ${props => props.theme.shadows.primary};
       ${props => props.theme.transitions.primary("transform")};
     }
-    &::after {
-      cursor: pointer;
-      ${props => props.theme.mixins.transform3dSecondary};
-      box-shadow: ${props => props.theme.shadows.primary};
-      ${props => props.theme.transitions.primary("transform")};
-    }
   }
 
   & img {
-    box-shadow: ${props => props.theme.shadows.primary};
+    border-radius: ${props => props.theme.corners.borderRadius1};
     ${props => props.theme.transitions.primary("transform")};
     max-width: 100%;
     margin: 0px 0px;
@@ -207,21 +207,6 @@ const DisplayImage = styled.article`
     max-height: 600px;
       `)}
 
-    &::after {
-      content: "";
-      width: 595px;
-      height: 434px;
-      max-width: 100%;
-      position: absolute;
-      top: 0px;
-      bottom: 0px;
-      background-image: url(${props => props.src});
-      opacity: 0.6;
-      z-index: -1;
-      transform: rotate(-3deg);
-      box-shadow: ${props => props.theme.shadows.primary};
-      ${props => props.theme.transitions.primary("transform")};
-    }
   }
   & h3 {
     margin-top: 25px;

@@ -66,7 +66,7 @@ const staticStlying = {
         transition-timing-function: cubic-bezier(.19,1,.22,1) .5s;`
   },
   corners: {
-    borderRadius1: "2px",
+    borderRadius1: "5px",
     borderRadius2: "10px",
     borderRadius3: "20px",
     borderRadius4: "50px",
@@ -195,6 +195,7 @@ export default {
     },
      shadows: {
       primary: "-5px 0px 50px rgba(0,0,0,.25)",
+      nav: "-5px 0px 25px rgba(0,0,0,.15)",
       secondary: "2.5px 0px 12.5px rgba(0,0,0,0.75)"
     },
     // #region static styling
@@ -209,6 +210,9 @@ export default {
     // #endregion static styling
 
     global: `
+
+    & #root {background: red;}
+
     & body {
       ${staticStlying.fonts};
       box-sizing: border-box;
@@ -259,6 +263,7 @@ export default {
     },
     shadows: {
       primary: "-5px 0px 50px rgba(0,0,0,.25)",
+      nav: "-5px 0px 25px rgba(0,0,0,.15)",
       secondary: "2.5px 0px 12.5px rgba(0,0,0,0.75)"
     },
     // #region static styling
@@ -272,7 +277,6 @@ export default {
     mixins: staticStlying.mixins,
     // #endregion static styling
     global: `
-
     & body {
       ${staticStlying.fonts};
       box-sizing: border-box;

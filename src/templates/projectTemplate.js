@@ -140,7 +140,7 @@ const BlogContent = styled.section`
 const Post = styled.article`
   margin-top: 150px;
   color: ${props => props.theme.colors.textSecondary};
-  padding: 100px 12vw;
+  padding: 100px 1vw;
   display: flex;
   flex-direction: row;
   order: 0;
@@ -157,10 +157,10 @@ const Post = styled.article`
 
       text-align: left;
       margin: auto;
-      font-size: 3em;
+      font-size: 2.75em;
+      font-weight: bold;
       text-align: center;
       margin-bottom: 6.125px;
-      font-family: "brown";
     }
     & .post-meta {
       text-align: center;
@@ -170,7 +170,6 @@ const Post = styled.article`
   }
 
   & .post-thumbnail {
-    flex: 75%;
     position: absolute;
     order: 1;
     left: 0px;

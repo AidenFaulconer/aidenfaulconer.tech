@@ -48,7 +48,7 @@ export default ({ children, pageType }) => {
 
   // used in global context
   const [themeState, setThemeState] = useState(
-    typeof cookies.themeState === "undefined" ? "light" : cookies.themeState
+    typeof cookies.themeState !== "undefined" ? cookies.themeState : "light"
   );
   const [theme, setTheme] = useState(THEME[themeState]);
   const [scrollPos, setScrollPos] = useState(0);
