@@ -86,7 +86,7 @@ const ContactForm = styled.form`
 
   & label {
     color: ${props => props.theme.colors.textSecondary};
-    font-size: ${props => props.theme.text.sizes.extraSmall};
+    font-size: 1em;
     margin-right: 50px;
     margin-bottom: 6.25px;
     font-size: ;

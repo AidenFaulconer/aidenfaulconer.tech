@@ -64,6 +64,7 @@ const Button = styled.button`
   & p {
     font-family: poppins;
     font-weight: 400;
+    text-align: center;
     margin: auto;
   }
 `;

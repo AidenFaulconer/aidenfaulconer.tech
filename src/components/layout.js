@@ -191,7 +191,7 @@ const Footer = styled.footer`
   font-size: ${props => props.theme.text.sizes.small};
 
   & h3 {
-    font-family: "brown";
+    font-family: "poppins";
     margin: 0px;
   }
 

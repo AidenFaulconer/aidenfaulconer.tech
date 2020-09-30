@@ -105,6 +105,7 @@ const CameraControls = () => {
     orbitControls.enableZoom = false;
     orbitControls.autoRotateSpeed = .5;
     orbitControls.maxPolarAngle = 0;
+    orbitControls.enablePan = false;
   },[])
   useFrame((state)=>{
   let orbitControls = controls.current;

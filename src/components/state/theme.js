@@ -31,8 +31,8 @@ const staticStlying = {
    fonts: `
     & h1 { font-size:80.24px;font-family:"poppins";font-weight: bolder;};
     & h2 { font-size:2.618em;font-family: "poppins": font-weight: 500;};
-    & h3 { font-size:17.42px;font-family: "poppins"; font-weight: 400;};
-    & p { font-size:1em; font-family:"brown"; font-weight: 300;};
+    & h3 { font-size:1.1em;font-family: "poppins"; font-weight: bolder;};
+    & p { font-size:1em; font-family:"poppins"; font-weight: 200;};
     & a { font-size:1em; font-family:"poppins"; font-weight: bolder; text-decoration: none;};
 
     //default font
@@ -219,9 +219,9 @@ export default {
       overflow-x: hidden;
       margin: 0px;
       padding: 0px;
-      font-size: 10px;
+      font-size: 20px;
 
-      & h1 {font-size:50.24px;}
+      & h1 {font-size:70.24px;}
       ${staticStlying.breakpoints.sm(`
         ${staticStlying.text.sizeScalings.sm};
       `)}
