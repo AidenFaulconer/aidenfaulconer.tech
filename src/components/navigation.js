@@ -90,7 +90,6 @@ const NavigationWrapper = styled.div`
         }
 
       & .active-link {
-        color: ${props => props.theme.colors.primary};
         font-weight: 600;
         &::after {
           visibility: visible;

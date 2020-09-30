@@ -106,6 +106,7 @@ const CameraControls = () => {
     orbitControls.autoRotateSpeed = .5;
     orbitControls.maxPolarAngle = 0;
     orbitControls.enablePan = false;
+    orbitControls.touches = THREE.TOUCH.TWO;
   },[])
   useFrame((state)=>{
   let orbitControls = controls.current;

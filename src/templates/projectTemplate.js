@@ -142,7 +142,7 @@ const BlogContent = styled.section`
 `;
 
 const Post = styled.article`
-  margin-top: 150px;
+  margin-top: 7vw;
   color: ${props => props.theme.colors.textSecondary};
   padding: 100px 0vw;
   display: flex;
