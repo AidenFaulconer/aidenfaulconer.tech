@@ -179,9 +179,9 @@ const SkillGrid = styled.div`
 
       ${props =>
         props.theme.breakpoints.md(`
-      // grid-template-columns: 1fr 1fr 1fr;
+        // grid-template-columns: 1fr 1fr 1fr;
       `)}
-      row-gap: 4px;
+      row-gap: 2px;
       align-self: center;
 
       & .skill {
@@ -189,13 +189,13 @@ const SkillGrid = styled.div`
         justify-content: center;
         flex-direction: column;
         text-align: center;
-        width: 95%;
-        height: 90%;
         padding: 8px;
+        height: 90%;
+        width: 95%;
+        border-radius: ${props => props.theme.corners.borderRadius1};
         font-size: ${props => props.theme.text.sizes.extraSmall};
         background: ${props => props.theme.colors.textPrimary};
         color: ${props => props.theme.colors.textSecondary};
-        border-radius: ${props => props.theme.corners.borderRadius1};
 
         & p {
           margin: 0px;

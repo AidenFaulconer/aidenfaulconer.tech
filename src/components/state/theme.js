@@ -29,11 +29,10 @@
 const staticStlying = {
   //webpack wont compile fonts properly unless each font imported with js
    fonts: `
-
     & h1 { font-size:80.24px;font-family:"poppins";font-weight: bolder;};
     & h2 { font-size:2.618em;font-family: "poppins": font-weight: 500;};
     & h3 { font-size:17.42px;font-family: "poppins"; font-weight: 400;};
-    & p { font-size:18px; font-family:"brown"; font-weight: 300;};
+    & p { font-size:1em; font-family:"brown"; font-weight: 300;};
     & a { font-size:1em; font-family:"poppins"; font-weight: bolder; text-decoration: none;};
 
     //default font
@@ -86,17 +85,20 @@ const staticStlying = {
    &::hover{transform: scale(.5);}
   }`,
   text: {
+    sizeScalings: {
+      xl:"21px",
+      lg:"20px",
+      md:"15px",
+      sm:"10px",
+      xs:"10px",
+    },
     sizes: {
-//main
+      //main
       headline: "70px",
       body: "15px",
       detail: "13px",
       heading: "70px",
-//main
-
-//blog
-
-//blog
+      //main
       extraSmall: ".618em", // was .618em
       small: ".818em", // was .618em
       p: "15px",
@@ -194,8 +196,8 @@ export default {
       third: "1px solid #5A00DB"
     },
      shadows: {
-      primary: "-5px 0px 50px rgba(0,0,0,.25)",
       nav: "-5px 0px 25px rgba(0,0,0,.15)",
+      primary: "-5px 0px 50px rgba(0,0,0,.25)",
       secondary: "2.5px 0px 12.5px rgba(0,0,0,0.75)"
     },
     // #region static styling
@@ -210,35 +212,30 @@ export default {
     // #endregion static styling
 
     global: `
-
-    & #root {background: red;}
-
     & body {
       ${staticStlying.fonts};
       box-sizing: border-box;
-      background: #111111;//#0D0D0D
+      background: #0D0D0D;
       overflow-x: hidden;
       margin: 0px;
       padding: 0px;
       font-size: 10px;
 
       & h1 {font-size:50.24px;}
-
       ${staticStlying.breakpoints.sm(`
-      font-size: 12px;
+        ${staticStlying.text.sizeScalings.sm};
       `)}
       ${staticStlying.breakpoints.md(`
-      font-size: 15px;
-      & h1 {font-size:74.24px;}
+        ${staticStlying.text.sizeScalings.md};
+        & h1 {font-size:74.24px;}
       `)}
       ${staticStlying.breakpoints.lg(`
-      font-size: 20px;
+        ${staticStlying.text.sizeScalings.lg};
       `)}
       ${staticStlying.breakpoints.xl(`
-      font-size: 21px;
+        ${staticStlying.text.sizeScalings.xl};
       `)}
     }
-
     ${staticStlying.externalStyleAdjustments};
   `
   },
@@ -262,8 +259,8 @@ export default {
       third: "1px solid #5A00DB"
     },
     shadows: {
-      primary: "-5px 0px 50px rgba(0,0,0,.25)",
       nav: "-5px 0px 25px rgba(0,0,0,.15)",
+      primary: "-5px 0px 50px rgba(0,0,0,.25)",
       secondary: "2.5px 0px 12.5px rgba(0,0,0,0.75)"
     },
     // #region static styling
@@ -288,22 +285,20 @@ export default {
       font-size: 20px;
 
       & h1 {font-size:70.24px;}
-
       ${staticStlying.breakpoints.sm(`
-      font-size: 16px;
+        ${staticStlying.text.sizeScalings.sm};
       `)}
       ${staticStlying.breakpoints.md(`
-      font-size: 15px;
-      & h1 {font-size:74.24px;}
+        ${staticStlying.text.sizeScalings.md};
+        & h1 {font-size:74.24px;}
       `)}
       ${staticStlying.breakpoints.lg(`
-      font-size: 20px;
+        ${staticStlying.text.sizeScalings.lg};
       `)}
       ${staticStlying.breakpoints.xl(`
-      font-size: 21px;
+        ${staticStlying.text.sizeScalings.xl};
       `)}
     }
-
     ${staticStlying.externalStyleAdjustments};
   `
   }

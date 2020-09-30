@@ -91,16 +91,18 @@ export const pageQuery = graphql`
 const BlogContent = styled.section`
   margin-top: 25px;
   font-family: "poppins";
-  padding: 100px 15vw;
+  padding: 100px 5vw;
   overflow-x: hidden;
   color: ${props => props.theme.colors.textSecondary};
+
   & img {
-  display: block;
-  object-fit: contain;
-  max-width: 100%;
-  background-origin: center;
-  margin: 25px auto;
+    display: block;
+    object-fit: contain;
+    max-width: 100%;
+    background-origin: center;
+    margin: 25px auto;
   }
+
   & * {
     line-height: 175%;
   }
@@ -109,6 +111,7 @@ const BlogContent = styled.section`
     display: flex;
     flex-direction: row;
   }
+
   & .image-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -121,6 +124,7 @@ const BlogContent = styled.section`
     font-family: "poppins";
     font-weight: bolder;
   }
+
   & h2 {
     font-size: 1.5em;
     margin-top: 50px;
@@ -140,7 +144,7 @@ const BlogContent = styled.section`
 const Post = styled.article`
   margin-top: 150px;
   color: ${props => props.theme.colors.textSecondary};
-  padding: 100px 1vw;
+  padding: 100px 0vw;
   display: flex;
   flex-direction: row;
   order: 0;
@@ -150,18 +154,17 @@ const Post = styled.article`
     padding: 25px;
 
     & .post-title {
+      ${props=>props.theme.breakpoints.md(`font-size: 3em;`)}
       color: ${props => props.theme.colors.textSecondary};
-      z-index: 3;
-      font-weight: bolder;
       text-transform: capitalcase;
-
-      text-align: left;
-      margin: auto;
-      font-size: 2.75em;
-      font-weight: bold;
-      text-align: center;
       margin-bottom: 6.125px;
+      font-weight: bolder;
+      text-align: center;
+      font-size: 1.75em;
+      font-weight: bold;
+      z-index: 3;
     }
+
     & .post-meta {
       text-align: center;
       font-family: "brown";
@@ -173,10 +176,10 @@ const Post = styled.article`
     position: absolute;
     order: 1;
     left: 0px;
-    opacity: .5;
+    opacity: .25;
     top:0px;
     z-index: -1;
-    height: 600px;
+    height: 60vh;
     width: 100%;
     background-image: url(${props => props.src});
     background-size: cover;

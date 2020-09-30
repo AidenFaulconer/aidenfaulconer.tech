@@ -174,29 +174,30 @@ const SelectedExperience = styled.div`
       // width: 10%;
       height: 100%;
       max-height: 100px;
-
-      ${props =>
-        props.theme.breakpoints.lg(`
-    display: inline-block;
-      `)}
+      ${props => props.theme.breakpoints.lg(`display: inline-block;`)}
     }
+
     & .experience-date {
       font-size: ${props => props.theme.text.sizes.extraSmall};
       opacity: 0.6;
     }
+
     & p {
       font-size: ${props => props.theme.text.sizes.extraSmall};
       margin-bottom: 25px;
     }
+
     & h3 {
       margin-top: 25px;
     }
   }
+
   & .experience-description {
     padding-bottom: 25px;
     margin-bottom: 25px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
   }
+
   & .skills-used {
     display: flex;
     flex-wrap: wrap;
@@ -210,6 +211,7 @@ const SelectedExperience = styled.div`
       text-align: center;
       background: #0d7bf2;
       color: white;
+      margin-left: 8.25px;
       vertical-align: middle;
       border-radius: ${props => props.theme.corners.borderRadius1};
       padding: 8.25px;

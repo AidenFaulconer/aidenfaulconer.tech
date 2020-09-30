@@ -54,16 +54,12 @@ const NavigationWrapper = styled.div`
     padding: 12.5px;
     fled-direction: space-evenly;
     box-shadow: ${props => props.theme.shadows.nav};
-    border-bottom: 1.75px solid
-      ${props =>
-        props.theme.name === "dark"
-          ? "rgba(255, 255, 255, 0.25)"
-          : "rgba(0, 0, 0, 0.25)"};
+
 
     ${props=>props.theme.breakpoints.md(`padding: 20px 35px;`)}
     background: ${props => props.theme.colors.foreground };
-; //switch on bg color
 
+    //switch on bg color
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -88,36 +84,14 @@ const NavigationWrapper = styled.div`
 
       & .link {
           margin: 0px 25px;
-          font-family: "brown";
+          font-family: "poppins";
+          font-weight: 300;
           color: ${props => props.theme.colors.textSecondary};
-
-          &::after {
-            content: "";
-            display: block;
-            margin-top: -9px;
-            visibility: hidden;
-            position: relative;
-            height: 1px;
-            width: 0%;
-            bottom: 150%;
-            ${props=>props.theme.breakpoints.md(`bottom:-38px;`)}
-            background: ${props => props.theme.colors.primary};
-            ${props => props.theme.transitions.secondary("all")};
-          }
-
-          &:hover {
-            &::after {
-              visibility: visible;
-              width: 100%;
-              ${props => props.theme.transitions.third("width")};
-            }
-          }
         }
 
       & .active-link {
         color: ${props => props.theme.colors.primary};
-        font-family: 'poppins';
-
+        font-weight: 600;
         &::after {
           visibility: visible;
           width: 100%;
@@ -216,6 +190,7 @@ export default ({ toggleTheme, theme, pageType }) => {
       <GoogleAds />
       <GoogleAnalytics/>
        */}
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
       <NavigationWrapper>
         <CSSTransition in={hide} timeout={15}>
           <nav>
@@ -259,3 +234,26 @@ export default ({ toggleTheme, theme, pageType }) => {
 // {(!hide && <Icon icon={menu} />) || <></>}
 // <Icon icon={menuAlt3} className="d-lg-none d-md-block" />
 // <ThemeChanger/>
+
+
+// &::after {
+//   content: "";
+//   display: block;
+//   margin-top: -9px;
+//   visibility: hidden;
+//   position: relative;
+//   height: 1px;
+//   width: 0%;
+//   display: none;
+//   ${props=>props.theme.breakpoints.md(`bottom:-38px;`)}
+//   background: ${props => props.theme.colors.primary};
+//   ${props => props.theme.transitions.secondary("all")};
+// }
+
+// &:hover {
+//   &::after {
+//     visibility: visible;
+//     width: 100%;
+//     ${props => props.theme.transitions.third("width")};
+//   }
+// }

@@ -78,11 +78,11 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
                 return (
                   <div className="preview-content"
                   key={`${frontmatter.title}-project`}
+                      onClick={() => selectProject(i)}
                   >
                     <img
                       alt="Selectable project view"
                       src={frontmatter.thumbnail_}
-                      onClick={() => selectProject(i)}
                     />
                     <h3>{i}.</h3>
                     <p>{frontmatter.title}</p>
@@ -110,28 +110,27 @@ const ImageGrid = styled.div`
 
   ${props =>
     props.theme.breakpoints.lg(`
-  width: 100%;
-  grid-template-columns: 1fr 1fr;
-      `)}
+      width: 100%;
+      grid-template-columns: 1fr 1fr;
+  `)}
 
   & .preview-content {
-    background: ${props => props.theme.colors.textPrimary};
+    border-radius: ${props => props.theme.corners.borderRadius1};
     ${props => props.theme.transitions.primary("transform")};
+    background: ${props => props.theme.colors.textPrimary};
     overflow:hidden;
-    & img {
-      width: 101%;
-      top: -10px;
-      left: -2px;
-      position: relative;
-      max-height: 50px;
-      ${props => props.theme.transitions.primary("transform")};
-      ${props=>props.theme.breakpoints.md(`
-      max-height: 200px;
-      `)}
 
+    & img {
+      ${props => props.theme.transitions.primary("transform")};
+      ${props=>props.theme.breakpoints.md(`max-height: 200px;`)}
+      position: relative;
+      margin-bottom: 8px;
+      max-height: 50px;
       object-fit: fit;
       opacity: 0.9;
-      margin-bottom: 8px;
+      width: 106%;
+      top: -10px;
+      left: -2px;
     }
 
     &:hover {
@@ -163,8 +162,8 @@ const DisplayImage = styled.article`
   text-align: center;
 
   & a {
-  align-self: center;
-  display: inline-block;
+    align-self: center;
+    display: inline-block;
   }
 
   ${props =>
@@ -174,13 +173,13 @@ const DisplayImage = styled.article`
     width: 50%;
     margin: 50px auto;
     & a { align-self: flex-start;}
-      `)}
+  `)}
 
   ${props =>
     props.theme.breakpoints.md(`
-  margin-right: 100px;
-  width: 100%;
-      `)}
+    margin-right: 100px;
+    width: 100%;
+  `)}
 
   &:hover {
     & img {
@@ -194,18 +193,19 @@ const DisplayImage = styled.article`
   & img {
     border-radius: ${props => props.theme.corners.borderRadius1};
     ${props => props.theme.transitions.primary("transform")};
+    max-height: 100px;
     max-width: 100%;
     margin: 0px 0px;
-    max-height: 100px;
 
-      ${props=>props.theme.breakpoints.sm(`
-    max-height: 200px;
-    width: 595px;
-    height: 434px;
-      `)}
-      ${props=>props.theme.breakpoints.md(`
-    max-height: 600px;
-      `)}
+    ${props=>props.theme.breakpoints.sm(`
+        max-height: 200px;
+        width: 595px;
+        height: 434px;
+    `)}
+
+    ${props=>props.theme.breakpoints.md(`
+        max-height: 600px;
+    `)}
 
   }
   & h3 {

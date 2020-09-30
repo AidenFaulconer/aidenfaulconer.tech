@@ -244,12 +244,13 @@ const FeaturedBlog = styled.article`
     & p {
       top: 0px;
       right: 0px;
+      margin-top: 25px;
       position: relative;
     }
     & h3 {
       bottom: 0px;
       left: 0px;
-      margin: 12.5px;
+      margin: 32.5px;
       position: absolute;
       text-transform: capitalize;
     }
@@ -277,28 +278,31 @@ const OtherBlogs = styled.div`
   `)}
 
   & .card {
-    align-self: center;
-    justiyf-self: center;
-    z-index: 200;
-    postiion: relative;
-    height: 150px;
-    width: 200px;
-    margin: 6px;
-    border: none;
     border-radius: ${props => props.theme.corners.borderRadius1};
-    color: ${props => props.theme.colors.textPrimary};
     ${props => props.theme.transitions.primary("all")};
+    color: ${props => props.theme.colors.textPrimary};
+    justiyf-self: center;
+    align-self: center;
+    postiion: relative;
     overflow:hidden;
+    height: 150px;
+    z-index: 200;
+    // width: 200px;
+    border: none;
+    margin: 6px;
 
     & img {
-      width: 100%;
+      width: 115%;
+      margin-left: -2px;
     }
     & p {
+      background: ${props => props.theme.colors.primary};
       position: relative;
+      text-align: center;
+      overflow: hidden;
       padding: 6.125px;
       height: 50px;
       bottom: 50px;
-      background: ${props => props.theme.colors.primary};
       width: 100%;
     }
 

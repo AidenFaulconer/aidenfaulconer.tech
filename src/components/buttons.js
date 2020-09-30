@@ -68,7 +68,7 @@ const Button = styled.button`
   }
 `;
 
-export const defaultPadding = "12.5px 25px";
+export const defaultPadding = "12.5px 12.5px";
 
 export const BtnPrimary = ({children, callback, text, theme, padding, color, bg }) => (
   <Button

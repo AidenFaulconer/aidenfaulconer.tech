@@ -26,13 +26,15 @@ const HeroHeader = styled.section`
   }
   & .headline {
     color: ${props => props.theme.colors.textSecondary};
-    font-size: ${props=>props.theme.text.sizes.headline};
-    z-index: 3;
-    font-weight: bolder;
     text-transform: capitalcase;
     font-family: poppins;
+    font-weight: bolder;
     text-align: center;
+    font-size: 3em;
     margin: auto;
+    z-index: 3;
+
+    margin-top: 50px;
 
     ${props =>
       props.theme.breakpoints.md(`
@@ -61,13 +63,15 @@ const HeroHeader = styled.section`
     line-height: ${props => props.theme.text.details.lineheight3};
     font-family: "poppins";
     font-weight: 300;
-    width: 100%;
-    margin: 0 auto;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    z-index: 30;
-    text-align: center;
     font-size: 20px;
+    width: 75%;
+    text-align: left;
+    margin: 25px auto;
+    z-index: 30;
+    display: none;
+    ${props => props.theme.breakpoints.lg(`
+      display: block;
+    `)};
 
     ${props => props.theme.breakpoints.lg(`
       text-align: left;
@@ -78,6 +82,7 @@ const HeroHeader = styled.section`
 
   & .buttons {
     display: flex;
+    margin-top: 30px;
     justify-content: center;
     ${props => props.theme.breakpoints.lg(`
       justify-content: flex-start;
@@ -169,7 +174,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                         text="Let's Connect" />
                     </a>
                     <a href="#Contact" className="button -primary">
-                      <BtnSecondary bg={theme.colors.foreground}
+                      <BtnSecondary bg="transparent"
                         color="transparant"
                         text="Start project" />
                     </a>
