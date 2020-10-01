@@ -95,7 +95,7 @@ const ThreeWrapper = styled.div`
   position: absolute;
   margin: auto;
   width: 100%;
-  height: 120%;
+  height: 115vh;
   top:-150px;
 
   & #three-portfolio {

@@ -47,7 +47,6 @@ const staticStlying = {
     touchscreen: styling => `@media (pointer: fine) and (any-pointer: coarse){${styling}}`,
     other: styling => `@media (hover:none) and (any-hover: hover) {${styling}}`,
   },
-
   breakpoints: {
     xl: styling => `@media (min-width: 1200px) {${styling}}`,
     lg: styling => `@media (min-width: 992px)  {${styling}}`,
@@ -60,9 +59,9 @@ const staticStlying = {
     primary: property => `transition: ${property} .25s`,
     secondary: property => `transition: ${property} .5s`,
     third: property => `
-        transition-delay: 0s;
-        transition-duration: .6s;
-        transition-timing-function: cubic-bezier(.19,1,.22,1) .5s;`
+      transition-delay: 0s;
+      transition-duration: .6s;
+      transition-timing-function: cubic-bezier(.19,1,.22,1) .5s;`
   },
   corners: {
     borderRadius1: "5px",
@@ -89,8 +88,8 @@ const staticStlying = {
       xl:"21px",
       lg:"20px",
       md:"15px",
-      sm:"10px",
-      xs:"10px",
+      sm:"9px",
+      xs:"9px",
     },
     sizes: {
       //main
@@ -221,7 +220,7 @@ export default {
       padding: 0px;
       font-size: 20px;
 
-      & h1 {font-size:70.24px;}
+      & h1 {font-size:2.5em;}
       ${staticStlying.breakpoints.sm(`
         ${staticStlying.text.sizeScalings.sm};
       `)}
@@ -284,7 +283,7 @@ export default {
       padding: 0px;
       font-size: 20px;
 
-      & h1 {font-size:70.24px;}
+      & h1 {font-size:2.5em;}
       ${staticStlying.breakpoints.sm(`
         ${staticStlying.text.sizeScalings.sm};
       `)}

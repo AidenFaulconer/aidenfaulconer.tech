@@ -6,12 +6,11 @@ import { Row, Col } from "react-bootstrap";
 import Layout from "../components/layout";
 
 
-export default function Template({
-  data // this prop will be injected by the GraphQL query below.
-}) {
-  const { site, markdownRemark } = data; // data.markdownRemark holds your post data
+export default (props) => {
+  const { site, markdownRemark } = props.data; // data.markdownRemark holds your post data
   const { siteMetadata } = site;
   const { frontmatter, html } = markdownRemark;
+  const {otherBlogs} = props.pageContext
 
   // alert(JSON.stringify(data));
 

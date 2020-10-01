@@ -26,7 +26,7 @@ import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 
 // used by all child components to config there intersection observer
 export const INVIEWCONFIG = {
-  threshold: [0.65],//offset vertically where intersection observer detects a new section
+  threshold: [0.4],//offset vertically where intersection observer detects a new section
   rootMargin: "0px" // account for nav bar
 }; // not working... why??????
 
@@ -83,6 +83,7 @@ export default React.memo(({ theme }) => {
   });
 
   useEffect(() => {
+    //initialize stickybits
     stickybits("#sticky", { useStickyClasses: true });
   }, []);
   // https://www.npmjs.com/package/react-intersection-observer#polyfill
@@ -155,7 +156,7 @@ export default React.memo(({ theme }) => {
                 style={{ marginTop: "0px"}}
               >
                 <ContentNavigation
-                className="d-none d-md-none d-lg-none d-xl-block"
+                  className="d-none d-md-none d-lg-none d-xl-block"
                   colorSwap={currentSection.odd}
                   id="sticky"
                   src="./assets/svg/wave-graphic.png"
@@ -199,7 +200,7 @@ const Test = styled.div`
 const ContentNavigation = styled.nav`
   z-index: 100;
   padding-top: 250px;
-  position: sticky;
+  position: sticky;//stickybits
   visibility: visible;
 
   &:after {

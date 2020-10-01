@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { Link } from "gatsby";
+import {GlobalStore} from "./layout"
 import { Container, Col, Row } from "react-bootstrap";
 import styled from "@emotion/styled";
 
@@ -174,6 +175,9 @@ export default ({ toggleTheme, theme, pageType }) => {
     showNav(thisScrollOffset > 0); // if negative, we hide, if positive we show
     setScrollPos(currentScrollPos);
   });
+
+  const { isMobile } = useContext(GlobalStore); // consume and use method declared in layout to change theme
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {

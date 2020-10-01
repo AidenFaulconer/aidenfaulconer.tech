@@ -23,7 +23,8 @@ const Button = styled.button`
   font-size: ${props => props.theme.text.sizes.small};
   pointer-events: all;
   z-index: 100;
-  display: flex;
+  display: inline-flex;
+  margin: auto;
   flex: 2 1;
   flex-direction: row;
   align-items: center;
@@ -47,8 +48,6 @@ const Button = styled.button`
     width: 25px;
     height: 25px;
     position: relative;
-    margin: auto;
-    margin-left: 0px;
     z-index: 1;
     ${props => props.theme.transitions.primary("margin-left")};
   }
@@ -69,7 +68,7 @@ const Button = styled.button`
   }
 `;
 
-export const defaultPadding = "12.5px 12.5px";
+export const defaultPadding = "12.5px";
 
 export const BtnPrimary = ({children, callback, text, theme, padding, color, bg }) => (
   <Button

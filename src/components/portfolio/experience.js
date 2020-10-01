@@ -116,6 +116,7 @@ const Experiences = styled.div`
     & p {
       text-align: left;
       margin: auto;
+      margin-top: 8.25px;
       font-size: ${props => props.theme.text.sizes.small};
     }
 
@@ -151,18 +152,16 @@ const SelectedExperience = styled.div`
     margin-bottom: 25px;
     min-width: 100%;
     //offset padding so background covers the card
-    margin-top: -12.5px;
+    margin-top: -25px;
     margin-left: -12.5px;
     margin-right: -12.5px;
     padding-bottom: 12.5px;
     //make sure content is still padded appropriately
     padding: 12.5px;
+    color: ${props=>props.theme.textPrimary};
 
     display: flex;
     width: auto;
-    background: url(${props => props.src});
-    background-repeat: no-repeat;
-    background-size: cover;
     height: auto;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 
@@ -171,7 +170,6 @@ const SelectedExperience = styled.div`
       display: none;
       border-radius: ${props => props.theme.corners.borderRadius1};
       object-fit: fit;
-      // width: 10%;
       height: 100%;
       max-height: 100px;
       ${props => props.theme.breakpoints.lg(`display: inline-block;`)}
@@ -201,8 +199,6 @@ const SelectedExperience = styled.div`
   & .skills-used {
     display: flex;
     flex-wrap: wrap;
-    row-gap: 8px;
-    column-gap: 8px;
     padding-bottom: 25px;
     margin-bottom: 25px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
@@ -212,6 +208,7 @@ const SelectedExperience = styled.div`
       background: #0d7bf2;
       color: white;
       margin-left: 8.25px;
+      margin-top: 8.25px;
       vertical-align: middle;
       border-radius: ${props => props.theme.corners.borderRadius1};
       padding: 8.25px;

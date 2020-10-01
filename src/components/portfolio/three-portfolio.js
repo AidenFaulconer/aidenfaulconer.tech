@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { TextureLoader, WebGLRenderTarget, Object3D, Vector3, Camera, DirectionalLight, Raycaster, ArrowHelper } from "three";
-import React, { Suspense, useMemo, useState, useCallback, useRef, useEffect } from "react";
+import React, { useContext,Suspense, useMemo, useState, useCallback, useRef, useEffect } from "react";
 import {
   Canvas,
   useFrame,
@@ -14,6 +14,7 @@ import Post from "./three-post-processing.js";
 import linesUrl from "../../../static/assets/lines.png";
 import SimplexNoise from "simplex-noise"
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import { GlobalStore } from "../layout.js";
 
 export const Mouse = () => {
   const viewportOffset = 2;
@@ -88,16 +89,14 @@ export const Borders = ({ theme }) => {
 export const deg2rad = (deg) => deg * (Math.PI/180)
 
 extend({OrbitControls});
+
 const CameraControls = () => {
   const { camera,gl:{domElement},viewport} = useThree();
   const controls = useRef();
-
+  const { isMobile} = useContext(GlobalStore);
   useEffect(()=>{
-    // camera.rotation.x = THREE.MathUtils.degToRad(90);
-    //init
     let orbitControls = controls.current;
-    let camera = orbitControls.object;
-
+    isMobile && orbitControls.dispose();
     orbitControls.target = new Vector3(viewport.width * cubeSize, -3, viewport.width * cubeSize);
     orbitControls.maxDistance = 25;
     orbitControls.autoRotate = true;

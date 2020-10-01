@@ -31,15 +31,15 @@ import THEME from "./state/theme";
 const { Provider, Consumer } = createContext();
 export { Provider, Consumer };
 
-// #region global context implementation
+// #region global context blueprint
 const initGlobalState = {
   themeState: "",
   theme: {},
-  isMobile: false,
+  isMobile: typeof window !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
   scrollPos: 0
 }; // state must be mimicked with exact key names when modifying from nested position
 export const GlobalStore = createContext(initGlobalState); // referenced frequently by child components
-// #endregion global context implementation
+// #endregion global context blueprint
 
 export default ({ children, pageType }) => {
   // user specific state saved in cookies
@@ -53,7 +53,7 @@ export default ({ children, pageType }) => {
   );
   const [theme, setTheme] = useState(THEME[themeState]);
   const [scrollPos, setScrollPos] = useState(0);
-  const [isMobile, setDeviceState] = useState(Boolean(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)));
+  const [isMobile, setDeviceState] = useState(null);
   // used in global context
 
   // used local and passed as props
@@ -111,41 +111,32 @@ export default ({ children, pageType }) => {
 
           <Footer>
             <Row>
-              <Col xl={2} lg={2} md={1} sm={1} xs={1} />
+              <Col xl={1} lg={2} md={1} sm={1} xs={1} />
 
-              <Col xl lg md={10} sm={10} xs={10}>
+              <Col xl={10} lg md sm={10} xs={10}>
                 <Row>
-                  <Col xl={5} className="footer-section">
+                  <Col xl={6} className="footer-section">
                     <h3>want to collaborate?</h3>
                     <br />
                     <p>aidenf09@yahoo.com</p>
                   </Col>
 
-                  <Col xl={5} className="footer-section">
+                  <Col xl={6} className="footer-section">
                     <h3>lets talk</h3>
                     <br />
                     <p>0475565709</p>
                   </Col>
 
-                  <Col
-                    xl={5}
-                    className="footer-section"
-                    style={{ display: "flex", flexDirection: "column" }}
-                  >
+                  <Col xl={6} className="footer-section" style={{ display: "flex", flexDirection: "column" }}>
                     <h3>useful links</h3>
                     <Link to={"/"}>
-                      <Btn
-                        color={theme.colors.textPrimary}
-                        text="Portfolio"
-                        padding="12.5px 0px"
-                      />
+                      <Btn color={theme.colors.textPrimary} text="Portfolio" padding="10px"/>
                     </Link>
                     <Link to={"/blog"}>
-                      <Btn color={theme.colors.textPrimary} text="Blog" padding="12.5px 0px" />
+                      <Btn color={theme.colors.textPrimary} text="Blog"  padding="10px"/>
                     </Link>
                   </Col>
-
-                  <Col xl={5} className="footer-section">
+                  <Col xl={6} className="footer-section">
                     <h3>social</h3>
                     <br />
                     <InlineIcon className="social-link" icon={githubLogo} />
@@ -162,7 +153,7 @@ export default ({ children, pageType }) => {
                 </Row>
               </Col>
 
-              <Col xl={1} lg={2} md={1} sm={1} xs={1} />
+              <Col xl={1} lg={2} md={1} sm={1} xs={1}/>
             </Row>
           </Footer>
         </GlobalStore.Provider>
@@ -170,6 +161,8 @@ export default ({ children, pageType }) => {
     </Container>
   );
 };
+
+import ThemeChanger from "./themeChanger"
 
 const Spacer = styled.div`
   width: 100vw;
@@ -181,7 +174,7 @@ const Spacer = styled.div`
 `;
 
 const Footer = styled.footer`
-  padding-top: 50px;
+  padding: 50px 0px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   min-height: 25vh;
   width: 100vw;
@@ -192,6 +185,8 @@ const Footer = styled.footer`
   color: ${props => props.theme.colors.textPrimary};
   z-index: 1;
   font-size: ${props => props.theme.text.sizes.small};
+
+  text-align: center;
 
   & h3 {
     font-family: "poppins";
@@ -206,25 +201,11 @@ const Footer = styled.footer`
     margin-bottom: 6.25px;
   }
   & *[class*="footer-section"] {
-    margin-right: 50px;
-    padding: 0px;
-    padding-top: 12.5px;
-    padding-bottom: 100px;
+    padding: 25px;
 
     & .social-link {
       width: 30px;
-      margin-right: 6.25px;
-      margin-top: 6.25px;
       height: 30px;
-      position: relative;
     }
-  }
-  & img {
-    position: absolute;
-    object-fit: contain;
-    width: 100%;
-    height: 65%;
-    top: 12.5px;
-    right: -200px;
   }
 `;

@@ -68,7 +68,7 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
                   <p>{selectedProject.metaDescription}</p>
                 </div>
                 <Link to={selectedProject.path}>
-                  <BtnSecondary text="see more" padding="12.5px"/>
+                  <BtnSecondary text="see more" padding="12.5px 25px"/>
                 </Link>
               </div>
             </DisplayImage>
@@ -193,7 +193,7 @@ const DisplayImage = styled.article`
   & img {
     border-radius: ${props => props.theme.corners.borderRadius1};
     ${props => props.theme.transitions.primary("transform")};
-    max-height: 100px;
+    max-height: 150px;
     max-width: 100%;
     margin: 0px 0px;
 
