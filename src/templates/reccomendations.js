@@ -1,39 +1,71 @@
 import React from "react";
 import Helmet from "react-helmet";
-import { graphql } from "gatsby";
+import { graphql, Link } from "gatsby";
 import styled from "@emotion/styled";
 import { Row, Col } from "react-bootstrap";
 import Layout from "../components/layout";
 
 
 export default ({otherBlogs}) => {
-
   return (
    <Container>
-   {otherBlogs.foreach((post)=>{
-   return(<>
-   <img/>
-   <h2></h2>
-   <p></p>
-   </>)
-
-   })}
+   Read more
+   {otherBlogs.map((post,i)=>{
+  //  alert(JSON.stringify(post, null, 2))
+   const {catagory, path,title,thumbnail_,metaDescription} = post.node.frontmatter
+   return(
+      <Link to={path} className="post">
+         <img src={thumbnail_}/>
+         <h3>{title}</h3>
+         <p>{catagory}</p>
+      </Link>
+   )})}
    </Container>
   );
 }
 
 
 const Container = styled.section`
+  margin: 50px 0px;
+  margin-bottom: 100px;
   display: flex;
-  flex: 2 1 1;
+  flex: 2 2;
 
-  & post {
-   border-radius: ${props=>props.theme.corners.borderRadius1};
-   width: 100%;
-   height: 300px;
+  & .post {
+    width: 100%;
+    padding: 12.5px;
+    margin: 25px;
+    height: 300px;
+    ${props => props.theme.transitions.primary("all")};
+    border-radius: ${props=>props.theme.corners.borderRadius1};
 
-   & img {}
-   & p {}
+  &:hover {
+    ${props => props.theme.transitions.primary("all")};
+    ${props => props.theme.mixins.transform3dPrimary};
+    box-shadow: ${props=>props.theme.shadows.primary};
+  }
+
+   & img {
+    width: 100%;
+    object-fit: fit;
+    height: 100%;
+    border-radius: ${props=>props.theme.corners.borderRadius1};
+   }
+
+   & p {
+    text-decoration: none;
+    font-size: ${props=>props.theme.text.sizes.extraSmall};
+    color: ${props=>props.theme.colors.textSecondary};
+   }
+
+   & h3 {
+    margin-top: 25px;
+    margin-bottom: 12.5px;
+    margin-left: 0px;
+    text-decoration: none;
+    color: ${props=>props.theme.colors.textSecondary};
+   }
+
   }
 `;
 

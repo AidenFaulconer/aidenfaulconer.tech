@@ -4,6 +4,7 @@ import { graphql } from "gatsby";
 import styled from "@emotion/styled";
 import { Row, Col } from "react-bootstrap";
 import Layout from "../components/layout";
+import Reccomendations from "./reccomendations";
 
 
 export default (props) => {
@@ -40,6 +41,7 @@ export default (props) => {
             )}
           </Post>
           <BlogContent dangerouslySetInnerHTML={{ __html: html }} />
+          <Reccomendations otherBlogs={otherBlogs}/>
         </Col>
         <Col xl={1} sm={1} xs={1} />
       </Row>

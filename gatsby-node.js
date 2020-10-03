@@ -17,6 +17,8 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             frontmatter {
               catagory
               path
+              title
+              thumbnail_
             }
           }
         }
@@ -34,13 +36,19 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     const posts = result.data.allMarkdownRemark.edges;
 
     posts.forEach(({ node },i) => {
-      // console.log(node.frontmatter.path);
-      console.log(posts.slice( i>0 ? i-1 : 0 , i>posts.length ? posts.length : i+1 ))
+
+      //calculate which posts are previous and next
+      const len = posts.length-1;
+      let start;let end;
+      if(i===0) {start=1; end=len;}
+        else if (i===len) {start=0; end=len-1}
+          else {start=(i-1); end=(i+1)}
+
       createPage({
         path: node.frontmatter.path,
         component: template,
         context: {
-          otherBlogs: posts.slice( i>0 ? i-1 : 0 , i>posts.length ? posts.length : i+1 ),//all other blogs of this catagory (get previous and current one)
+          otherBlogs: [posts[start],posts[end]],//all other blogs of this catagory (get previous and current one)
         } // additional data can be passed via context
       });
     });
