@@ -8,6 +8,8 @@ import BackfaceMaterial from "../threejs/materials/backface";
 import RefractionMaterial from "../threejs/materials/refraction";
 import linesUrl from "../../../static/assets/lines.png";
 
+import Post from "../portfolio/three-post-processing.js";
+
 export const Mouse = () => {
   const { viewport } = useThree();
   const dimensions = [4, 32, 32];
@@ -173,7 +175,7 @@ export default () => {
             {/** left group */}
             <InstancedBoxs
               color={theme.colors.primary}
-              count={15}
+              count={25}
               dims={[.25, .25, .25]}
               choice="right"
             />

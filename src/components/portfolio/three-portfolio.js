@@ -35,7 +35,7 @@ export const Mouse = () => {
     );
   });
   return (
-    <instancedMesh castShadow>
+    <instancedMesh>
       <sphereBufferGeometry
         attatch="geometry"
         args={dimensions}
@@ -51,7 +51,7 @@ export const Plane = ({ color, ...props }) => {
   const { viewport } = useThree();
   const [ref] = usePlane(() => ({ ...props }));
   return (
-    <mesh receiveShadow ref={ref} {...props}>
+    <mesh /**receiveShadow*/ ref={ref} {...props}>
       <planeBufferGeometry
         attatch="geometry"
         args={[viewport.width * 2, viewport.width * 2, viewport.height * 2]}
@@ -100,7 +100,7 @@ const CameraControls = () => {
     orbitControls.target = new Vector3(viewport.width * cubeSize, -3, viewport.width * cubeSize);
     orbitControls.maxDistance = 25;
     orbitControls.autoRotate = true;
-    orbitControls.maxZoom = 4;
+    orbitControls.maxZoom = 3;
     orbitControls.enableZoom = false;
     orbitControls.autoRotateSpeed = .5;
     orbitControls.maxPolarAngle = 0;
@@ -115,16 +115,16 @@ const CameraControls = () => {
 }
 
 export const cubeSize = 4
-function MovingColumns({theme}) {
+function MovingColumns({theme,isMobile}) {
   const { viewport, clock,camera, scene } = useThree();
   const instancedColumns = useRef();
-
-  const noise = new SimplexNoise(Math.random()); //only instance once, hence use of usememo
+  const columnDepth = viewport.width * 2;
   const noiseSpeed = 4;
-  //create position data
-  const dummyObj = useMemo(() => new Object3D(), []); //used to generate a matrix we can use based on the ref'ed blueprint of the object
 
-  const columnDepth = viewport.width * 4;
+  //create position data and instance of noise
+  //no dependencies, so only one instance is ever made (thanks useMemo)
+  const noise = useMemo(()=>new SimplexNoise(Math.random()),[]); //only instance once, hence use of usememo
+  const dummyObj = useMemo(() => new Object3D(), []); //used to generate a matrix we can use based on the ref'ed blueprint of the object
   const generatedGrid = useMemo(() => {
     let result = []; //vec3 array
     for (let x = 0; x < columnDepth * cubeSize; x += cubeSize)
@@ -154,16 +154,9 @@ function MovingColumns({theme}) {
   },[])
 
   useFrame((state) => {
-    //update objects
-
-    //check mouse input
-    // state.mouse.x
-    // state.mouse.y
-
-
     //generate grid and position them according to noise
     generatedGrid.forEach((data, i) => {
-      const t = clock.getElapsedTime() / noiseSpeed;
+      const t = clock.elapsedTime / noiseSpeed;
       const { position } = data; //get prefitted positions on the grid
       dummyObj.position.set(
         position[0],
@@ -171,37 +164,25 @@ function MovingColumns({theme}) {
         position[2]
       );
       dummyObj.updateMatrix();
-      //place created object in instancedMesh for management
+      //place created objects in instancedMesh for the class to manage them
       instancedColumns.current.setMatrixAt(i, dummyObj.matrix);
     });
-
-    // if(state.mouse.x && state.mouse.y){
-    // // alert(state.mouse.x)
-    //   pickColumn({
-    //   x:(state.mouse.x * viewport.width) * 2 - 1,
-    //   y:(state.mouse.y * viewport.height) * 2 + 1,
-    //   });
-    // }
-
-
     instancedColumns.current.instanceMatrix.needsUpdate = true; //force update of matrix
-
-    camera.rotation.x += .1;
   }, 1 /**number 1 render priority */);
 
   return (
     <instancedMesh
       ref={instancedColumns}
-      castShadow
+      // castShadow
+      // receiveShadow
       matrixAutoUpdate={false}/**matrix is manually updated in frame loop */
       position={[0, 10, columnDepth / cubeSize]}
-      receiveShadow
       args={[null, null, generatedGrid.length]}
     >
       <boxBufferGeometry
         /**we are consistently mapping position data, dont dispose objects
          * once a frame finishes*/
-        // dispose={false}
+        dispose={false}//do not dispose of geometry, saves a massive amount of memory allocation and garbage collection each frame
         args={[cubeSize, cubeSize, cubeSize, 1]}
         attatch="geometry"
       />
@@ -229,9 +210,9 @@ function Box({ position, color }) {
 }
 
 
-  export default ({theme}) => {
+  export default ({theme, isMobile}) => {
 
-const {viewport} = useThree();
+  const {viewport} = useThree();
   return (
     <Canvas
       concurrent
@@ -247,10 +228,10 @@ const {viewport} = useThree();
       <color attach="background" color={theme.colors.foreground}/>
       <CameraControls/>
       <directionalLight
-       castShadow
+      //  castShadow //post will create shadows (ambient occulision)
        position={[0, 10, 0]}
        scale={[1,1,1]}
-       color={theme.colors.primary}
+       color={theme.colors.textSecondary}
        intensity={20}
       />
       <Suspense fallback={null}>
@@ -259,10 +240,10 @@ const {viewport} = useThree();
           defaultContactMaterial={{ restitution: 0.6 }}
         >
           <group position={[0, -6, 0]} >
-            <MovingColumns theme={theme}/>
+            <MovingColumns isMobile={isMobile} theme={theme}/>
           </group>
         </Physics>
-        <Post />
+        <Post theme={theme}/>
       </Suspense>
     </Canvas>
   );

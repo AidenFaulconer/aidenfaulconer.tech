@@ -63,6 +63,7 @@ const Button = styled.button`
   & p {
     font-family: poppins;
     font-weight: 400;
+    font-size: ${props => props.theme.text.sizes.small};
     text-align: center;
     margin: auto;
   }

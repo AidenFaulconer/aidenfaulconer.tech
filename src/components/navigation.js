@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useContext } from "react";
+import React, { useState, useEffect, useCallback, useRef, useContext, useMemo } from "react";
 import { Link } from "gatsby";
 import {GlobalStore} from "./layout"
 import { Container, Col, Row } from "react-bootstrap";
@@ -53,18 +53,21 @@ const NavigationWrapper = styled.div`
     width: 100%;
     position: fixed;
     padding: 12.5px;
-    fled-direction: space-evenly;
-    box-shadow: ${props => props.theme.shadows.nav};
+    flex: 5 2 2;
+    ${props=>props.theme.breakpoints.md(`padding: 20px 35px;`)};
+    background: ${props=>props.colorSwap ?
+      props.theme.colors.foreground :
+    props.theme.colors.textSecondary};
 
-
-    ${props=>props.theme.breakpoints.md(`padding: 20px 35px;`)}
-    background: ${props => props.theme.colors.foreground };
+     color: ${props=>props.colorSwap ?
+      props.theme.colors.textSecondary :
+    props.theme.colors.textPrimary};
 
     //switch on bg color
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-between;
+    // justify-content: space-evenly;
     align-items: center;
     align-content: center
 
@@ -79,6 +82,7 @@ const NavigationWrapper = styled.div`
     }
 
     & .site-links {
+      flex: 2;
       display: flex;
       justify-content: space-evenly;
       ${props => props.theme.breakpoints.md(`font-size: 1.15rem;`)}
@@ -87,7 +91,9 @@ const NavigationWrapper = styled.div`
           margin: 0px 25px;
           font-family: "poppins";
           font-weight: 300;
-          color: ${props => props.theme.colors.textSecondary};
+          color: ${props=>props.colorSwap ?
+            props.theme.colors.textSecondary :
+            props.theme.colors.textPrimary};
         }
 
       & .active-link {
@@ -100,6 +106,7 @@ const NavigationWrapper = styled.div`
     }
 
     & .branding {
+    flex: 5;
       ${props => props.theme.transitions.primary("all")};
       display: block;
 
@@ -117,7 +124,9 @@ const NavigationWrapper = styled.div`
         height: 40px;
         width: auto;
         transform: skew(0deg);
-        fill: ${props => props.theme.colors.textSecondary};
+        fill: ${props=>props.colorSwap ?
+            props.theme.colors.textSecondary :
+            props.theme.colors.textPrimary};
         ${props => props.theme.transitions.primary("all")};
         ${props=>props.theme.breakpoints.md(`height: 45px;`)}
 
@@ -152,6 +161,7 @@ export default ({ toggleTheme, theme, pageType }) => {
   const [scrollPos, setScrollPos] = useState(
   typeof document !== "undefined" ? document.body.getBoundingClientRect().y : 0
   );
+  const {colorSwap} = useContext(GlobalStore);
 
   const [hide, showNav] = useState(true); // triggers css animation to hide or hide navbar
 
@@ -168,13 +178,13 @@ export default ({ toggleTheme, theme, pageType }) => {
     //for performance only update state when needed, otherwise drop out before we call showNav
     //only update state every 100px scrolled by user
     const thisScrollOffset = currentScrollPos - prevScrollPos;
-    if (Math.abs(thisScrollOffset) < 30) return;
+    if (Math.abs(thisScrollOffset) < 50) return;
     // alert(thisScrollOffset)
 
     const prevHide = hideRef.current;
     showNav(thisScrollOffset > 0); // if negative, we hide, if positive we show
     setScrollPos(currentScrollPos);
-  });
+  },[]);
 
   const { isMobile } = useContext(GlobalStore); // consume and use method declared in layout to change theme
 
@@ -194,8 +204,8 @@ export default ({ toggleTheme, theme, pageType }) => {
       <GoogleAnalytics/>
        */}
       <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
-      <NavigationWrapper>
-        <CSSTransition in={hide} timeout={15}>
+      <NavigationWrapper colorSwap={colorSwap}>
+        <CSSTransition in={hide} timeout={100}>
           <nav>
               <div className="branding navigation-item">
                 <Link to="/">
@@ -226,7 +236,7 @@ export default ({ toggleTheme, theme, pageType }) => {
                 </Link>
               </div>
 
-              <ThemeChanger toggleTheme={toggleTheme} className="navigation-item" />
+              <ThemeChanger colorSwap={colorSwap} toggleTheme={toggleTheme} className="navigation-item" />
           </nav>
         </CSSTransition>
       </NavigationWrapper>

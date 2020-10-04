@@ -258,7 +258,7 @@ export default {
       third: "1px solid #5A00DB"
     },
     shadows: {
-      nav: "-5px 0px 25px rgba(0,0,0,.15)",
+      nav: "-5px 0px 25px rgba(#000064,.15)",
       primary: "-5px 0px 50px rgba(0,0,0,.25)",
       secondary: "2.5px 0px 12.5px rgba(0,0,0,0.75)"
     },

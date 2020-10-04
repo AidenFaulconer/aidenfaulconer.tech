@@ -35,6 +35,7 @@ export { Provider, Consumer };
 const initGlobalState = {
   themeState: "",
   theme: {},
+  colorSwap: false,
   isMobile: typeof window !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
   scrollPos: 0
 }; // state must be mimicked with exact key names when modifying from nested position
@@ -54,6 +55,7 @@ export default ({ children, pageType }) => {
   const [theme, setTheme] = useState(THEME[themeState]);
   const [scrollPos, setScrollPos] = useState(0);
   const [isMobile, setDeviceState] = useState(null);
+  const [colorSwap, setColorSwap] = useState(true);
   // used in global context
 
   // used local and passed as props
@@ -93,6 +95,8 @@ export default ({ children, pageType }) => {
           value={{
             themeState,
             isMobile,
+            colorSwap,
+            setColorSwap,
             setThemeState,
             theme,
             scrollPos

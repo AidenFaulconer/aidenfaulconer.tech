@@ -54,7 +54,7 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
           <div>
             <h3>{currentExpereince.experienceRole}</h3>
             <p>{currentExpereince.experienceEmployer}</p>
-            <div className="experience-date">{`${currentExpereince.startDate} - ${currentExpereince.endDate}`}</div>
+            <p className="experience-date">{`${currentExpereince.startDate} - ${currentExpereince.endDate}`}</p>
           </div>
         </div>
         <h3>Skills Used</h3>
@@ -177,7 +177,6 @@ const SelectedExperience = styled.div`
 
     & .experience-date {
       font-size: ${props => props.theme.text.sizes.extraSmall};
-      opacity: 0.6;
     }
 
     & p {

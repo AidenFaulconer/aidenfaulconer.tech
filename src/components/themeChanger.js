@@ -13,7 +13,9 @@ import { GlobalStore } from "./layout.js";
 
 const ThemeSwitch = styled.div`
   border-radius: ${props => props.theme.corners.borderRadius3};
-  background: ${props => props.theme.colors.black};
+  background: ${props=>props.colorSwap ?
+    props.theme.colors.textSecondary :
+    props.theme.colors.textPrimary};
   height: 22px;
   width: 65px;
   position: relative;
@@ -38,7 +40,9 @@ const ThemeSwitch = styled.div`
     & svg {
       border-radius: ${props => props.theme.corners.borderRadius100};
       position: absolute;
-      color: ${props => props.theme.colors.foreground};
+      color: ${props=>props.colorSwap ?
+        props.theme.colors.textPrimary :
+        props.theme.colors.textSecondary};
       height: 15px;
       width: 15px;
       top: 3.5px;
@@ -57,11 +61,11 @@ const ThemeSwitch = styled.div`
   }
 `;
 
-export default ({ toggleTheme }) => {
+export default ({ toggleTheme, colorSwap }) => {
   const { setThemeState, themeState } = useContext(GlobalStore); // consume and use method declared in layout to change theme
 
   return (
-    <ThemeSwitch>
+    <ThemeSwitch colorSwap={colorSwap}>
       <label>
         <input
           type="checkbox"

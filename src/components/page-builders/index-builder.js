@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { Row, Col, Pagination, Media } from "react-bootstrap";
 import styled from "@emotion/styled";
 
@@ -23,6 +23,7 @@ import Skills from "../portfolio/skills";
 import Contact from "../portfolio/contact";
 
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
+import { GlobalStore } from "../layout";
 
 // used by all child components to config there intersection observer
 export const INVIEWCONFIG = {
@@ -55,6 +56,8 @@ const sectionIcons = {
 };
 
 export default React.memo(({ theme }) => {
+
+  const {setColorSwap,colorSwap} = useContext(GlobalStore);
   const [currentSection, setCurrentSection] = useState({
     name: "Projects",
     odd: true
@@ -90,7 +93,7 @@ export default React.memo(({ theme }) => {
 
   // handle a section coming into view
   useEffect(() => {
-    console.log(currentSection);
+  setColorSwap(currentSection.odd);
   }, [currentSection]);
 
   return (
@@ -157,7 +160,7 @@ export default React.memo(({ theme }) => {
               >
                 <ContentNavigation
                   className="d-none d-md-none d-lg-none d-xl-block"
-                  colorSwap={currentSection.odd}
+                  colorSwap={colorSwap}
                   id="sticky"
                   src="./assets/svg/wave-graphic.png"
                 >
@@ -177,7 +180,7 @@ export default React.memo(({ theme }) => {
                           scrollToSection(sectionName);
                         }}
                       >
-                        <Icon icon={sectionIcons[sectionName]} />
+                      {/**  <Icon icon={sectionIcons[sectionName]} /> */}
                         <p>{sectionName}</p>
                       </button>
                     ))}
@@ -200,6 +203,7 @@ const Test = styled.div`
 const ContentNavigation = styled.nav`
   z-index: 100;
   padding-top: 250px;
+  max-height: 0vh;//dont allow stickybits container to be any size or else it will overflow
   position: sticky;//stickybits
   visibility: visible;
 
@@ -208,13 +212,17 @@ const ContentNavigation = styled.nav`
     position: absolute;
     top: 0px;
     height: 400%;
-    opacity: 0.9;
     z-index: -1;
     width: 100%;
     ${props => props.theme.transitions.primary("all")};
+
     color: ${props =>
       props.colorSwap
         ? props.theme.colors.textPrimary
+        : props.theme.colors.foreground};
+    background: ${props =>
+      props.colorSwap
+        ? props.theme.colors.primary
         : props.theme.colors.foreground};
   }
 
@@ -263,42 +271,31 @@ const ContentNavigation = styled.nav`
     }
 
     & button {
-      display: flex;
-      flex-direction: row;
-      background: ${props => props.theme.colors.primary};
-      justify-content: space-between;
+      background: transparent;
       border-radius: ${props => props.theme.corners.borderRadius1};
       padding: 12.25px;
       border: none;
-      opacity: 0.3;
-      margin-bottom: 8px;
-      margin: 4px 0px;
+      width: 100%;
+      opacity: 0.25;
       z-index: 2;
-      color: ${props => props.theme.colors.textPrimary};
+       color: ${props =>
+      props.colorSwap
+        ? props.theme.colors.textPrimary
+        : props.theme.colors.textSecondary};
 
       &:hover {
         color: ${props => props.theme.colors.textSecondary};
         opacity: 1;
         background: ${props => props.theme.colors.foreground};
-        box-shadow: ${props => props.theme.shadows.primary};
       }
 
       & p {
         margin: auto;
-        font-size: 0.5em;
-        visibility: hidden;
+        display:block;
         font-family: poppins;
-        display: none;
         text-align: center;
-        text-transform: uppercase;
         font-weight: 400;
-
-        ${props =>
-          props.theme.breakpoints.xl(`
-          margin-right: 10px;
-          visibility: visible;
-          display:block;
-      `)}
+        visibility: visible;
       }
 
       & svg {

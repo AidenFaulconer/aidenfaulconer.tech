@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useEffect } from "react"
+import React, { Suspense, useMemo, useEffect, useContext } from "react"
 import { useLoader, useThree, useFrame } from "react-three-fiber"
 import {
   SMAAImageLoader,
@@ -6,23 +6,27 @@ import {
   EffectComposer,
   EffectPass,
   RenderPass,
+  DepthEffect,
   SMAAEffect,
   SSAOEffect,
   NormalPass,
 } from "postprocessing"
 
-function Post() {
+import {GlobalStore} from "../../components/layout.js";
+
+function Post({theme}) {
   const { gl, scene, camera, size } = useThree()
-  const smaa = useLoader(SMAAImageLoader)
   const composer = useMemo(() => {
     const composer = new EffectComposer(gl)
     composer.addPass(new RenderPass(scene, camera))
-    const smaaEffect = new SMAAEffect(...smaa)
-    smaaEffect.colorEdgesMaterial.setEdgeDetectionThreshold(0.1)
+    // const smaa = useLoader(SMAAImageLoader)
+    // const smaaEffect = new SMAAEffect(...smaa)
+    // smaaEffect.colorEdgesMaterial.setEdgeDetectionThreshold(0.1)
 
     const normalPass = new NormalPass(scene, camera)
     const ssaoEffect = new SSAOEffect(camera, normalPass.renderTarget.texture, {
       blendFunction: BlendFunction.MULTIPLY,
+      color: theme.colors.textSecondary,
       samples: 31, // May get away with less samples
       rings: 4, // Just make sure this isn't a multiple of samples
       distanceThreshold: 0.4,
@@ -31,7 +35,7 @@ function Post() {
       rangeFalloff: 0.01,
       luminanceInfluence: .25,
       radius: 45, // Spread range
-      intensity: 15,
+      intensity: 20,
       bias: 0.5,
     })//ambient occulusion
 
@@ -40,7 +44,7 @@ function Post() {
 
     const effectPass = new EffectPass(
       camera,
-      smaaEffect,
+      // smaaEffect,
       ssaoEffect,
       //new DepthEffect(), // Check if depth looks ok.
     )
@@ -55,10 +59,10 @@ function Post() {
   return useFrame((_, delta) => composer.render(delta), 1)
 }
 
-export default function Effect() {
+export default function Effect({theme}) {
   return (
   <Suspense fallback={null}>
-      <Post />
+      <Post theme={theme} />
   </Suspense>
   )
 }

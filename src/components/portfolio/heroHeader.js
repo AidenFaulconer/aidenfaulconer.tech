@@ -95,7 +95,7 @@ const ThreeWrapper = styled.div`
   position: absolute;
   margin: auto;
   width: 100%;
-  height: 115vh;
+  height: 120vh;
   top:-150px;
 
   & #three-portfolio {
@@ -137,10 +137,10 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
         return (
           <>
             <HeroHeader id="hero-header">
+              <Row>
                   <ThreeWrapper>
                     <ThreePortfolio theme={theme} />
                   </ThreeWrapper>
-              <Row>
                 <Col
                   xl={{span:2,offset:1}}
                   lg={2}
