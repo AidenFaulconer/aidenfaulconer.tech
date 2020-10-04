@@ -56,7 +56,7 @@ const NavigationWrapper = styled.div`
     flex: 5 2 2;
     ${props=>props.theme.breakpoints.md(`padding: 20px 35px;`)};
     background: ${props=>props.colorSwap ?
-      props.theme.colors.foreground :
+    props.theme.colors.foreground :
     props.theme.colors.textSecondary};
 
      color: ${props=>props.colorSwap ?

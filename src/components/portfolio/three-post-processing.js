@@ -34,7 +34,7 @@ function Post({theme}) {
       rangeThreshold: 10.5, // Controls sensitivity based on camera view distance **
       rangeFalloff: 0.01,
       luminanceInfluence: .25,
-      radius: 45, // Spread range
+      radius: 6, // Spread range
       intensity: 20,
       bias: 0.5,
     })//ambient occulusion
