@@ -329,8 +329,9 @@ const OtherBlogs = styled.div`
 
   & p {
     position: relative;
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
+    padding: 12.5px;
     overflow: hidden;
     height: 100%;
     bottom: 0%;
