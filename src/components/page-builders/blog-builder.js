@@ -142,7 +142,6 @@ export default React.memo(() => {
                 <Col
                   xl={2}
                   lg={2}
-                  style={{ marginTop: "0px" }}
                   className="d-none d-xs-none d-sm-none d-md-none d-lg-block d-xl-block "
                 >
                   <Graphic>
@@ -172,11 +171,11 @@ const Test = styled.div`
 `;
 
 export const Graphic = styled.div`
+  position: relative;
+  bottom: -12.5%;
 
 & svg {
-  height: 100%;
   width: 100%;
-  margin: auto;
 
   & #dark-blue {
     fill: ${props=>props.theme.colors.textSecondary};
@@ -311,7 +310,6 @@ const OtherBlogs = styled.div`
 
     & img {
       width: 115%;
-      z-index: -1;
       height: 100%;
       margin-left: -2px;
       background: ${props => props.theme.colors.primary};
@@ -326,6 +324,7 @@ const OtherBlogs = styled.div`
       ${props => props.theme.transitions.primary("all")};
     }
   }
+
 
   & p {
     position: relative;

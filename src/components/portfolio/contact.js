@@ -28,8 +28,8 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
   url: "192.168.0.210:8181/api/v1/email",
   data: {firstName,lastName,subject,message}
   }).then(
-  (response)=>alert(JSON.stringify(response.data)),
-  (error)=>alert(JSON.stringify(error)))
+  (response)=>alert(JSON.stringify(response.data,null,2)),
+  (error)=>alert(JSON.stringify(error,null,2)))
 
   return(false)
   }
