@@ -50,7 +50,7 @@ const NavigationWrapper = styled.div`
   & .top {
     background: transparent;
     padding: 35px 10vw;
-    ${props => props.theme.transitions.primary("all")};
+    ${props => props.theme.transitions.primary("padding")};
   }
 
   & nav {
@@ -61,7 +61,7 @@ const NavigationWrapper = styled.div`
     position: fixed;
     padding: 12.5px;
     background: ${props=>props.theme.colors.foreground};
-    ${props => props.theme.transitions.primary("background")};
+    ${props => props.theme.transitions.primary("padding")};
     color: ${props=>props.colorSwap ?
       props.theme.colors.textPrimary :
       props.theme.colors.textSecondary};

@@ -197,9 +197,6 @@ export default React.memo(({ theme }) => {
 // #endregion section builder
 
 // render all this pages content
-const Test = styled.div`
-  ${props => props.theme.test2}
-`;
 const ContentNavigation = styled.nav`
   z-index: 100;
   padding-top: 250px;
@@ -320,12 +317,13 @@ const ContentNavigation = styled.nav`
     }
   }
 `;
+
 const ContentContainer = styled.section`
   position: relative;
   z-index: 1;
   padding: 100px 25px 200px 25px;
 
-  ${props => props.theme.transitions.secondary("all")};
+  ${props => props.theme.transitions.primary("all")};
   background: ${props =>
     props.colorSwap ? props.theme.colors.primary : props.theme.colors.foreground};
   color: ${props =>
