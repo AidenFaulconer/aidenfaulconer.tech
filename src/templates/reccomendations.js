@@ -27,7 +27,7 @@ export default ({otherBlogs}) => {
 
 const Container = styled.section`
   margin: 50px 0px;
-  margin-bottom: 100px;
+  margin-bottom: 200px;
   display: flex;
   flex: 2 2;
 
@@ -35,7 +35,7 @@ const Container = styled.section`
     width: 100%;
     padding: 12.5px;
     margin: 25px;
-    height: 300px;
+    height: 100%;
     ${props => props.theme.transitions.primary("all")};
     border-radius: ${props=>props.theme.corners.borderRadius1};
 
@@ -48,6 +48,7 @@ const Container = styled.section`
    & img {
     width: 100%;
     object-fit: fit;
+    max-height: 300px;
     height: 100%;
     border-radius: ${props=>props.theme.corners.borderRadius1};
    }

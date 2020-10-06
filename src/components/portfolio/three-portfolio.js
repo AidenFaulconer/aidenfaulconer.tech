@@ -218,7 +218,7 @@ function Box({ position, color }) {
       concurrent
       shadowMap
       pixelRatio={typeof window !== "undefined" && window.devicePixelRatioo}
-      gl={{ alpha: true, antialias: false }}
+      gl={{ alpha: true, antialias: true }}
       camera={{
         fov: 50,
         near: 1,

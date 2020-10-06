@@ -16,13 +16,33 @@ import ThreeBlog from "../blog/three-blog";
 const HeroHeader = styled.section`
   max-height:45vh;
   z-index: 0;
+`;
+
+export const Content = styled.div`
+justify-content: space-between;
+position: relative;
+margin: auto;
+max-width: 900px;
+display: flex;
+
 
   & .graphic {
     position: relative;
-    object-fit: contain;
-    height: 100%;
+    min-height: 100%;
     width: 100%;
-    top: 0px;
+    & svg {
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
+      width: 100%;
+      height: 100%;
+      & #blue {
+        fill: ${props=>props.theme.colors.primary};
+      }
+      & #white {
+        fill: ${props=>props.theme.colors.foreground};
+      }
+    }
   }
   & .headline {
     color: ${props => props.theme.colors.textSecondary};
@@ -33,7 +53,6 @@ const HeroHeader = styled.section`
     font-size: 3em;
     margin: auto;
     z-index: 3;
-
     margin-top: 50px;
 
     ${props =>
@@ -43,37 +62,28 @@ const HeroHeader = styled.section`
       margin-top: -100px;
   `)}
     ${props =>
-      props.theme.breakpoints.lg(`
+      props.theme.breakpoints.xl(`
       text-align: left;
       margin-top: 0px;
       margin-left: 0px;
       font-size: 85px;
-      width: 80%;
   `)}
-  }
 
-  & a {
-    position: relative;
-    z-index: 2;
-  } //fix buttons
 
-  & .primary-content {
+    & .primary-content {
     color: ${props => props.theme.colors.textSecondary};
     ${props => props.theme.mixins.contentFont};
     line-height: ${props => props.theme.text.details.lineheight3};
     font-family: "poppins";
     font-weight: 300;
     font-size: 20px;
-    width: 75%;
     text-align: left;
     margin: 25px auto;
     z-index: 30;
     display: none;
-    ${props => props.theme.breakpoints.lg(`
-      display: block;
-    `)};
 
     ${props => props.theme.breakpoints.lg(`
+      display: block;
       text-align: left;
       margin-left: 0px;
       width: 100%;
@@ -81,25 +91,34 @@ const HeroHeader = styled.section`
   }
 
   & .buttons {
+    width: 100%;
     display: flex;
+    font-size: 20px;
     margin-top: 30px;
     justify-content: center;
+
     ${props => props.theme.breakpoints.lg(`
-      justify-content: flex-start;
+      justify-content: space-between;
     `)}
+
+  }
+
   }
   color: ${props => props.theme.colors.textPrimary};
-`;
+
+`
+
+
 
 const ThreeWrapper = styled.div`
   position: absolute;
   margin: auto;
   width: 100%;
-  height: 120vh;
+  height: 160%;
   top:-150px;
 
   & #three-portfolio {
-  background: transparent;
+    background: transparent;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -141,63 +160,42 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                   <ThreeWrapper>
                     <ThreePortfolio theme={theme} />
                   </ThreeWrapper>
-                <Col
-                  xl={{span:2,offset:1}}
-                  lg={2}
-                  md={2}
-                  sm={1}
-                  className="d-xs-none d-lg-block"
-                />
-                <Col xl={3} lg={3} md={8} sm={10}>
-                  <h1 className="headline">
-                    {headline}
-                    <div
-                      className="primary-content"
-                      dangerouslySetInnerHTML={{
-                        __html: headlineDescription
-                      }}
-                    />
-                  </h1>
-                  <div className="buttons">
-                  {/**
-                    <Link to="/contact" className="button -primary">
-                      <BtnSecondary
-                        text="Start project"
-                        bg="#0D7BF2"
-                        color="white"
-                      />
-                    </Link>
-                   */}
-                    <a href="#Contact" className="button -primary">
-                      <BtnSecondary bg={theme.colors.primary}
-                        color="white"
-                        text="Let's Connect" />
-                    </a>
-                    <a href="#Contact" className="button -primary">
-                      <BtnSecondary bg="transparent"
-                        color="transparant"
-                        text="Start project" />
-                    </a>
-                  </div>
-                </Col>
-
-                <Col xl={3} lg={6} md className=" d-xl-block d-lg-block d-md-none d-sm-none d-none">
-                    <Graphic>
+              <Col xl={1} lg={1} md={3} sm={1}/>
+                <Content>
+                  <div>
+                    <h1 className="headline">
+                      {headline}
                       <div
-                      style={{ fill: theme.colors.secondary }}
-                      dangerouslySetInnerHTML={{ __html: portfolioGraphic }}
-                    />
-                    </Graphic>
-                </Col>
+                        className="primary-content"
+                        dangerouslySetInnerHTML={{
+                          __html: headlineDescription
+                        }}
+                      />
+                      <div className="buttons">
+                        <a href="#Contact" className="button -primary" >
+                          <BtnSecondary bg={theme.colors.primary}
+                            color="white"
+                            padding="12.5px 30px"
+                            text="Let's Connect"/>
+                        </a>
+                        <a href="#Contact"  className="button -primary">
+                          <BtnSecondary bg="transparent"
+                           padding="12.5px 30px"
+                            color="transparan  t"
+                            text="Start project"/>
+                        </a>
+                      </div>
+                    </h1>
+                  </div>
 
-                <Col
-                  xl={{span:2,offset:1}}
-                  lg={2}
-                  md={2}
-                  sm={2}
-                  xs={0}
-                  className="d-sm-block -xs-none"
-                />
+                  <div className="graphic d-xl-block d-lg-none d-md-none d-sm-none d-none">
+                    <div
+                    style={{ fill: theme.colors.secondary }}
+                    dangerouslySetInnerHTML={{ __html: portfolioGraphic }}
+                    />
+                  </div>
+                </Content>
+              <Col xl={1} lg={1} md={3} sm={1}/>
               </Row>
             </HeroHeader>
           </>
@@ -206,27 +204,3 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
     />
   );
 };
-
-// <ThreeWrapper>
-//       <ThreePortfolio theme={theme} />
-//     </ThreeWrapper>
-
-export const Graphic = styled.div`
-
-& svg {
-height: 100%;
-width: 80%;
-  & #blue {
-  fill: ${props=>props.theme.colors.primary};
-  }
-  & #white {
-  fill: ${props=>props.theme.colors.foreground};
-}
-}
-
-`
-
-//  <img
-//                       className="graphic"
-//                       src={`./assets/svg/portfolio-graphic-${theme.name}.png`} // TODO: this will be dynamic per page (with a hero header)
-//                     />

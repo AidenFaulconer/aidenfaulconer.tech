@@ -46,6 +46,13 @@ const NavigationWrapper = styled.div`
   }
   //css transition styling
 
+
+  & .top {
+    background: transparent;
+    padding: 35px 10vw;
+    ${props => props.theme.transitions.primary("padding")};
+  }
+
   & nav {
     left: 0px;
     top: 0px;
@@ -53,26 +60,21 @@ const NavigationWrapper = styled.div`
     width: 100%;
     position: fixed;
     padding: 12.5px;
-    flex: 5 2 2;
-    ${props=>props.theme.breakpoints.md(`padding: 20px 35px;`)};
-    background: ${props=>props.colorSwap ?
-    props.theme.colors.foreground :
-    props.theme.colors.textSecondary};
-
-     color: ${props=>props.colorSwap ?
-      props.theme.colors.textSecondary :
-    props.theme.colors.textPrimary};
+    background: ${props=>props.theme.colors.foreground};
+    ${props => props.theme.transitions.primary("padding")};
+    color: ${props=>props.colorSwap ?
+      props.theme.colors.textPrimary :
+      props.theme.colors.textSecondary};
 
     //switch on bg color
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    // justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     align-content: center
 
     & .navigation-item {
-      flex: 1 1 auto;
       margin: 12.5px 25px;
     }
 
@@ -82,7 +84,6 @@ const NavigationWrapper = styled.div`
     }
 
     & .site-links {
-      flex: 2;
       display: flex;
       justify-content: space-evenly;
       ${props => props.theme.breakpoints.md(`font-size: 1.15rem;`)}
@@ -91,13 +92,12 @@ const NavigationWrapper = styled.div`
           margin: 0px 25px;
           font-family: "poppins";
           font-weight: 300;
-          color: ${props=>props.colorSwap ?
-            props.theme.colors.textSecondary :
-            props.theme.colors.textPrimary};
+          color: ${props=>props.theme.colors.textSecondary};
         }
 
       & .active-link {
         font-weight: 600;
+        color: ${props=>props.theme.colors.primary};
         &::after {
           visibility: visible;
           width: 100%;
@@ -106,7 +106,6 @@ const NavigationWrapper = styled.div`
     }
 
     & .branding {
-    flex: 5;
       ${props => props.theme.transitions.primary("all")};
       display: block;
 
@@ -124,9 +123,7 @@ const NavigationWrapper = styled.div`
         height: 40px;
         width: auto;
         transform: skew(0deg);
-        fill: ${props=>props.colorSwap ?
-            props.theme.colors.textSecondary :
-            props.theme.colors.textPrimary};
+        fill: ${props=>props.theme.colors.textSecondary};
         ${props => props.theme.transitions.primary("all")};
         ${props=>props.theme.breakpoints.md(`height: 45px;`)}
 
@@ -171,25 +168,33 @@ export default ({ toggleTheme, theme, pageType }) => {
   const hideRef = useRef(); // allow usecallbacks to access the current state when they fire
   hideRef.current = hide;
 
-  const watchScroll = useCallback(() => {
-    const currentScrollPos = typeof document !== "undefined" ? document.body.getBoundingClientRect().y : 0;// return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
-    const prevScrollPos = positionRef.current; // state refs
+  const navRef = useRef();
 
-    //for performance only update state when needed, otherwise drop out before we call showNav
-    //only update state every 100px scrolled by user
-    const thisScrollOffset = currentScrollPos - prevScrollPos;
-    if (Math.abs(thisScrollOffset) < 50) return;
-    // alert(thisScrollOffset)
+  //dont use useCallback for window event listeners unless you want to call a shit ton of react validation logic to slow your site
+  const watchScroll = () => {
 
-    const prevHide = hideRef.current;
-    showNav(thisScrollOffset > 0); // if negative, we hide, if positive we show
-    setScrollPos(currentScrollPos);
-  },[]);
+    //style change breakpoint
+    if(typeof window === 'undefined'){return};
+    window.scrollY < 300 ? navRef.current.classList.add("top") : navRef.current.classList.remove("top");
+
+    // const currentScrollPos = typeof document !== "undefined" ? document.body.getBoundingClientRect().y : 0;// return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
+    // const prevScrollPos = positionRef.current; // state refs
+    // //for performance only update state when needed, otherwise drop out before we call showNav
+    // //only update state every 100px scrolled by user
+    // const thisScrollOffset = currentScrollPos - prevScrollPos;
+    // if (Math.abs(thisScrollOffset) < 50) return;
+    // // alert(thisScrollOffset)
+
+    // const prevHide = hideRef.current;
+    // showNav(thisScrollOffset > 0); // if negative, we hide, if positive we show
+    // setScrollPos(currentScrollPos);
+  };
 
   const { isMobile } = useContext(GlobalStore); // consume and use method declared in layout to change theme
 
 
   useEffect(() => {
+    //no scroll style effect on tablets and phones
     if (typeof window !== "undefined") {
       if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) return//we do not hide and unhide navbar on mobile devices
       window.addEventListener("scroll", watchScroll);
@@ -206,7 +211,7 @@ export default ({ toggleTheme, theme, pageType }) => {
       <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
       <NavigationWrapper colorSwap={colorSwap}>
         <CSSTransition in={hide} timeout={100}>
-          <nav>
+          <nav ref={navRef} className="top">
               <div className="branding navigation-item">
                 <Link to="/">
                   <div

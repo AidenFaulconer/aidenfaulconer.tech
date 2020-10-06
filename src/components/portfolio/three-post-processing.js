@@ -27,15 +27,15 @@ function Post({theme}) {
     const ssaoEffect = new SSAOEffect(camera, normalPass.renderTarget.texture, {
       blendFunction: BlendFunction.MULTIPLY,
       color: theme.colors.textSecondary,
-      samples: 31, // May get away with less samples
+      samples: 30, // May get away with less samples
       rings: 4, // Just make sure this isn't a multiple of samples
       distanceThreshold: 0.4,
-      distanceFalloff: 0.9,
-      rangeThreshold: 10.5, // Controls sensitivity based on camera view distance **
-      rangeFalloff: 0.001,
-      luminanceInfluence: .25,
+      distanceFalloff: 1,
+      rangeThreshold: 1.5, // Controls sensitivity based on camera view distance **
+      rangeFalloff: 0.1,
+      luminanceInfluence: 0.05,
       radius: 1, // Spread range
-      intensity: 20,
+      intensity: 25,
       bias: 0.5,
     })//ambient occulusion
 

@@ -12,10 +12,8 @@ import dayIcon from "@iconify/icons-ic/baseline-wb-sunny";
 import { GlobalStore } from "./layout.js";
 
 const ThemeSwitch = styled.div`
-  border-radius: ${props => props.theme.corners.borderRadius3};
-  background: ${props=>props.colorSwap ?
-    props.theme.colors.textSecondary :
-    props.theme.colors.textPrimary};
+  // border-radius: ${props => props.theme.corners.borderRadius2};
+  // background: ${props=>props.theme.colors.textSecondary};
   height: 22px;
   width: 65px;
   position: relative;
@@ -38,22 +36,19 @@ const ThemeSwitch = styled.div`
     ${props => props.theme.transitions.primary("margin-left")};
 
     & svg {
-      border-radius: ${props => props.theme.corners.borderRadius100};
       position: absolute;
-      color: ${props=>props.colorSwap ?
-        props.theme.colors.textPrimary :
-        props.theme.colors.textSecondary};
-      height: 15px;
-      width: 15px;
+      color: ${props=>props.theme.colors.textSecondary};
+      height: 20px;
+      width: 20px;
       top: 3.5px;
       ${props => props.theme.transitions.primary("left")};
     }
-    & .active {
-      left: 10%;
-    }
-    & .inactive {
-      left: 70%;
-    }
+    // & .active {
+    //   left: 10%;
+    // }
+    // & .inactive {
+    //   left: 70%;
+    // }
   }
 
   & input {

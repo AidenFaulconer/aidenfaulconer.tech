@@ -175,7 +175,7 @@ export default () => {
             {/** left group */}
             <InstancedBoxs
               color={theme.colors.primary}
-              count={25}
+              count={15}
               dims={[.25, .25, .25]}
               choice="right"
             />

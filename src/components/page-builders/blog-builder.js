@@ -112,9 +112,9 @@ export default React.memo(() => {
                     <FeaturedBlog src={featuredBlog.thumbnail_}>
                       <img src={featuredBlog.thumbnail_} />
                       <div className="featured-content">
-                        <h2>{featuredBlog.title}</h2>
+                        <h3>{featuredBlog.title}</h3>
                         <p>{featuredBlog.metaDescription}</p>
-                        <h3>read more</h3>
+                        <div className="cta">read more</div>
                       </div>
                     </FeaturedBlog>
                   </Link>
@@ -225,7 +225,7 @@ const FeaturedBlog = styled.article`
   }
 
   & .featured-content {
-    padding: 12.5px;
+    padding: 25px;
     z-index: 2;
     position: absolute;
     content: "";
@@ -236,8 +236,10 @@ const FeaturedBlog = styled.article`
     top: 0px;
     z-index: 0;
     background: ${props => props.theme.colors.primary};
-    & h2 {
+    & h3 {
       position: relative;
+      font-weight: bolder;
+      font-size: 2em;
       top: 0px;
       left: 0px;
     }
@@ -247,10 +249,10 @@ const FeaturedBlog = styled.article`
       margin-top: 25px;
       position: relative;
     }
-    & h3 {
+    & .cta {
       bottom: 0px;
       left: 0px;
-      margin: 32.5px;
+      margin: 25px;
       position: absolute;
       text-transform: capitalize;
     }
@@ -291,20 +293,31 @@ const OtherBlogs = styled.div`
     border: none;
     margin: 6px;
 
+
+
+    &:hover {
+      & img {
+
+        ${props => props.theme.transitions.primary("opacity")};
+        opacity: .6;
+      }
+
+      & p {
+        bottom: 50%;
+        background: ${props=>props.theme.colors.primary};
+        ${props => props.theme.transitions.primary("bottom")};
+      }
+    }
+
     & img {
       width: 115%;
+      z-index: -1;
+      height: 100%;
       margin-left: -2px;
-    }
-    & p {
       background: ${props => props.theme.colors.primary};
-      position: relative;
-      text-align: center;
-      overflow: hidden;
-      padding: 6.125px;
-      height: 50px;
-      bottom: 50px;
-      width: 100%;
+      ${props => props.theme.transitions.primary("opacity")};
     }
+
 
     &:hover {
       cursor: pointer;
@@ -313,6 +326,18 @@ const OtherBlogs = styled.div`
       ${props => props.theme.transitions.primary("all")};
     }
   }
+
+  & p {
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+    height: 100%;
+    bottom: 0%;
+    width: 100%;
+    ${props => props.theme.transitions.primary("bottom")};
+
+}
 `;
 
 const Header = styled.div`
