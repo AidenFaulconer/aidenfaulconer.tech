@@ -37,7 +37,6 @@ const initGlobalState = {
   theme: {},
   colorSwap: false,
   isMobile: typeof window !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-  scrollPos: 0
 }; // state must be mimicked with exact key names when modifying from nested position
 export const GlobalStore = createContext(initGlobalState); // referenced frequently by child components
 // #endregion global context blueprint
@@ -53,7 +52,6 @@ export default ({ children, pageType }) => {
     typeof cookies.themeState !== "undefined" ? cookies.themeState : "light"
   );
   const [theme, setTheme] = useState(THEME[themeState]);
-  const [scrollPos, setScrollPos] = useState(0);
   const [isMobile, setDeviceState] = useState(null);
   const [colorSwap, setColorSwap] = useState(true);
   // used in global context
@@ -62,21 +60,6 @@ export default ({ children, pageType }) => {
   const [showNav, toggleNav] = useState(true);
   // used local and passed as props
 
-  const handleScroll = useCallback(() => {
-    const _scrollPos = scrollPos;
-    const { top } = typeof document !== "undefined" ? document.body.getBoundingClientRect() : 0; // return size of body element relative to clients viewport (width/height) *padding/border calculated only in body
-    toggleNav(top > _scrollPos);
-    setScrollPos(top);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined")
-      window.addEventListener("scroll", handleScroll);
-    return () => {
-      if (typeof window !== "undefined")
-        window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   // update theme in accordance with themeState
   useEffect(() => {
@@ -99,7 +82,6 @@ export default ({ children, pageType }) => {
             setColorSwap,
             setThemeState,
             theme,
-            scrollPos
           }} /** use state from here and modify the global context to match it */
         >
           <Helmet />

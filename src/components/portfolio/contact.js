@@ -109,7 +109,7 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
             <h1>
             Thank you!
             </h1>
-            <p>Looking forward to getting in touch as soon as possible :)</p>
+            <p>Looking forward to getting in touch, you will have a response within 1-5 business days :)</p>
           </div>
         )}
         <div id="contactName" >
