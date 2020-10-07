@@ -103,7 +103,6 @@ const ImageGrid = styled.div`
   grid-gap: 8px;
   display: grid;
   position: relative;
-  padding: 8px;
   overflow: hidden;
   color: ${props=>props.theme.colors.textSecondary};
   margin-top: 50px;
@@ -124,7 +123,6 @@ const ImageGrid = styled.div`
       ${props => props.theme.transitions.primary("transform")};
       ${props=>props.theme.breakpoints.md(`max-height: 200px;`)}
       position: relative;
-      margin-bottom: 8px;
       max-height: 50px;
       object-fit: fit;
       opacity: 0.9;
@@ -143,11 +141,11 @@ const ImageGrid = styled.div`
         box-shadow: ${props => props.theme.shadows.primary};
     }
     & h3 {
-      margin: 8px 12.5px;
+      margin: 6.25px 12.5px;
       font-size: ${props => props.theme.text.sizes.small};
     }
     & p {
-      margin: 8px 12.5px;
+      margin: 6.25px 12.5px;
       font-size: ${props => props.theme.text.sizes.extraSmall};
     }
   }

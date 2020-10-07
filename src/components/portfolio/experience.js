@@ -76,12 +76,19 @@ const Experiences = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
+  margin-top: -25px;
   justify-content: space-between;
   flex-wrap: wrap;
   height: 100%;
   z-index: 0;
   order: 2;
+  //offset padding so background covers the card
+  margin-top: 25px;
 
+  ${props =>
+    props.theme.breakpoints.md(`
+  margin-top: -25px;
+  `)}
   ${props =>
     props.theme.breakpoints.md(`
     flex-direction: column;

@@ -1,69 +1,143 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import styled from "@emotion/styled";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import { useTheme } from "emotion-theming";
 import { INVIEWCONFIG } from "../page-builders/index-builder";
-const axios = require('axios').default;
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
-
-
+import Confetti from "react-confetti"
 // #region contact
 export default ({ data, sectionName, odd, setCurrentSection }) => {
+  //handle color changing
   const [selected, selectProject] = useState(0);
+  const [formSubmitted, toggleFormSubmition] = useState(false);
   const [ref, inView, entry] = useInView(INVIEWCONFIG);
   useEffect(() => {
     if (typeof entry !== "undefined") {
       setCurrentSection({ name: sectionName, odd }); // entry.target.id)
     }
   }, [inView]);
+  //handle color changing
 
-  const SubmitForm = (firstName,lastName,subject,message) => {
-  //sanitize input
-  alert("submitting form...")
-  axios({
-  headers: { 'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",},
-  method: "post",
-  url: "192.168.0.210:8181/api/v1/email",
-  data: {firstName,lastName,subject,message}
-  }).then(
-  (response)=>alert(JSON.stringify(response.data,null,2)),
-  (error)=>alert(JSON.stringify(error,null,2)))
+  const [formData,setFormData] = useState({
+  contactName: "",
+  contactSender: "",
+  contactSubject: "",
+  contactMessage: "",
+  });
 
-  return(false)
+  const tests = {
+  contactName: /[a-zA-Z]+/gim,
+  contactSender: /[a-zA-Z0-9]+\@[a-zA-Z0-9]+\.com/gim,
+  contactSubject: /[a-zA-Z]+/gim,
+  contactMessage: /.{20,}/gim,
   }
 
+  const encode = (data) => {
+    return Object.keys(data)
+        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+        .join("&");
+  }
+
+  const HandleBadInput = (name,formData) => {
+  let test = Boolean(formData[name].match(tests[name]));
+  if (typeof document !== "undefined")
+    test ? document.getElementById(name).classList.remove("incomplete") : document.getElementById(name).classList.add("incomplete")
+  return test;
+  }
+
+  const SubmitForm = () => {
+  //sanitize input
+  let testInput = Object.keys(formData).every((data,i)=>HandleBadInput(data,formData))
+  if (!testInput) return//if not all tests fail dont run code
+
+  fetch("/",{
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
+  method: "POST",
+  body: encode({"form-name": "contact",...formData})
+  })
+  .then((response)=>console.log("form submission successful"))
+  .catch((error)=>alert(error))
+
+  toggleFormSubmition(true);
+
+  return(false)//prevents default behaviour to redirect user
+  }
+
+  const HandleChange =(e)=>setFormData(Object.assign({},formData,{[e.target.name]: e.target.value}))
+
   const theme = useTheme();
+  useEffect(()=>{
+  // alert(JSON.stringify(formData,null,2));
+  // setTimeout(()=>{
+  // toggleFormSubmition(false);
+  // },30000)//30 seconds
+
+  // typeof document !== "undefined" && !formSubmitted && document.getElementById("contact-submit").classList.add("disabled")
+
+  },[formData])
+
+
 
   return (
     <>
       <ContactForm
         ref={ref}
+        name="contact"
         className="form-container"
-        // action="https://sendmail.w3layouts.com/SubmitContactForm"
-        method="post"
+        form-name="contact"
+        method="POST"
+        onSubmit={SubmitForm}
+        data-netlify-honeypot="bot-field"
+        data-netlify="true"
+        netlify
       >
-        <div>
-          <label htmlFor="w3lName">Name</label>
-          <input type="text" name="w3lName" id="w3lName" />
+
+        {formSubmitted &&(
+          <div className="messenger" >
+            <Confetti
+              className="confetti"
+              colors={[
+              theme.colors.primary,
+              theme.colors.secondary,
+              theme.colors.textPrimary,
+              theme.colors.textSecondary,
+              ]}
+              numberOfPieces={50}
+              gravity={0.17}
+            />
+            <h1>
+            Thank you!
+            </h1>
+            <p>Looking forward to getting in touch as soon as possible :)</p>
+          </div>
+        )}
+        <div id="contactName" >
+          <label htmlFor="contactName">Name</label>
+          <div className="incomplete-message">please only enter letters</div>
+          <input onChange={HandleChange} type="hidden" type="text" name="contactName"/>
         </div>
-        <div>
-          <label htmlFor="w3lSender">Email</label>
-          <input type="email" name="w3lSender" id="w3lSender" />
+        <div id="contactSender" >
+          <label htmlFor="contactSender">Email</label>
+          <div className="incomplete-message">please enter a valid email address</div>
+          <input onChange={HandleChange} type="hidden" type="email" name="contactSender"/>
         </div>
-        <div>
-          <label htmlFor="w3lSubject">Subject</label>
-          <input type="text" name="w3lSubject" id="w3lSubject" />
+        <div id="contactSubject" >
+          <label htmlFor="contactSubject">Subject</label>
+          <div className="incomplete-message">please only enter letters</div>
+          <input onChange={HandleChange} type="hidden" type="text" name="contactSubject" />
         </div>
-        <div>
-          <label htmlFor="w3lMessage">Message</label>
-          <textarea name="w3lMessage" id="w3lMessage" />
+        <div id="contactMessage" >
+          <label htmlFor="contactMessage">Message</label>
+          <div className="incomplete-message">please write a message containing more than 20 characters</div>
+          <textarea onChange={HandleChange} type="hidden" type="text" name="contactMessage" />
         </div>
         <BtnPrimary
           text="Contact"
+          type="submit"
+          id="contact-submit"
           color={theme.colors.textPrimary}
-          callback={() => SubmitForm("test","test","test","test")}
+          callback={()=>SubmitForm()}
         />
         <div dangerouslySetInnerHTML={{ __html: "" }} />
       </ContactForm>
@@ -84,6 +158,72 @@ const ContactBranding = styled.div`
 const ContactForm = styled.form`
   width: 100%;
 
+  & .disabled {
+  pointer-events:none;
+  }
+
+  & .incomplete {
+    & .incomplete-message {
+      padding: 6.125px;
+      display: inline-block;
+      width: 100%;
+      border: 2px solid red;
+      text-align: center;
+      color: ${props=>props.theme.colors.textSecondary};
+      font-weight: bolder;
+      border-radius: ${props=>props.theme.corners.borderRadius2};
+      visibility: visible;
+      box-shadow: ${props=>props.theme.shadows.primary};
+    }
+  }
+
+  & .incomplete-message {
+    visibility: hidden;
+    margin: 6.125px 0px;
+    font-size: ${props=>props.theme.text.sizes.extraSmall};
+  }
+
+  & .confetti {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  }
+
+  & .messenger {
+    visibility: visible;
+    position: absolute;
+    height: 75%;
+    width: 75%;
+    transform: translateZ(100);
+    padding: 25px;
+    background: ${props=>props.theme.colors.foreground};
+    color: ${props=>props.theme.colors.primary};
+    right: 0px;
+    text-align: center;
+    font-weight: bolder;
+    box-shadow: ${props=>props.theme.shadows.primary};
+    top: 12.5%;
+    left: 12.5%;
+    z-index: 3;
+    border-radius: ${props=>props.theme.corners.borderRadius1};
+
+    & p {
+      margin-top: 12.5%;
+    }
+
+    &:after {
+      position: absolute;
+      content: "";
+      width: 150vw;
+      background: ${props=>props.theme.colors.foreground};
+      opacity: .6;
+      left: -100%;
+      top: -25%;
+      z-index: -50;
+      height: 150%;
+    }
+  }
   & label {
     color: ${props => props.theme.colors.textSecondary};
     font-size: 1em;
@@ -116,12 +256,3 @@ const ContactForm = styled.form`
     color: white;
   }
 `;
-// <ContactForm>
-//   <label />
-//   <label />
-//   <label />
-//   <input />
-//   <input />
-//   <input />
-// </ContactForm>
-// #endregion contact

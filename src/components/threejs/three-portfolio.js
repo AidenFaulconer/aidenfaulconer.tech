@@ -189,6 +189,7 @@ function MovingColumns({theme,isMobile}) {
       <meshBasicMaterial
         color={theme.colors.foreground}
         transparent={false}
+
         opacity="1"
         toneMapped={false}
         attatch="material"

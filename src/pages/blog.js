@@ -6,7 +6,7 @@ import { useTheme } from "emotion-theming";
 import Layout from "../components/layout";
 import BlogBuilder from "../components/page-builders/blog-builder";
 // <GraphicWave dangerouslySetInnerHTML={{ __html: lhs }} />
-import ThreeBlog from "../components/blog/three-blog";
+import ThreeBlog from "../components/threejs/three-blog";
 
 const ThreeWrapper = styled.div`
   position: absolute;

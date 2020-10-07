@@ -71,7 +71,9 @@ const IndexPage = React.memo(
   }) => {
     return (
       <Layout pageType="">
-        <script src="https://cdn.rawgit.com/LeaVerou/conic-gradient/609dc5f4/conic-gradient.js" />
+      {/**mailchimp integration
+      <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/fbbcaa0fa5cc9f5e4f2ae3d09/a9757ed9e8d1f6abfc04086cf.js");</script>
+      */}
 
         <Helmet>
           <title>{site.siteMetadata.title}</title>

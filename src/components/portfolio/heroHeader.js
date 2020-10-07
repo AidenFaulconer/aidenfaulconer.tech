@@ -8,10 +8,9 @@ import { useTheme } from "emotion-theming";
 import { TypeWriter } from "../util/typewriter";
 import { BtnPrimary, BtnSecondary, Btn } from "../buttons.js";
 
-import ThreePortfolio from "./three-portfolio";
+import ThreePortfolio from "../threejs/three-portfolio";
 
 import { portfolioGraphic} from "../../../static/assets/svg/hardcoded-svgs";
-import ThreeBlog from "../blog/three-blog";
 
 const HeroHeader = styled.section`
   max-height:45vh;

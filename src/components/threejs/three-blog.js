@@ -4,11 +4,11 @@ import React, { Suspense, useMemo, useState, useCallback, useRef } from "react";
 import { Canvas, useFrame, useThree, useLoader } from "react-three-fiber";
 import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import { useTheme } from "emotion-theming";
-import BackfaceMaterial from "../threejs/materials/backface";
-import RefractionMaterial from "../threejs/materials/refraction";
+import BackfaceMaterial from "./materials/backface";
+import RefractionMaterial from "./materials/refraction";
 import linesUrl from "../../../static/assets/lines.png";
 
-import Post from "../portfolio/three-post-processing.js";
+import Post from "./three-post-processing.js";
 
 export const Mouse = () => {
   const { viewport } = useThree();

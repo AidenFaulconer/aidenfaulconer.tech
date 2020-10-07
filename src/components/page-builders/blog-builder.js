@@ -14,7 +14,6 @@ import { StaticQuery, graphql, Link } from "gatsby";
 
 import filterIcon from "@iconify/icons-mdi/filter-variant";
 import { useTheme } from "emotion-theming";
-import ThreeBlog from "../blog/three-blog";
 import { Btn, BtnPrimary, BtnSecondary } from "../buttons";
 
 import {blogGraphic} from "../../../static/assets/svg/hardcoded-svgs.js"
