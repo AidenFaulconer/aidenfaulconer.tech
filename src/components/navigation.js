@@ -196,8 +196,9 @@ export default ({ toggleTheme, theme, pageType }) => {
   useEffect(() => {
     //no scroll style effect on tablets and phones
     if (typeof window !== "undefined") {
-      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) return//we do not hide and unhide navbar on mobile devices
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {navRef.current.classList.remove("top"); return;}//we do not hide and unhide navbar on mobile devices
       window.addEventListener("scroll", watchScroll);
+      navRef.current.classList.add("top");
       return ()=>window.removeEventListener("scroll",watchScroll);
     }
   }, []);
@@ -211,7 +212,7 @@ export default ({ toggleTheme, theme, pageType }) => {
       <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
       <NavigationWrapper colorSwap={colorSwap}>
         <CSSTransition in={hide} timeout={100}>
-          <nav ref={navRef} className="top">
+          <nav ref={navRef} >
               <div className="branding navigation-item">
                 <Link to="/">
                   <div
