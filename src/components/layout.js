@@ -67,6 +67,12 @@ export default ({ children, pageType }) => {
     setCookie("themeState", themeState, {sameSite:"strict",path:"/",secure:true});
   }, [themeState]);
 
+  //make sure theme is set initially
+  useEffect(()=>{
+    setTheme(THEME[themeState]);
+    setCookie("themeState", themeState, {sameSite:"strict",path:"/",secure:true});
+  },[])
+
   // alert(JSON.stringify(theme))
 
   return (

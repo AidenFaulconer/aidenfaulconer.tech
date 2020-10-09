@@ -12,7 +12,6 @@ import {
   NormalPass,
 } from "postprocessing"
 
-import {GlobalStore} from "../../components/layout.js";
 
 function Post({theme}) {
   const { gl, scene, camera, size } = useThree()
@@ -25,16 +24,14 @@ function Post({theme}) {
 
     const normalPass = new NormalPass(scene, camera)
     const ssaoEffect = new SSAOEffect(camera, normalPass.renderTarget.texture, {
-      // blendFunction: BlendFunction.MULTIPLY,
+     blendFunction: BlendFunction.MULTIPLY,
       color: theme.colors.textSecondary,
-      samples: 33, // May get away with less samples
+      samples: 31, // May get away with less samples
       rings: 4, // Just make sure this isn't a multiple of samples
-      distanceThreshold: 0.4,
-      distanceFalloff: 1,
-      rangeThreshold: 1.5, // Controls sensitivity based on camera view distance **
-      rangeFalloff: 0.1,
-      luminanceInfluence: 0.05,
-      radius: 1, // Spread range
+      distanceThreshold: 0.9,
+      rangeFalloff: 0.07,
+      luminanceInfluence: .25,
+      radius: 15, // Spread range
       intensity: 25,
       bias: 0.5,
     })//ambient occulusion

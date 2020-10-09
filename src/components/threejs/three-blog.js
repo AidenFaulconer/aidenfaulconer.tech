@@ -8,7 +8,6 @@ import BackfaceMaterial from "./materials/backface";
 import RefractionMaterial from "./materials/refraction";
 import linesUrl from "../../../static/assets/lines.png";
 
-import Post from "./three-post-processing.js";
 
 export const Mouse = () => {
   const { viewport } = useThree();

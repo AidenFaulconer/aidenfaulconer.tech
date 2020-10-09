@@ -62,7 +62,6 @@ export default React.memo(() => {
 
   // handle a section coming into view
   useEffect(() => {
-    console.log(filteredBlogs);
   }, [filteredBlogs]);
 
   function usePrevious(value) {
@@ -74,7 +73,6 @@ export default React.memo(() => {
   }
 
   useEffect(() => {
-    console.log(selectedFilters);
   }, [selectedFilters]);
 
   return (

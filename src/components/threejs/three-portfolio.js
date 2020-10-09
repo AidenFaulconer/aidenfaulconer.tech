@@ -173,8 +173,8 @@ function MovingColumns({theme,isMobile}) {
   return (
     <instancedMesh
       ref={instancedColumns}
-      // castShadow
-      // receiveShadow
+      castShadow
+      receiveShadow
       matrixAutoUpdate={false}/**matrix is manually updated in frame loop */
       position={[0, 10, columnDepth / cubeSize]}
       args={[null, null, generatedGrid.length]}
@@ -229,7 +229,7 @@ function Box({ position, color }) {
       <color attach="background" color={theme.colors.foreground}/>
       <CameraControls/>
       <directionalLight
-      //  castShadow //post will create shadows (ambient occulision)
+       castShadow //post will create shadows (ambient occulision)
        position={[0, 10, 0]}
        scale={[1,1,1]}
        color={theme.colors.textSecondary}
