@@ -24,7 +24,7 @@ function Post({theme}) {
 
     const normalPass = new NormalPass(scene, camera)
     const ssaoEffect = new SSAOEffect(camera, normalPass.renderTarget.texture, {
-     blendFunction: BlendFunction.MULTIPLY,
+      blendFunction: BlendFunction.MULTIPLY,
       color: theme.colors.textSecondary,
       samples: 31, // May get away with less samples
       rings: 4, // Just make sure this isn't a multiple of samples

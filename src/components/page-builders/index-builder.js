@@ -356,7 +356,7 @@ const ContentContainer = styled.section`
     & .section-container {
       margin: 6.25px 0px;
       margin-bottom: 100px;
-      min-height: 700px;//required to ensure intersection observer is detecting the corrent current section
+      min-height: 900px;//required to ensure intersection observer is detecting the corrent current section
       width: 100%;
       display: flex;
       background: ${props => props.theme.colors.contentColor};
