@@ -8,7 +8,7 @@ import { useTheme } from "emotion-theming";
 import { TypeWriter } from "../util/typewriter";
 import { BtnPrimary, BtnSecondary, Btn } from "../buttons.js";
 
-import ThreePortfolio from "../threejs/three-portfolio";
+import ThreePortfolio from "../threejs/three-blog";
 
 import { portfolioGraphic} from "../../../static/assets/svg/hardcoded-svgs";
 
@@ -113,7 +113,7 @@ const ThreeWrapper = styled.div`
   position: absolute;
   margin: auto;
   width: 100%;
-  height: 160%;
+  height: 105%;
   top:-150px;
 
   & #three-portfolio {
@@ -156,6 +156,8 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
           <>
             <HeroHeader id="hero-header">
               <Row>
+              {/**
+               */}
                   <ThreeWrapper>
                     <ThreePortfolio theme={theme} />
                   </ThreeWrapper>

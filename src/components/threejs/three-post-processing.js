@@ -28,10 +28,10 @@ function Post({theme}) {
       color: theme.colors.textSecondary,
       samples: 31, // May get away with less samples
       rings: 4, // Just make sure this isn't a multiple of samples
-      distanceThreshold: 0.9,
+      distanceThreshold: 1,
       rangeFalloff: 0.07,
       luminanceInfluence: .25,
-      radius: 15, // Spread range
+      radius: 2, // Spread range
       intensity: 25,
       bias: 0.5,
     })//ambient occulusion
