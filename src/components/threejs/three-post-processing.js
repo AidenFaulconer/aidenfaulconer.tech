@@ -26,14 +26,14 @@ function Post({theme}) {
     const ssaoEffect = new SSAOEffect(camera, normalPass.renderTarget.texture, {
       blendFunction: BlendFunction.MULTIPLY,
       color: theme.colors.textSecondary,
-      samples: 31, // May get away with less samples
+      samples: 35, // May get away with less samples
       rings: 4, // Just make sure this isn't a multiple of samples
       distanceThreshold: 1,
       rangeFalloff: 0.07,
       luminanceInfluence: .25,
-      radius: 2, // Spread range
-      intensity: 25,
-      bias: 0.5,
+      radius: 40, // Spread range
+      intensity: 30,
+      bias: 0.4,
     })//ambient occulusion
 
     // SSAO is supposed to be a subtle effect!

@@ -108,7 +108,7 @@ export const InstancedBoxs = ({
       ref={ref}
       args={[null, null, count]}
     >
-      <icosahedronBufferGeometry attatch="geometry" args={[dimensions[0], 2]} />
+      <boxBufferGeometry attatch="geometry" args={[dimensions[0], dimensions[0],dimensions[0]]} />
       <meshBasicMaterial
         flatShading
         attatch="material"

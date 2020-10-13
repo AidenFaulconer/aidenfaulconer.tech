@@ -96,8 +96,8 @@ const CameraControls = () => {
   const { isMobile} = useContext(GlobalStore);
   useEffect(()=>{
     let orbitControls = controls.current;
-    isMobile && orbitControls.dispose();
     orbitControls.target = new Vector3(viewport.width * cubeSize, -3, viewport.width * cubeSize);
+    isMobile && orbitControls.dispose();
     orbitControls.maxDistance = 25;
     orbitControls.autoRotate = true;
     orbitControls.maxZoom = 3;
@@ -114,12 +114,14 @@ const CameraControls = () => {
   return <orbitControls ref={controls} args={[camera,domElement]}/>;
 }
 
-export const cubeSize = 4
+export const cubeSize = 1
 function MovingColumns({theme,isMobile}) {
   const { viewport, clock,camera, scene } = useThree();
   const instancedColumns = useRef();
-  const columnDepth = viewport.width * 2;
-  const noiseSpeed = 4;
+  const noiseSpeed = 7;
+  const viewPortOffset = 1.25;
+  const columnDepth = 8/viewPortOffset;
+  const scale = columnDepth*cubeSize;
 
   //create position data and instance of noise
   //no dependencies, so only one instance is ever made (thanks useMemo)
@@ -127,8 +129,8 @@ function MovingColumns({theme,isMobile}) {
   const dummyObj = useMemo(() => new Object3D(), []); //used to generate a matrix we can use based on the ref'ed blueprint of the object
   const generatedGrid = useMemo(() => {
     let result = []; //vec3 array
-    for (let x = 0; x < columnDepth * cubeSize; x += cubeSize)
-      for (let z = 0; z < columnDepth * cubeSize; z += cubeSize)
+    for (let x = 0; x < scale; x += cubeSize)
+      for (let z = 0; z < scale; z += cubeSize)
         result.push({ position: [x, z, z] });
     return result;
   }, []);
@@ -160,7 +162,7 @@ function MovingColumns({theme,isMobile}) {
       const { position } = data; //get prefitted positions on the grid
       dummyObj.position.set(
         position[0],
-        noise.noise2D(position[1] + t, position[0] + t),
+        noise.noise2D(position[1] + t, position[0] + t)*.5,
         position[2]
       );
       dummyObj.updateMatrix();
@@ -171,19 +173,19 @@ function MovingColumns({theme,isMobile}) {
   }, 1 /**number 1 render priority */);
 
   return (
+  <group position={[scale/viewPortOffset,9,scale/viewPortOffset]}>
     <instancedMesh
       ref={instancedColumns}
       castShadow
       receiveShadow
       matrixAutoUpdate={false}/**matrix is manually updated in frame loop */
-      position={[0, 10, columnDepth / cubeSize]}
       args={[null, null, generatedGrid.length]}
     >
       <boxBufferGeometry
         /**we are consistently mapping position data, dont dispose objects
          * once a frame finishes*/
         dispose={false}//do not dispose of geometry, saves a massive amount of memory allocation and garbage collection each frame
-        args={[cubeSize, cubeSize, cubeSize, 1]}
+        args={[cubeSize, cubeSize*1.5, cubeSize, 1]}
         attatch="geometry"
       />
       <meshBasicMaterial
@@ -195,6 +197,7 @@ function MovingColumns({theme,isMobile}) {
         attatch="material"
       />
     </instancedMesh>
+  </group>
   );
 }
 
@@ -216,6 +219,7 @@ function Box({ position, color }) {
   const {viewport} = useThree();
   return (
     <Canvas
+      resize={{scroll:false}}//dont update canvas on user scroll
       concurrent
       shadowMap
       pixelRatio={typeof window !== "undefined" && window.devicePixelRatioo}
@@ -223,7 +227,7 @@ function Box({ position, color }) {
       camera={{
         fov: 50,
         near: 1,
-        far: 40
+        far: 20
       }}
     >
       <color attach="background" color={theme.colors.foreground}/>
@@ -236,14 +240,20 @@ function Box({ position, color }) {
        intensity={20}
       />
       <Suspense fallback={null}>
-        <Physics
-          gravity={[0, -50, 0]}
-          defaultContactMaterial={{ restitution: 0.6 }}
-        >
           <group position={[0, -6, 0]} >
             <MovingColumns isMobile={isMobile} theme={theme}/>
+            <instancedMesh>
+            <planeBufferGeometry
+            position={[16,0,16]}
+            attatch="geometry"
+            args={[16,16,16]}/>
+            <meshBasicMaterial
+            attatch="material"
+            toneMapped={false}
+            transparent={false}
+            color={theme.colors.foreground}/>
+            </instancedMesh>
           </group>
-        </Physics>
         <Post theme={theme}/>
       </Suspense>
     </Canvas>

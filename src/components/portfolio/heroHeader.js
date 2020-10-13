@@ -8,7 +8,7 @@ import { useTheme } from "emotion-theming";
 import { TypeWriter } from "../util/typewriter";
 import { BtnPrimary, BtnSecondary, Btn } from "../buttons.js";
 
-import ThreePortfolio from "../threejs/three-blog";
+import ThreePortfolio from "../threejs/three-shifting-columns";
 
 import { portfolioGraphic} from "../../../static/assets/svg/hardcoded-svgs";
 
