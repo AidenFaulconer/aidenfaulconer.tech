@@ -154,7 +154,7 @@ export default React.memo(({ theme }) => {
                             />
                           </div>
                         </Col>
-                        <Col xl={2} md={2} lg={1} />
+                        <Col xl={2} md={2} lg={2} />
                       </Row>
                     </ContentContainer>
                   );
@@ -163,12 +163,11 @@ export default React.memo(({ theme }) => {
 
               <Col
                 xl={1}
-                lg={1}
                 // css to be overriden programatically
                 style={{ marginTop: "0px"}}
               >
                 <ContentNavigation
-                  className="d-none d-md-none d-lg-none d-xl-block"
+                  className="d-none d-lg-none d-xl-block"
                   colorSwap={colorSwap}
                   id="sticky"
                   src="./assets/svg/wave-graphic.png"

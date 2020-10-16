@@ -55,10 +55,8 @@ top: -60px;
     margin-top: 50px;
 
     ${props =>
-      props.theme.breakpoints.md(`
-      font-size: 4.5em;
-      width: 80%;
-      margin-top: -100px;
+      props.theme.breakpoints.lg(`
+      font-size: 4em;
   `)}
     ${props =>
       props.theme.breakpoints.xl(`
@@ -82,9 +80,14 @@ top: -60px;
 
     ${props => props.theme.breakpoints.lg(`
       display: block;
-      text-align: left;
+      text-align: center;
+      width: 60%;
+  `)}
+    ${props => props.theme.breakpoints.xl(`
+      display: block;
       margin-left: 0px;
-      width: 100%;
+      text-align: left;
+      width: 80%;
   `)}
   }
 
@@ -94,11 +97,10 @@ top: -60px;
     font-size: 20px;
     margin-top: 30px;
     justify-content: center;
-
-    ${props => props.theme.breakpoints.lg(`
+    ${props => props.theme.breakpoints.xl(`
       justify-content: space-between;
-    `)}
-
+      width: 80%;
+  `)}
   }
 
   }
@@ -161,7 +163,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                   <ThreeWrapper>
                     <ThreePortfolio theme={theme} />
                   </ThreeWrapper>
-              <Col xl={1} lg={1} md={3} sm={1}/>
+              <Col xl={1} lg md={2} sm={1}/>
                 <Content>
                   <div>
                     <h1 className="headline">
@@ -196,7 +198,7 @@ export default ({ context, headerGraphic, headline, headlineDescription }) => {
                     />
                   </div>
                 </Content>
-              <Col xl={1} lg={1} md={3} sm={1}/>
+              <Col xl={1} lg md={2} sm={1}/>
               </Row>
             </HeroHeader>
           </>

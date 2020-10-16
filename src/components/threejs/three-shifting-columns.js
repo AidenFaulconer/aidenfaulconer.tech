@@ -177,7 +177,7 @@ function MovingColumns({theme,isMobile}) {
   }, 1 /**number 1 render priority */);
 
   return (
-  <group position={[-scale/2,7,-scale/2]}>
+  <group position={[-scale/2,7.5,-scale/2]}>
     <instancedMesh
       ref={instancedColumns}
       castShadow
