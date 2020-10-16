@@ -85,7 +85,7 @@ const staticStlying = {
   }`,
   text: {
     sizeScalings: {
-      xl:"21px",
+      xl:"15px",
       lg:"20px",
       md:"15px",
       sm:"9px",
@@ -93,17 +93,12 @@ const staticStlying = {
     },
     sizes: {
       //main
-      headline: "70px",
-      body: "15px",
-      detail: "13px",
-      heading: "70px",
-      //main
       extraSmall: ".618em", // was .618em
       small: ".818em", // was .618em
       p: "15px",
       h3: "1.451em", // 17px
       h2: "2.618em",
-      h1: "100px",
+      h1: "3em",
       title: "4.8em"
     },
     details: {
@@ -217,7 +212,6 @@ export default {
       overflow-x: hidden;
       margin: 0px;
       padding: 0px;
-      font-size: 20px;
 
       & h1 {font-size:2.5em;}
       ${staticStlying.breakpoints.sm(`
@@ -276,12 +270,10 @@ export default {
       box-sizing: border-box;
       background: #FFFFFF;
       overflow-x: hidden;
-      min-height: 100vh;
       margin: 0px;
       padding: 0px;
-      font-size: 20px;
 
-      & h1 {font-size:2.5em;}
+      & h1 {font-size:2em;}
       ${staticStlying.breakpoints.sm(`
         ${staticStlying.text.sizeScalings.sm};
       `)}

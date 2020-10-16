@@ -13,7 +13,7 @@ import ThreePortfolio from "../threejs/three-shifting-columns";
 import { portfolioGraphic} from "../../../static/assets/svg/hardcoded-svgs";
 
 const HeroHeader = styled.section`
-  max-height:45vh;
+  max-height:35vh;
   z-index: 0;
 `;
 
@@ -23,7 +23,7 @@ position: relative;
 margin: auto;
 max-width: 900px;
 display: flex;
-
+top: -60px;
 
   & .graphic {
     position: relative;
@@ -65,17 +65,16 @@ display: flex;
       text-align: left;
       margin-top: 0px;
       margin-left: 0px;
-      font-size: 85px;
+      font-size: 5em;
   `)}
 
 
     & .primary-content {
     color: ${props => props.theme.colors.textSecondary};
-    ${props => props.theme.mixins.contentFont};
     line-height: ${props => props.theme.text.details.lineheight3};
     font-family: "poppins";
     font-weight: 300;
-    font-size: 20px;
+    font-size: .25em;
     text-align: left;
     margin: 25px auto;
     z-index: 30;
@@ -113,16 +112,17 @@ const ThreeWrapper = styled.div`
   position: absolute;
   margin: auto;
   width: 100%;
-  height: 105%;
-  top:-150px;
+  height: 100vh;
+  left: 0px;
+  margin-top:-250px;
 
   & #three-portfolio {
     background: transparent;
     position: absolute;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     z-index: 0;
-    top: 0px;
+    bottom: 0px;
   }
 
 `;

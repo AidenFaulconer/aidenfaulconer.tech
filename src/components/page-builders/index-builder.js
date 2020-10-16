@@ -25,9 +25,12 @@ import Contact from "../portfolio/contact";
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 import { GlobalStore } from "../layout";
 
+import LocomotiveScroll from 'locomotive-scroll';
+
+
 // used by all child components to config there intersection observer
 export const INVIEWCONFIG = {
-  threshold: [0.4],//offset vertically where intersection observer detects a new section
+  threshold: [0.0],//offset vertically where intersection observer detects a new section
   rootMargin: "0px" // account for nav bar
 }; // not working... why??????
 
@@ -88,6 +91,12 @@ export default React.memo(({ theme }) => {
   useEffect(() => {
     //initialize stickybits
     stickybits("#sticky", { useStickyClasses: true });
+    // let scroll = new LocomotiveScroll();
+    // scroll.on("call",(e)=>{
+
+    // alert(JSON.stringify(e))
+    // scrollToSection()
+    // })
   }, []);
   // https://www.npmjs.com/package/react-intersection-observer#polyfill
 
@@ -120,7 +129,7 @@ export default React.memo(({ theme }) => {
                         }
                       }} // use the inview api to update the current ref state on viewport enter
                     >
-                      <Row noGutters>
+                      <Row noGutters data-scroll data-scroll-call="call">
                         <Col xl={3} md={2} lg={2} />
                         <Col className="content" xl md key={`${sectionName} content`}>
                           <div className="header" key={`${sectionName} header`}>
@@ -322,6 +331,7 @@ const ContentContainer = styled.section`
   position: relative;
   z-index: 1;
   padding: 100px 25px 200px 25px;
+  min-height: 100vh;
 
   ${props => props.theme.transitions.primary("all")};
   background: ${props =>
@@ -385,19 +395,9 @@ const ContentContainer = styled.section`
         flex-wrap: no-wrap;
         `)}
     }
-
-
       }
     }
-
-
    }
-
-    ${props =>
-      props.theme.breakpoints.lg(`
-
-      `)}
-
   }
 `;
 const SectionBreak = styled.hr`

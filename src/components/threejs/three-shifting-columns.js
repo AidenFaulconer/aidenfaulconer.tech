@@ -96,7 +96,7 @@ const CameraControls = () => {
   const { isMobile} = useContext(GlobalStore);
   useEffect(()=>{
     let orbitControls = controls.current;
-    orbitControls.target = new Vector3(viewport.width * cubeSize, -3, viewport.width * cubeSize);
+    orbitControls.target = new Vector3(0, 0, 0); //set to center of shifting column construct
     isMobile && orbitControls.dispose();
     orbitControls.maxDistance = 25;
     orbitControls.autoRotate = true;
@@ -114,14 +114,18 @@ const CameraControls = () => {
   return <orbitControls ref={controls} args={[camera,domElement]}/>;
 }
 
+//configure location of shifting columns and the camera looking at it
 export const cubeSize = 1
+export const viewPortOffset = 1.25;
+export const columnDepth = 8/viewPortOffset;
+export const scale = columnDepth*cubeSize;
+//
+
 function MovingColumns({theme,isMobile}) {
-  const { viewport, clock,camera, scene } = useThree();
+  const {clock,camera, scene } = useThree();
   const instancedColumns = useRef();
   const noiseSpeed = 7;
-  const viewPortOffset = 1.25;
-  const columnDepth = 8/viewPortOffset;
-  const scale = columnDepth*cubeSize;
+
 
   //create position data and instance of noise
   //no dependencies, so only one instance is ever made (thanks useMemo)
@@ -173,7 +177,7 @@ function MovingColumns({theme,isMobile}) {
   }, 1 /**number 1 render priority */);
 
   return (
-  <group position={[scale/viewPortOffset,9,scale/viewPortOffset]}>
+  <group position={[-scale/2,7,-scale/2]}>
     <instancedMesh
       ref={instancedColumns}
       castShadow
