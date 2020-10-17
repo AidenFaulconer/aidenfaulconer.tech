@@ -4,9 +4,6 @@ import React, { Suspense, useMemo, useState, useCallback, useRef } from "react";
 import { Canvas, useFrame, useThree, useLoader } from "react-three-fiber";
 import { Physics, usePlane, useSphere, useBox, useCylinder } from "use-cannon";
 import { useTheme } from "emotion-theming";
-import BackfaceMaterial from "./materials/backface";
-import RefractionMaterial from "./materials/refraction";
-import linesUrl from "../../../static/assets/lines.png";
 
 
 export const Mouse = () => {
@@ -108,7 +105,7 @@ export const InstancedBoxs = ({
       ref={ref}
       args={[null, null, count]}
     >
-      <boxBufferGeometry attatch="geometry" args={[dimensions[0], dimensions[0],dimensions[0]]} />
+      <sphereBufferGeometry attatch="geometry" args={dimensions[0]} />
       <meshBasicMaterial
         flatShading
         attatch="material"

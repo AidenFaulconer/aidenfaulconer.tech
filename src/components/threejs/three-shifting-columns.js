@@ -121,16 +121,17 @@ export const columnDepth = 8/viewPortOffset;
 export const scale = columnDepth*cubeSize;
 //
 
+
 function MovingColumns({theme,isMobile}) {
-  const {clock,camera, scene } = useThree();
+  const {clock,camera,viewport,scene } = useThree();
   const instancedColumns = useRef();
   const noiseSpeed = 7;
 
-
   //create position data and instance of noise
   //no dependencies, so only one instance is ever made (thanks useMemo)
-  const noise = useMemo(()=>new SimplexNoise(Math.random()),[]); //only instance once, hence use of usememo
+  const noise = useMemo(() => new SimplexNoise(Math.random()), []); //only instance once, hence use of usememo
   const dummyObj = useMemo(() => new Object3D(), []); //used to generate a matrix we can use based on the ref'ed blueprint of the object
+  const raycast = useMemo(() => new Raycaster(), []); //used to generate a matrix we can use based on the ref'ed blueprint of the object
   const generatedGrid = useMemo(() => {
     let result = []; //vec3 array
     for (let x = 0; x < scale; x += cubeSize)
@@ -139,42 +140,51 @@ function MovingColumns({theme,isMobile}) {
     return result;
   }, []);
 
-  const pickColumn = useCallback((normalizedPosition)=>{
-  if(!normalizedPosition) return;
-
-  const raycast = new Raycaster();
-  //set raycast from camera
-  raycast.setFromCamera(normalizedPosition, camera);
-  raycast.ray
-
-  const hits = raycast.intersectObjects(scene.children);
-  const arrow = new ArrowHelper(camera.getWorldDirection(), camera.getWorldPosition(), 100,Math.random()*0xffffff);
-
-  if (hits.length > 0){
-    const objectHit = hits[0].object;
-    alert(JSON.stringify(objectHit))
-    // const {position} = objectFit;
-    // objectHit.position.set(position.x,position.y+clock.getElapsedTime(), position.z);
-    objectHit.material.color.set( 0xff0000 )
-  }
-  },[])
-
   useFrame((state) => {
     //generate grid and position them according to noise
+    const meshRef = instancedColumns.current;
+
     generatedGrid.forEach((data, i) => {
       const t = clock.elapsedTime / noiseSpeed;
       const { position } = data; //get prefitted positions on the grid
       dummyObj.position.set(
         position[0],
-        noise.noise2D(position[1] + t, position[0] + t)*.5,
+        noise.noise2D(position[1] + t, position[0] + t) * 0.5,
         position[2]
       );
       dummyObj.updateMatrix();
       //place created objects in instancedMesh for the class to manage them
-      instancedColumns.current.setMatrixAt(i, dummyObj.matrix);
+      meshRef.setColorAt(i, new THREE.Color().setHex("0xffffff"));
+      meshRef.setMatrixAt(i, dummyObj.matrix);
     });
-    instancedColumns.current.instanceMatrix.needsUpdate = true; //force update of matrix
+
+    meshRef.instanceMatrix.needsUpdate = true; //force update of matrix
+    meshRef.instanceColor.needsUpdate = true;
+
+    // if (state.mouse.x === 0) return;
+    // let coords = {
+    //   x: (state.mouse.x * viewport.width) / 5,
+    //   y: (state.mouse.y * viewport.height) / 2
+    // };
+    // castRay(coords);
+
   }, 1 /**number 1 render priority */);
+
+  const castRay = (mouse) => {
+    //remove old ray, add new one
+    // scene.remove(debugRay);
+    raycast.setFromCamera(mouse, camera);
+    // scene.add(new ArrowHelper([0,0,0],))
+
+    let targetMesh = instancedColumns.current;
+    let intersection = raycast.intersectObject(targetMesh);
+    if (intersection.length === 0) return;
+    //return the instancedObjectId we are intersecting
+    let hitId = intersection[0].instanceId;
+    targetMesh.setColorAt(hitId, new THREE.Color().setHex(theme.colors.primary));
+    targetMesh.instanceColor.needsUpdate = true;
+  };
+
 
   return (
   <group position={[-scale/2,7.5,-scale/2]}>

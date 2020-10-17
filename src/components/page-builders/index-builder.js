@@ -25,7 +25,7 @@ import Contact from "../portfolio/contact";
 import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons";
 import { GlobalStore } from "../layout";
 
-import LocomotiveScroll from 'locomotive-scroll';
+// import LocomotiveScroll from 'locomotive-scroll';
 
 
 // used by all child components to config there intersection observer
