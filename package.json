@@ -76,7 +76,7 @@
     "react-use-gesture": "^7.0.15",
     "simplex-noise": "^2.4.0",
     "stickybits": "^3.7.7",
-    "three": "0.121.1",
+    "three": "0.125.0",
     "use-cannon": "0.4.9",
     "zustand": "^2.2.3"
   },
