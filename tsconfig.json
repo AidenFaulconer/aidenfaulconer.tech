@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": [
+      "esnext",
+      "esnext.asynciterable",
+      "dom"
+    ],
+    // "strictNullChecks": true,
+    // "strictFunctionTypes": true,
+    // "noImplicitThis": true,
+    "resolveJsonModule": true, //enablg e importing json files in .ts files
+    "esModuleInterop": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noImplicitReturns": true,
+    // "skipLibCheck": true,
+    // "declaration": false,
+    // "noFallthroughCasesInSwitch": true,
+    // "composite": false,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./*"
+      ],
+      "@/*": [
+        "./*"
+      ]
+    },
+    "types": [
+      "@types/crypto-js",
+      "@types/node",
+      "@nuxt/types",
+      "@types/vue",
+      "@types/lodash",
+      "vue/types",
+      // "vuetify/types", 
+      // "@types/node-sass",
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
