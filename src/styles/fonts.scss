@@ -1,0 +1,37 @@
+body {
+   @font-face {
+      font-family: "brown";
+      src: url("../static/fonts/Brown/Brown-Light.woff2") format("woff2");
+   }
+
+   @font-face {
+      font-family: "brownregular";
+      src: url("../static/fonts/Brown/Brown-Regular.woff2") format("woff2");
+   }
+
+   @font-face {
+      font-family: "brownbold";
+      src: url("../static/fonts/Brown/Brown-Bold.woff2") format("woff2");
+   }
+
+   @font-face {
+      font-family: "poppins";
+      src: url("../static/fonts/Poppins/Poppins-Light.otf") format("opentype");
+   }
+
+   @font-face {
+      font-family: "poppinsbold";
+      src: url("../static/fonts/Poppins/Poppins-Bold.otf") format("opentype");
+   }
+
+   @font-face {
+      font-family: "poppinsregular";
+      src: url("../static/fonts/Poppins/Poppins-Regular.otf") format("opentype");
+   }
+
+}
+
+
+
+
+// read https: //www.w3.org/TR/css-fonts-3/#font-face-loading

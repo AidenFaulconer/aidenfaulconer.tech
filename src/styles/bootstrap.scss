@@ -1,0 +1,3 @@
+//only import what we need from bootstrap to make style debugging easier and the total bundle size smaller with less bloat
+@import "../../node_modules/bootstrap/scss/bootstrap-grid.scss";
+@import "../../node_modules/bootstrap/scss/bootstrap-reboot.scss";
