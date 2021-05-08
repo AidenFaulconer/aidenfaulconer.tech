@@ -294,22 +294,30 @@ export const Models = ({
   }, [current]);
   //#endregion store
 
-  return (
-    <a.group
-      receiveShadow
-      castShadow
-      position={[0, 0, 1.25]}
-      scale={[0.5, 0.5, 0.5]}
-    >
-      <PreviewPlane
-        opacity={0}
-        scale={[2.25, 1.5, 1]}
-        position={[0, 3.2, 4]}
-        rotation={[deg2rad(180), 0, 0]} /** back */
-        x={x}
-        url={threejsContext.blogThemes.images[current]}
-      />
-      {threejsContext.blogThemes.images.map((url, i) => (
+  onst [current, setCurrent] = useState(0);
+  const [inspect, setInspect] = useState(-1);
+  useEffect(() => {
+    console.log(inspect);
+  }, [inspect]);
+
+  const colors = ["#823B3B", "#76EFA6", "#F4D1A4", "#666666"];
+
+  const mapObjects = useCallback(
+    () =>
+      // textureData.map((url, i) => (
+      //   <Model
+      //     color={colors[i]}
+      //     model={Cube}
+      //     url={url}
+      //     key={i}
+      //     position={i}
+      //     set={set}
+      //     x={x}
+      //     setCurrent={setCurrent}
+      //     setInspect={setInspect}
+      //   />
+      // )),
+      threejsContext.blogThemes.images.map((url, i) => (
         <Model
           color={colors[i]}
           model={Cube}
@@ -320,7 +328,41 @@ export const Models = ({
           x={x}
           setCurrent={setCurrent}
         />
-      ))}
+      )),
+    []
+  );
+
+  const inspectObject = useCallback(
+    (index) => (
+      <Model
+        color={colors[index]}
+        model={Cube}
+        url={textureData[index]}
+        key={index}
+        position={index}
+        set={set}
+        x={x}
+        setCurrent={setCurrent}
+        setInspect={setInspect}
+      />
+    ),
+    []
+  );
+
+  const handleState = useCallback(() => {
+    if (inspect >= 0) return inspectObject(inspect);
+    else return mapObjects();
+  }, [inspect]);
+
+
+  return (
+    <a.group
+      receiveShadow
+      castShadow
+      position={[0, 0, 1.25]}
+      scale={[0.5, 0.5, 0.5]}
+    >
+       {handleState()} 
     </a.group>
   );
 };

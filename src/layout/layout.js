@@ -9,10 +9,6 @@ import { Global, css } from "@emotion/core";
 import styled from "@emotion/styled";
 
 import { InlineIcon } from "@iconify/react";
-import chevronRight from "@iconify/icons-mdi/chevron-right";
-import githubLogo from "@iconify/icons-fa-brands/github-square";
-import linkedinLogo from "@iconify/icons-ion/logo-linkedin";
-import instagramLogo from "@iconify/icons-ri/instagram-fill";
 import { Helmet } from "react-helmet";
 import Navigation from "./navigation";
 import { logoCircular } from "../static/assets/svg/hardcoded-svgs";
@@ -46,7 +42,17 @@ import { Fab, useScrollTrigger, Zoom } from "@material-ui/core";
 
 export default React.memo(({ children, window }) => {
   //prettier-ignore
-  const {site:{siteMetadata:{title,description}}} = useStaticQuery(pageQuery);
+  const { site: { siteMetadata: { title, description } } } = useStaticQuery(
+    graphql`
+  query layoutQuery {
+    site {
+      siteMetadata {
+        title
+        description
+      }
+    }
+  }
+`);
 
   const scrollToTop = (event) => {
     const anchor = (event.target.ownerDocument || document).querySelector(
@@ -97,14 +103,3 @@ export default React.memo(({ children, window }) => {
     </>
   );
 });
-
-export const pageQuery = graphql`
-  query layoutQuery {
-    site {
-      siteMetadata {
-        title
-        description
-      }
-    }
-  }
-`;

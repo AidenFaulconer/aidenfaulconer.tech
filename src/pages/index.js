@@ -20,12 +20,14 @@ import Contact from "../components/portfolio/contact";
       */
 }
 const IndexPage = React.memo(
-  ({
-    //returned from pageQuery as props
-    data: {
-      allMarkdownRemark: { edges },
-    },
-  }) => {
+  (
+    {
+      //returned from pageQuery as props
+      // data: {
+      //   allMarkdownRemark: { edges },
+      // },
+    }
+  ) => {
     return (
       <Layout>
         <HeroHeader
@@ -51,21 +53,21 @@ const IndexPage = React.memo(
 export default IndexPage;
 
 //autorun at gatsby rebuild-cycle
-export const pageQuery = graphql`
-  query portfolioPageQuery {
-    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date] }) {
-      edges {
-        node {
-          id
-          excerpt(pruneLength: 250)
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            path
-            title
-            thumbnail_
-          }
-        }
-      }
-    }
-  }
-`;
+// export const pageQuery = graphql`
+//   query indexPageQuery {
+//     allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date] }) {
+//       edges {
+//         node {
+//           id
+//           excerpt(pruneLength: 250)
+//           frontmatter {
+//             date(formatString: "MMMM DD, YYYY")
+//             path
+//             title
+//             thumbnail_
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;

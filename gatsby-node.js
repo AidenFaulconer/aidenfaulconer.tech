@@ -1,54 +1,50 @@
 const path = require(`path`);
 
 //define custom graphql types used in cms
-exports.createSchemaCustomization = ({ actions }) => {
-  actions.createTypes(`
-    type Button {
-      text: String
-      link: String
-    }
+// exports.createSchemaCustomization = ({ actions }) => {
+//   actions.createTypes(`
+//     type Button {
+//       text: String
+//       link: String
+//     }
 
-    type List {
-      title: String
-      content: String
-    }
+//     type List {
+//       title: String
+//       content: String
+//     }
 
-    type Form {
-      provider: String
-      title: String
-      formid: Int
-      redirect: String
-      button: String
-    }
+//     type Form {
+//       provider: String
+//       title: String
+//       formid: Int
+//       redirect: String
+//       button: String
+//     }
 
-    type FAQ {
-      question: String
-      answer: String
-    }
+//     type FAQ {
+//       question: String
+//       answer: String
+//     }
 
-    type Theme {
-
-    }
-
-    type MarkdownRemarkFrontmatterSections @infer {
-      id: String
-      type: String
-      subheader: String
-      title: String
-      subtitle: String
-      background: String
-      content: String
-      variant: String
-      video: String
-      bulletpoints: [String]
-      secondarycontent: String
-      button: Button
-      list: [List]
-      form: Form
-      faqs: [FAQ]
-    }
-  `);
-};
+//     type MarkdownRemarkFrontmatterSections @infer {
+//       id: String
+//       type: String
+//       subheader: String
+//       title: String
+//       subtitle: String
+//       background: String
+//       content: String
+//       variant: String
+//       video: String
+//       bulletpoints: [String]
+//       secondarycontent: String
+//       button: Button
+//       list: [List]
+//       form: Form
+//       faqs: [FAQ]
+//     }
+//   `);
+// };
 
 //create blog pages, and regular pages
 exports.createPages = async ({ actions, graphql, reporter }) => {
@@ -66,10 +62,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           node {
             id
             html
-            fields {slug}
             frontmatter {
-              layout
-              slug
               catagory
               path
               title

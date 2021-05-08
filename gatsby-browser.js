@@ -1,5 +1,4 @@
 import "prismjs/themes/prism-okaidia.css";
-import "./src/styles/fonts.scss";
 import "./src/styles/bootstrap.scss";
 import "@fontsource/poppins"; //https://github.com/fontsource/fontsource/blob/main/packages/roboto/README.md
 

@@ -92,8 +92,8 @@ module.exports = {
     },
     //MDX is markdown format that also allows embedding jsx within the markdown itself
     //reference: https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/?=remark
-    //reference: https://mdxjs.com/
-    `gatsby-plugin-mdx`,
+    //reference: https://mdxjs.com/ (absoloutely broken plugin, not worth the pain)
+    // `gatsby-plugin-mdx`,
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {

@@ -5,10 +5,10 @@ import { Link, useStaticQuery, graphql } from "gatsby";
 import styled from "@emotion/styled";
 
 import { InlineIcon } from "@iconify/react";
-import chevronRight from "@iconify/icons-mdi/chevron-right";
-import githubLogo from "@iconify/icons-fa-brands/github-square";
-import linkedinLogo from "@iconify/icons-ion/logo-linkedin";
-import instagramLogo from "@iconify/icons-ri/instagram-fill";
+// import chevronRight from "@iconify/icons-mdi/chevron-right";
+// import githubLogo from "@iconify/icons-fa-brands/github-square";
+// import linkedinLogo from "@iconify/icons-ion/logo-linkedin";
+// import instagramLogo from "@iconify/icons-ri/instagram-fill";
 import {
   logoCircular,
   boxAndPyrimid,
