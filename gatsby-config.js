@@ -4,10 +4,50 @@
  * See: https://www.gatsbyjs.org/docs/gatsby-config/
  */
 
+
+// ========================================================================== //
+// Environment variables
+// ========================================================================== //
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+// ========================================================================== //
+// Bundle checks
+// ========================================================================== //
+const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE;
+
+
 module.exports = {
-  /* Your site config here */
-  siteMetadata: require("./site-meta-data.json"),
-  plugins: [
+    flags: {
+    PRESERVE_WEBPACK_CACHE: true,
+    GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
+    FAST_DEV: true,
+    DEV_SSR: false,
+    PARALLEL_SOURCING: true,
+    },
+    /* Your site config here */
+    siteMetadata: require("./site-meta-data.json"),
+    plugins: [
+      {
+        resolve: 'react-refresh',
+        options: {
+  
+        },
+      },
+      // have a custom plugin inject theme before this
+      // `gatsby-plugin-top-layout`,
+      {
+        resolve: 'gatsby-plugin-material-ui',
+        options: {
+          stylesProvider: {
+            injectFirst: true,
+          },
+        },
+      },
+    // ========================================================================== //
+    //     File system management
+    // ========================================================================== //
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -16,8 +56,17 @@ module.exports = {
         path: `${__dirname}/_data`,
       },
     },
+    // ========================================================================== //
+    // Netlify CMS
+    // ========================================================================== //
+    `gatsby-plugin-netlify-cms`,
+
+    // ========================================================================== //
+    //       Consume markdown from netlify
+    // ========================================================================== //
+    
+    //makes markdown consumable in graphql through gatsbys api
     {
-      //makes markdown consumable in graphql through gatsbys api
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
@@ -94,6 +143,9 @@ module.exports = {
     //reference: https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/?=remark
     //reference: https://mdxjs.com/ (absoloutely broken plugin, not worth the pain)
     // `gatsby-plugin-mdx`,
+// ========================================================================== //
+//     analytics
+
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
@@ -101,13 +153,7 @@ module.exports = {
         trackingId: "UA-164743872-1",
         head: true,
       },
-    },
-    {
-      resolve: `gatsby-plugin-preload-fonts`,
-      options: {
-        crossOrigin: `use-credentials`,
-      },
-    },
+    }, 
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -120,12 +166,39 @@ module.exports = {
         icon: "src/images/icon.png",
       },
     },
-    `gatsby-plugin-sass`,
-    `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-netlify-cms`,
+    // ========================================================================== //
+    //     Preload fonts for performance
+    // ========================================================================== //
+    {
+      resolve: 'gatsby-plugin-preload-fonts',
+      options: {
+        crossOrigin: 'use-credentials',
+      },
+    },
+    'gatsby-plugin-sass',
+    'gatsby-plugin-react-helmet',
     // siteURL is a must for sitemap generation
     // `gatsby-plugin-sitemap`,
+
+    // ========================================================================== //
+    //     Offline capabilities
+    // ========================================================================== //
     `gatsby-plugin-offline`,
     `gatsby-plugin-remove-trailing-slashes`, // remove pesky /'s at the end of routes ie: localhost/x/
-  ],
+    // ========================================================================== //
+    //     Debugging Webpack bundles
+    // ========================================================================== //
+    process.env.NODE_ENV === 'development' && {
+      resolve: 'gatsby-plugin-perf-budgets',
+      options: {},
+    },
+    process.env.NODE_ENV === 'development' && {
+      resolve: 'gatsby-plugin-webpack-bundle-analyser-v2',
+      options: {
+        analyzerMode: 'server',
+        analyzerPort: 8000,
+        openAnalyzer: true,
+      },
+    },
+  ].filter(Boolean),
 };

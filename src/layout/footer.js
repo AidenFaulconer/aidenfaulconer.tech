@@ -2,8 +2,6 @@ import React, { Component, useEffect, useState, useCallback } from "react";
 
 import { Link, useStaticQuery, graphql } from "gatsby";
 
-import styled from "@emotion/styled";
-
 import { InlineIcon } from "@iconify/react";
 // import chevronRight from "@iconify/icons-mdi/chevron-right";
 // import githubLogo from "@iconify/icons-fa-brands/github-square";
@@ -19,21 +17,19 @@ import { Btn, BtnPrimary } from "../components/buttons";
 
 import { Box, Container } from "@material-ui/core";
 import { render } from "react-three-fiber";
-import { pageQuery } from "./layout";
-import { useTheme } from "emotion-theming";
+import { pageQuery } from "./layout"; 
+ 
 
-const _Footer = styled.footer``;
-
-export const Footer = ({ children }) => {
+export default React.memo(({ children }) => {
   // const theme = useTheme();
   const pages = [
     { name: "portfolio", url: "./" },
     { name: "services", url: "./services" },
     { name: "blog", url: "./blog" },
   ];
-
+//table footer?
   return (
-    <_Footer className="footer row p-5 align-items-center">
+    <footer className="footer row p-5 align-items-center">
       {/* <div className="position-absolute bottom-0">
         2020 Aiden Faulconer. All Rights Reserved
       </div> */}
@@ -58,6 +54,6 @@ export const Footer = ({ children }) => {
         className="col col-3"
         dangerouslySetInnerHTML={{ __html: dataBoxAndCodeBox }}
       />
-    </_Footer>
+    </footer>
   );
-};
+});

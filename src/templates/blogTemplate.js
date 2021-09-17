@@ -1,9 +1,10 @@
 import React from "react";
 import Helmet from "react-helmet";
 import { graphql } from "gatsby";
-import styled from "@emotion/styled";
 import Layout from "../layout/layout";
 import Reccomendations from "./components/reccomendations";
+
+
 
 export default (props) => {
   const { site, markdownRemark } = props.data; // data.markdownRemark holds your post data

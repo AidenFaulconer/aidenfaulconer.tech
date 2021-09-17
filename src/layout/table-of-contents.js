@@ -1,8 +1,7 @@
 import React, { Component, useEffect, useState, useCallback } from "react";
 
 import { Link, useStaticQuery, graphql } from "gatsby";
-
-import styled from "@emotion/styled";
+ 
 
 import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
@@ -20,12 +19,20 @@ import StarBorder from "@material-ui/icons/StarBorder";
 import stickybits from "stickybits";
 import { Box, Container } from "@material-ui/core";
 import { render } from "react-three-fiber";
+ 
+const useStyles = makeStyles(theme => ({
+  threeWrapper: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    overflow: 'hidden',
+    top: '0px',
+    zIndex: 1,
+  },
+  post: {}
+}))
 
-const _TableOfContents = styled.nav`
-  margin-top: 300px;
-`;
-
-export const TableOfContents = ({ pageContents }) => {
+export default React.memo(({ pageContents }) => {
   const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
@@ -39,7 +46,7 @@ export const TableOfContents = ({ pageContents }) => {
   // https://www.npmjs.com/package/react-intersection-observer#polyfill
 
   return (
-    <_TableOfContents className="col-2 pl-5" id="sticky">
+    <nav className="col-2 pl-5" id="sticky">
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
@@ -67,6 +74,6 @@ export const TableOfContents = ({ pageContents }) => {
           </List>
         </Collapse>
       </List>
-    </_TableOfContents>
+    </nav>
   );
-};
+});

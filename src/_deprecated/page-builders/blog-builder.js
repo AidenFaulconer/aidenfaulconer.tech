@@ -1,5 +1,4 @@
 // import React, { useState, useEffect, useCallback, useRef } from "react";
-// import styled from "@emotion/styled";
 
 // import stickybits from "stickybits";
 // import { Icon, InlineIcon } from "@iconify/react";
@@ -12,7 +11,6 @@
 // import { StaticQuery, graphql, Link } from "gatsby";
 
 // import filterIcon from "@iconify/icons-mdi/filter-variant";
-// import { useTheme } from "emotion-theming";
 // import { Btn, BtnPrimary, BtnSecondary } from "../buttons";
 
 // import { blogGraphic } from "../../static/assets/svg/hardcoded-svgs.js";

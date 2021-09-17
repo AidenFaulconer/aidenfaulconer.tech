@@ -1,10 +1,13 @@
-import { connect } from "react-redux";
+import React from "react";
+import { Provider } from "react-redux";
+
 import {
   createStore,
   applyMiddleware,
   bindActionCreators,
   combineReducers,
 } from "redux";
+
 import THEME_DEFINITIONS from "./theme";
 import { reducers } from "./reducers";
 import { boundActions } from "./actions";
@@ -69,5 +72,12 @@ const state = {
 };
 //#endregion initial state
 
-//** method to initialize store */
-export const _createStore = () => createStore(reducers, state);
+//#region create a store and provider for react application
+export const putStoreInContext = ({ element }) => {
+  // Instantiating store in `wrapRootElement` handler ensures:
+  //  - there is fresh store for each SSR page
+  //  - it will be called only once in browser, when React mounts
+  const store = createStore(reducers, state);
+  return <Provider store={store}>{element}</Provider>;
+};
+//#endregion create a store and provider for react

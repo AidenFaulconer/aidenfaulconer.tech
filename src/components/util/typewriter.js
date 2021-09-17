@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { StaticQuery, graphql, Link } from "gatsby";
-import styled from "@emotion/styled";
+import {makeStyles} from "@material-ui/core"
 
-const TypeWriter = styled.div`
-  width: 100%;
-  margin: auto;
-  text-align: center;
-  line-height: 110%;
-  position: relative;
-
-  & span {
-    border-right: 0.08em solid;
-    padding-right: 0.15em;
-    animation: caret 1s steps(1) infinite;
-    -webkit-animation: caret 1s steps(1) infinite;
-  }
-
-  @keyframes caret {
-    50% {
-      border-color: transparent;
+const useStyles = makeStyles(theme=>({
+typewriter: {
+    width: '100%',
+  margin: 'auto',
+  textAlign: 'center',
+  lineHeight: '110%',
+  position: 'relative',
+  "& span": {
+    borderRight: '0.08em solid',
+    paddingRight: '0.15em',
+    animation: 'caret 1s steps(1) infinite',
+  },
+  "@keyframes caret": {
+    "50%": {
+      "borderColor": 'transparent',
     }
-  }
-`;
+  }},
+}));
 
 export default ({ text }) => {
+  const classes = useStyles();
   // type one text in the typwriter
   const [showText, setShowText] = useState("Ello mate");
+  
   // keeps calling itself until the text is finished
   const typeWriter = (inputText, i, fnCallback) => {
     if (i < inputText.length) {
@@ -41,7 +41,7 @@ export default ({ text }) => {
       setTimeout(fnCallback, 200);
     } // call callback after timeout recursivly (HOW FAST IT TYPES)
   };
-  const StartTextAnimation = i => {
+  const StartTextAnimation = (i) => {
     // start a typewriter animation for a text in the text array
     // check if text[i] exists
     if (typeof text[i] === "undefined") {
@@ -67,8 +67,8 @@ export default ({ text }) => {
   }, []); // stop when text isnt changed
 
   return (
-    <TypeWriter>
+    <div className={classes.typewriter}>
       <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: showText }} />
-    </TypeWriter>
+    </div>
   ); // text modified in funciton
 };

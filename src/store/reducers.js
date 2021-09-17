@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+
 //#region reducers **map the actions by the handler associated with them**
 export const reducers = (state = {}, action) => {
   switch (action.type) {
@@ -19,5 +20,5 @@ export const reducers = (state = {}, action) => {
   }
 };
 
-export const rootreducer = combineReducers({ reducers });
+export default combineReducers({ reducers });
 //#endregion reducers

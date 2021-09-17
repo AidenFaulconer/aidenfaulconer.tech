@@ -1,8 +1,8 @@
 import { bindActionCreators } from "redux";
 import THEME_DEFINITIONS from "./theme";
 
-//**action creators */
-//all return an action object, these express intent of a dispatch
+//**action creators **/
+//all return an action object, these express intent of a dispatch, the type: is important because it will be evaluated in the reducer
 const _SET_THEME = (theme) => ({ type: SET_THEME, payload: theme });
 const _SET_THEME_STATE = (theme) => ({
   type: SET_THEME,
@@ -22,9 +22,8 @@ const _SET_USER_DATA = (userData) => ({
 });
 const _INCREMENT = (amnt) => ({ type: INCREMENT, payload: amnt });
 
-//wraps each action with a dispatch so we only need to call the actions such that it is
-//action() not dispatch(action())
-//import into components using the store, then boundActions.theMethodYouWishToUse
+//**wraps each action with a dispatch so we only need to call the actions such that it is **/
+//import this into components using the store, then boundActions.theMethodYouWishToUse
 export const boundActions = bindActionCreators(
   {
     SET_BLOG: _SET_THEME,
@@ -36,6 +35,6 @@ export const boundActions = bindActionCreators(
   // store.dispatch
 );
 
-//**call these like... */
-//import {_SET_THEME} from 8
+//**alternatively, you can import the methods direcly and call them like... */
+//import {_SET_THEME} from ...
 //... onClick={store.dispatch(_SET_THEME())}

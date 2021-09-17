@@ -1,340 +1,237 @@
-import React, { useContext, useEffect } from "react";
+
+
+import React, { useContext, useEffect } from "react"
 
 //ui
-import styled from "@emotion/styled";
-import { logoCircular } from "../static/assets/svg/hardcoded-svgs";
 import {
-  AppBar,
+  List,
   Slide,
-  Toolbar,
   Drawer,
+  AppBar,
   Button,
   Divider,
-  List,
+  Toolbar,
   ListItem,
   ListItemText,
   useScrollTrigger,
-} from "@material-ui/core";
-import { Link } from "gatsby";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { red } from "@material-ui/core/colors";
-import { useTheme } from "emotion-theming";
+  SwipeableDrawer,
+} from "@material-ui/core"
+import { Menu } from "@material-ui/icons"
 
-//theme switcher
-import { InlineIcon } from "@iconify/react";
-import nightIcon from "@iconify/icons-ic/baseline-bedtime";
-import dayIcon from "@iconify/icons-ic/baseline-wb-sunny";
-import { themeSwitchSvg } from "../static/assets/svg/hardcoded-svgs";
+import { Link } from "gatsby"
+import { red } from "@material-ui/core/colors"
+import {
+  customMenuIcon,
+  logoFull,
+  logoMedium,
+  logoSmall,
+  menuIcon,
+} from "../../static/hardcoded-svgs"
+import { makeStyles } from "@material-ui/core/styles"
 
-const _Navigation = styled.div`
-  //css transition styling
-  & .enter {
-    //hiding nav
-    margin-top: -125px;
-    ${(props) => props.theme.transitions.primary("margin-top")}
+
+import logoPng from "../../static/svgs/logo.png"
+import { GoldButton } from "../components/customButton"
+import { NavigationBlob } from "../components/navigationBlob"
+
+
+const useStyles = makeStyles(theme => ({
+  drawer: {
+    "& .MuiDrawer-paper": {
+      background: "rgba(80,105,54,.6)",
+    },
+  },
+  drawerList: {
+    padding: theme.spacing(5),
+    margin: theme.spacing(3),
+  },
+  pageLinks:{
+    fontSize: '.75rem',
+    marginLeft: '15px',
+    marginRight: '15px',
+    textDecoration: "none",
+    fontWeight: 'bolder',
+    color: theme.palette.text.primary,
+    fontFamily: "Cinzel Decorative",
+  },
+  appBar:{
+      background: theme.palette.background.default,
+      // background: `rgba(80, 105, 54, 1),rgba(145, 146, 175, 1)`,
+      // theme.palette.background.secondary,//change to "rgba(80,105,54,.6)" when app bar scrolled past initial place
+      padding: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+      zIndex: 30,//hidhest
+      boxShadow: "none",
+  },
+  logo:{
+    maxWidth: '90px',
   }
+}));
 
-  & .enter-done {
-    //showing nav
-    margin-top: 0px;
-    ${(props) => props.theme.transitions.primary("margin-top")}
-  }
+export default function Navigation({ theme, themeState, children, window }) {
+  const classes = useStyles();
+  const [drawerState, setDrawerState] = React.useState(false)
+  const iOS = /iPad|iPhone|iPod/.test(navigator?.userAgent);
 
-  //retract navbar
-  & .exit {
-    //hiding nav
-    margin-top: 0px;
-    ${(props) => props.theme.transitions.primary("margin-top")}
-  }
+  const toggleDrawer = React.useCallback(event => setDrawerState(
+    (drawerState) => !drawerState
+  ), [])
 
-  & .exit-done {
-    //showing nav
-    margin-top: -125px;
-    ${(props) => props.theme.transitions.primary("margin-top")}
-  }
-  //css transition styling
-
-  & .top {
-    background: transparent;
-    padding: 35px 10vw;
-    ${(props) => props.theme.transitions.primary("padding")};
-  }
-
-  & nav {
-    left: 0px;
-    top: 0px;
-    z-index: 100;
-    width: 100%;
-    position: fixed;
-    padding: 12.5px;
-    background: ${(props) => props.theme.colors.foreground};
-    ${(props) => props.theme.transitions.primary("padding")};
-    color: ${(props) =>
-      props.colorSwap
-        ? props.theme.colors.textPrimary
-        : props.theme.colors.textSecondary};
-
-    //switch on bg color
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center & .navigation-item {
-      margin: 12.5px 25px;
-    }
-
-    & * {
-      z-index: 5;
-      text-decoration: none;
-    }
-
-    & .site-links {
-      display: flex;
-      justify-content: space-evenly;
-      ${(props) => props.theme.breakpoints.md(`font-size: 1.15rem;`)}
-
-      & .link {
-        margin: 0px 25px;
-        font-family: "poppins";
-        font-weight: 300;
-        color: ${(props) => props.theme.colors.textSecondary};
-      }
-
-      & .active-link {
-        font-weight: 600;
-        color: ${(props) => props.theme.colors.primary};
-        &::after {
-          visibility: visible;
-          width: 100%;
-        }
-      }
-    }
-
-    & .branding {
-      ${(props) => props.theme.transitions.primary("all")};
-      display: block;
-
-      & .page-type {
-        left: 18%;
-        top: -0%;
-        display: inline-block;
-        font-family: "poppins-light";
-        font-size: ${(props) => props.theme.text.sizes.extraSmall};
-        color: ${(props) => props.theme.colors.textSecondary};
-      }
-
-      & svg {
-        display: inline-block;
-        height: 40px;
-        width: auto;
-        transform: skew(0deg);
-        fill: ${(props) => props.theme.colors.textSecondary};
-        ${(props) => props.theme.transitions.primary("all")};
-        ${(props) => props.theme.breakpoints.md(`height: 45px;`)}
-
-        &:hover {
-          transform: skew(-12.5deg);
-          ${(props) => props.theme.transitions.primary("all")};
-        }
-      }
-
-      & .path {
-        animation: dash 1s ease-in-out;
-        @keyframes dash {
-          0%,
-          50% {
-            transform: translate(-39%, 0%) skew(12deg);
-          }
-          to {
-            transform: translate(0%, 0%) skew(0deg);
-          }
-        }
-      }
-    }
-  }
-`;
-
-const _ThemeSwitch = styled.div`
-  & #switch {
-    margin: auto;
-    top: 0px;
-    background: white;
-    border-radius: 100%;
-    color: black;
-    padding: 5px;
-    width: 22.5px;
-    height: 22.5px;
-    z-index: 500;
-  }
-  & #switch-cube {
-    position: absolute;
-    top: 0px;
-    right: 6px;
-    margin: auto;
-  }
-
-  & label {
-    width: 100%;
-    position: relative;
-    height: 100%;
-    background: transparent;
-    margin: auto;
-
-    & .active {
-    }
-    & .inactive {
-    }
-  }
-
-  & input {
-    opacity: 0;
-  }
-`;
-
-export const Navigation = ({
-  theme,
-  themeState,
-  boundActions,
-  children,
-  window,
-}) => {
-  const [state, setState] = React.useState({
-    left: false,
-  });
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
-  const list = React.useCallback(
-    (anchor) => (
+  const menuIcon = React.useCallback(
+    color => (
       <div
-        role="presentation"
-        onClick={toggleDrawer(anchor, false)}
-        onKeyDown={toggleDrawer(anchor, false)}
-        className="p-5 m-5"
-      >
-        <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
+        style={{ fill: color }}
+        className="mx-auto"
+        dangerouslySetInnerHTML={{ __html: customMenuIcon }}
+      />
+    ), [])
+
+  const logo = React.useCallback(
+    color => ( 
+      <>
+        <img
+          src={logoPng}
+          loading="lazy"
+          className={classes.logo}
+           />
+      </>
     ),
     []
-  );
-
-  const drawerSwitch = React.useCallback(
-    () =>
-      ["left"].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-          <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-          >
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      )),
-    []
-  );
-
-  //prettier-ignore
-  const logo = React.useCallback(() => <div dangerouslySetInnerHTML={{ __html: logoCircular }} />,[]);
+  ) 
 
   const pages = [
-    { name: "portfolio", url: "/" },
-    { name: "blog", url: "/blog" },
-    { name: "booking", url: "/booking" },
-  ];
+    // { name: "Contact Us", url: "#contact" },
+    { name: "BOOK ONLINE", url: "#getaquote" },
+    { name: "SERVICES", url: "#servies" },
+    { name: "TESTIMONIES", url: "#ratings" },
+    { name: "PROJECTS", url: "#projects" },
+    { name: "BLOG", url: "#blogPosts" },
+  ]
+
+  const contactEmbedded = [
+    { name: "phone", url: "#phone", icon: "phone" },
+    { name: "mail", url: "#mail", icon: "mail" },
+  ]
+  
+  const search = [
+    { name: "search", url: "#search", icon: "search" },
+  ]
+
+  const boldCurrentPage = React.useCallback((name, i) => {
+    if (pages[i].url === document.location.hash) return <b>{name}</b>
+    else return name
+  }, [])
+
+  const navigateTo = page => {
+    if (page[0] === "#") document.getElementById(page)?.scrollIntoView()
+    // window.location.hash = page.url
+  }
+
   const pageNav = React.useCallback(
     () => (
-      <div className="flex-nowrap justify-content-center">
-        {pages.map((page) => (
-          <Link key={page.name} className="m-1" to={page.url}>
-            {page.name.toUpperCase()}
+      <div className="justify-content-evenly d-none d-md-block" style={{zIndex: 30}}>
+        {pages.map((page, i) => (
+          <Link
+            key={page.name}
+            to={page.url}
+            className={classes.pageLinks} 
+            onClick={event => navigateTo(page.url)}
+          >
+          {page.name === 'BOOK ONLINE' && (
+            <GoldButton>
+            {boldCurrentPage(page.name.toUpperCase(), i)}
+            </GoldButton>
+          ) || (
+            boldCurrentPage(page.name.toUpperCase(), i)
+          )}
           </Link>
         ))}
       </div>
-    ),
-    []
-  );
+    ),[])
 
-  const themeSwitch = React.useCallback(() => {
-    return (
-      <_ThemeSwitch>
-        <div
-          id="switch-cube"
-          dangerouslySetInnerHTML={{ __html: themeSwitchSvg }}
-        />
-        <label>
-          <input
-            type="checkbox"
-            checked={themeState === "dark"}
-            onChange={(e) => {
-              boundActions.SET_THEME_STATE(e.target.checked ? "dark" : "light");
-            }}
-          />
-          <InlineIcon
-            id="switch"
-            className={themeState !== "dark" ? "active" : "inactive"}
-            icon={themeState !== "dark" ? dayIcon : nightIcon}
-          />
-        </label>
-      </_ThemeSwitch>
-    );
-  }, []);
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+    disableHysteresis: true,
+  })
 
-  const trigger = useScrollTrigger({ target: window ? window() : undefined });
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      <AppBar
-        position="sticky"
-        style={{
-          background: "transparent",
-          padding: "25px",
-          boxShadow: "none",
-        }}
+  //contains drawer for the menu
+  const drawerSwitch = React.useCallback(
+    () => (
+      <React.Fragment key="drawer">
+        <Button className="p-0" onClick={e => toggleDrawer(e)}>
+          {menuIcon()}
+        </Button>
+        <SwipeableDrawer
+          // isableBackdropTransition={!iOS} 
+          onOpen={() => setDrawerState(true)}
+          onClose={() => setDrawerState(false)}
+          disableDiscovery={iOS}
+          anchor="right" open={drawerState}
+          className={classes.drawer}
+        >
+          {list()}
+        </SwipeableDrawer>
+      </React.Fragment>
+    ), [drawerState])
+
+  const list = React.useCallback(
+    () => (
+      <div
+        role="presentation"
+        onClick={e => toggleDrawer(e)}
+        onKeyDown={e => toggleDrawer(e)}
+        className={classes.drawerList}
       >
-        <Toolbar className="flex justify-content-between">
-          {logo()}
+        <List>
+          {pages.map(
+            (page, index) => (
+              <ListItem button key={page.name} onClick={e => {
+                navigateTo(page.url);
+                toggleDrawer();
+              }}>
+                <Link
+                  key={page.name} to={page.url} onClick={event => navigateTo(page.url)}
+                  className={classes.pageLinks}
+                >
+                  {boldCurrentPage(page.name, index)}
+                </Link>
+              </ListItem>
+            )
+          )}
+        </List>
+      </div>
+    ), [drawerState])
+
+  return (
+    <Slide appear={true} direction="down" in={!trigger}>
+      <AppBar
+        elevation={!trigger ? 6 : 0}
+        position="sticky"
+        className={classes.appBar}
+      >
+      
+        <Toolbar className="justify-content-between px-3">
+          {logo("#3F310E")}
+
           {pageNav()}
-          {themeSwitch()}
+
+          {/* {drawerSwitch()} */}
         </Toolbar>
+
+        <NavigationBlob/>
       </AppBar>
     </Slide>
-  );
-};
+  )
+}
 
-import { boundActions } from "../state/actions";
-import { connect } from "react-redux";
-export default connect(
-  ({ theme, themeState }) => ({ theme, themeState }),
-  boundActions
-)(Navigation);
+
+ 
+// );
+
+// import { boundActions } from "../store/actions";
+// import { connect } from "react-redux";
+// import { render } from "@react-three/fiber";
+// export default connect()(Navigation);
+// // ({ theme, themeState }) => ({ theme, themeState }),
+// // boundActions

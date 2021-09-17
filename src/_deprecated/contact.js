@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
-import styled from "@emotion/styled";
+import styled from "@emotion/styled"";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import { useTheme } from "emotion-theming";
@@ -23,19 +23,21 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
     contactName: "",
     contactSender: "",
     contactSubject: "",
-    contactMessage: ""
+    contactMessage: "",
   });
 
   const tests = {
     contactName: /[a-zA-Z]+/gim,
     contactSender: /[a-zA-Z0-9]+\@[a-zA-Z0-9]+\.com/gim,
     contactSubject: /[a-zA-Z]+/gim,
-    contactMessage: /.{20,}/gim
+    contactMessage: /.{20,}/gim,
   };
 
-  const encode = data => {
+  const encode = (data) => {
     return Object.keys(data)
-      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .map(
+        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+      )
       .join("&");
   };
 
@@ -58,17 +60,17 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
     fetch("/", {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       method: "POST",
-      body: encode({ "form-name": "contact", ...formData })
+      body: encode({ "form-name": "contact", ...formData }),
     })
-      .then(response => console.log("form submission successful"))
-      .catch(error => alert(error));
+      .then((response) => console.log("form submission successful"))
+      .catch((error) => alert(error));
 
     toggleFormSubmition(true);
 
     return false; //prevents default behaviour to redirect user
   };
 
-  const HandleChange = e =>
+  const HandleChange = (e) =>
     setFormData(
       Object.assign({}, formData, { [e.target.name]: e.target.value })
     );
@@ -103,7 +105,7 @@ export default ({ data, sectionName, odd, setCurrentSection }) => {
                 theme.colors.primary,
                 theme.colors.secondary,
                 theme.colors.textPrimary,
-                theme.colors.textSecondary
+                theme.colors.textSecondary,
               ]}
               numberOfPieces={50}
               gravity={0.17}
@@ -196,18 +198,18 @@ const ContactForm = styled.form`
       width: 100%;
       border: 2px solid red;
       text-align: center;
-      color: ${props => props.theme.colors.textSecondary};
+      color: ${(props) => props.theme.colors.textSecondary};
       font-weight: bolder;
-      border-radius: ${props => props.theme.corners.borderRadius2};
+      border-radius: ${(props) => props.theme.corners.borderRadius2};
       visibility: visible;
-      box-shadow: ${props => props.theme.shadows.primary};
+      box-shadow: ${(props) => props.theme.shadows.primary};
     }
   }
 
   & .incomplete-message {
     visibility: hidden;
     margin: 6.125px 0px;
-    font-size: ${props => props.theme.text.sizes.extraSmall};
+    font-size: ${(props) => props.theme.text.sizes.extraSmall};
   }
 
   & .confetti {
@@ -224,16 +226,16 @@ const ContactForm = styled.form`
     width: 75%;
     transform: translateZ(100);
     padding: 25px;
-    background: ${props => props.theme.colors.foreground};
-    color: ${props => props.theme.colors.primary};
+    background: ${(props) => props.theme.colors.foreground};
+    color: ${(props) => props.theme.colors.primary};
     right: 0px;
     text-align: center;
     font-weight: bolder;
-    box-shadow: ${props => props.theme.shadows.primary};
+    box-shadow: ${(props) => props.theme.shadows.primary};
     top: 12.5%;
     left: 12.5%;
     z-index: 3;
-    border-radius: ${props => props.theme.corners.borderRadius1};
+    border-radius: ${(props) => props.theme.corners.borderRadius1};
 
     & p {
       margin-top: 12.5%;
@@ -243,7 +245,7 @@ const ContactForm = styled.form`
       position: absolute;
       content: "";
       width: 150vw;
-      background: ${props => props.theme.colors.foreground};
+      background: ${(props) => props.theme.colors.foreground};
       opacity: 0.6;
       left: -100%;
       top: -25%;
@@ -252,7 +254,7 @@ const ContactForm = styled.form`
     }
   }
   & label {
-    color: ${props => props.theme.colors.textSecondary};
+    color: ${(props) => props.theme.colors.textSecondary};
     font-size: 1em;
     margin-right: 50px;
     margin-bottom: 6.25px;
@@ -261,20 +263,20 @@ const ContactForm = styled.form`
 
   & input {
     padding: 6.25px;
-    background: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.textPrimary};
+    background: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.textPrimary};
     border: none;
     width: 100%;
     margin-bottom: 12.5px;
-    border-radius: ${props => props.theme.corners.borderRadius1};
+    border-radius: ${(props) => props.theme.corners.borderRadius1};
   }
   & textarea {
     padding: 6.25px;
-    color: ${props => props.theme.colors.textPrimary};
+    color: ${(props) => props.theme.colors.textPrimary};
     width: 100%;
-    background: ${props => props.theme.colors.primary};
+    background: ${(props) => props.theme.colors.primary};
     border: none;
-    border-radius: ${props => props.theme.corners.borderRadius1};
+    border-radius: ${(props) => props.theme.corners.borderRadius1};
     min-height: 125px;
     margin-bottom: 25px;
   }
