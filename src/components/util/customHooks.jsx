@@ -2,8 +2,59 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-case-declarations */
 import React, {
-  useCallback, useContext, useDebugValue, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useReducer, useRef, useState,
+  useCallback,
+  useContext,
+  useDebugValue,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
 } from 'react';
+import { useCookies } from 'react-cookie';
+
+
+// ========================================================================== //
+// Valtio state hooks
+// ========================================================================== //
+// valtio comes pre-loaded with a few state hooks here are a few along with some modulations
+// const snap = useSnapshot(); **re-renders on only changes you are using**
+// const useLocalStorage = useLocalStorage('valtio', {}); **persists state to local storage**
+// const subscribe = useSubscribe(); **subscribes to changes in state**
+// subscribe() **actually unsubs from listening, can be passed callback on second param**
+
+// const state = proxy({what we want to destructure})
+// subscribe(state.whatever, ()=> handle changes to it)
+// subscribeKey(state, 'count', (v) => console.log('state.count has changed to', v))
+// const stop = watch((get) => {
+//   console.log('state has changed to', get(state)) // auto-subscribe on use
+// })
+
+// const state = proxy({ post: fetch(url).then((res) => res.json()) }) **you can await state existance!!**
+
+
+// ========================================================================== //
+// Misc
+// ========================================================================== //
+export const useClickOutside = (ref, callback) => {
+  const handleClick = (e) => {
+    if (ref.current && !ref.current.contains(e.target)) {
+      callback();
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  });
+};
+
+// ========================================================================== //
+// Local storage, cookies, session storage, global state (mobX)
+// ========================================================================== //
 
 // ========================================================================== //
 // Custom react hooks https://usehooks.com/
@@ -71,10 +122,12 @@ export const usePrevious = (value) => {
 
 // requires you forward a ref from the component this is declared in ie: React.forwardRef(({}),ref)
 export const useStaticMethods = (methods, ref) => {
-  useImperativeHandle(ref,
+  useImperativeHandle(
+    ref,
     // forwarded method in an object to be used as a ref with methods
     // callback method extended from this component so its accessible to parent, from the forwarded ref
-    () => ({ ...methods.forEach((method) => method) }));
+    () => ({ ...methods.forEach((method) => method) }),
+  );
 };
 
 export const useEffectUpdate = (callback) => {
@@ -89,25 +142,31 @@ export const useEffectUpdate = (callback) => {
 };
 export const useStateRef = (processNode) => {
   const [node, setNode] = useState(null);
-  const setRef = useCallback((newNode) => {
-    setNode(processNode(newNode));
-  }, [processNode]);
+  const setRef = useCallback(
+    (newNode) => {
+      setNode(processNode(newNode));
+    },
+    [processNode],
+  );
   return [node, setRef];
 };
 export const useRefWithCallback = (onMount, onUnmount) => {
   const nodeRef = useRef(null);
 
-  const setRef = useCallback((node) => {
-    if (nodeRef.current) {
-      onUnmount(nodeRef.current);
-    }
+  const setRef = useCallback(
+    (node) => {
+      if (nodeRef.current) {
+        onUnmount(nodeRef.current);
+      }
 
-    nodeRef.current = node;
+      nodeRef.current = node;
 
-    if (nodeRef.current) {
-      onMount(nodeRef.current);
-    }
-  }, [onMount, onUnmount]);
+      if (nodeRef.current) {
+        onMount(nodeRef.current);
+      }
+    },
+    [onMount, onUnmount],
+  );
 
   return setRef;
 };
@@ -244,8 +303,8 @@ export const useLocalStorage = (key, initialValue) => {
       return initialValue;
     }
   });
-    // Return a wrapped version of useState's setter function that ...
-    // ... persists the new value to localStorage.
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
   const setValue = (value) => {
     try {
       // Allow value to be a function so we have same API as useState
@@ -358,7 +417,7 @@ export const useMedia = (queries, values, defaultValue) => {
     // Return related value or defaultValue if none
     return typeof values[index] !== 'undefined' ? values[index] : defaultValue;
   };
-    // State and setter for matched value
+  // State and setter for matched value
   const [value, setValue] = useState(getValue);
   useEffect(
     () => {
@@ -379,7 +438,7 @@ export const useMedia = (queries, values, defaultValue) => {
 // Hook
 export const useKeyPress = (targetKey) => {
   // State for keeping track of whether key is pressed
-  const [keyPressed, setKeyPressed] = useState < Boolean > (false);
+  const [keyPressed, setKeyPressed] = useState < Boolean > false;
   // If pressed key is our target key then set to true
   function downHandler({ key }) {
     if (key === targetKey) {
@@ -392,7 +451,7 @@ export const useKeyPress = (targetKey) => {
       setKeyPressed(false);
     }
   };
-    // Add event listeners
+  // Add event listeners
   useEffect(() => {
     window.addEventListener('keydown', downHandler);
     window.addEventListener('keyup', upHandler);
@@ -405,9 +464,60 @@ export const useKeyPress = (targetKey) => {
   return keyPressed;
 };
 
+// Hook https://www.npmjs.com/package/react-cookie
+export const useCookie = () => {
+  // Use our useLocalStorage hook to persist state through a page refresh.
+  // Read the recipe for this hook to learn more: usehooks.com/useLocalStorage
+  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+  // If enabledState is defined use it, otherwise fallback to prefersDarkMode.
+  // This allows user to override OS level setting on our website.
+  // Fire off effect that add/removes dark mode class
+  useEffect(
+    () => {},
+    [cookies], // Only re-call effect when value changes
+  );
+  // Return enabled state and setter
+  return [cookies, setCookie, removeCookie];
+};
+
+// hook into mobx
+const useStores = () => React.useContext(MobXProviderContext);
+
+// https://mobx-react.js.org/recipes-migration
+
+// Hook gets desired data from hook props and returns it while observing it
+export const useStore = (props) => {
+  const data = {};
+  const mobXdata = useStores();
+  // eslint-disable-next-line no-return-assign
+  // assign props to store if not already present
+  props.map((key) => mobXdata[key] || (() => { data[key] = mobXdata[key]; })());
+
+  // return data you are operating on thats being observed simultaneously
+  return useObserver(() => (
+    props.map((key) => data[key])
+  ));
+};
+
 // ========================================================================== //
 // Theming and styling
 // ========================================================================== //
+
+export const useGyro = ({ listener }) => {
+  const handleOrientation = (e) => {
+    const rotate = e.gamma;
+    const tilt = e.beta;
+    const spin = e.alpha;
+    listener(Math.round(rotate), Math.round(tilt), Math.round(spin));
+  };
+  useEffect(() => {
+    if (window.DeviceOrientationEvent) {
+      window.ondeviceorientation = (e) => handleOrientation(e);
+    } else {
+      console.log('Device Orientation: Not supported');
+    }
+  });
+};
 
 // Compose our useMedia hook to detect dark mode preference.
 // The API for useMedia looks a bit weird, but that's because ...
@@ -485,7 +595,7 @@ const initialState = {
   // Will contain "future" state values if we undo (so we can redo)
   future: [],
 };
-  // Our reducer function to handle state changes based on action
+// Our reducer function to handle state changes based on action
 const reducer = (state, action) => {
   const { past, present, future } = state;
   switch (action.type) {
@@ -524,7 +634,7 @@ const reducer = (state, action) => {
     default:
   }
 };
-  // Hook
+// Hook
 export const useHistory = (initialPresent) => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
@@ -544,16 +654,21 @@ export const useHistory = (initialPresent) => {
       dispatch({ type: 'REDO' });
     }
   }, [canRedo, dispatch]);
-  const set = useCallback(
-    (newPresent) => dispatch({ type: 'SET', newPresent }),
-    [dispatch],
-  );
+  const set = useCallback((newPresent) => dispatch({ type: 'SET', newPresent }), [
+    dispatch,
+  ]);
   const clear = useCallback(() => dispatch({ type: 'CLEAR', initialPresent }), [
     dispatch,
   ]);
-    // If needed we could also return past and future state
+  // If needed we could also return past and future state
   return {
-    state: state.present, set, undo, redo, clear, canUndo, canRedo,
+    state: state.present,
+    set,
+    undo,
+    redo,
+    clear,
+    canUndo,
+    canRedo,
   };
 };
 
@@ -604,7 +719,7 @@ export const useScript = (src) => {
       const setStateFromEvent = (event) => {
         setStatus(event.type === 'load' ? 'ready' : 'error');
       };
-        // Add event listeners
+      // Add event listeners
       script.addEventListener('load', setStateFromEvent);
       script.addEventListener('error', setStateFromEvent);
       // Remove event listeners on cleanup
@@ -657,11 +772,18 @@ export const useAsync = (asyncFunction, immediate = false) => {
   }, [execute, immediate]);
   // alert(execute);
   return {
-    execute, status, value, error,
+    execute,
+    status,
+    value,
+    error,
   };
 };
 // Hook (use-require-auth.js)
-export const useRequireAuth = (authMethod, routerMethod, redirectUrl = '/signup') => {
+export const useRequireAuth = (
+  authMethod,
+  routerMethod,
+  redirectUrl = '/signup',
+) => {
   const auth = authMethod();
   const router = routerMethod();
   // If auth.user is false that means we're not

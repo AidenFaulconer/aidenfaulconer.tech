@@ -27,16 +27,17 @@ export const NavigationBlob = ({ flipped = false }) => {
   const hitboxRef = React.useRef(null);
   const svgRef = React.useRef(null);
 
-  const onlyWidth = (typeof window !== 'undefined') && useWindowWidth(); // responsive width of window
+  const onlyWidth = typeof window !== 'undefined' && useWindowWidth(); // responsive width of window
 
   const [mouseState, setMouseState] = React.useState(0);
   const [mouseHitboxOffset, setMouseHitboxOffset] = React.useState(0);
   const svgOffset = 960;
 
-  const mouse = (typeof window !== 'undefined') && useMouse(hitboxRef, {
-    enterDelay: 100,
-    leaveDelay: 100,
-  });
+  const mouse = typeof window !== 'undefined'
+    && useMouse(hitboxRef, {
+      enterDelay: 100,
+      leaveDelay: 100,
+    });
 
   React.useEffect(() => {
     // amount we shift by is mouse.x - the svg offset, add an offset thats a percent different between the svg offset and the window
@@ -73,8 +74,7 @@ export const NavigationBlob = ({ flipped = false }) => {
         </svg>
       )) || (
         <svg viewBox="0 0 1920 30" className={classes.svgBlob} ref={svgRef}>
-          {/* <path d={`M0 0.311035H1920C1920 0.311035 1335.51 20.0172 959.548 19.9998C583.938 19.9825 0 0.311035 0 0.311035Z`} fill=""/> */}
-          <path d="M0 0.311035H1920C1920 0.311035 1335.51 30.0172 959.548 29.9998C583.938 29.9825 0 0.311035 0 0.311035Z" />
+          <path d="M841.094 29.1602C882.14 29.6983 921.891 29.9981 959.548 29.9998C962.023 29.9999 964.507 29.9987 967 29.9963V26.552H1087V21.336H1227V17.1632H1397V12.9904H1487V9.86085H1577.32V7.77447H1717.32V3.60169H1851.92C1865.62 2.9594 1877.49 2.39263 1887.32 1.91837V0.311035H0C0 0.311035 16.9517 1.1724 46.9365 2.60169H90.7765V4.65616C104.975 5.31078 120.601 6.02122 137.48 6.77447H230.776V8.86085H321.094V11.9904H411.094V16.1632H581.094V20.336H721.094V25.552H841.094V29.1602Z" fill="" />
         </svg>
       )}
     </div>

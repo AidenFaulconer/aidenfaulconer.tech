@@ -20,7 +20,7 @@ import shadows from '@material-ui/core/styles/shadows';
 import TiltPhaseSix from './reactTilt';
 import { GoldButton, RegularButton } from './customButton';
 
-import quoteGraphic from '../../static/svgs/quoteGraphic.png';
+import quoteGraphic from '../../../static/assets/exploration.png';
 
 // ========================================================================== //
 // default card dimensions
@@ -55,10 +55,10 @@ const blogCardStyles = makeStyles((theme) => ({
 
     minHeight: ({ cardHeight }) => cardHeight || cardDimensions.height,
     minWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
-    maxHeight: ({ cardHeight }) => (cardHeight || '100%'),
+    maxHeight: ({ cardHeight }) => cardHeight || '100%',
     height: '100%',
     // minHeight: ({ cardHeight }) => (cardHeight || '100%'),
-    boxShadow: theme.shadows.brandBig,
+    boxShadow: theme.brandShadows.brandBig,
     '&:hover': {
       boxShadow: '0px 0px 0px transparent',
       marginLeft: -theme.spacing(1),
@@ -118,7 +118,7 @@ const customCardStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.brandBorderRadius2,
     textAlign: 'left',
     padding: theme.spacing(2),
-    boxShadow: theme.shadows.brand,
+    boxShadow: theme.brandShadows.brand,
     display: 'grid',
     color: theme.palette.background.button, // rating stars inherit this
     transition: theme.transitions.create('all', {
@@ -140,14 +140,11 @@ const customCardStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     border: theme.shape.brandBorder,
     '&:hover': {
-      boxShadow: theme.shadows.brand,
+      boxShadow: theme.brandShadows.brand,
     },
-    transition: theme.transitions.create(
-      ['all'],
-      {
-        duration: theme.transitions.duration.complex,
-      },
-    ),
+    transition: theme.transitions.create(['all'], {
+      duration: theme.transitions.duration.complex,
+    }),
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -186,12 +183,9 @@ const customCardStyles = makeStyles((theme) => ({
   cardContent: {
     marginTop: theme.spacing(3),
     position: 'relative',
-    transition: theme.transitions.create(
-      ['all'],
-      {
-        duration: theme.transitions.duration.complex,
-      },
-    ),
+    transition: theme.transitions.create(['all'], {
+      duration: theme.transitions.duration.complex,
+    }),
   },
   cardActions: {
     marginTop: `${theme.spacing(1)}px`,
@@ -200,12 +194,9 @@ const customCardStyles = makeStyles((theme) => ({
     display: 'inline-flex',
   },
   collapse: {
-    transition: theme.transitions.create(
-      ['all'],
-      {
-        duration: theme.transitions.duration.complex,
-      },
-    ),
+    transition: theme.transitions.create(['all'], {
+      duration: theme.transitions.duration.complex,
+    }),
   },
   cardTypography: {
     color: theme.palette.text.primary,
@@ -249,7 +240,7 @@ const genericStyles = makeStyles((theme) => ({
     display: 'block',
     position: 'relative',
     objectFit: 'none',
-    boxShadow: theme.shadows.brandBig,
+    boxShadow: theme.brandShadows.brandBig,
     cursor: 'pointer',
     '&:hover': {
       boxShadow: '0px 0px 0px transparent',
@@ -270,8 +261,8 @@ const genericStyles = makeStyles((theme) => ({
     pointerEvents: 'none',
     display: 'inline-block',
     position: 'relative',
-    // boxShadow: theme.shadows.brandInset,
-    filter: `drop-shadow(${theme.shadows.filterShadow})`,
+    // boxShadow: theme.brandShadows.brandInset,
+    filter: `drop-shadow(${theme.brandShadows.filterShadow})`,
   },
   cardIcon: {
     borderRadius: '100%',
@@ -281,13 +272,13 @@ const genericStyles = makeStyles((theme) => ({
     height: 44,
     background: theme.palette.background.main,
     color: theme.palette.text.secondary,
-    boxShadow: theme.shadows.brand,
+    boxShadow: theme.brandShadows.brand,
   },
 
   // carousel styling
   section: {
     // background: theme.palette.background.primary,
-    // boxShadow: theme.shadows.brand,
+    // boxShadow: theme.brandShadows.brand,
     borderRadius: theme.shape.brandBorderRadius,
     userSelect: 'none',
     '& .react-multi-carousel-list': {
@@ -722,9 +713,17 @@ export const BlogGrid = ({
       >
         {title}
       </Typography>
-      <Grid container spacing={6} justifyContent="flex-start" alignItems="center">
+      <Grid
+        container
+        spacing={6}
+        justifyContent="flex-start"
+        alignItems="center"
+      >
         {blogData.map((data, index) => {
-          const stripHtml = React.useCallback((string) => `${string.slice(0, 300).replace(/(<([^>]+)>)/gi, '')}...`, []);
+          const stripHtml = React.useCallback(
+            (string) => `${string.slice(0, 300).replace(/(<([^>]+)>)/gi, '')}...`,
+            [],
+          );
 
           // data is an edge when using graphql, data? is edge in the resulting data, and edge?.node is a blog post
           const parsedData = {
@@ -732,11 +731,15 @@ export const BlogGrid = ({
             avatar: data?.node?.author?.node?.avatar?.url || '',
             // used in blog card
             title: data?.node?.title || 'AJ`s gardening tips',
-            description: stripHtml(data?.node?.content) || 'A post about gardening, learn more by exploring this blog post!',
+            description:
+              stripHtml(data?.node?.content)
+              || 'A post about gardening, learn more by exploring this blog post!',
             postUrl: `blog${data?.node?.uri}`,
           };
 
-          { /* console.log(data, parsedData); */ }
+          {
+            /* console.log(data, parsedData); */
+          }
 
           const breakpointSizes = {
             xs: 12,

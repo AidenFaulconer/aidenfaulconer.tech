@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => {
     width: '100%',
     position: 'relative',
     background: theme.palette.background.button,
-    boxShadow: theme.shadows.brand,
+    boxShadow: theme.brandShadows.brand,
     borderRadius: theme.shape.brandBorderRadius,
     padding: theme.spacing(2),
   };
@@ -164,7 +164,7 @@ const useStyles = makeStyles((theme) => {
 
     inputArea: {
       border: theme.shape.brandBorder,
-      boxShadow: theme.shadows.brand,
+      boxShadow: theme.brandShadows.brand,
       marginTop: `${theme.spacing(1)}px !important`,
       marginBottom: `${theme.spacing(1)}px !important`,
       borderRadius: theme.shape.brandBorderRadius,
@@ -218,7 +218,10 @@ export const DropDownButton = (props) => {
         // variant="contained"
         native
         value={state[selectStateLabel]}
-        onChange={(event) => { handleChange(event); onChange(event); }}
+        onChange={(event) => {
+          handleChange(event);
+          onChange(event);
+        }}
         inputProps={{
           // name: selectStateLabel,
           id: 'dropdownbutton-native-select',
@@ -259,7 +262,13 @@ export const InputButton = (props) => {
 export const SliderInput = (props) => {
   const {
     onChange = () => {},
-    Icon, shadow, children, action, color = {}, label = 'default', defaultValue = 2,
+    Icon,
+    shadow,
+    children,
+    action,
+    color = {},
+    label = 'default',
+    defaultValue = 2,
   } = props;
   const classes = useStyles({ color });
   const [value, setValue] = React.useState(defaultValue);
@@ -275,7 +284,10 @@ export const SliderInput = (props) => {
         color="primary"
         className={classes.sliderInput}
         value={value}
-        onChange={(event, value) => { handleChange(event, value); onChange(value); }}
+        onChange={(event, value) => {
+          handleChange(event, value);
+          onChange(value);
+        }}
       />
     </div>
   );
@@ -312,7 +324,12 @@ export const CalenderInput = (props) => {
 // ========================================================================== //
 export const TextInput = (props) => {
   const {
-    Icon, shadow, children, action, color = 'primary', autosize = false,
+    Icon,
+    shadow,
+    children,
+    action,
+    color = 'primary',
+    autosize = false,
   } = props;
   const classes = useStyles({ color });
 
@@ -345,9 +362,18 @@ export const TextInput = (props) => {
 // google maps api
 // ========================================================================== //
 // enable geometry, places, and maps api on the key
-export const LocationInput = GoogleApiWrapper({ apiKey: process.env.NODE_ENV.GOOGLEAPIKEY, libraries: 'geometry' })((props) => {
+export const LocationInput = GoogleApiWrapper({
+  apiKey: process.env.NODE_ENV.GOOGLEAPIKEY,
+  libraries: 'geometry',
+})((props) => {
   const {
-    Icon, shadow, children, action, color = 'primary', autosize = false, google,
+    Icon,
+    shadow,
+    children,
+    action,
+    color = 'primary',
+    autosize = false,
+    google,
   } = props;
   const classes = useStyles({ color });
   // const onMarkerCLick = useCallback((event) => {}, []);
@@ -363,7 +389,6 @@ export const LocationInput = GoogleApiWrapper({ apiKey: process.env.NODE_ENV.GOO
     heading: 90,
     mapTypeId: google.maps.MapTypeId.terrain,
     globe: true,
-
   };
 
   // google={google}

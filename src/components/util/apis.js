@@ -25,22 +25,22 @@ export const commonHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Credentials': true,
   'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
+  'Access-Control-Allow-Headers':
+    'Content-Type, Authorization, Content-Length, X-Requested-With',
   'cache-control': 'no-cache',
   // 'sec-fetch-dest': 'empty',
   // 'sec-fetch-mode': 'cors',
   // 'sec-fetch-site': 'same-site',
   pragma: 'no-cache',
   usequerystring: 'true',
-
 };
-  // use in auth param in request
-  // export const authorizeApp = async () => `Bearer ${new google.auth.JWT({
-  //   email: process.env.NODE_ENV.GOOGLESERVICEACCOUNTAIDEN,
-  //   key: process.env.NODE_ENV.GOOGLESERVICEACCOUNTAIDENPRIVATEKEY,
-  //   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  // }).authorize()}`;
-  // use as headers: {Authorization: 'Bearer JWT'}
+// use in auth param in request
+// export const authorizeApp = async () => `Bearer ${new google.auth.JWT({
+//   email: process.env.NODE_ENV.GOOGLESERVICEACCOUNTAIDEN,
+//   key: process.env.NODE_ENV.GOOGLESERVICEACCOUNTAIDENPRIVATEKEY,
+//   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+// }).authorize()}`;
+// use as headers: {Authorization: 'Bearer JWT'}
 
 // google sheets post
 export const postToSpreadsheeets = async (data) => axios.post({

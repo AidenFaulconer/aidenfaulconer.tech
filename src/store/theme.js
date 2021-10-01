@@ -27,7 +27,7 @@
 //     )}
 
 const staticStlying = {
-  //webpack wont compile fonts properly unless each font imported with js
+  // webpack wont compile fonts properly unless each font imported with js
   fonts: `
     & h1 { font-size:80.24px;font-family:"poppins";font-weight: bolder;};
     & h2 { font-size:2.618em;font-family: "poppins": font-weight: 500;};
@@ -43,34 +43,32 @@ const staticStlying = {
     `,
   // order matters a lot when referencing them, from top to bottom we MUST go from SMALLEST to LARGEST or else they will not respond properly
   pointerInputs: {
-    mouse: styling =>
-      `@media (pointer: coarse) and (any-pointer: fine){${styling}}`,
-    touchscreen: styling =>
-      `@media (pointer: fine) and (any-pointer: coarse){${styling}}`,
-    other: styling => `@media (hover:none) and (any-hover: hover) {${styling}}`
+    mouse: (styling) => `@media (pointer: coarse) and (any-pointer: fine){${styling}}`,
+    touchscreen: (styling) => `@media (pointer: fine) and (any-pointer: coarse){${styling}}`,
+    other: (styling) => `@media (hover:none) and (any-hover: hover) {${styling}}`,
   },
   breakpoints: {
-    xl: styling => `@media (min-width: 1200px) {${styling}}`,
-    lg: styling => `@media (min-width: 992px)  {${styling}}`,
-    md: styling => `@media (min-width: 786px)  {${styling}}`,
-    sm: styling => `@media (min-width: 575px)  {${styling}}`,
-    xs: styling => `@media (max-width: 575px)  {${styling}}`
+    xl: (styling) => `@media (min-width: 1200px) {${styling}}`,
+    lg: (styling) => `@media (min-width: 992px)  {${styling}}`,
+    md: (styling) => `@media (min-width: 786px)  {${styling}}`,
+    sm: (styling) => `@media (min-width: 575px)  {${styling}}`,
+    xs: (styling) => `@media (max-width: 575px)  {${styling}}`,
   },
   transitions: {
-    long: property => `transition: ${property} 3.25s`,
-    primary: property => `transition: ${property} .25s`,
-    secondary: property => `transition: ${property} .5s`,
-    third: property => `
+    long: (property) => `transition: ${property} 3.25s`,
+    primary: (property) => `transition: ${property} .25s`,
+    secondary: (property) => `transition: ${property} .5s`,
+    third: (property) => `
       transition-delay: 0s;
       transition-duration: .6s;
-      transition-timing-function: cubic-bezier(.19,1,.22,1) .5s;`
+      transition-timing-function: cubic-bezier(.19,1,.22,1) .5s;`,
   },
   corners: {
-    borderRadius1: "5px",
-    borderRadius2: "10px",
-    borderRadius3: "20px",
-    borderRadius4: "50px",
-    borderRadius100: "100%"
+    borderRadius1: '5px',
+    borderRadius2: '10px',
+    borderRadius3: '20px',
+    borderRadius4: '50px',
+    borderRadius100: '100%',
   },
   // injected into global css style space
   externalStyleAdjustments: `
@@ -87,27 +85,27 @@ const staticStlying = {
   }`,
   text: {
     sizeScalings: {
-      xl: "15px",
-      lg: "20px",
-      md: "15px",
-      sm: "9px",
-      xs: "9px"
+      xl: '15px',
+      lg: '20px',
+      md: '15px',
+      sm: '9px',
+      xs: '9px',
     },
     sizes: {
-      //main
-      extraSmall: ".618em", // was .618em
-      small: ".818em", // was .618em
-      p: "15px",
-      h3: "1.451em", // 17px
-      h2: "2.618em",
-      h1: "3em",
-      title: "4.8em"
+      // main
+      extraSmall: '.618em', // was .618em
+      small: '.818em', // was .618em
+      p: '15px',
+      h3: '1.451em', // 17px
+      h2: '2.618em',
+      h1: '3em',
+      title: '4.8em',
     },
     details: {
-      lineheight1: "125%",
-      lineheight2: "115%",
-      lineheight3: "150%"
-    }
+      lineheight1: '125%',
+      lineheight2: '115%',
+      lineheight3: '150%',
+    },
   },
   mixins: {
     transform3dPrimary: `
@@ -119,7 +117,7 @@ const staticStlying = {
     brandoverlay: `
       background: #8EF2D2;
       mix-blend-mode: light;
-  `
+  `,
   },
   animations: {
     underline: `
@@ -154,7 +152,7 @@ const staticStlying = {
          0% {border-radius: 80% 60%;}
          50% {border-radius: 60% 80%;}
          100% {border-radius: 80% 60%;}
-      }`
+      }`,
   },
   test: `
      & *{
@@ -170,30 +168,30 @@ const staticStlying = {
     }`,
   test2: `& *{
   border: 1px solid red;
-  }`
+  }`,
 };
 
 export default {
   // #region DARK THEME
   dark: {
-    name: "dark",
+    name: 'dark',
     colors: {
-      foreground: "#0D0D0D",
-      black: "#F0F3FC",
-      secondary: "#000064",
-      primary: "#9ECAFA",
-      textSecondary: "#FFFFFF",
-      textPrimary: "#0D0D0D",
-      textThird: "#B2B2B2"
+      foreground: '#0D0D0D',
+      black: '#F0F3FC',
+      secondary: '#000064',
+      primary: '#9ECAFA',
+      textSecondary: '#FFFFFF',
+      textPrimary: '#0D0D0D',
+      textThird: '#B2B2B2',
     },
     borders: {
-      primary: "1px solid #5A00DB",
-      secondary: "1px solid #8EF2D2",
-      third: "1px solid #5A00DB"
+      primary: '1px solid #5A00DB',
+      secondary: '1px solid #8EF2D2',
+      third: '1px solid #5A00DB',
     },
     shadows: {
-      primary: "-5px 0px 50px rgba(255,255,255,.25)",
-      secondary: "2.5px 0px 12.5px rgba(255,255,255,0.75)"
+      primary: '-5px 0px 50px rgba(255,255,255,.25)',
+      secondary: '2.5px 0px 12.5px rgba(255,255,255,0.75)',
     },
     // #region static styling
     corners: staticStlying.corners,
@@ -231,30 +229,30 @@ export default {
       `)}
     }
     ${staticStlying.externalStyleAdjustments};
-  `
+  `,
   },
   // #endregion DARK THEME
 
   // #region LIGHT THEME
   light: {
-    name: "light",
+    name: 'light',
     colors: {
-      black: "#0D0D0D",
-      foreground: "#FFFFFF", //F0F3FC
-      primary: "#000064",
-      secondary: "#BAF7E4",
-      textPrimary: "#FFFFFF",
-      textSecondary: "#111111",
-      textThird: "#B2B2B2"
+      black: '#0D0D0D',
+      foreground: '#FFFFFF', // F0F3FC
+      primary: '#000064',
+      secondary: '#BAF7E4',
+      textPrimary: '#FFFFFF',
+      textSecondary: '#111111',
+      textThird: '#B2B2B2',
     },
     borders: {
-      primary: "1px solid #5A00DB",
-      secondary: "1px solid #8EF2D2",
-      third: "1px solid #5A00DB"
+      primary: '1px solid #5A00DB',
+      secondary: '1px solid #8EF2D2',
+      third: '1px solid #5A00DB',
     },
     shadows: {
-      primary: "-5px 0px 50px rgba(0,0,0,.25)",
-      secondary: "2.5px 0px 12.5px rgba(0,0,0,0.75)"
+      primary: '-5px 0px 50px rgba(0,0,0,.25)',
+      secondary: '2.5px 0px 12.5px rgba(0,0,0,0.75)',
     },
     // #region static styling
     corners: staticStlying.corners,
@@ -291,7 +289,7 @@ export default {
       `)}
     }
     ${staticStlying.externalStyleAdjustments};
-  `
-  }
+  `,
+  },
   // #endregion LIGHT THEME
 };

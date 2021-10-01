@@ -1,42 +1,40 @@
-import React from "react"; 
-import { graphql, Link } from "gatsby"; 
-import Layout from "../../layout/layout";
+import React from 'react';
+import { graphql, Link } from 'gatsby';
+import Layout from '../../layout/layout';
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     margin: '50px 0px',
     marginBottom: '200px',
     display: 'flex',
     flex: '2 2',
-  
-    "& .post": {
+
+    '& .post': {
       width: '100%',
       padding: '12.5px',
       margin: '25px',
       height: '100%',
-  
-      "&:hover": {
-      },
-  
+
+      '&:hover': {},
+
       '& img': {
         width: '100%',
         objectFit: 'fit',
         maxHeight: '300px',
         height: '100%',
       },
-  
+
       '& p': {
         textDecoration: 'none',
       },
-  
+
       '& h3': {
         marginTop: '25px',
         marginBottom: '12.5px',
         marginLeft: '0px',
         textDecoration: 'none',
       },
-    }
+    },
   },
   post: {
     marginTop: '7vw',
@@ -45,11 +43,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     order: '0',
 
-    "& .post-details": {
+    '& .post-details': {
       flex: 'auto',
       padding: '25px',
 
-      "& .post-title": {
+      '& .post-title': {
         textTransform: 'capitalcase',
         marginBottom: '6.125px',
         fontWeight: 'bolder',
@@ -59,13 +57,13 @@ const useStyles = makeStyles(theme => ({
         zIndex: '3',
       },
 
-      "& .post-meta": {
+      '& .post-meta': {
         textAlign: 'center',
-        fontFamily: "brown",
+        fontFamily: 'brown',
       },
     },
 
-    "& .post-thumbnail": {
+    '& .post-thumbnail': {
       position: 'absolute',
       order: '1',
       left: '0px',
@@ -80,7 +78,7 @@ const useStyles = makeStyles(theme => ({
       backgroundRepeat: 'no-repeat',
     },
   },
-}))
+}));
 
 export default ({ otherBlogs }) => {
   const classes = useStyles();
@@ -107,4 +105,3 @@ export default ({ otherBlogs }) => {
     </div>
   );
 };
- 

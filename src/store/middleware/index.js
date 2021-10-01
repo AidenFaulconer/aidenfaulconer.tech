@@ -1,4 +1,4 @@
-//https://read.reduxbook.com/markdown/part2/12-clientside-persistance.html
+// https://read.reduxbook.com/markdown/part2/12-clientside-persistance.html
 
 // const persistMiddleware = (store) => (next) => (action) => {
 //   const result = next(action);

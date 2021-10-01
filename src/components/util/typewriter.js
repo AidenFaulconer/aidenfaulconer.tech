@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { StaticQuery, graphql, Link } from "gatsby";
-import {makeStyles} from "@material-ui/core"
+import React, { useEffect, useState } from 'react';
+import { StaticQuery, graphql, Link } from 'gatsby';
+import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(theme=>({
-typewriter: {
+const useStyles = makeStyles((theme) => ({
+  typewriter: {
     width: '100%',
-  margin: 'auto',
-  textAlign: 'center',
-  lineHeight: '110%',
-  position: 'relative',
-  "& span": {
-    borderRight: '0.08em solid',
-    paddingRight: '0.15em',
-    animation: 'caret 1s steps(1) infinite',
+    margin: 'auto',
+    textAlign: 'center',
+    lineHeight: '110%',
+    position: 'relative',
+    '& span': {
+      borderRight: '0.08em solid',
+      paddingRight: '0.15em',
+      animation: 'caret 1s steps(1) infinite',
+    },
+    '@keyframes caret': {
+      '50%': {
+        borderColor: 'transparent',
+      },
+    },
   },
-  "@keyframes caret": {
-    "50%": {
-      "borderColor": 'transparent',
-    }
-  }},
 }));
 
 export default ({ text }) => {
   const classes = useStyles();
   // type one text in the typwriter
-  const [showText, setShowText] = useState("Ello mate");
-  
+  const [showText, setShowText] = useState('Ello mate');
+
   // keeps calling itself until the text is finished
   const typeWriter = (inputText, i, fnCallback) => {
     if (i < inputText.length) {
@@ -37,14 +38,14 @@ export default ({ text }) => {
         // wait for a while and call this function again for next character
         typeWriter(inputText, i + 1, fnCallback);
       }, 70);
-    } else if (typeof fnCallback === "function") {
+    } else if (typeof fnCallback === 'function') {
       setTimeout(fnCallback, 200);
     } // call callback after timeout recursivly (HOW FAST IT TYPES)
   };
   const StartTextAnimation = (i) => {
     // start a typewriter animation for a text in the text array
     // check if text[i] exists
-    if (typeof text[i] === "undefined") {
+    if (typeof text[i] === 'undefined') {
       setTimeout(() => {
         StartTextAnimation(0);
       }, 20000);
@@ -57,7 +58,7 @@ export default ({ text }) => {
     }
     // after callback (and whole text has been animated), start next text
     if (i >= text.length) {
-      console.warn("finished iteration");
+      console.warn('finished iteration');
     }
   };
 

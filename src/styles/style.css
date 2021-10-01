@@ -85,8 +85,7 @@ body {
   font-size: var(--fontSize-1);
   color: var(--color-text);
   overflow-x: hidden;
-  /* background: #E1F2D4; */
-  background: #c6e1b1;
+  background: #d1dce5;
 }
 /* background: linear-gradient(180deg, #E1F2D4 0%, #BBE19D 100%); */
 

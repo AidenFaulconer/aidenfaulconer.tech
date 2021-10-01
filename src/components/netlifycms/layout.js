@@ -20,7 +20,7 @@
 //     <Layout hideNav={true}>
 //       <SEO data={data.page.frontmatter.seo} />
 //       <SectionPageTemplate data={data.page} />
-//     </Layout>
+//    <>
 //   );
 // };
 

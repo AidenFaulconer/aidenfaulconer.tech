@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-throw-literal */
 /* eslint-disable no-plusplus */
-const path = require(`path`);
+const path = require('path');
 const chunk = require('lodash/chunk');
 
 const { graphql } = require('gatsby');
@@ -10,7 +10,7 @@ const {
   reporter,
 } = require('gatsby/node_modules/gatsby-cli/lib/reporter/reporter');
 const cheerio = require('cheerio');
- //  dd() will prettily dump to the terminal and kill the process
+//  dd() will prettily dump to the terminal and kill the process
 // const { dd } = require('dumper.js');
 
 /**
@@ -53,7 +53,6 @@ async function createBlogPostArchive({ edges, gatsbyUtilities }) {
       // createPage is an action passed to createPages
       // See https:www.gatsbyjs.com/docs/actions#createPage for more info
       await gatsbyUtilities.actions.createPage({
-
         data: await graphql(`query WpPosts {
           allWpPost(sort: { fields: [date], order: DESC }) {
             edges {
@@ -88,7 +87,7 @@ async function createBlogPostArchive({ edges, gatsbyUtilities }) {
 // ========================================================================== //
 // Queries
 // ========================================================================== //
-async function getPosts({ graphql, reporter,regex }) {
+async function getPosts({ graphql, reporter, regex }) {
   const graphqlResult = await graphql(/* GraphQL */ `
     query blogBuilderQuery {
       allMarkdownRemark(
@@ -122,7 +121,6 @@ async function getPosts({ graphql, reporter,regex }) {
   return graphqlResult.data.allWpPost.edges;
 }
 
-
 /**
  * exports.createPages is a built-in Gatsby Node API.
  * It's purpose is to allow you to create pages for your site! 💡
@@ -133,11 +131,11 @@ async function getPosts({ graphql, reporter,regex }) {
 // CREATE GATSBY PAGES
 // ========================================================================== //
 
-//create blog pages, and regular pages this function is destructuring the gatsby utils passed in
+// create blog pages, and regular pages this function is destructuring the gatsby utils passed in
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
-  //configure and set where and how content gets processed down
+  // configure and set where and how content gets processed down
   async function buildPageFromQuery(regex, template) {
     const result = await graphql(`
     query blogBuilderQuery {
@@ -163,11 +161,11 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
     // Handle errors
     if (result.errors) {
-      reporter.panicOnBuild(`Error while running GraphQL query.`);
+      reporter.panicOnBuild('Error while running GraphQL query.');
       return;
     }
 
-    //filter through data
+    // filter through data
     // Filter out the footer, navbar, and meetups so we don't create pages for those
     // const postOrPage = result.data.allMarkdownRemark.edges.filter((edge) => {
     //   let layout = edge.node.frontmatter.layout
@@ -197,29 +195,29 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
     const posts = result.data.allMarkdownRemark.edges;
     posts.forEach(async ({ node }, i) => {
-      //calculate which posts are previous and next
-      const {start,end} = getStartEnd(i, posts.length-1)
+      // calculate which posts are previous and next
+      const { start, end } = getStartEnd(i, posts.length - 1);
 
       await createPage({
         path: node.frontmatter.path,
         component: template,
         context: {
-          otherBlogs: [posts[start], posts[end]], //all other blogs of this catagory (get previous and current one)
+          otherBlogs: [posts[start], posts[end]], // all other blogs of this catagory (get previous and current one)
         }, // additional data can be passed via context
       });
     });
   }
 
-  //now put this all together here
+  // now put this all together here
 
   await buildPageFromQuery(
-    "b|Blog",
-    path.resolve(`src/templates/blogTemplate.js`)
+    'b|Blog',
+    path.resolve('src/templates/blogTemplate.jsx'),
   ); // build blog pages
 
   await buildPageFromQuery(
-    "P|project",
-    path.resolve(`src/templates/projectTemplate.js`)
+    'P|project',
+    path.resolve('src/templates/projectTemplate.jsx'),
   ); // build project pages
 };
 
@@ -236,8 +234,8 @@ const getStartEnd = (i, len) => {
     start = i - 1;
     end = i + 1;
   }
-  return {start,end}
-}
+  return { start, end };
+};
 
 // ========================================================================== //
 // TABLE OF CONTENTS
@@ -298,7 +296,8 @@ function groupHeadings(index, grouping, headings) {
         if (nextHeading.depth > prevHeading.depth) {
           prevHeading.items = prevHeading.items || [];
           return groupHeadings(index, prevHeading.items, headings);
-        } if (nextHeading.depth === prevHeading.depth) {
+        }
+        if (nextHeading.depth === prevHeading.depth) {
           grouping.push({ ...nextHeading });
           return groupHeadings(++index, grouping, headings);
         }
@@ -336,7 +335,7 @@ async function createTableOfContents(source, args, context, info) {
 }
 
 // ========================================================================== //
-// graphql schema customization 
+// graphql schema customization
 // ========================================================================== //
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes, createFieldExtension } = actions;
@@ -344,7 +343,6 @@ exports.createSchemaCustomization = ({ actions }) => {
     name: 'content',
     extend: extendContentField,
   });
- 
 
   const typeDefs = `
   #was implements Node 
@@ -396,8 +394,6 @@ exports.createSchemaCustomization = ({ actions }) => {
   createTypes(typeDefs);
 };
 
-
-
 exports.createResolvers = ({ createResolvers, schema }) => createResolvers({
   wpPost: {
     toc: {
@@ -420,26 +416,35 @@ exports.onCreateWebpackConfig = ({
   actions,
 }) => {
   actions.setWebpackConfig({
-    devtool: "eval-source-map",
+    devtool: 'eval-source-map',
     module: {
       rules: [
         {
-          test: /\.gltf$/,
-          use: [`url-loader`],
+          test: /react-hot-loader/,
+          use: [
+            loaders.js(),
+          ],
         },
-        {
-          test: /\.(woff|woff2|eot|ttf|otf)$/,
-          use: "file-loader",
-        },
-        {
-          test: /\.(png|jp(e*)g|svg|gif)$/,
-          use: "file-loader",
-        },
+        // {
+        //   test: /\.(woff|woff2|eot|ttf|otf|png|jp(e*)g|svg|gif|glb|gltf)$/i,
+        //   use: 'file-loader',
+        // //   options: {
+        // //     publicPath: './',
+        // //     name: '[name].[ext]'
+        // // },
+        // },
+        { test: /\.(glb|gltf)$/i, use: 'file-loader' },
+        // {
+        //   test: /\.(png|jpg|gif|svg)$/,
+        //   type: 'asset/resource',
+        // }, {
+        //   test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
+        //   type: 'asset/resource',
+        // },
       ],
     },
   });
 };
-
 
 // const CompressionPlugin = require('compression-webpack-plugin');
 // const webpack = require('webpack');

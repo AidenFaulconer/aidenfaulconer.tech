@@ -1,0 +1,974 @@
+// // ========================================================================== //
+// // JSS Theme
+// // ========================================================================== //
+
+// // This is where I define elements of my theme.
+// import {
+//   createMuiTheme,
+//   createStyles,
+//   createTheme,
+//   responsiveFontSizes,
+//   withStyles,
+// } from '@material-ui/core';
+
+// // ========================================================================== //
+// //   Common style
+// // ========================================================================== //
+// export const common = {
+//   boxShadow: theme.brandShadows.brand,
+//   color: theme.palette.background.default,
+//   borderRadius: theme.shape.brandBorderRadius,
+//   padding: theme.spacing(1),
+//   whiteSpace: 'nowrap',
+//   display: 'inline',
+//   textOverflow: 'ellipsis',
+// };
+
+// // ========================================================================== //
+// // 3d Flip
+// // ========================================================================== //
+// // use like this
+// // { /* <span><a href="#"></a></span> */ }
+// export const threeDFlip = {
+//   '& span': {
+//     position: 'relative',
+//     display: 'inline-flex',
+//     width: '180px',
+//     height: '55px',
+//     margin: '0 15px',
+//     perspective: '1000px',
+//   },
+//   '& span a': {
+//     fontSize: '19px',
+//     letterSpacing: '1px',
+//     transformStyle: 'preserve-3d',
+//     transform: 'translateZ(-25px)',
+//     transition: 'transform .25s',
+//     //   fontFamily: 'Montserrat', sans-serif,
+
+//   },
+//   '& span a:before:, span a:after': {
+//     position: 'absolute',
+//     content: 'BUTTON',
+//     height: '55px',
+//     width: '180px',
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     border: '5px solid black',
+//     boxSizing: 'border-box',
+//     borderRadius: '5px',
+//   },
+//   '& span a:before': {
+//     color: '#fff',
+//     background: '#000',
+//     transform: 'rotateY(0deg) translateZ(25px)',
+//   },
+//   '& span a:after': {
+//     color: '#000',
+//     transform: 'rotateX(90deg) translateZ(25px)',
+//   },
+//   '& span a:hover': {
+//     transform: 'translateZ(-25px) rotateX(-90deg)',
+//   },
+// };
+
+// // ========================================================================== //
+// // glitch style
+// // ========================================================================== //
+// export const glitchKeyframes = {
+
+//   //   @keyframes glitch {
+//   //     0% {
+//   //       clip-path: var(--slice-1),
+//   //       transform: translate(-20px, -10px),
+//   //     }
+//   //     10% {
+//   //       clip-path: var(--slice-3),
+//   //       transform: translate(10px, 10px),
+//   //     }
+//   //     20% {
+//   //       clip-path: var(--slice-1),
+//   //       transform: translate(-10px, 10px),
+//   //     }
+//   //     30% {
+//   //       clip-path: var(--slice-3),
+//   //       transform: translate(0px, 5px),
+//   //     }
+//   //     40% {
+//   //       clip-path: var(--slice-2),
+//   //       transform: translate(-5px, 0px),
+//   //     }
+//   //     50% {
+//   //       clip-path: var(--slice-3),
+//   //       transform: translate(5px, 0px),
+//   //     }
+//   //     60% {
+//   //       clip-path: var(--slice-4),
+//   //       transform: translate(5px, 10px),
+//   //     }
+//   //     70% {
+//   //       clip-path: var(--slice-2),
+//   //       transform: translate(-10px, 10px),
+//   //     }
+//   //     80% {
+//   //       clip-path: var(--slice-5),
+//   //       transform: translate(20px, -10px),
+//   //     }
+//   //     90% {
+//   //       clip-path: var(--slice-1),
+//   //       transform: translate(-10px, 0px),
+//   //     }
+//   //     100% {
+//   //       clip-path: var(--slice-1),
+//   //       transform: translate(0),
+//   //     }
+// };
+// export const glitchtHover = {
+//   // button, button::after {
+//   //     width: 380px,
+//   //     height: 86px,
+//   //     font-size: 36px,
+//   //     font-family: 'Bebas Neue', cursive,
+//   //     background: linear-gradient(45deg, transparent 5%, #FF013C 5%),
+//   //     border: 0,
+//   //     color: #fff,
+//   //     letter-spacing: 3px,
+//   //     line-height: 88px,
+//   //     box-shadow: 6px 0px 0px #00E6F6,
+//   //     outline: transparent,
+//   //     position: relative,
+//   //   }
+
+//   //   button::after {
+//   //     --slice-0: inset(50% 50% 50% 50%),
+//   //     --slice-1: inset(80% -6px 0 0),
+//   //     --slice-2: inset(50% -6px 30% 0),
+//   //     --slice-3: inset(10% -6px 85% 0),
+//   //     --slice-4: inset(40% -6px 43% 0),
+//   //     --slice-5: inset(80% -6px 5% 0),
+
+//   //     content: 'AVAILABLE NOW',
+//   //     display: block,
+//   //     position: absolute,
+//   //     top: 0,
+//   //     left: 0,
+//   //     right: 0,
+//   //     bottom: 0,
+//   //     background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #FF013C 5%),
+//   //     text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6,
+//   //     clip-path: var(--slice-0),
+//   //   }
+
+//   //   button:hover::after {
+//   //     animation: 1s glitch,
+//   //     animation-timing-function: steps(2, end),
+//   //   }
+
+// };
+
+// // ========================================================================== //
+// // pixelate  styles
+// // ========================================================================== //
+// export const pixelateKeyframes = {};
+// export const pixelateHover = {
+//   // :root {
+//   //     --color-red: #ec1840,
+//   //     --color-purple: #7a18ec,
+//   //     --color-white: #fff,
+//   //     --color-black-1: #111,
+//   //     --color-black-2: #222,
+//   //     --color-black-3: #444,
+//   //     --speed-normal: 0.5s,
+//   //     --speed-fast: 0.8s,
+//   //   }
+
+//   //   * {
+//   //     margin: 0,
+//   //     padding: 0,
+//   //     box-sizing: border-box,
+//   //     font-family: "Poppins", sans-serif,
+//   //   }
+
+//   //   body {
+//   //     display: flex,
+//   //     justify-content: center,
+//   //     align-items: center,
+//   //     flex-direction: column,
+//   //     min-height: 100vh,
+//   //     background: var(--color-black-1),
+//   //   }
+//   //   a {
+//   //     position: relative,
+//   //     width: 180px,
+//   //     height: 60px,
+//   //     margin: 20px,
+//   //     line-height: 60px,
+//   //     letter-spacing: 2px,
+//   //     text-decoration: none,
+//   //     text-transform: uppercase,
+//   //     text-align: center,
+//   //     color: var(--color-white),
+//   //     trasnition: var(--speed-normal),
+//   //     border: 1px solid var(--color-red),
+//   //     &:hover {
+//   //       border: 1px solid transparent,
+//   //       background: var(--color-red) url(https://i.postimg.cc/wBXGXbWN/pixel.png), // 360px x 1080px
+//   //       transition-delay: 0.8s,
+//   //       background-size: 180px,
+//   //       animation: animate var(--speed-fast) steps(8) forwards,
+//   //     }
+//   //     &:last-of-type {
+//   //       border: 1px solid var(--color-purple),
+//   //       &:hover {
+//   //         background: var(--color-purple) url(https://i.postimg.cc/FzBWFtKM/pixel2.png), // 360px x 1080px
+//   //       }
+//   //     }
+//   //   }
+//   //   @keyframes animate {
+//   //     0% {
+//   //       background-position-y: 0,
+//   //     }
+//   //     100% {
+//   //       background-position-y: -480px,
+//   //     }
+//   //   }
+
+// };
+
+// // ========================================================================== //
+// // Fancy moving border
+// // ========================================================================== //
+// // use like this...
+// // { /* <div class="button2">
+// //   <span></span>
+// //   <span></span>
+// //   <span></span>
+// //   <span></span>
+// //   HOVER ME
+// // </div> */ }
+// const movingBorderKeyframes = {
+// //     @keyframes animate1 {
+// //         0% {
+// //           left: -100%,
+// //         }
+// //         50%,
+// //         100% {
+// //           left: 100%,
+// //         }
+// //       }
+// // @keyframes animate2 {
+// //         0% {
+// //           top: -100%,
+// //         }
+// //         50%,
+// //         100% {
+// //           top: 100%,
+// //         }
+// //       }
+// // @keyframes animate3 {
+// //         0% {
+// //           right: -100%,
+// //           height: 3px,
+// //         }
+// //         50%,
+// //         100% {
+// //           height: 2px,
+// //           right: 100%,
+// //         }
+// //       }
+// };
+// const movingBorderHover = {
+
+//   // .button2 {
+//   //     position: relative,
+//   //     display: inline-block,
+//   //     padding: 30px 61px,
+//   //     border-radius: 4px,
+//   //     color: #03e9f4,
+//   //     text-decoration: none,
+//   //     text-transform: uppercase,
+//   //     overflow: hidden,
+//   //     margin: 25px,
+//   //     font-family: "Roboto", sans-serif,
+//   //     filter: hue-rotate(0deg),
+//   //     border: 2px solid #d2bdff,
+//   //     transition: all 0.1s linear,
+
+//   //     &:hover {
+//   //       border: 1px solid transparent,
+//   //       span {
+//   //         position: absolute,
+//   //         display: block,
+
+//   //         &:nth-child(1) {
+//   //           filter: hue-rotate(0deg),
+//   //           top: 0,
+//   //           left: 0,
+//   //           width: 100%,
+//   //           height: 3px,
+//   //           background: linear-gradient(90deg, transparent, #3a86ff),
+//   //           animation: animate1 1s linear infinite,
+//   //         }
+
+//   //         &:nth-child(2) {
+//   //           filter: hue-rotate(60deg),
+//   //           top: -100%,
+//   //           right: 0,
+//   //           width: 3px,
+//   //           height: 100%,
+//   //           background: linear-gradient(180deg, transparent, #3a86ff),
+//   //           animation: animate2 1s linear infinite,
+//   //           animation-delay: 0.25s,
+//   //         }
+
+//   //         &:nth-child(3) {
+//   //           filter: hue-rotate(120deg),
+//   //           bottom: 0,
+//   //           right: 0,
+//   //           width: 100%,
+
+//   //           background: linear-gradient(270deg, transparent, #3a86ff),
+//   //           animation: animate3 1s linear infinite,
+//   //           animation-delay: 0.5s,
+//   //         }
+
+//   //         &:nth-child(4) {
+//   //           filter: hue-rotate(300deg),
+//   //           bottom: -100%,
+//   //           left: 0,
+//   //           width: 3px,
+//   //           height: 100%,
+//   //           background: linear-gradient(360deg, transparent, #3a86ff),
+//   //           animation: animate4 1s linear infinite,
+//   //           animation-delay: 0.75s,
+//   //         }
+//   //         @keyframes animate4 {
+//   //           0% {
+//   //             bottom: -100%,
+//   //           }
+//   //           50%,
+//   //           100% {
+//   //             bottom: 100%,
+//   //           }
+//   //         }
+//   //       }
+//   //     }
+//   //   }
+
+// };
+
+// // ========================================================================== //
+// // Goo https://codepen.io/Unleashed-Design/pen/gOrEvMV
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Mouse scroll https://codepen.io/aledebarba/pen/wvGYYXX
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Inner overflows https://cssbuttons.app/buttons/43 && https://cssbuttons.app/
+// // ========================================================================== //
+// const innerOverflowKeyframes = {};
+// const innerOverflowHover = {
+//   // .btn41-43 {
+//   //     padding: 10px 25px,
+//   //     font-family: "Roboto", sans-serif,
+//   //     font-weight: 500,
+//   //     background: transparent,
+//   //     outline: none !important,
+//   //     cursor: pointer,
+//   //     transition: all 0.3s ease,
+//   //     position: relative,
+//   //     display: inline-block,
+//   //   }
+
+//   //   .btn-43 {
+//   //     border: 2px solid rgb(255, 255, 255),
+//   //     z-index: 1,
+//   //     color: white,
+//   //   }
+
+//   //   .btn-43:after {
+//   //     position: absolute,
+//   //     content: "",
+//   //     width: 100%,
+//   //     height: 0,
+//   //     top: 0,
+//   //     left: 0,
+//   //     z-index: -1,
+//   //     background: rgb(255, 255, 255),
+//   //     transition: all 0.3s ease,
+//   //   }
+
+//   //   .btn-43:hover {
+//   //     color: rgb(0, 0, 0),
+//   //   }
+
+//   //   .btn-43:hover:after {
+//   //     top: auto,
+//   //     bottom: 0,
+//   //     height: 100%,
+//   //   }
+// };
+
+// // ========================================================================== //
+// // Rainbow hover
+// // ========================================================================== //
+// const rainbowHoverKeyframes = {
+
+//   // @keyframes glowingbn5 {
+//   //     0% {
+//   //       background-position: 0 0,
+//   //     }
+//   //     50% {
+//   //       background-position: 400% 0,
+//   //     }
+//   //     100% {
+//   //       background-position: 0 0,
+//   //     }
+//   //   }
+// };
+// const rainbowHover = {
+//   // .bn5 {
+//   //     padding: 0.6em 2em,
+//   //     border: none,
+//   //     outline: none,
+//   //     color: rgb(255, 255, 255),
+//   //     background: #111,
+//   //     cursor: pointer,
+//   //     position: relative,
+//   //     z-index: 0,
+//   //     border-radius: 10px,
+//   //   }
+
+//   //   .bn5:before {
+//   //     content: "",
+//   //     background: linear-gradient(
+//   //       45deg,
+//   //       #ff0000,
+//   //       #ff7300,
+//   //       #fffb00,
+//   //       #48ff00,
+//   //       #00ffd5,
+//   //       #002bff,
+//   //       #7a00ff,
+//   //       #ff00c8,
+//   //       #ff0000
+//   //     ),
+//   //     position: absolute,
+//   //     top: -2px,
+//   //     left: -2px,
+//   //     background-size: 400%,
+//   //     z-index: -1,
+//   //     filter: blur(5px),
+//   //     width: calc(100% + 4px),
+//   //     height: calc(100% + 4px),
+//   //     animation: glowingbn5 20s linear infinite,
+//   //     opacity: 0,
+//   //     transition: opacity 0.3s ease-in-out,
+//   //     border-radius: 10px,
+//   //   }
+
+//   //   .bn5:active {
+//   //     color: #000,
+//   //   }
+
+//   //   .bn5:active:after {
+//   //     background: transparent,
+//   //   }
+
+//   //   .bn5:hover:before {
+//   //     opacity: 1,
+//   //   }
+
+//   //   .bn5:after {
+//   //     z-index: -1,
+//   //     content: "",
+//   //     position: absolute,
+//   //     width: 100%,
+//   //     height: 100%,
+//   //     background: #191919,
+//   //     left: 0,
+//   //     top: 0,
+//   //     border-radius: 10px,
+//   //   }
+// };
+
+// // ========================================================================== //
+// // 3d tilted blocks
+// // ========================================================================== //
+
+// // - buttons
+// // .social{
+// //     display: inline-block;
+// //     margin: 30px;
+// //     cursor: pointer;
+// //     a{
+// //       display: block;
+// //       background: $button-color;
+// //       padding: 20px;
+// //       position: relative;
+// //       transform: perspective(1000px) rotate(-30deg) skew(25deg) translate(0,0);
+// //       box-shadow: -20px 20px 10px $button-color-shadow;
+// //       transition: all 0.5s ease-in-out;
+
+// //       &::before{
+// //         dislpay: block;
+// //         content:"";
+// //         position: absolute;
+// //         width: 20px;
+// //         height: 100%;
+// //         left: -20px;
+// //         top: 10px;
+// //         background: $button-color-border;
+// //         transform: rotate(0deg) skewY(-45deg);
+// //       }
+
+// //       &::after{
+// //           dislpay: block;
+// //           content:"";
+// //           position: absolute;
+// //           bottom: -20px;
+// //           left: -10px;
+// //           height: 20px;
+// //           width: 100%;
+// //           transform: rotate(0deg) skewX(-45deg);
+// //           background: $button-color-border;
+// //           transform: rotate(45deg) scewY(-45deg);
+// //       }
+
+// //       &:hover{
+// //         transform: perspective(1000px) rotate(-30deg) skew(25deg) translate(20px, -20px);
+// //         box-shadow: -50px 50px 30px $button-color-shadow;
+// //       }
+
+// //       i{
+// //         color: $font-color;
+// //         font-size: $font-size;
+// //       }
+// //     }
+// //   }
+
+// // ========================================================================== //
+// // Social media popup https://codepen.io/Mahmood_bagheri/pen/YzqNqEb
+// // ========================================================================== //
+// export const socialMediaPopupKeyframes = {
+
+// };
+// export const socialMediaPopup = {
+// // button {
+// //     all: unset;
+// //     background: var(--white);
+// //     border: 2px solid var(--gray);
+// //     color: var(--gray);
+// //     padding: 15px 30px;
+// //     border-radius: var(--max);
+// //     cursor: pointer;
+// //     transition: 500ms all ease-in-out;
+// //     height: 40px;
+// //     position: relative;
+// //     overflow: hidden;
+// //     text-align: center;
+// //     width: 200px;
+
+//   //     &:hover {
+//   //       background: var(--blue);
+//   //       border-color: var(--blue);
+//   //       color: var(--blue);
+//   //     }
+
+//   //     &:hover .icons {
+//   //       &__icon {
+//   //         transform: translateY(-75%);
+//   //         transition: all 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55); /* easeInOutBack */
+
+//   //         &:nth-child(1) {
+//   //           transition-delay: 30ms;
+//   //         }
+//   //         &:nth-child(2) {
+//   //           transition-delay: 60ms;
+//   //         }
+//   //         &:nth-child(3) {
+//   //           transition-delay: 90ms;
+//   //         }
+//   //         &:nth-child(4) {
+//   //           transition-delay: 120ms;
+//   //         }
+//   //         &:nth-child(5) {
+//   //           transition-delay: 150ms;
+//   //         }
+//   //       }
+//   //     }
+//   //   }
+
+//   //   .icons {
+//   //     position: absolute;
+//   //     left: 0;
+//   //     right: 0;
+//   //     display: flex;
+//   //     width: 100%;
+//   //     justify-content: space-around;
+
+//   //     &__icon {
+//   //       background: var(--white);
+//   //       height: 25px;
+//   //       width: 25px;
+//   //       border-radius: var(--max);
+//   //       background: var(--white);
+//   //       padding: 6px;
+//   //       transform: translateY(60%);
+//   //       transition: all 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55); /* easeInOutBack */
+
+//   //       &:nth-child(1) {
+//   //         transition-delay: 20ms;
+//   //       }
+//   //       &:nth-child(2) {
+//   //         transition-delay: 40ms;
+//   //       }
+//   //       &:nth-child(3) {
+//   //         transition-delay: 60ms;
+//   //       }
+//   //       &:nth-child(4) {
+//   //         transition-delay: 80ms;
+//   //       }
+//   //       &:nth-child(5) {
+//   //         transition-delay: 100ms;
+//   //       }
+
+//   //       svg {
+//   //         stroke: var(--blue);
+//   //       }
+//   //     }
+//   //   }
+
+// };
+
+// // ========================================================================== //
+// // More buttons to try
+// //
+// // https://codepen.io/alphardex/pen/wvGqmRK
+// // https://codepen.io/liamj/pen/yrEXNx
+// // https://codepen.io/oliviale/pen/vPvvyr
+// // https://codepen.io/perry_nt/pen/YzXPGEZ
+// // https://codepen.io/tawfiqin/pen/OdgEJM
+// // https://codepen.io/yourpalnurav/pen/LqNmzL
+// // https://codepen.io/waterproofwebwizard/pen/ZEYmbOo
+// // https://codepen.io/perry_nt/pen/qBEpLYb
+// // https://codepen.io/Danil89/pen/MzrEdX
+// // https://codepen.io/akshaycodes/pen/XyNgzO
+// // https://codepen.io/emared/pen/RYgbaJ
+// // https://codepen.io/michellebarker/pen/vaYxMJ
+// // https://codepen.io/collinscode/pen/Ldqoez
+// // https://codepen.io/knyttneve/pen/rGLxbP
+// // https://codepen.io/DeeDee23/pen/dNEwem
+// // https://codepen.io/davidicus/pen/emgQKJ/
+// // https://codepen.io/andrewwierzba/pen/JorzzV/ SWIGGLE
+
+// // ========================================================================== //
+// // ========================================================================== //
+// // Circle to fill https://codepen.io/kathykato/pen/rZRaNe
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Particles https://codepen.io/nourabusoud/pen/ypZzMM
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Delux buttons https://codepen.io/yuhomyan/pen/LYNVVNO
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Metallic buttons https://codepen.io/aaroniker/pen/WNwbKqz
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Actionable
+// // ========================================================================== //
+// // use like this
+// // <button class="noselect"><span class='text'>Delete</span><span class="icon"><svg></svg></span></button>
+
+// export const actionableHover = {
+
+//   // .noselect {
+//   //     -webkit-touch-callout: none;
+//   //       -webkit-user-select: none;
+//   //        -khtml-user-select: none;
+//   //          -moz-user-select: none;
+//   //           -ms-user-select: none;
+//   //               user-select: none;
+//   //           -webkit-tap-highlight-color: transparent;
+//   //   }
+
+//   '& button': {
+//     width: '150px',
+//     height: '50px',
+//     cursor: 'pointer',
+//     display: 'flex',
+//     alignItems: 'center',
+//     border: 'none',
+//     borderRadius: '5px',
+//     boxShadow: '1px 1px 3px rgba(0,0,0,0.15)',
+//     background: '#e62222',
+//   },
+
+//   '& button, button span': {
+//     transition: '200ms',
+//   },
+
+//   '& button .text': {
+//     transform: 'translateX(35px)',
+//     color: 'white',
+//     fontWeight: 'bold',
+//   },
+
+//   '& button .icon': {
+//     position: 'absolute',
+//     borderLeft: '1px solid #c41b1b',
+//     transform: 'translateX(110px)',
+//     height: '40px',
+//     width: '40px',
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: ' center',
+//   },
+
+//   '& button svg': {
+//     width: '15px',
+//     fill: '#eee',
+//   },
+
+//   '& button:hover': {
+//     background: ' #ff3636',
+//   },
+
+//   '& button:hover .text': {
+//     color: 'transparent',
+//   },
+
+//   '& button:hover .icon': {
+//     width: '150px',
+//     borderLeft: 'none',
+//     transform: 'translateX(0)',
+//   },
+
+//   '& button:focus': {
+//     outline: 'none',
+//   },
+// };
+
+// // https://freefrontend.com/css-buttons/
+
+// // ========================================================================== //
+// // Hover arrow move https://codepen.io/dev_loop/pen/MWKYoGJ
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Slime https://codepen.io/chancesq/pen/LYpJoqB
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Pop box https://codepen.io/nouribram/pen/WNQzoOd
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Social media show https://codepen.io/alphardex/pen/abzgYvz
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // typical arrow effect https://codepen.io/grohit/pen/zYxMOjR
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Grid shift https://codepen.io/hexagoncircle/pen/wvBmvOG
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Chopped border edit https://codepen.io/erinesullivan/pen/gObozQo
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Liquid filled https://codepen.io/fliseno1k/pen/WNboLBy
+// // ========================================================================== //
+
+// // ========================================================================== //
+// // Video preview button https://codepen.io/milanraring/pen/QWwyLdp
+// // ========================================================================== //
+
+// // ========================================================================== //
+// //  Marquee
+// // ========================================================================== //
+// const marquee = {
+//   //     &-marquee {
+//   //         font-weight: 600;
+//   //         border: none;
+//   //         overflow: hidden;
+//   //         transition: 0.3s;
+
+//   //         &:hover {
+//   //           transform: scale(1.1);
+//   //         }
+
+//   //         span {
+//   //           display: block;
+//   //           padding: 0 20px;
+//   //           animation: move-left 2s linear infinite;
+
+//   //           &::after {
+//   //             position: absolute;
+//   //             content: attr(data-text);
+//   //             top: 0;
+//   //             left: 100%;
+//   //             display: flex;
+//   //             justify-content: center;
+//   //             align-items: center;
+//   //             width: 100%;
+//   //             height: 100%;
+//   //           }
+//   //         }
+//   //       }
+//   // }
+// };
+// // ========================================================================== //
+// // Jelly
+// // ========================================================================== //
+// const jellyKeyframes = {
+
+//   // @keyframes jelly {
+//   //     25% {
+//   //       transform: scale(0.9, 1.1);
+//   //     }
+
+//   //     50% {
+//   //       transform: scale(1.1, 0.9);
+//   //     }
+
+// //     75% {
+// //       transform: scale(0.95, 1.05);
+// //     }
+// //   }
+// };
+// const jellyKeyframesTwo = {
+
+// // @keyframes focuse {
+//   // 0% {
+//   //   transform: scale(0.8);
+//   //   opacity: 1; }
+//   // 75% {
+//   //   transform: scale(1.2);
+//   //   opacity: 0; }
+//   // 100% {
+//   //   transform: scale(1.2);
+//   //   opacity: 0; } }
+// };
+
+// // ========================================================================== //
+// // Distortion
+// // ========================================================================== //
+// export const distortion = {
+
+//   /* btn_background */
+//   // .effect04 {
+//   //     --uismLinkDisplay: var(--smLinkDisplay, inline-flex);
+//   //     display: var(--uismLinkDisplay);
+//   //     color: #000;
+//   //     outline: solid  2px #000;
+//   //     position: relative;
+//   //     transition-duration: 0.4s;
+//   //     overflow: hidden;
+//   //   }
+
+//   //   .effect04::before,
+//   //   .effect04 span{
+//   //       margin: 0 auto;
+//   //       transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+//   //       transition-duration: 0.4s;
+//   //   }
+
+//   //   /* 文字1を上に */
+//   //   .effect04:hover{
+
+//   //     background-color: #000;
+//   //   }
+
+//   //   /* HOVERしたら文字1を上に */
+//   //   .effect04:hover span{
+//   //     -webkit-transform: translateY(-400%) scale(-0.1,20);
+//   //             transform: translateY(-400%) scale(-0.1,20);
+//   //   }
+
+//   //   /*文字2*/
+//   //   .effect04::before{
+//   //     content: attr(data-sm-link-text);
+//   //       color: #FFF;
+//   //     position: absolute;
+//   //     left: 0;
+//   //     right: 0;
+//   //     margin: auto;
+//   //     -webkit-transform: translateY(500%) scale(-0.1,20);
+//   //             transform: translateY(500%) scale(-0.1,20);
+//   //   }
+
+//   //   /* HOVERしたら文字2を上に */
+//   //   .effect04:hover::before{
+//   //     letter-spacing: 0.05em;
+//   //     -webkit-transform: translateY(0) scale(1,1);
+//   //             transform: translateY(0) scale(1,1);
+//   //   }
+
+// };
+
+// // ========================================================================== //
+// //   blend mode hover
+// // ========================================================================== //
+// // https://codepen.io/lisilinhart/pen/OJRoRJe
+// export const createWobbleKeyframes = (offset, tag) => {
+//     const animation = [
+//       { percent: 0, opacity: 0, translate: 0 }, { percent: 16, opacity: 0, translate: 160 }, { percent: 28, opacity: 1, translate: 70 }, { percent: 44, opacity: 0, translate: 130 }, { percent: 59, opacity: 0, translate: 85 }, { percent: 73, opacity: 0, translate: 110 }, { percent: 88, opacity: 1, translate: 90 }, { percent: 100, opacity: 1, translate: 100 },
+//     ].map(({ percent, opacity, translate }) => {
+//       const animationObj = {};
+//       animationObj[`${percent}%`] = { opacity, transform: `translate(${translate * offset}px,${translate * offset}px,${translate * offset}px)` };
+//       return { animationObj };
+//     });
+//     // create object from string
+
+//     return { [`@keyframes translateWobble-${tag}`]: { ...animation.flat() } };
+//   };
+//   export const wobbleDodgeKeyframes = [
+//     createWobbleKeyframes(0.04, 'top'),
+//     createWobbleKeyframes(-0.06, 'bottom'),
+//   ];
+//   export const wobbleHover = {
+//     mixBlendMode: 'color-dodge',
+//     perspective: 500,
+//     transformStyle: 'preserve-3d',
+//     '&:before, &:after': {
+//       position: 'absolute',
+//       top: 0,
+//       left: 0,
+//       display: 'block',
+//       content: '',
+//       width: '100%',
+//       height: '100%',
+//       opacity: 0,
+//       mixBlendMode: 'inherit',
+//       borderRadius: _theme.shape.brandBorderRadius,
+//       transformStyle: 'preserve-3d',
+//       background: '#FFFFFF',
+//       transform: `translate3d(${spacing(1) * 0}, ${spacing(1) * 0}, ${spacing(1) * 0})`,
+//     },
+//     '&:hover:before': {
+//       backgroundColor: '#FF1731',
+//       animation: '$translateWobble-top 2.2s ease forwards',
+//     },
+//     '&:hover:after': {
+//       backgroundColor: '#5D00FF',
+//       animation: '$translateWobble-bottom 2.2s ease forwards',
+//     },
+//     '&:after': {
+//       backgroundColor: '#5D00FF',
+//     },
+//     '&:before': {
+//       backgroundColor: '#FF1731',
+//     },
+//   };
