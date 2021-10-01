@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     // background: `rgba(80, 105, 54, 1),rgba(145, 146, 175, 1)`,
     // theme.palette.background.secondary,//change to "rgba(80,105,54,.6)" when app bar scrolled past initial place
-    boxShadow: theme.brandShadows.brand,
+    boxShadow: theme.custom.shadows.brand,
     zIndex: 30, // hidhest
     height: 105,
     justifyContent: 'space-evenly',
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '90px',
   },
   menuIcon: {
-    maxHeight: 72,
+    maxHeight: 50,
     '& svg': {
       transition: theme.transitions.create(
         ['transform', 'box-shadow', 'background', 'margin', 'border'],
@@ -240,15 +240,10 @@ export default function Navigation({
   
   const drawerSwitch = React.useCallback(
     () => { 
-      const toggleTheme = () => {
-        //remember, read from snapshot MUTATE FROM SOURCE **in this case the source is valtioState**
-        valtioState.appContext.theme = valtioState.appContext.theme.palette.type === 'dark' ? lt : dt;
-        console.log(valtioState.appContext.theme.palette.type)
-      }
-      // console.log(toggleTheme)
+        
     return(
       <React.Fragment key="drawer">
-        <Button className="p-0" onClick={(e) => { toggleDrawer(e); toggleTheme(); }}>
+        <Button className="p-0" onClick={(e) => { toggleDrawer(e); valtioState.appContext.toggleTheme() }}>
           {menuIcon()}
         </Button>
         <SwipeableDrawer

@@ -6,7 +6,7 @@ import { LocationOn } from '@material-ui/icons';
 
 import {
   patternHover, patternHoverKeyframes, socialMediaPopup, socialMediaPopupKeyframes,
-} from '../../layout/theme';
+} from '../../store/theme';
 
 // ========================================================================== //
 // Button styles
@@ -25,13 +25,20 @@ const useStyles = makeStyles((theme) => {
     ...socialMediaPopupKeyframes,
     ...patternHoverKeyframes, // these can only be referenced in one spot in the app, either locally or globally **so here**
     root: {
-      background: theme.brandShadows.brand,
+      background: theme.custom.shadows.brand,
     },
     regularButton: {
       ...patternHover,
     },
     secondaryButton: {
       background: `${theme.palette.background.button}`,
+      border: `${theme.custom.borders.brandBorderSecondary}`,
+      ...patternHover,
+    },
+    thirdButton: {
+      background: `${theme.palette.background.default}`,
+      border: `${theme.custom.borders.brandBorderSecondary}`,
+      color: `${theme.palette.text.primary.main}`,
       ...patternHover,
     },
     dropDownButton: {
@@ -51,8 +58,8 @@ const useStyles = makeStyles((theme) => {
       display: 'inline',
       color: theme.palette.text.primary,
       background: theme.palette.background.default,
-      boxShadow: theme.brandShadows.brandInset,
-      borderRadius: theme.shape.brandBorderRadius,
+      boxShadow: theme.custom.shadows.brandInset,
+      borderRadius: theme.custom.borders.brandBorderRadius,
       padding: '7px',
     },
     inputButton: {
@@ -72,8 +79,8 @@ const useStyles = makeStyles((theme) => {
       // theme styles
       color: theme.palette.text.primary,
       background: theme.palette.background.default,
-      boxShadow: theme.brandShadows.brandInset,
-      borderRadius: theme.shape.brandBorderRadius,
+      boxShadow: theme.custom.shadows.brandInset,
+      borderRadius: theme.custom.borders.brandBorderRadius,
       padding: '7px',
     },
     socialMediaPopup: {
@@ -152,7 +159,27 @@ export const SocialMediaGroupButton = (props) => {
 };
 
 // ========================================================================== //
-// Button variant 1 (Gold)
+// Button variant 1 (secondary)
+// ========================================================================== //
+export const ThirdButton = (props) => {
+  const {
+    Icon, shadow, children, color = {}, size = 'large',
+  } = props;
+  const classes = useStyles(color);
+  return (
+    <Button
+      {...props}
+      className={classes.thirdButton}
+      size={size}
+      color="inherit"
+      variant="contained"
+    >
+      {children}
+    </Button>
+  );
+};
+// ========================================================================== //
+// Button variant 2 (light)
 // ========================================================================== //
 export const SecondaryButton = (props) => {
   const {

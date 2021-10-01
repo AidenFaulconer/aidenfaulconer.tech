@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => {
     '&:hover': {
       boxShadow: `0px 0px 0px ${theme.palette.background.default}`,
       background: theme.palette.background.main,
-      border: theme.shape.brandBorder,
+      border: theme.custom.borders.brandBorder,
       '& > *': {
         color: `${theme.palette.text.secondary} !important`,
       },
@@ -59,25 +59,25 @@ const useStyles = makeStyles((theme) => {
     width: '100%',
     position: 'relative',
     background: theme.palette.background.button,
-    boxShadow: theme.brandShadows.brand,
-    borderRadius: theme.shape.brandBorderRadius,
+    boxShadow: theme.custom.shadows.brand,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     padding: theme.spacing(2),
   };
 
   const inputLabel = {
     '& label': {
-      borderRadius: theme.shape.brandBorderRadius,
+      borderRadius: theme.custom.borders.brandBorderRadius,
       padding: theme.spacing(1),
       marginTop: -theme.spacing(6) * 0.5,
       marginLeft: -theme.spacing(2) * 0.89,
-      border: theme.shape.brandBorderSecondary,
+      border: theme.custom.borders.brandBorderSecondary,
       color: theme.palette.text.secondary,
     },
   };
 
   return {
     sliderLabel: {
-      borderRadius: theme.shape.brandBorderRadius,
+      borderRadius: theme.custom.borders.brandBorderRadius,
       padding: theme.spacing(1) * 0.5,
       paddingBottom: theme.spacing(3),
       marginTop: -theme.spacing(6) * 0.5,
@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => {
       },
       '& .MuiSelect-select.MuiSelect-select': {
         padding: theme.spacing(0),
-        borderRadius: theme.shape.brandBorderRadius,
+        borderRadius: theme.custom.borders.brandBorderRadius,
       },
     },
 
@@ -157,17 +157,17 @@ const useStyles = makeStyles((theme) => {
     formControl: {
       margin: theme.spacing(1),
       width: '100%',
-      borderRadius: theme.shape.brandBorderRadius,
+      borderRadius: theme.custom.borders.brandBorderRadius,
       background: theme.palette.background.button,
       color: theme.palette.text.primary,
     },
 
     inputArea: {
-      border: theme.shape.brandBorder,
-      boxShadow: theme.brandShadows.brand,
+      border: theme.custom.borders.brandBorder,
+      boxShadow: theme.custom.shadows.brand,
       marginTop: `${theme.spacing(1)}px !important`,
       marginBottom: `${theme.spacing(1)}px !important`,
-      borderRadius: theme.shape.brandBorderRadius,
+      borderRadius: theme.custom.borders.brandBorderRadius,
       padding: theme.spacing(2),
     },
   };

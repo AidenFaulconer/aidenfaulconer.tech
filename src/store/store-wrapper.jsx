@@ -1,6 +1,6 @@
 import React from 'react';
 import { proxyWithComputed } from 'valtio/utils';
-import { proxy } from 'valtio';
+import { proxy, useSnapshot } from 'valtio';
 import { createMuiTheme } from '@material-ui/core';
 // import { Provider } from 'react-redux';
 // import { PersistGate } from 'redux-persist/integration/react';
@@ -155,8 +155,6 @@ import { createMuiTheme } from '@material-ui/core';
 // // Create redux store
 // // ========================================================================== //
 
-// // **persist gate breaks SSR ** https://stackoverflow.com/questions/58238525/gatsby-not-generating-correct-static-html-files
-
 const itemsData = [
   {
     name: 'Climbing anchor',
@@ -206,6 +204,29 @@ const generateItems = (number, category) => new Array(number).fill().map((value,
 // allItems: [...generateItems(9, 'private'), ...generateItems(3, 'share'), ...generateItems(3, 'sam')],
 
 // ========================================================================== //
+// Handle theming  
+// ========================================================================== //
+import {
+  DARK_THEME, LIGHT_THEME, OVERRIDES, CUSTOM_THEME_PROPS, TYPOGRAPHY,
+} from './theme';
+
+
+  //create themes to be used in valtio
+  const createTheme = (theme) => {
+    const newTheme = Object.assign(createMuiTheme({ ...theme }), CUSTOM_THEME_PROPS, OVERRIDES);
+    // custom theme properties
+    // newTheme.custom = CUSTOM_THEME_PROPS;
+    
+    newTheme.typography.h1.fontWeight = 900;
+    // newTheme.typography = TYPOGRAPHY;
+    return newTheme;
+  };
+  
+  // To avoid 'this' pitfall, the recommended pattern is not to use this and prefer arrow function.
+  export const lt = createTheme(LIGHT_THEME);
+export const dt = createTheme(DARK_THEME);
+  
+// ========================================================================== //
 // App State
 // ========================================================================== //
 
@@ -216,10 +237,12 @@ export const valtioState = proxy(
   // ========================================================================== //
   {
     appContext: {
-      darkTheme: {},
-      lightTheme: {},
-      theme: null,
-      toggleTheme: () => {}, // functions injected to state at runtime
+      type: 'light',
+      toggleTheme: () => {
+        const type = valtioState.appContext.type === 'light' ? 'dark' : 'light';
+        valtioState.appContext.type = type;
+        return true;
+      },
     },
     threejsContext: {
       selected: {
@@ -254,45 +277,13 @@ export const valtioState = proxy(
   },
 );
 
-// ========================================================================== //
-// Handle theming from topmost level
-// ========================================================================== //
-import {
-  DARK_THEME, LIGHT_THEME, OVERRIDES, CUSTOM_THEME_PROPS, TYPOGRAPHY,
-} from './theme';
-
-
-  //create themes to be used in valtio
-  const createTheme = (theme) => {
-    const newTheme = Object.assign(createMuiTheme({ ...theme }), OVERRIDES);
-    // custom theme properties
-    newTheme.custom = CUSTOM_THEME_PROPS.shape;
-    newTheme.custom = CUSTOM_THEME_PROPS.brandShadows;
-    newTheme.typography.h1.fontWeight = 900;
-    // newTheme.typography = TYPOGRAPHY;
-    return newTheme;
-  };
-  
-  // To avoid 'this' pitfall, the recommended pattern is not to use this and prefer arrow function.
-  export const lt = createTheme(LIGHT_THEME);
-  export const dt = createTheme(DARK_THEME);
-valtioState.appContext = {
-  darkTheme: dt,
-  lightTheme: lt,
-  theme: lt,
-  toggleTheme: () => () => {
-    valtioState.theme = valtioState.theme.palette.type === 'light' ? valtioState.darkTheme : valtioState.lightTheme
-    return true;
-  },
-};
-
+ 
 const putStoreInContext = ({ element }) => {
   // Instantiating store in `wrapRootElement` handler ensures:
   //  - there is fresh store for each SSR page
   //  - it will be called only once in browser, when React mounts
   // const store = valtioState();
   // store.persistor = {};
-  const asdfsd = '';
     return (
       <>
         {element}

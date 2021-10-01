@@ -15,9 +15,9 @@
 // //   Common style
 // // ========================================================================== //
 // export const common = {
-//   boxShadow: theme.brandShadows.brand,
+//   boxShadow: theme.custom.shadows.brand,
 //   color: theme.palette.background.default,
-//   borderRadius: theme.shape.brandBorderRadius,
+//   borderRadius: theme.custom.borders.brandBorderRadius,
 //   padding: theme.spacing(1),
 //   whiteSpace: 'nowrap',
 //   display: 'inline',
@@ -952,7 +952,7 @@
 //       height: '100%',
 //       opacity: 0,
 //       mixBlendMode: 'inherit',
-//       borderRadius: _theme.shape.brandBorderRadius,
+//       borderRadius: _theme.custom.borders.brandBorderRadius,
 //       transformStyle: 'preserve-3d',
 //       background: '#FFFFFF',
 //       transform: `translate3d(${spacing(1) * 0}, ${spacing(1) * 0}, ${spacing(1) * 0})`,

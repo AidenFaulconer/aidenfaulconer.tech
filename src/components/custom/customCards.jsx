@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import * as React from "react"
+import { alpha, makeStyles } from "@material-ui/core/styles"
 import {
   Card,
   CardHeader,
@@ -11,16 +11,16 @@ import {
   Typography,
   Grid,
   Icon,
-} from '@material-ui/core';
-import Carousel from 'react-multi-carousel';
-import { Star } from '@material-ui/icons';
-import { navigate } from 'gatsby';
+} from "@material-ui/core"
+import Carousel from "react-multi-carousel"
+import { Star } from "@material-ui/icons"
+import { navigate } from "gatsby"
 
-import shadows from '@material-ui/core/styles/shadows';
-import TiltPhaseSix from './reactTilt';
-import { GoldButton, RegularButton } from './customButton';
+import shadows from "@material-ui/core/styles/shadows"
+import TiltPhaseSix from "./reactTilt"
+import { GoldButton, RegularButton } from "./customButton"
 
-import quoteGraphic from '../../../static/assets/exploration.png';
+import quoteGraphic from "../../../static/assets/exploration.png"
 
 // ========================================================================== //
 // default card dimensions
@@ -30,37 +30,37 @@ import quoteGraphic from '../../../static/assets/exploration.png';
 const cardDimensions = {
   width: 200,
   height: 200,
-};
+}
 const blogCardDimensions = {
   width: 200,
   height: 200,
-};
+}
 
 // ========================================================================== //
 // blog card styles
 // ========================================================================== //
-const blogCardStyles = makeStyles((theme) => ({
+const blogCardStyles = makeStyles(theme => ({
   // blog card styling
   featuredBlog: {
     background: theme.palette.background.hero,
   },
   blogCard: {
-    border: theme.shape.brandBorderSecondary,
-    background: 'rgba(255,255,255,.6)',
+    border: theme.custom.borders.brandBorderSecondary,
+    background: "rgba(255,255,255,.6)",
     // background: alpha(theme.palette.background.button, 0.15),
-    margin: 'auto',
-    textAlign: 'center',
-    borderRadius: theme.shape.brandBorderRadius,
+    margin: "auto",
+    textAlign: "center",
+    borderRadius: theme.custom.borders.brandBorderRadius,
     padding: theme.spacing(2),
 
     minHeight: ({ cardHeight }) => cardHeight || cardDimensions.height,
     minWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
-    maxHeight: ({ cardHeight }) => cardHeight || '100%',
-    height: '100%',
+    maxHeight: ({ cardHeight }) => cardHeight || "100%",
+    height: "100%",
     // minHeight: ({ cardHeight }) => (cardHeight || '100%'),
-    boxShadow: theme.brandShadows.brandBig,
-    '&:hover': {
-      boxShadow: '0px 0px 0px transparent',
+    boxShadow: theme.custom.shadows.brandBig,
+    "&:hover": {
+      boxShadow: "0px 0px 0px transparent",
       marginLeft: -theme.spacing(1),
       marginBottom: -theme.spacing(1),
     },
@@ -68,12 +68,12 @@ const blogCardStyles = makeStyles((theme) => ({
     marginLeft: -theme.spacing(0),
     marginBottom: -theme.spacing(0),
     transition: theme.transitions.create(
-      ['color', 'box-shadow', 'background', 'margin', 'border'],
-      { duration: '0.3s', easing: 'ease-in-out' },
+      ["color", "box-shadow", "background", "margin", "border"],
+      { duration: "0.3s", easing: "ease-in-out" }
     ),
 
     // responsivity
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       padding: theme.spacing(1),
     },
   },
@@ -82,14 +82,14 @@ const blogCardStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
-    width: '100%',
-    textAlign: 'left',
+    width: "100%",
+    textAlign: "left",
   },
   blogHeading: {
-    fontWeight: 'bolder',
+    fontWeight: "bolder",
     color: theme.palette.text.primary,
-    width: '100%',
-    textAlign: 'left',
+    width: "100%",
+    textAlign: "left",
   },
   avatar: {
     color: theme.palette.text.primary,
@@ -98,92 +98,98 @@ const blogCardStyles = makeStyles((theme) => ({
   blogCardActions: { padding: theme.spacing(2) },
   blogCardContent: {
     padding: theme.spacing(2),
-    width: '100%',
+    width: "100%",
   },
-}));
+}))
 
 // ========================================================================== //
 // card styles
 // ========================================================================== //
-const customCardStyles = makeStyles((theme) => ({
+const customCardStyles = makeStyles(theme => ({
   // custom card styling
   card: {
     minHeight: ({ cardHeight }) => cardHeight || cardDimensions.height,
     minWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
+    maxWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
     // maxHeight: ({ cardHeight }) => (cardHeight || '100%'),
     // minHeight: ({ cardHeight }) => (cardHeight || '100%'),
-    height: '100%',
+    height: "100%",
     margin: theme.spacing(2),
-    background: 'rgba(255,255,255,.75)',
-    borderRadius: theme.shape.brandBorderRadius2,
-    textAlign: 'left',
+
+    background: ({ alt }) => alt && theme.palette.primary.main || "none",
+    color:  ({ alt }) => alt && theme.palette.primary.main || theme.palette.secondary.main, // rating stars inherit this
+    
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    textAlign: "left",
     padding: theme.spacing(2),
-    boxShadow: theme.brandShadows.brand,
-    display: 'grid',
-    color: theme.palette.background.button, // rating stars inherit this
-    transition: theme.transitions.create('all', {
+    // boxShadow: theme.custom.shadows.brand,
+    display: "grid",
+    transition: theme.transitions.create("all", {
       duration: theme.transitions.duration.complex,
     }),
-    '& .MuiGrid-item': {
+    "& .MuiGrid-item": {
       margin: 0,
     },
   },
   // same as service card except on mobile it takes full width
   expandedCard: {
     order: 0,
-    position: 'relative',
-    margin: 'auto',
-    height: '100%',
-    borderRadius: theme.shape.brandBorderRadius,
-    boxShadow: 'none',
+    position: "relative",
+    margin: "auto",
+    height: "100%",
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    boxShadow: "none",
     background: theme.palette.background.primary,
     padding: theme.spacing(3),
-    border: theme.shape.brandBorder,
-    '&:hover': {
-      boxShadow: theme.brandShadows.brand,
+    border: theme.custom.borders.brandBorder,
+    "&:hover": {
+      boxShadow: theme.custom.shadows.brand,
     },
-    transition: theme.transitions.create(['all'], {
+    transition: theme.transitions.create(["all"], {
       duration: theme.transitions.duration.complex,
     }),
   },
   expand: {
-    transform: 'rotate(0deg)',
-    width: '100%',
-    margin: 'auto',
+    transform: "rotate(0deg)",
+    width: "100%",
+    margin: "auto",
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: "rotate(180deg)",
   },
   cardHeader: {
     fontWeight: 1000,
-    textTransform: 'uppercase',
-    color: theme.palette.text.primary,
-    width: '100%',
-    textAlign: 'left',
+    textTransform: "uppercase",
+
+    // color: theme.palette.text.primary,
+    color:  ({ alt }) => alt && theme.palette.secondary.main || theme.palette.primary.main, // rating stars inherit this
+
+    width: "100%",
+    textAlign: "left",
   },
   perspectiveModifier: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    minHeight: '200px',
-    position: 'relative',
-    marginBottom: '10px',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    minHeight: "200px",
+    position: "relative",
+    marginBottom: "10px",
+    alignItems: "center",
   },
   perspectiveModifierInner: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-    position: 'relative',
-    marginBottom: '10px',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    height: "100%",
+    width: "100%",
+    position: "relative",
+    marginBottom: "10px",
+    alignItems: "center",
   },
   cardContent: {
     marginTop: theme.spacing(3),
-    position: 'relative',
-    transition: theme.transitions.create(['all'], {
+    position: "relative",
+    transition: theme.transitions.create(["all"], {
       duration: theme.transitions.duration.complex,
     }),
   },
@@ -191,32 +197,32 @@ const customCardStyles = makeStyles((theme) => ({
     marginTop: `${theme.spacing(1)}px`,
     zIndex: 25,
     padding: 0,
-    display: 'inline-flex',
+    display: "inline-flex",
   },
   collapse: {
-    transition: theme.transitions.create(['all'], {
+    transition: theme.transitions.create(["all"], {
       duration: theme.transitions.duration.complex,
     }),
   },
   cardTypography: {
     color: theme.palette.text.primary,
-    position: 'relative',
-    height: '100%',
+    position: "relative",
+    height: "100%",
   },
-}));
+}))
 
 // ========================================================================== //
 // parent card components styles
 // ========================================================================== //
 
 // create jss styles to be used in the following component via const classes=useStyles(), used in top level components for card griding, ie carousel and blog grid for instance
-const genericStyles = makeStyles((theme) => ({
+const genericStyles = makeStyles(theme => ({
   // carousel styling
   carouselHeading: {
-    fontWeight: 'bolder',
+    fontWeight: "bolder",
     color: ({ color }) => color || theme.palette.text.secondary,
-    margin: 'auto',
-    width: '100%',
+    margin: "auto",
+    width: "100%",
     marginBottom: theme.spacing(3),
     marginTop: theme.spacing(7),
   },
@@ -225,118 +231,131 @@ const genericStyles = makeStyles((theme) => ({
 
   blogCardMedia: {
     // { minWidth: "150px",maxWidth: "fit-content", mixBlendMode: "multiply" }
-    minWidth: '80%',
-    maxWidth: '80%',
+    minWidth: "80%",
+    maxWidth: "80%",
 
-    width: ({ width }) => width - theme.spacing(4) || cardDimensions.width - theme.spacing(4),
-    minHeight: ({ height }) => height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
-    height: ({ height }) => height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
+    width: ({ width }) =>
+      width - theme.spacing(4) || cardDimensions.width - theme.spacing(4),
+    minHeight: ({ height }) =>
+      height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
+    height: ({ height }) =>
+      height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
 
-    margin: 'auto',
-    borderBottom: theme.shape.brandBorder,
-    borderRadius: theme.shape.brandBorderRadius,
+    margin: "auto",
+    borderBottom: theme.custom.borders.brandBorder,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     top: 0,
-    pointerEvents: 'none',
-    display: 'block',
-    position: 'relative',
-    objectFit: 'none',
-    boxShadow: theme.brandShadows.brandBig,
-    cursor: 'pointer',
-    '&:hover': {
-      boxShadow: '0px 0px 0px transparent',
+    pointerEvents: "none",
+    display: "block",
+    position: "relative",
+    objectFit: "none",
+    boxShadow: theme.custom.shadows.brandBig,
+    cursor: "pointer",
+    "&:hover": {
+      boxShadow: "0px 0px 0px transparent",
     },
   },
   cardImage: {
     // minHeight: ({ height }) => (height),
-    minWidth: ({ width }) => width - theme.spacing(4) || cardDimensions.width - theme.spacing(4),
-    width: ({ width }) => width - theme.spacing(4) || cardDimensions.width - theme.spacing(4),
-    minHeight: ({ height }) => height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
-    height: ({ height }) => height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
+    minWidth: ({ width }) =>
+      width - theme.spacing(4) || cardDimensions.width - theme.spacing(4),
+    width: ({ width }) =>
+      width - theme.spacing(4) || cardDimensions.width - theme.spacing(4),
+    minHeight: ({ height }) =>
+      height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
+    height: ({ height }) =>
+      height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
 
-    border: theme.shape.brandBorder,
+    border: theme.custom.borders.brandBorder,
     top: 0,
-    margin: 'auto',
-    borderBottom: theme.shape.brandBorder,
-    borderRadius: theme.shape.brandBorderRadius,
-    pointerEvents: 'none',
-    display: 'inline-block',
-    position: 'relative',
-    // boxShadow: theme.brandShadows.brandInset,
-    filter: `drop-shadow(${theme.brandShadows.filterShadow})`,
+    margin: "auto",
+    borderBottom: theme.custom.borders.brandBorder,
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    pointerEvents: "none",
+    display: "inline-block",
+    position: "relative",
+    // boxShadow: theme.custom.shadows.brandInset,
+    filter: `drop-shadow(${theme.custom.shadows.filterShadow})`,
   },
   cardIcon: {
-    borderRadius: '100%',
+    borderRadius: "100%",
     padding: theme.spacing(1) + 2,
     width: 44,
     opacity: 1,
     height: 44,
     background: theme.palette.background.main,
     color: theme.palette.text.secondary,
-    boxShadow: theme.brandShadows.brand,
+    boxShadow: theme.custom.shadows.brand,
   },
 
   // carousel styling
   section: {
     // background: theme.palette.background.primary,
-    // boxShadow: theme.brandShadows.brand,
-    borderRadius: theme.shape.brandBorderRadius,
-    userSelect: 'none',
-    '& .react-multi-carousel-list': {
-      height: '100%', // 400px
-      overflow: 'visible',
-      '& .react-multi-carousel-track': {
-        height: '100%',
-        '& li': {
-          width: '100% !Important',
+    // boxShadow: theme.custom.shadows.brand,
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    userSelect: "none",
+    "& .react-multi-carousel-list": {
+      height: "100%", // 400px
+      overflow: "visible",
+      // ========================================================================== //
+      //       Carousel styles
+      // ========================================================================== //
+      "& .react-multi-carousel-track": {
+        height: "100%",
+        display: "flex",
+        paddingTop: theme.spacing(3),
+        paddingBottom: theme.spacing(3),
+
+        "& li": {
+          width: "100% !Important",
+          listStyle: "hiragana",
+          listStylePosition: "inside",
           // width: ({ width }) => (width || cardDimensions.width),
         },
       },
-      '& .react-multiple-carousel__arrow': {
-        '&::after': {
-          content: '',
-          display: 'block',
-          width: '200%',
-          height: '200%',
-          position: 'absolute',
+      "& .react-multiple-carousel__arrow": {
+        "&::after": {
+          content: "",
+          display: "block",
+          width: "200%",
+          height: "200%",
+          position: "absolute",
           background: theme.palette.background.default,
         },
         // marginLeft: '-100px',
-        background: '#DCF15B',
-        border: theme.shape.brandBorderSecondary,
-        boxShadow:
-          '0px 0px 0px 7px rgb(221 238 209), 0px 0px 20px 10px rgb(132 151 48)', // arrow button
+        border: theme.custom.borders.brandBorderSecondary,
         marginTop: `-${theme.spacing(6) * 9.3}px`,
-        '&:hover': {
-          boxShadow: '0px 0px 0px transparent',
+        "&:hover": {
+          boxShadow: "0px 0px 0px transparent",
         },
         color: theme.palette.text.primary,
-        '&::before': { color: 'currentColor' },
+        "&::before": { color: "currentColor" },
       },
     },
   },
   blogSectionHeading: {
-    fontWeight: 'bolder',
+    fontWeight: "bolder",
     color: theme.palette.text.primary,
-    width: '100%',
+    width: "100%",
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(16),
   },
   blogGridSection: {
     paddingBottom: theme.spacing(12),
-    margin: 'auto',
+    margin: "auto",
     // overrides
-    '& * > .MuiGrid-item': {
-      margin: '0px',
+    "& * > .MuiGrid-item": {
+      margin: "0px",
     },
   },
-}));
+}))
 
 // ========================================================================== //
 // Route path util
 // ========================================================================== //
-export const routeToBlog = (path = '/') => {
-  navigate(path, {});
-};
+export const routeToBlog = (path = "/") => {
+  navigate(path, {})
+}
 
 // ========================================================================== //
 // gridify
@@ -350,7 +369,7 @@ export const Gridify = ({ children, breakpointSizes }) => (
       </Grid>
     ))}
   </>
-);
+)
 
 // add blog card variant
 const carouselProps = {
@@ -371,7 +390,7 @@ const carouselProps = {
     breakpoint: { max: 464, min: 0 },
     items: 1,
   },
-};
+}
 
 // ========================================================================== //
 // card carousel
@@ -385,42 +404,60 @@ export const CardCarousel = React.memo(
     cardHeight = cardDimensions.height,
     color,
     subtitle,
+    alt,
   }) => {
     const classes = genericStyles({
       width: cardWidth,
       height: cardHeight,
-      color: color || '',
-    });
+      color: color || "",
+      alt,
+    })
 
     // interaction
     const [expanded, setExpanded] = React.useState(
       Array.from(Array(carouselData.length).keys()).map(
-        (i) => /* i==0 ? true: */ false,
-      ),
-    );
+        i => /* i==0 ? true: */ false
+      )
+    )
     // set index in array to true and allow it to be toggled, while all other items remain false
-    const handleExpandClick = (index) => setExpanded(
-      [...Array(carouselData.length).keys()].map((i) => (i === index ? !expanded[i] : false)),
-    );
+    const handleExpandClick = index =>
+      setExpanded(
+        [...Array(carouselData.length).keys()].map(i =>
+          i === index ? !expanded[i] : false
+        )
+      )
 
-    const anyExpanded = React.useCallback((index) => expanded.some((e) => e), [
+    const anyExpanded = React.useCallback(index => expanded.some(e => e), [
       expanded,
-    ]);
+    ])
+
+    const carouselProperties = {
+      superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: carouselData.length,
+      },
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: carouselData.length,
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: carouselData.length,
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: carouselData.length,
+      },
+    }
 
     return (
       <section id={id} className={classes.section}>
-        <Typography
-          variant="h2"
-          gutterBottom
-          align="center"
-          className={classes.carouselHeading}
-        >
-          {title && title}
-        </Typography>
         {/* <div className="d-flex flex-wrap justify-content-center"> */}
-        <Carousel responsive={carouselProps}>
+        <Carousel responsive={carouselProperties}>
           {carouselData.map((data, index) => (
             <CustomCard
+              alt={alt}
               title={
                 subtitle === true ? (
                   data.icon ? (
@@ -431,7 +468,7 @@ export const CardCarousel = React.memo(
                     `${index + 1}.`
                   )
                 ) : (
-                  ''
+                  ""
                 )
               }
               subheader={data.title}
@@ -443,7 +480,7 @@ export const CardCarousel = React.memo(
               rating={data.rating}
               cardHeight={cardHeight}
               key={`${data.title}customCard${index}`}
-              cardContent={(
+              cardContent={
                 <>
                   <Typography
                     variant="body2"
@@ -455,49 +492,49 @@ export const CardCarousel = React.memo(
                     {data.description}
                   </Typography>
                 </>
-              )}
+              }
               cardHeader={<></>}
               /* some data into the carousel includes links to various content, here we handle the various content being passed into the custom cards */
-              cardActions={(
+              cardActions={
                 <>
                   <RegularButton onClick={() => handleExpandClick(index)}>
                     Read more
                   </RegularButton>
                   {data.project && (
                     <GoldButton
-                      onClick={() => routeToBlog(data.project || '/')}
+                      onClick={() => routeToBlog(data.project || "/")}
                     >
                       View project
                     </GoldButton>
                   )}
                 </>
-              )}
-              cardMedia={(
+              }
+              cardMedia={
                 <CardMedia
                   component="img"
                   className={classes.cardImage}
                   src={data.image}
                   title={data.image}
                 />
-              )}
+              }
             />
           ))}
         </Carousel>
       </section>
-    );
-  },
-);
+    )
+  }
+)
 
 // ========================================================================== //
 // custom card
 // ========================================================================== //
-export const CustomCard = React.memo((props) => {
+export const CustomCard = React.memo(props => {
   // default to empty object or null in the case these props are not used/defined
   const {
     rating = false,
-    title = 'default title',
-    subheader = '',
-    image = '',
+    title = "default title",
+    subheader = "",
+    image = "",
     expanded = false,
     index = {},
     cardHeader = {},
@@ -506,26 +543,29 @@ export const CustomCard = React.memo((props) => {
     cardMedia = {},
     children = {},
     data = [],
-  } = props;
+    alt = false,
+  } = props
   const classes = customCardStyles({
     cardWidth: props.cardWidth,
     cardHeight: props.cardHeight,
-    color: props.color ? props.color : '',
-  });
+    alt: alt ? alt : false,
+    // color: color ? color : "",
+  })
 
   // 3d persepctive
   const persepctiveModifierOptions = {
     max: 10,
     perspective: 1000,
     scale: 1.05,
-  };
+  }
 
   const ratingStars = React.useCallback(
-    (rating, index) => Array.from(Array(rating).keys()).map((i) => (
-      <Star key={`${i}rating-star`} />
-    )),
-    [],
-  );
+    (rating, index) =>
+      Array.from(Array(rating).keys()).map(i => (
+        <Star key={`${i}rating-star`} />
+      )),
+    []
+  )
 
   return (
     <TiltPhaseSix
@@ -538,7 +578,7 @@ export const CustomCard = React.memo((props) => {
           <Typography
             variant="h4"
             align="left"
-            style={{ opacity: 0.6, fontWeight: 'bolder' }}
+            style={{ opacity: 0.6, fontWeight: "bolder" }}
             className={classes.cardHeader}
           >
             {title && title}
@@ -548,7 +588,7 @@ export const CustomCard = React.memo((props) => {
             variant="h4"
             gutterBottom
             align="left"
-            style={{ marginBottom: '15px', marginTop: '25px' }}
+            style={{ marginBottom: "15px", marginTop: "25px" }}
             className={classes.cardHeader}
           >
             {subheader && subheader}
@@ -591,18 +631,18 @@ export const CustomCard = React.memo((props) => {
         </Grid>
       </Card>
     </TiltPhaseSix>
-  );
-});
+  )
+})
 
 // ========================================================================== //
 // blog card
 // ========================================================================== //
-export const BlogPostCard = React.memo((props) => {
+export const BlogPostCard = React.memo(props => {
   const {
     featured,
     width = cardDimensions.width,
     height = cardDimensions.height,
-    title = 'default',
+    title = "default",
     data = {},
     size,
     cardMedia = {},
@@ -610,17 +650,17 @@ export const BlogPostCard = React.memo((props) => {
     cardContent = {},
     breakpointSizes = {},
     avatarImg = {},
-  } = props;
-  const classes = blogCardStyles({ height, width });
+  } = props
+  const classes = blogCardStyles({ height, width })
 
-  const isAlt = size !== 12;
-  const altSize = size === 12 ? 6 : 12;
+  const isAlt = size !== 12
+  const altSize = size === 12 ? 6 : 12
   return (
     <Grid container item {...breakpointSizes} key={data.title + Math.random()}>
       {/* headlined blog post */}
       <Card className={classes.blogCard} {...props}>
         <CardHeader
-          avatar={(
+          avatar={
             <Avatar
               aria-label="recipe"
               className={classes.avatar}
@@ -628,7 +668,7 @@ export const BlogPostCard = React.memo((props) => {
             >
               AJ
             </Avatar>
-          )}
+          }
         />
         <CardContent className={classes.blogCardContent}>
           <Grid container justifyContent="flex-start">
@@ -668,8 +708,8 @@ export const BlogPostCard = React.memo((props) => {
               xs={altSize}
               style={{
                 order: isAlt ? 1 : 0,
-                pointerEvents: 'all',
-                cursor: 'pointer',
+                pointerEvents: "all",
+                cursor: "pointer",
               }}
             >
               <TiltPhaseSix
@@ -689,16 +729,14 @@ export const BlogPostCard = React.memo((props) => {
         </CardActions>
       </Card>
     </Grid>
-  );
-});
+  )
+})
 
 // ========================================================================== //
 // blog grid
 // ========================================================================== //
-export const BlogGrid = ({
-  cardHeight, cardWidth, id, title, blogData,
-}) => {
-  const classes = genericStyles({ cardWidth, cardHeight });
+export const BlogGrid = ({ cardHeight, cardWidth, id, title, blogData }) => {
+  const classes = genericStyles({ cardWidth, cardHeight })
 
   // const { node: { id, link, uri,content,title, date, featuredImage:
   // { node: { link, sourceUri } } } } = blogData;
@@ -721,21 +759,21 @@ export const BlogGrid = ({
       >
         {blogData.map((data, index) => {
           const stripHtml = React.useCallback(
-            (string) => `${string.slice(0, 300).replace(/(<([^>]+)>)/gi, '')}...`,
-            [],
-          );
+            string => `${string.slice(0, 300).replace(/(<([^>]+)>)/gi, "")}...`,
+            []
+          )
 
           // data is an edge when using graphql, data? is edge in the resulting data, and edge?.node is a blog post
           const parsedData = {
             image: data?.node?.featuredImage?.node?.sourceUrl || quoteGraphic,
-            avatar: data?.node?.author?.node?.avatar?.url || '',
+            avatar: data?.node?.author?.node?.avatar?.url || "",
             // used in blog card
-            title: data?.node?.title || 'AJ`s gardening tips',
+            title: data?.node?.title || "AJ`s gardening tips",
             description:
-              stripHtml(data?.node?.content)
-              || 'A post about gardening, learn more by exploring this blog post!',
+              stripHtml(data?.node?.content) ||
+              "A post about gardening, learn more by exploring this blog post!",
             postUrl: `blog${data?.node?.uri}`,
-          };
+          }
 
           {
             /* console.log(data, parsedData); */
@@ -747,7 +785,7 @@ export const BlogGrid = ({
             md: index === 0 ? 12 : 6,
             lg: index === 0 ? 12 : 6,
             xl: index === 0 ? 12 : 6,
-          };
+          }
 
           return (
             <BlogPostCard
@@ -757,7 +795,7 @@ export const BlogGrid = ({
               breakpointSizes={breakpointSizes}
               featured={index === 0}
               data={parsedData}
-              cardMedia={(
+              cardMedia={
                 <CardMedia
                   component="img"
                   className={classes.blogCardMedia}
@@ -765,11 +803,11 @@ export const BlogGrid = ({
                   title={parsedData.image}
                   avatarImg={parsedData.avatar}
                 />
-              )}
+              }
             />
-          );
+          )
         })}
       </Grid>
     </section>
-  );
-};
+  )
+}

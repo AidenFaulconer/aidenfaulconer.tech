@@ -511,12 +511,12 @@ export const Model = React.memo(({
         receiveShadow
         castShadow
         color={determineColor}
-        roughness={0.6}
-        // alphaMap={texture}
-        aoMap={checkTier(texture)}
+        roughness={0.25}
+        // alphaMap={checkTier(texture)}
+        // aoMap={checkTier(texture)}
         roughnessMap={texture}// sexy
-        // lightMap={checkTier(texture)}// sexy
-        // clearcoat={determineClearcoat}
+        lightMap={checkTier(texture)}// sexy
+        clearcoat={determineClearcoat}
         // envMap={[texture, texture, texture]}
         // opacity={0.7}
         envMapIntensity={0.6}
@@ -544,7 +544,7 @@ export const Scene = ({
 // ========================================================================== //
 // Camera
 // ========================================================================== //
-export const cameraCoords = [0, 0.85, -3.5];
+export const cameraCoords = [0, 0.8, -3.5];
 export const ZoomCamera = ({ to }) => {
   const vec = new THREE.Vector3(...to);
   return useFrame((state) => {
@@ -553,13 +553,13 @@ export const ZoomCamera = ({ to }) => {
     state.camera.updateProjectionMatrix();
   });
 };
-const X_SPACING = 2;
-const Y_SPACING = -1;
+const X_SPACING = 2
+const Y_SPACING = -1
 export const getPositionExternalGrid = (index, columnWidth = 3) => {
-  const x = (index % columnWidth) * X_SPACING;
-  const y = Math.floor(index / columnWidth) * Y_SPACING;
-  return [x, y, 0];
-};
+  const x = (index % columnWidth) * X_SPACING
+  const y = Math.floor(index / columnWidth) * Y_SPACING
+  return [x, y, 0]
+}
 
 // ========================================================================== //
 // Canvas

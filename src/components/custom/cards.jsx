@@ -41,8 +41,8 @@ const cardStyles = makeStyles((theme) => ({
   // carousel styling
   section: {
     // background: theme.palette.background.primary,
-    // boxShadow: theme.brandShadows.brand,
-    borderRadius: theme.shape.brandBorderRadius,
+    // boxShadow: theme.custom.shadows.brand,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     userSelect: 'none',
     '& .react-multi-carousel-list': {
       height: '100%', // 400px
@@ -56,8 +56,8 @@ const cardStyles = makeStyles((theme) => ({
       '& .react-multiple-carousel__arrow': {
         // marginLeft: '-100px',
         background: '#DCF15B',
-        border: theme.shape.brandBorderSecondary,
-        boxShadow: theme.brandShadows.brand,
+        border: theme.custom.borders.brandBorderSecondary,
+        boxShadow: theme.custom.shadows.brand,
         '&:hover': {
           boxShadow: '0px 0px 0px transparent',
         },
@@ -71,16 +71,16 @@ const cardStyles = makeStyles((theme) => ({
     maxWidth: 300,
     margin: theme.spacing(2),
     background: 'rgba(255,255,255,.6)',
-    borderRadius: theme.shape.brandBorderRadius2,
+    borderRadius: theme.custom.borders.brandBorderRadius2,
     textAlign: 'left',
     // paddingTop: theme.spacing(2),
     // paddingLeft: theme.spacing(2),
     // paddingRight: theme.spacing(2),
     padding: theme.spacing(4),
-    boxShadow: theme.brandShadows.brand,
+    boxShadow: theme.custom.shadows.brand,
     height: '100%',
     display: 'grid',
-    border: theme.shape.brandBorder,
+    border: theme.custom.borders.brandBorder,
     color: theme.palette.background.button, // rating stars inherit this
     transition: theme.transitions.create('all', {
       duration: theme.transitions.duration.complex,
@@ -92,13 +92,13 @@ const cardStyles = makeStyles((theme) => ({
     position: 'relative',
     margin: 'auto',
     height: '100%',
-    borderRadius: theme.shape.brandBorderRadius,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     boxShadow: 'none',
     background: theme.palette.background.primary,
     padding: theme.spacing(3),
-    border: theme.shape.brandBorder,
+    border: theme.custom.borders.brandBorder,
     '&:hover': {
-      boxShadow: theme.brandShadows.brand,
+      boxShadow: theme.custom.shadows.brand,
     },
     transition: theme.transitions.create(
       ['all'],
@@ -121,14 +121,14 @@ const cardStyles = makeStyles((theme) => ({
     maxHeight: '200px',
     minWidth: '200px',
     margin: 'auto',
-    borderBottom: theme.shape.brandBorder,
+    borderBottom: theme.custom.borders.brandBorder,
     height: '100%',
-    borderRadius: theme.shape.brandBorderRadius,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     top: 0,
     pointerEvents: 'none',
     display: 'block',
     position: 'relative',
-    boxShadow: theme.brandShadows.brandBig,
+    boxShadow: theme.custom.shadows.brandBig,
   },
   cardImage: {
     // { minWidth: "150px",maxWidth: "fit-content", mixBlendMode: "multiply" }
@@ -136,14 +136,14 @@ const cardStyles = makeStyles((theme) => ({
     minHeight: '200px',
     minWidth: '200px',
     margin: 'auto',
-    borderBottom: theme.shape.brandBorder,
+    borderBottom: theme.custom.borders.brandBorder,
     height: '100%',
-    borderRadius: theme.shape.brandBorderRadius,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     top: 0,
     pointerEvents: 'none',
     display: 'block',
     position: 'relative',
-    boxShadow: theme.brandShadows.brandBig,
+    boxShadow: theme.custom.shadows.brandBig,
   },
   perspectiveModifier: {
     display: 'flex',
@@ -193,16 +193,16 @@ const cardStyles = makeStyles((theme) => ({
 
   // blog card styling
   blogCard: {
-    border: theme.shape.brandBorderSecondary,
+    border: theme.custom.borders.brandBorderSecondary,
     background: 'rgba(255,255,255,.3)',
     boxShadow: '0px 0px 0px transparent',
     margin: 'auto',
     textAlign: 'center',
-    borderRadius: theme.shape.brandBorderRadius,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     padding: theme.spacing(2),
 
     '&:hover': {
-      boxShadow: theme.brandShadows.brand,
+      boxShadow: theme.custom.shadows.brand,
       marginLeft: -theme.spacing(1),
       marginBottom: -theme.spacing(1),
     },
@@ -229,14 +229,14 @@ const cardStyles = makeStyles((theme) => ({
     minWidth: '80%',
     maxWidth: '80%',
     margin: 'auto',
-    borderBottom: theme.shape.brandBorder,
+    borderBottom: theme.custom.borders.brandBorder,
     height: '100%',
-    borderRadius: theme.shape.brandBorderRadius,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     top: 0,
     pointerEvents: 'none',
     display: 'block',
     position: 'relative',
-    boxShadow: theme.brandShadows.brandBig,
+    boxShadow: theme.custom.shadows.brandBig,
     cursor: 'pointer',
     '&:hover': {
       boxShadow: '0px 0px 0px transparent',

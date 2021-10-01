@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 
 import { Link, useStaticQuery, graphql } from 'gatsby';
+import footerGraphic from '../../static/assets/footer.png';
 
 import { InlineIcon } from '@iconify/react';
 // import chevronRight from "@iconify/icons-mdi/chevron-right";
@@ -19,10 +20,15 @@ import {
   dataBoxAndCodeBox,
 } from '../../static/assets/svg/hardcoded-svgs';
 
-import { RegularButton, GoldButton } from '../components/custom/customButton';
+import { RegularButton, GoldButton, SecondaryButton } from '../components/custom/customButton';
 import { Gridify } from '../components/custom/customCards';
 
 const useStyles = makeStyles((theme) => ({
+  footer: {
+    position: 'relative',
+    // minHeight: 400,
+    padding: theme.spacing(9,3),
+  },
   footerBackground: {
     objectFit: 'cover',
     position: 'absolute',
@@ -44,29 +50,23 @@ export default React.memo(({ children }) => {
   ];
   // table footer?
   return (
-    <footer className="footer row p-5 align-items-center">
-      <div className={classes.footerBackground} />
-      <Grid container spacing={3}>
-        <Gridify breakpointSizes={[12, 12, 12, 12]}>
+    <footer className={classes.footer}>
+      <Grid container spacing={3} xs={6} style={{margin:'auto'}} alignContent="center" justify="center" alignItems="center">
+        <Grid container xs={6} style={{color: 'white'}} item justify="center">
           <div>
-            <Typography>Want to collaborate?</Typography>
-            <RegularButton>Make a booking</RegularButton>
-            <RegularButton>Send me an email</RegularButton>
-          </div>
-          <div>
-            <Typography>Lets Talk</Typography>
-            <RegularButton>Call me</RegularButton>
-          </div>
-        </Gridify>
-        <Gridify breakpointSizes={[12, 12, 12, 12]}>
-          <div>
-            <Typography>Lets Talk</Typography>
-            <RegularButton>Call me</RegularButton>
-          </div>
-          <div />
-
-        </Gridify>
+            <Typography gutterBottom color="textSecondary">Want to collaborate?</Typography>
+            <SecondaryButton size="small">Make a booking</SecondaryButton>
+            <SecondaryButton size="small">Send me an email</SecondaryButton>
+          </div> 
       </Grid>
+        <Grid container item justify="center" xs={6} style={{color: 'white'}} >
+          <div>
+            <Typography gutterBottom color="textSecondary">Lets Talk</Typography>
+            <SecondaryButton size="small">Call me</SecondaryButton>
+        </div>  
+      </Grid>
+      </Grid>
+      <img src={footerGraphic} className={classes.footerBackground} />
     </footer>
   );
 });

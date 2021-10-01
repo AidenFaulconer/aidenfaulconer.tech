@@ -35,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
   threeWrapper: {
     minHeight: 500,
     minWidth: 400,
-    borderRadius: theme.shape.brandBorderRadius,
+    borderRadius: theme.custom.borders.brandBorderRadius,
     overflow: 'hidden',
     position: 'relative',
     height: '100%',
-    boxShadow: theme.brandShadows.brand,
+    boxShadow: theme.custom.shadows.brand,
     '& canvas': {
-      boxShadow: theme.brandShadows.brandInset,
+      boxShadow: theme.custom.shadows.brandInset,
       // background: theme.palette.background.default,
       height: '100% !important',
       minHeight: 500,

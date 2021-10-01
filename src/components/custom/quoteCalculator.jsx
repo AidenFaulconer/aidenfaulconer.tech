@@ -52,9 +52,9 @@
 // // ========================================================================== //
 // const useStyles = makeStyles((theme) => {
 //   const common = {
-//     borderRadius: theme.shape.brandBorderRadius,
+//     borderRadius: theme.custom.borders.brandBorderRadius,
 //     padding: theme.spacing(3),
-//     border: theme.shape.brandBorderSecondary,
+//     border: theme.custom.borders.brandBorderSecondary,
 //   };
 
 //   return {
@@ -95,12 +95,12 @@
 //     quoteCalculatorSection: {
 //       margin: theme.spacing(6),
 
-//       border: theme.shape.brandBorderSecondary,
+//       border: theme.custom.borders.brandBorderSecondary,
 //       background: theme.palette.background.secondary,
 //       color: 'white',
-//       borderRadius: theme.shape.brandBorderRadius3,
+//       borderRadius: theme.custom.borders.brandBorderRadius3,
 //       padding: theme.spacing(6),
-//       boxShadow: theme.brandShadows.brandBig,
+//       boxShadow: theme.custom.shadows.brandBig,
 
 //       transition: theme.transitions.create(
 //         ['color', 'box-shadow', 'background', 'margin', 'border'],
@@ -129,15 +129,15 @@
 //       width: '100%',
 //       background: 'white',
 //       color: theme.palette.text.primary,
-//       borderRadius: theme.shape.brandBorderRadius,
-//       boxShadow: theme.brandShadows.brandInset,
+//       borderRadius: theme.custom.borders.brandBorderRadius,
+//       boxShadow: theme.custom.shadows.brandInset,
 //     },
 //     tabCategories: {
 //       ...common,
 //       marginTop: theme.spacing(0),
 //       flexGrow: 1,
 //       // marginLeft: -(theme.spacing(3) / 2.5),
-//       boxShadow: theme.brandShadows.filterShadow,
+//       boxShadow: theme.custom.shadows.filterShadow,
 //       width: '102%',
 //       marginLeft: '-1%',
 //       background: 'white',
@@ -154,7 +154,7 @@
 //         ...common,
 //         width: 50,
 //         background: theme.palette.background.button,
-//         border: theme.shape.brandBorderSecondary,
+//         border: theme.custom.borders.brandBorderSecondary,
 //         // boxShadow:
 //         //   '0px 0px 0px 7px rgb(221 238 209), 0px 0px 20px 10px rgb(132 151 48)', // arrow button
 //         // '&:hover': {
@@ -164,7 +164,7 @@
 //     },
 //     categoryTab: {
 //       ...common,
-//       boxShadow: theme.brandShadows.brand,
+//       boxShadow: theme.custom.shadows.brand,
 //       color: theme.palette.text.primary,
 //       padding: theme.spacing(1),
 //       margin: theme.spacing(3),
