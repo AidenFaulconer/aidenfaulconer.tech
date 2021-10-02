@@ -155,7 +155,7 @@ const TYPOGRAPHY = {
 const CUSTOM_THEME_PROPS = {
   custom: {
     borders: {
-    brandBorderRadius: '4px',
+    brandBorderRadius: '8px',
     brandBorderRadius2: '22px',
     brandBorderRadius3: '44px',
     brandBorder: '1px solid rgba(255,255,255,.3)',
@@ -563,6 +563,11 @@ const OVERRIDES = {
     MuiButton: {
       // hover keyframes declared locally not on the theme object
       ...commonButton,
+    },
+    MuiCollapse: {
+      hidden: {
+        display: 'none',
+      }
     },
     MuiTextField: {
       ...commonButton,

@@ -210,15 +210,15 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
   // now put this all together here
 
-  await buildPageFromQuery(
-    'b|Blog',
-    path.resolve('src/templates/blogTemplate.jsx'),
-  ); // build blog pages
+  // await buildPageFromQuery(
+  //   'b|Blog',
+  //   path.resolve('src/templates/blogTemplate.jsx'),
+  // ); // build blog pages
 
-  await buildPageFromQuery(
-    'P|project',
-    path.resolve('src/templates/projectTemplate.jsx'),
-  ); // build project pages
+  // await buildPageFromQuery(
+  //   'P|project',
+  //   path.resolve('src/templates/projectTemplate.jsx'),
+  // ); // build project pages
 };
 
 const getStartEnd = (i, len) => {

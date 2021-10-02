@@ -218,6 +218,8 @@ import {
     // newTheme.custom = CUSTOM_THEME_PROPS;
     
     newTheme.typography.h1.fontWeight = 900;
+    newTheme.typography.h2.fontWeight = 900;
+    newTheme.typography.h2.textTransform = 'capitalize';
     // newTheme.typography = TYPOGRAPHY;
     return newTheme;
   };

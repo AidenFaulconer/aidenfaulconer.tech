@@ -171,7 +171,6 @@ export const ThirdButton = (props) => {
       {...props}
       className={classes.thirdButton}
       size={size}
-      color="inherit"
       variant="contained"
     >
       {children}

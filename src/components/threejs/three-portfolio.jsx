@@ -53,6 +53,7 @@ import two from '../../../static/assets/portfolio/ajgardencare.png';
 import three from '../../../static/assets/portfolio/hakn.png';
 import four from '../../../static/assets/portfolio/railgun.png';
 import five from '../../../static/assets/portfolio/na na nas.png';
+import { valtioState } from '../../store/store-wrapper';
 
 //* *requires a texture path prop passed in as url** */
 export const PreviewPlane = ({
@@ -313,6 +314,10 @@ export const Models = React.memo(({
   // device?: string;
   const { tier } = useDetectGPU();
 
+  valtioState.threejsContext.toggleCamera = () => {
+    return (ZoomCamera())
+  }
+
   let textureData = [
     // TODO find a way to dynamically import, so get the webpack shit bundled then reference it in require
     // require('../../../static/assets/graphic.png'),
@@ -515,7 +520,7 @@ export const Model = React.memo(({
         // alphaMap={checkTier(texture)}
         // aoMap={checkTier(texture)}
         roughnessMap={texture}// sexy
-        lightMap={checkTier(texture)}// sexy
+        // lightMap={checkTier(texture)}// sexy
         clearcoat={determineClearcoat}
         // envMap={[texture, texture, texture]}
         // opacity={0.7}

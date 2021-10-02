@@ -7,7 +7,7 @@ import {
 } from "./custom/customButton"
 import { CardCarousel } from "./custom/customCards"
 
-import {hexToAlpha} from "../../src/store/theme"
+import { hexToAlpha, transition } from "../../src/store/theme"
 
 // ========================================================================== //
 // Typography
@@ -20,26 +20,28 @@ import whatDoYouNeedImage2 from "../../static/assets/portfolio/lots.png"
 // const contentHeight = 550
 const useStyles = makeStyles(theme => ({
   section: {
+    // minHeight: contentHeight,
     display: "block",
     position: "relative",
-    // minHeight: contentHeight,
-    // margin: `${theme.spacing(0)}, ${theme.spacing(0)}`,
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(12),
     boxShadow: theme.custom.shadows.brand,
     background: theme.palette.background.default,
-    borderRadius: theme.custom.borders.brandBorderRadius,
     border: theme.custom.borders.brandBorderSecondary,
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    // margin: `${theme.spacing(0)}, ${theme.spacing(0)}`,
     overflow: "hidden",
   },
 
   graphic: {
-    // minHeight: contentHeight,
-    height: "100%",
     width: "100%",
-    // background: theme.palette.primary.main,
-    position: "relative",
+    height: "100%",
     display: "block",
-    background: theme.palette.primary.main,
+    position: "relative",
+    // minHeight: contentHeight,
+    // background: theme.palette.primary.main,
+    background: ({ bgAlt }) =>
+      bgAlt ? theme.palette.text.primary : theme.palette.text.secondary,
+
     "& img": {
       display: "inline-block",
       height: "100%",
@@ -53,20 +55,33 @@ const useStyles = makeStyles(theme => ({
     },
   },
   descriptor: {
-    // minHeight: contentHeight,
+    position: "relative",
+    padding: theme.spacing(4),
+    backdropFilter: "blur(30px)",
+    borderRadius: ({ rounded }) =>
+      rounded ? theme.custom.borders.brandBorderRadius : 0,
     "& h1": {
       textTransform: "capitalize",
     },
-    padding: theme.spacing(4),
-    position: "relative",
-    background: ({ bgAlt }) =>
-      (bgAlt && theme.palette.background.button) ||
-      hexToAlpha(theme.palette.background.default,.6),
-    color: ({ bgAlt }) =>
-      (bgAlt && theme.palette.text.primary.main) ||
-      theme.palette.text.secondary.main,
+    border: ({ border }) =>
+      border ? theme.custom.borders.brandBorderSecondary : null,
     // borderRadius: theme.custom.borders.brandBorderRadius,
-    backdropFilter: 'blur(30px)',
+    color: ({ bgAlt }) =>
+      bgAlt ? theme.palette.text.secondary : theme.palette.text.primary,
+    background: ({ bgAlt }) =>
+      bgAlt === 2
+        ? theme.palette.background.button
+        : bgAlt === 1
+        ? theme.palette.text.primary
+        : theme.palette.background.default,
+  },
+  typography: {
+    color: ({ bgAlt }) =>
+      bgAlt === 2
+        ? theme.palette.background.button
+        : bgAlt === 1
+        ? theme.palette.text.primary
+        : theme.palette.text.secondary,
   },
   experienceContainer: {
     background: theme.palette.primary.main,
@@ -77,6 +92,9 @@ const useStyles = makeStyles(theme => ({
     marginTop: 80,
     // marginLeft: `${-23}px !important`,
     // marginRight: `${-23}px !important`,
+    padding: theme.spacing(6, 6),
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    background: theme.palette.background.button,
   },
   offerContainer: {
     borderRadius: theme.custom.borders.brandBorderRadius,
@@ -89,34 +107,50 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     objectFit: "cover",
     minWidth: 300,
-    minHeight: 300,
+    minHeight: 350,
     maxHeight: 300,
     overflow: "hidden",
-    marginBottom: -theme.spacing(2),
+    marginBottom: -theme.spacing(4),
+    marginTop: theme.spacing(6),
     boxShadow: theme.custom.shadows.brand,
     borderRadius: theme.custom.borders.brandBorderRadius,
-    border: `1px solid ${theme.palette.background.button}`,
+    border: theme.custom.borders.brandBorderSecondary,
     // padding: theme.spacing(2),
+    zIndex: 0,
+    transition,
+    "&:hover": {
+      transition,
+      marginTop: -theme.spacing(10),
+    },
   },
 }))
 
 const Descriptor = props => {
-  const { title, description, ctas, xs, altButtons = 0, bgAlt = false } = props
-  const classes = useStyles(bgAlt)
+  const {
+    title,
+    description,
+    ctas,
+    xs,
+    altButtons = 0,
+    bgAlt = false,
+    border = false,
+    rounded = false,
+  } = props
+  const classes = useStyles({ bgAlt, border, rounded })
   return (
     <Grid
       container
       item
       md={xs || 6}
-      xs={xs || 6}
+      xs={xs || 12}
       justify="space-evenly"
       alignContent="center"
       alignItems="center"
       className={classes.descriptor}
     >
-      <Grid item xs={12} md={8} style={{ paddingBottom: 20 }}>
+      <Grid item xs={12} md={9} style={{ paddingBottom: 20 }}>
         <Typography
-          color="textSecondary"
+          color="inherit"
           align="left"
           gutterBottom
           style={{ marginBottom: 25 }}
@@ -124,12 +158,7 @@ const Descriptor = props => {
         >
           {title}
         </Typography>
-        <Typography
-          color="textSecondary"
-          component="body"
-          gutterBottom
-          align="left"
-        >
+        <Typography color="inherit" component="body" gutterBottom align="left">
           {description}
         </Typography>
       </Grid>
@@ -138,31 +167,33 @@ const Descriptor = props => {
         justify="flex-start"
         spacing={2}
         xs={12}
-        md={8}
+        md={9}
         style={{ margin: "auto", display: "flex" }}
       >
         <Grid item xs={6}>
-          {(altButtons === 0 && <RegularButton>{ctas[0]}</RegularButton>) ||
-            (altButtons === 1 && (
-              <SecondaryButton>{ctas[0]}</SecondaryButton>
-            )) || <ThirdButton>{ctas[0]}</ThirdButton>}
+          {ctas[0] &&
+            ((altButtons === 0 && <RegularButton>{ctas[0]}</RegularButton>) ||
+              (altButtons === 1 && (
+                <SecondaryButton>{ctas[0]}</SecondaryButton>
+              )) || <ThirdButton color="textPrimary">{ctas[0]}</ThirdButton>)}
         </Grid>
 
         <Grid item xs={6}>
-          {(altButtons === 0 && <RegularButton>{ctas[1]}</RegularButton>) ||
-            (altButtons === 1 && (
-              <SecondaryButton>{ctas[1]}</SecondaryButton>
-            )) || <ThirdButton>{ctas[1]}</ThirdButton>}
+          {ctas[1] &&
+            ((altButtons === 0 && <RegularButton>{ctas[1]}</RegularButton>) ||
+              (altButtons === 1 && (
+                <SecondaryButton>{ctas[1]}</SecondaryButton>
+              )) || <ThirdButton color="textPrimary">{ctas[1]}</ThirdButton>)}
         </Grid>
       </Grid>
     </Grid>
   )
 }
 const Graphic = props => {
-  const classes = useStyles()
-  const { src, alt } = props
+  const { src, alt, bgAlt = false } = props
+  const classes = useStyles({ bgAlt })
   return (
-    <Grid item xs={6} className={classes.graphic}>
+    <Grid item xs={12} md={6} className={classes.graphic}>
       <img alt={alt} src={src} />
     </Grid>
   )
@@ -181,12 +212,13 @@ const About = React.memo(
     return (
       <section ref={ref} className={classes.section}>
         <Grid container justify="space-between" spacing={12}>
-          <Graphic src={aboutImage} alt="About Graphic" />
+          <Graphic src={aboutImage} alt="About Graphic" bgAlt />
           <Descriptor
             title={title}
             description={description}
             ctas={["Read More", "Book Online"]}
-            altButtons
+            bgAlt={1}
+            altButtons={0}
           />
         </Grid>
         <Experience />
@@ -238,12 +270,16 @@ const Projects = React.memo(
   React.forwardRef((props, ref) => {
     const classes = useStyles()
     return (
-      <section ref={ref} className={classes.section}>
+      <section
+        ref={ref}
+        className={(classes.section, classes.experienceContainer)}
+      >
         <Grid container justify="space-between">
           <CardCarousel
             title="Languages"
             key="languages"
             carouselData={projectsData}
+            alt
             cardHeight={150}
             cardWidth={200}
           />
@@ -278,16 +314,30 @@ const languageData = [
     icon: "",
   },
   {
-    title: "Front-End Frameworks",
+    title: "Front-End",
     src: "",
-    alt: "Front-End Frameworks",
+    alt: "Front-End",
     description: "",
     icon: "",
   },
   {
-    title: "Back-end Frameworks",
+    title: "Office",
     src: "",
-    alt: "Back-end Frameworks",
+    alt: "Office",
+    description: "",
+    icon: "",
+  },
+  {
+    title: "Business accumen",
+    src: "",
+    alt: "Business accumen",
+    description: "",
+    icon: "",
+  },
+  {
+    title: "Interpersonal",
+    src: "",
+    alt: "Interpersonal",
     description: "",
     icon: "",
   },
@@ -317,7 +367,7 @@ const Languages = React.memo(
             key="languages"
             carouselData={languageData}
             cardHeight={150}
-            cardWidth={200}
+            cardWidth={150}
           />
         </Grid>
       </section>
@@ -389,31 +439,13 @@ const Experience = React.memo(
         className={(classes.section, classes.experienceContainer)}
       >
         <Grid container spacing={3}>
-          {/* <Grid item xs={7} sm={6} />
-          <Grid item xs={5} sm={6} /> */}
-          {/* <Grid
-            container
-            spacing={3}
-            justify="center"
-            alignContent="center"
-            alignItems="center"
-          >
-            <Typography
-              align="center"
-              gutterBottom
-              style={{ marginTop: 50, marginBottom: -15 }}
-              variant="h1"
-            >
-              Experience
-            </Typography>
-          </Grid> */}
           <CardCarousel
             alt
             title="Languages"
             key="languages"
             carouselData={experienceData}
-            cardHeight={150}
-            cardWidth={200}
+            cardHeight={125}
+            cardWidth={250}
           />
         </Grid>
       </section>
@@ -426,21 +458,37 @@ const Experience = React.memo(
 // ========================================================================== //
 const WhatDoYouNeed = React.memo(
   React.forwardRef((props, ref) => {
-    const classes = useStyles()
+    const bgAlt = 0
+    const classes = useStyles({ bgAlt })
+    const description = (
+      <ul>
+        <li>Item 1</li>
+        <li>Item 1</li>
+        <li>Item 1</li>
+        <li>Item 1</li>
+        <li>Item 1</li>
+      </ul>
+    )
     return (
       <section ref={ref} className={(classes.section, classes.whatDoYouNeed)}>
-        <Grid item xs={12} md={5} style={{ paddingBottom: 20, margin: "auto" }}>
+        <Grid
+          item
+          xs={12}
+          md={5}
+          style={{ paddingBottom: 20, margin: "auto" }}
+          className={classes.typography}
+        >
           <Typography
-            // color="textSecondary"
-            align="center"
-            gutterBottom
-            style={{ marginBottom: 25, marginTop: 80 }}
+            color="inherit"
             variant="h2"
+            gutterBottom
+            align="center"
+            style={{ marginTop: 80 }}
           >
             What type of project do you need help with?
           </Typography>
           <Typography
-            // color="textSecondary"
+            color="inherit"
             component="body"
             gutterBottom
             align="center"
@@ -449,33 +497,85 @@ const WhatDoYouNeed = React.memo(
             site that works towards your business goals.
           </Typography>
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={6}>
           <Grid container item xs={6} sm={6} className={classes.offerContainer}>
-            <img
-              alt="What Do You Need Graphic"
-              className={classes.servicesImage}
-              src={whatDoYouNeedImage}
-            />
+            <Grid item xs={12} sm={12}>
+              <Typography
+                color="inherit"
+                variant="h2"
+                align="center"
+                style={{ marginTop: 25 }}
+                className={classes.typography}
+              >
+                Website
+              </Typography>
+              <Typography
+                color="inherit"
+                variant="h3"
+                align="center"
+                className={classes.typography}
+              >
+                From: $6,000
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12}>
+              <img
+                alt="What Do You Need Graphic"
+                className={classes.servicesImage}
+                src={whatDoYouNeedImage}
+              />
+            </Grid>
+
             <Descriptor
               xs={12}
-              title="What Do You Need?"
-              description="I’m a full stack developer with a passion for creating software that solves problems. I’m currently looking for a role in a team that will help me build a product that will help people in need."
-              ctas={["Read More", "Book Online"]}
-              altButtons={2}
+              // title="What Do You Need?"
+              description={description}
+              ctas={["Book Online"]}
+              altButtons={1}
+              border
+              bgAlt={bgAlt}
+              rounded
             />
           </Grid>
           <Grid container item xs={6} sm={6} className={classes.offerContainer}>
-            <img
-              alt="What Do You Need Graphic"
-              className={classes.servicesImage}
-              src={whatDoYouNeedImage2}
-            />
+            <Grid item xs={12} sm={12}>
+              <Typography
+                color="inherit"
+                variant="h2"
+                align="center"
+                style={{ marginTop: 25 }}
+                className={classes.typography}
+              >
+                Design
+              </Typography>
+              <Typography
+                color="inherit"
+                variant="h3"
+                align="center"
+                className={classes.typography}
+              >
+                From: $300-$3000
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12}>
+              <img
+                alt="What Do You Need Graphic"
+                className={classes.servicesImage}
+                src={whatDoYouNeedImage2}
+              />
+            </Grid>
+
             <Descriptor
               xs={12}
-              title="What Do You Need?"
-              description="I’m a full stack developer with a passion for creating software that solves problems. I’m currently looking for a role in a team that will help me build a product that will help people in need."
-              ctas={["Read More", "Book Online"]}
-              altButtons={2}
+              // title="What Do You Need?"
+              description={description}
+              ctas={["Book Online"]}
+              altButtons={1}
+              border
+              bgAlt={bgAlt}
+              rounded
             />
           </Grid>
         </Grid>

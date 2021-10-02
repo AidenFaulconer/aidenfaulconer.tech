@@ -38,15 +38,15 @@ const useStyles = makeStyles(theme => ({
     // fill: theme.palette.background.default,
   },
   cubesOffset: {
-    top: '-7%',
-    left: '37%',
-    top: '-6%',
-    left: '38%',
-    opacity: .6,
+    top: "-7%",
+    left: "37%",
+    top: "-6%",
+    left: "38%",
+    opacity: 0.6,
     zIndex: -1,
-    position: 'absolute',
+    position: "absolute",
     maxWidth: 860,
-  }
+  },
 }))
 
 // <video preload="true" controls loop autoPlay="true">
@@ -73,13 +73,13 @@ const IndexPage = React.memo(
           <Grid
             item
             xs={12}
-            md={6}
+            md={5}
             style={{ paddingBottom: 20, margin: "auto" }}
           >
             <Typography
               align="center"
               gutterBottom
-              style={{ marginBottom: 25,marginTop: 80 }}
+              style={{ marginBottom: 25, marginTop: 80 }}
               variant="h2"
             >
               A bit about what I can do for you
@@ -91,21 +91,24 @@ const IndexPage = React.memo(
           </Grid>
           <About id="about" />
           <Languages id="languages" />
-          {/* <Experience id="experience" /> */}
-          <WhatDoYouNeed id="call-to-action" />
-
+        {/* <Experience id="experience" /> */}
+        <WhatDoYouNeed id="call-to-action" />
 
           <Grid
             item
             xs={12}
-            md={6}
+            md={5}
             style={{ paddingBottom: 20, margin: "auto" }}
           >
-          <img src={cubesOffset} alt="cubes" className={classes.cubesOffset}/>
+            <img
+              src={cubesOffset}
+              alt="cubes"
+              className={classes.cubesOffset}
+            />
             <Typography
               align="center"
               gutterBottom
-              style={{ marginBottom: 25,marginTop: 80 }}
+              style={{ marginBottom: 25, marginTop: 80 }}
               variant="h2"
             >
               Read on!
@@ -116,8 +119,9 @@ const IndexPage = React.memo(
             </Typography>
           </Grid>
           <Projects id="projects" />
-          {/* <Contact id="contact" /> */}
         </Container>
+
+        {/* <Contact id="contact" /> */}
       </>
     )
   }

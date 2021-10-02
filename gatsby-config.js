@@ -36,26 +36,18 @@ module.exports = {
     },
     // have a custom plugin inject theme before this
     // `gatsby-plugin-top-layout`,
-    {
-      resolve: 'gatsby-plugin-material-ui',
-      options: {
-        stylesProvider: {
-          // injectFirst: true, //* *already done in code ref: MaterialUI component**
-        },
-
-      },
-    },
+  
     // ========================================================================== //
     //     File system management
     // ========================================================================== //
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'markdown-pages',
-        // everything netlify cms outputs is now accessible under markdown-pages
-        path: `${__dirname}/_data`,
-      },
-    },
+    // {
+    //   resolve: 'gatsby-source-filesystem',
+    //   options: {
+    //     name: 'markdown-pages',
+    //     // everything netlify cms outputs is now accessible under markdown-pages
+    //     path: `${__dirname}/_data`,
+    //   },
+    // },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -113,13 +105,13 @@ module.exports = {
             },
           },
           // point remark data to public folder
-          {
-            resolve: 'gatsby-remark-copy-linked-files',
-            options: {
-              destinationDir: `${__dirname}/_data`,
-              // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
-            },
-          },
+          // {
+          //   resolve: 'gatsby-remark-copy-linked-files',
+          //   options: {
+          //     destinationDir: `${__dirname}/_data`,
+          //     // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
+          //   },
+          // },
           // proportion and make iframe content responsive in blogs
           {
             resolve: 'gatsby-transformer-remark',
@@ -198,7 +190,7 @@ module.exports = {
       resolve: 'gatsby-plugin-transition-link',
       options: {
         injectPageProps: false,
-        layout: path.resolve(`${__dirname}/src/layout/layout.jsx`), // this is excluded and stays static on transtiions **this means not including layout in pages or templates**
+        layout: `${__dirname}/src/layout/layout.jsx`, // this is excluded and stays static on transtiions **this means not including layout in pages or templates**
       }, // performance optimization
 
     }, // creates the 'tl-edge & tl-wrapper https://github.com/TylerBarnes/gatsby-plugin-transition-link/issues/29
@@ -206,7 +198,7 @@ module.exports = {
     // ========================================================================== //
     //     Offline capabilities
     // ========================================================================== //
-    'gatsby-plugin-offline',
+    // 'gatsby-plugin-offline',
     'gatsby-plugin-remove-trailing-slashes', // remove pesky /'s at the end of routes ie: localhost/x/
 
     // {
@@ -229,6 +221,15 @@ module.exports = {
     // ========================================================================== //
     'gatsby-plugin-netlify-cms',
 
+    {
+      resolve: 'gatsby-plugin-material-ui',
+      options: {
+        stylesProvider: {
+          // injectFirst: true, //* *already done in code ref: MaterialUI component**
+        },
+
+      },
+    },
     // ========================================================================== //
     //     Debugging Webpack bundles
     // ========================================================================== //

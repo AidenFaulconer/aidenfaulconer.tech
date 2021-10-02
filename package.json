@@ -73,6 +73,7 @@
     "netlify-cms": "^2.10.164",
     "postprocessing": "^6.21.5",
     "prismjs": "^1.24.1",
+    "programming-languages-logos": "0.0.3",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-confetti": "^6.0.1",

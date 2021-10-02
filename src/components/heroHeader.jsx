@@ -22,7 +22,7 @@ import cubesOffset from "../../static/assets/portfolio/cubesOffset.png"
 
 const useStyles = makeStyles(theme => ({
   heroContainer: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(6),
     marginTop: theme.spacing(6),
   },
   cubesOffset: {
@@ -50,7 +50,7 @@ export const HeroHeader = props => {
         alignContent="center"
         alignItems="center"
       >
-        <Grid container item md={6} xs={12}>
+        <Grid container item md={5} xs={12}>
           <Grid item xs={10} style={{ margin: "auto", paddingBottom: 20 }}>
             <Typography align="left" gutterBottom variant="h1">
               {title}
@@ -67,10 +67,10 @@ export const HeroHeader = props => {
             style={{ margin: "auto", display: "flex" }}
           >
             <Grid item xs={6}>
-              <RegularButton >Lets get in touch</RegularButton>
+              <RegularButton size="small">Lets get in touch</RegularButton>
             </Grid>
             <Grid item xs={6}>
-              <RegularButton >See my work</RegularButton>
+              <RegularButton size="small">See my work</RegularButton>
             </Grid>
           </Grid>
         </Grid>
