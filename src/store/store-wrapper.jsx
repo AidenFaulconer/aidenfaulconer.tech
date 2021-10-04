@@ -207,7 +207,7 @@ const generateItems = (number, category) => new Array(number).fill().map((value,
 // Handle theming  
 // ========================================================================== //
 import {
-  DARK_THEME, LIGHT_THEME, OVERRIDES, CUSTOM_THEME_PROPS, TYPOGRAPHY,
+  DARK_THEME, LIGHT_THEME, OVERRIDES, CUSTOM_THEME_PROPS, TYPOGRAPHY, pxToRem,
 } from './theme';
 
 

@@ -33,29 +33,37 @@ export const colors = ['#823B3B', '#76EFA6', '#F4D1A4', '#666666'];
 
 const useStyles = makeStyles((theme) => ({
   threeWrapper: {
-    minHeight: 500,
-    minWidth: 400,
+    minHeight: 400,
+    maxHeight: 200,
     borderRadius: theme.custom.borders.brandBorderRadius,
     overflow: 'hidden',
-    position: 'relative',
     height: '100%',
+    
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: 50,
+    },
     boxShadow: theme.custom.shadows.brand,
     '& canvas': {
+      [theme.breakpoints.down('sm')]: {
+        maxHeight: 50,
+      },
       boxShadow: theme.custom.shadows.brandInset,
-      // background: theme.palette.background.default,
+      minHeight: 400,
+      maxHeight: 200,
       height: '100% !important',
-      minHeight: 500,
-      minWidth: 400,
+      display: 'block',
       position: 'relative',
     },
   },
 }));
 
-const ThreeWrapper = (props) => {
-  // useEffect(() => alert(JSON.stringify(currentTheme)), [currentTheme]);
-  const { } = props;
+const ThreeWrapper = React.memo((props) => {
+  const { threeContext } = props;
   const classes = useStyles();
-  // spring works on one property at a time
+
+  // ========================================================================== //
+  //   Initial react-spring
+  // ========================================================================== //
   const [{ x }, set] = useSpring(() => ({
     // when we pass an object through set, it updates this to property and puts the old property in the from object, for internal interpolation
     to: { x: '#2E00FF' },
@@ -70,24 +78,14 @@ const ThreeWrapper = (props) => {
 
   return (
     <a.div className={classes.threeWrapper} style={{ background: x }}>
-      {/* <a.img
-        src={"./assets/graphic.png"}
-        alt="carousel-img"
-        style={{
-          postion: "absolute",
-          top: "0px",
-          left: "0px",
-          width: "100%",
-          height: "100%",
-          zIndex: "100"
-        }}
-      /> */}
       <Suspense fallback={null}>
         <Canvas x={x} set={set} />
       </Suspense>
     </a.div>
   );
-};
+}, (pre, post) => {
+  return pre?.threeContext !== post?.tension;
+});
 
 export default ThreeWrapper;
 // ReactDOM.render(<App />, document.getElementById('root'));

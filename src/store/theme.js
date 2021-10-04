@@ -44,7 +44,7 @@ const fontSize = 14; // px
 // 16px is the default font-size used by browsers.
 const htmlFontSize = 16;
 const coef = fontSize / 14;
-export const pxToRem = (px) => `${(px / htmlFontSize) * coef}rem`;
+export const pxToRem = (px) => `${(px / htmlFontSize) * coef}rem !important`;
 
 // ========================================================================== //
 //   Typography
@@ -59,43 +59,42 @@ const TYPOGRAPHY = {
     fontFamily: 'Poppins',
     h1: {
       // textStroke: '2px currentColor',
-      // fontSize: pxToRem(30),
-      fontSize: '4.35rem !important',
       fontWeight: 900,
-      // fontSize: pxToRem( '5rem !important'),
-      [breakpoints.down('lg')]: {
-        fontSize: pxToRem(45),
-      },
+      fontSize: pxToRem(65),
+      textTransform: 'capitalize',
+      // fontSize: pxToRem( '5rem !important'), 
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(30),
+        fontSize: pxToRem(70),
       },
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(20),
+        fontSize: pxToRem(50),
       },
     },
     h2: {
       // fontSize: pxToRem( "5rem"),
       // textStroke: '2px currentColor',
-      fontSize: pxToRem(35),
       // color: palette.text.primary,
       fontWeight: 900,
+      textTransform: 'capitalize',
+      fontSize: pxToRem(40),
       [breakpoints.down('lg')]: {
-        fontSize: pxToRem(30),
+        fontSize: pxToRem(40),
       },
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(28),
+        fontSize: pxToRem(35),
       },
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(25),
+        fontSize: pxToRem(35),
       },
     },
     h3: {
       // fontSize: pxToRem( "16px"),
-      fontSize: pxToRem(33),
-      fontWeight: 200,
+      fontSize: pxToRem(20),
+      fontWeight: 900,
+      textTransform: 'capitalize',
       // color: palette.text.primary,
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(33),
+        fontSize: pxToRem(25),
       },
       [breakpoints.down('sm')]: {
         fontSize: pxToRem(20),
@@ -105,27 +104,35 @@ const TYPOGRAPHY = {
       fontSize: pxToRem(20),
       fontWeight: 500,
       // color: palette.text.primary,
-      [breakpoints.down('sm')]: {
-        fontSize: pxToRem(26),
-      },
       [breakpoints.down('md')]: {
         fontSize: pxToRem(18),
       },
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(26),
+      },
     },
     button: {
-      fontSize: pxToRem(13),
+      fontSize: pxToRem(15),
+      fontWeight: 300,
+      fontStyle: 'italic',
+
+
       // color: palette.text.primary,
       background: 'inherit',
+      [breakpoints.down('lg')]: {
+        fontSize: pxToRem(15),
+      },
+      [breakpoints.down('md')]: {
+        fontSize: pxToRem(15),
+      },
       [breakpoints.down('sm')]: {
         fontSize: pxToRem(11),
       },
-      [breakpoints.down('lg')]: {
-        fontSize: pxToRem(16),
-      },
-    },
+    }, 
     body1: {
       fontSize: pxToRem(18),
       lineHeight: '150%',
+      fontWeight: 200,
       // color: palette.text.primary,
       background: 'inherit',
       [breakpoints.down('sm')]: {
@@ -155,9 +162,9 @@ const TYPOGRAPHY = {
 const CUSTOM_THEME_PROPS = {
   custom: {
     borders: {
-    brandBorderRadius: '8px',
-    brandBorderRadius2: '22px',
-    brandBorderRadius3: '44px',
+    brandBorderRadius: '4px',
+    brandBorderRadius2: '12px',
+    brandBorderRadius3: '22px',
     brandBorder: '1px solid rgba(255,255,255,.3)',
     brandBorderSecondary: '1px solid rgba(0, 0, 100, 0.3)',
   },
@@ -587,9 +594,7 @@ const OVERRIDES = {
     MuiToolbar: {
       root: {
         background: 'none !important',
-        padding: spacing(1),
-        paddingLeft: spacing(1),
-        paddingRight: spacing(1),
+        padding: spacing(1,0),
         justifyContent: 'space-between',
         // padding: spacing(3),
       },

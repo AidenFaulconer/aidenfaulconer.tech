@@ -172,6 +172,7 @@ export const ThirdButton = (props) => {
       className={classes.thirdButton}
       size={size}
       variant="contained"
+      endIcon={<ButtonArrow />}
     >
       {children}
     </Button>

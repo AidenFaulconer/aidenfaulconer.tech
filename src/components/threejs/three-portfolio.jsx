@@ -502,7 +502,7 @@ export const Model = React.memo(({
           //       Cube material
           // ========================================================================== //
        */}
-      <a.meshPhysicalMaterial
+      <a.meshBasicMaterial
         map={texture}
         map-flipY={false}
         map-wrapS={THREE.RepeatWrapping}
@@ -521,7 +521,7 @@ export const Model = React.memo(({
         // aoMap={checkTier(texture)}
         roughnessMap={texture}// sexy
         // lightMap={checkTier(texture)}// sexy
-        clearcoat={determineClearcoat}
+        // clearcoat={determineClearcoat}
         // envMap={[texture, texture, texture]}
         // opacity={0.7}
         envMapIntensity={0.6}
@@ -533,7 +533,6 @@ export const Model = React.memo(({
 //   Cube memo optimizations
 // ========================================================================== //
 (pre, post) => {
-  const { position, x } = pre;
   return (pre.x !== post.x);
 });
 
@@ -580,13 +579,7 @@ export default React.memo(({
   //   samples: 17,
   //   rings: 11 // Rings (default: 11) must be a int
   // });
-
-  // tier: number;
-  // type: TierType;
-  // isMobile?: boolean;
-  // fps?: number;
-  // gpu?: string;
-  // device?: string;
+ 
   const {
     fps, gpu, isMobile, tier,
   } = useDetectGPU();
@@ -614,26 +607,24 @@ export default React.memo(({
         rotation: [Math.PI * 0.25, 0, 0],
       }}
     >
-      <fog args={[x, 5, 50]} attatch="background" />
       <ambientLight color={x} intensity={0.15} />
       <directionalLight
         castShadow
         position={[3.5, 5, -10]}
-        intensity={2.5}
+        intensity={3.5}
         color={x}
         // enabling shadows
-
-        // 2k texture
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        // 1k texture
-        // shadow-mapSize-width={1024}
-        // shadow-mapSize-height={1024}
-        shadow-camera-far={50}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
+        // // 2k texture
+        // shadow-mapSize-width={2048}
+        // shadow-mapSize-height={2048}
+        // // 1k texture
+        // // shadow-mapSize-width={1024}
+        // // shadow-mapSize-height={1024}
+        // shadow-camera-far={50}
+        // shadow-camera-left={-10}
+        // shadow-camera-right={10}
+        // shadow-camera-top={10}
+        // shadow-camera-bottom={-10}
       />
       <CameraControls />
       {/* <Mouse /> */}
@@ -641,7 +632,7 @@ export default React.memo(({
         {/* not dependant on physics */}
         {/* <SkyScene3> */}
         {/* all dependendant on physics */}
-        <Physics allowSleep gravity={[0, -20, 0.5]}>
+        <Physics gravity={[0, -20, 0.5]}>
           {/* <axesHelper args={[1, 1, 1]} /> */}
           <Borders opacity={1} x={x} />
           {/* <PreviewPlane /> */}
@@ -649,13 +640,15 @@ export default React.memo(({
           <Models set={set} x={x} mobile={false} />
         </Physics>
 
-        <Environment preset="studio" />
+        {/* <Environment preset="studio" /> */}
         {/* </SkyScene3> */}
       </Suspense>
 
       {/* <Post theme={theme} /> */}
     </Canvas>
   );
+}, (pre, post) => { 
+  return (pre?.x !== post?.x);
 });
 
 // {

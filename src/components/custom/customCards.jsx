@@ -18,7 +18,7 @@ import { navigate } from "gatsby"
 
 import shadows from "@material-ui/core/styles/shadows"
 import TiltPhaseSix from "./reactTilt"
-import { GoldButton, RegularButton, SecondaryButton } from "./customButton"
+import { GoldButton, RegularButton, SecondaryButton, ThirdButton } from "./customButton"
 
 import quoteGraphic from "../../../static/assets/exploration.png"
 
@@ -49,7 +49,7 @@ const blogCardStyles = makeStyles(theme => ({
     height: "100%",
     textAlign: "center",
     padding: theme.spacing(2),
-    background: "rgba(255,255,255,.6)", 
+    background: "rgba(255,255,255,.6)",
     border: theme.custom.borders.brandBorderSecondary,
     maxHeight: ({ cardHeight }) => cardHeight || "100%",
     borderRadius: theme.custom.borders.brandBorderRadius,
@@ -111,15 +111,17 @@ const customCardStyles = makeStyles(theme => ({
     maxWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
     // maxHeight: ({ cardHeight }) => (cardHeight || '100%'),
     // minHeight: ({ cardHeight }) => (cardHeight || '100%'),
-    height: "100%",
-    margin: theme.spacing(2),
-
-    background: ({ alt }) => alt && theme.palette.primary.main || "none",
-    color:  ({ alt }) => alt && theme.palette.primary.main || theme.palette.secondary.main, // rating stars inherit this
+    // height: "100%",
+    
+    background: ({ alt }) => (alt && theme.palette.primary.main) || "none",
+    color: ({ alt }) =>
+    (alt && theme.palette.primary.main) || theme.palette.secondary.main, // rating stars inherit this
     
     borderRadius: theme.custom.borders.brandBorderRadius,
     textAlign: "left",
-    padding: theme.spacing(1),
+    // margin: theme.spacing(3),
+    // padding: theme.spacing(1),
+    marginBottom: theme.spacing(6),
     // boxShadow: theme.custom.shadows.brand,
     display: "grid",
     transition: theme.transitions.create("all", {
@@ -160,7 +162,8 @@ const customCardStyles = makeStyles(theme => ({
     textTransform: "uppercase",
 
     // color: theme.palette.text.primary,
-    color:  ({ alt }) => alt && theme.palette.secondary.main || theme.palette.primary.main, // rating stars inherit this
+    color: ({ alt }) =>
+      (alt && theme.palette.secondary.main) || theme.palette.primary.main, // rating stars inherit this
 
     width: "100%",
     minHeight: 50,
@@ -265,10 +268,9 @@ const genericStyles = makeStyles(theme => ({
     height: ({ height }) =>
       height - theme.spacing(4) || cardDimensions.height - theme.spacing(4),
 
-    border: theme.custom.borders.brandBorder,
+    // background: theme.palette.background.button,
     top: 0,
     margin: "auto",
-    borderBottom: theme.custom.borders.brandBorder,
     borderRadius: theme.custom.borders.brandBorderRadius,
     pointerEvents: "none",
     display: "inline-block",
@@ -293,6 +295,7 @@ const genericStyles = makeStyles(theme => ({
     // boxShadow: theme.custom.shadows.brand,
     borderRadius: theme.custom.borders.brandBorderRadius,
     userSelect: "none",
+    width: '100%',
     "& .react-multi-carousel-list": {
       height: "100%", // 400px
       overflow: "visible",
@@ -305,6 +308,7 @@ const genericStyles = makeStyles(theme => ({
         "& li": {
           width: "100% !Important",
           // listStyle: "hiragana",
+          height: 'fit-content',
           listStyle: "none",
           listStylePosition: "inside",
           // width: ({ width }) => (width || cardDimensions.width),
@@ -315,8 +319,7 @@ const genericStyles = makeStyles(theme => ({
           content: "",
           display: "block",
           width: "200%",
-          height: "200%",
-          position: "absolute",
+          height: "200%", 
           background: theme.palette.background.default,
         },
         // marginLeft: '-100px',
@@ -494,17 +497,27 @@ export const CardCarousel = React.memo(
               /* some data into the carousel includes links to various content, here we handle the various content being passed into the custom cards */
               cardActions={
                 <>
-                  {alt && (
-                  <RegularButton size="small" fullWidth onClick={() => handleExpandClick(index)}>
-                    Read more
-                  </RegularButton>
-                  ) || (
-                  <SecondaryButton size="small" fullWidth onClick={() => handleExpandClick(index)}>
-                    Read more
-                  </SecondaryButton>
+                  {(alt && (
+                    <RegularButton
+                      size="small"
+                      fullWidth
+                      onClick={() => handleExpandClick(index)}
+                    >
+                      Read more
+                    </RegularButton>
+                  )) || (
+                    <ThirdButton
+                      size="small"
+                      fullWidth
+                      onClick={() => handleExpandClick(index)}
+                    >
+                      Read more
+                    </ThirdButton>
                   )}
                   {data.project && (
-                    <GoldButton onClick={() => routeToBlog(data.project || "/")}>
+                    <GoldButton
+                      onClick={() => routeToBlog(data.project || "/")}
+                    >
                       View project
                     </GoldButton>
                   )}
@@ -568,33 +581,30 @@ export const CustomCard = React.memo(props => {
     []
   )
 
-  return (
-    <TiltPhaseSix
-      key={data.title + index}
-      options={persepctiveModifierOptions}
-      className={classes.perspectiveModifier}
-    >
+  return ( 
       <Card {...props} className={classes.card} elevation={0}>
         <Grid container>
-          <Typography
-            variant="h4"
-            align="left"
-            style={{ opacity: 0.6, fontWeight: "bolder" }}
-            className={classes.cardHeader}
-          >
-            {title && title}
-          </Typography>
-          {/* subheader */}
-          <Typography
-            variant="h4"
-            gutterBottom
-            align="left"
-            style={{ marginBottom: "15px", marginTop: "25px" }}
-            className={classes.cardHeader}
-          >
-            {subheader && subheader}
-          </Typography>
-
+          {title && (
+            <Typography
+              variant="h4"
+              align="left"
+              style={{ opacity: 0.6, fontWeight: "bolder" }}
+              className={classes.cardHeader}
+            >
+              {title}
+            </Typography>
+          )}
+          {subheader && (
+            <Typography
+              variant="h4"
+              gutterBottom
+              align="left"
+              style={{ marginBottom: "15px", marginTop: "25px" }}
+              className={classes.cardHeader}
+            >
+              {subheader}
+            </Typography>
+          )}
           {rating && (
             <Grid item xs={12} sx={{ mt: 5 }}>
               <div className="d-flex position-relative">
@@ -630,8 +640,7 @@ export const CustomCard = React.memo(props => {
             </CardActions>
           </Grid>
         </Grid>
-      </Card>
-    </TiltPhaseSix>
+      </Card> 
   )
 })
 
@@ -774,10 +783,6 @@ export const BlogGrid = ({ cardHeight, cardWidth, id, title, blogData }) => {
               stripHtml(data?.node?.content) ||
               "A post about gardening, learn more by exploring this blog post!",
             postUrl: `blog${data?.node?.uri}`,
-          }
-
-          {
-            /* console.log(data, parsedData); */
           }
 
           const breakpointSizes = {

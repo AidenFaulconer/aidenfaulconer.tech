@@ -70,7 +70,7 @@ const IndexPage = React.memo(
       <>
         <Container maxWidth="lg">
           <HeroHeader id="back-to-top-anchor" />
-          <Grid
+          {/* <Grid
             item
             xs={12}
             md={5}
@@ -88,7 +88,7 @@ const IndexPage = React.memo(
               I’ll work with you to create a new Jamstack marketing or eCommerce
               site that works towards your business goals.
             </Typography>
-          </Grid>
+          </Grid> */}
           <About id="about" />
           <Languages id="languages" />
         {/* <Experience id="experience" /> */}
