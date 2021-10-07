@@ -215,18 +215,16 @@ const Descriptor = ({ styleData, children }) => {
       alignContent="center"
       alignItems="center"
       justify="center"
-      className={classes.descriptor}
-      md={12}
-      xs={12}
+      className={classes.descriptor} 
     >
       {children}
 
-      <Grid item container md={5} sm={12}>
+      <Grid item container>
         {/* Typography */}
-        <Grid item style={{ marginLeft: 20, paddingTop: 20 }}>
+        <Grid item style={{ paddingTop: 20 }}>
           <Typography
             color="inherit"
-            align={"center"}
+            align="left"
             gutterBottom
             style={{ marginBottom: 20, zIndex: -1 }}
             variant="h2"
@@ -237,13 +235,13 @@ const Descriptor = ({ styleData, children }) => {
             color="inherit"
             component="body"
             gutterBottom
-            align={"center"}
+            align="left"
           >
             {description || ""}
           </Typography>
         </Grid>
         {/* CTA */}
-        <Grid item container justify={"center"}>
+        <Grid item container justify="flex-start">
           <Grid item style={{ marginRight: 10, paddingBottom: 5 }}>
             {ctas[0] &&
               ((altButtons === 0 && <RegularButton>{ctas[0]}</RegularButton>) ||
@@ -271,7 +269,7 @@ const Graphic = props => {
   const { src, alt, bgAlt = false, border } = props
   const classes = useStyles({ bgAlt, border })
   return (
-    <Grid md={7} sm={12} className={classes.graphic}>
+    <Grid container className={classes.graphic}>
       <img alt={alt} src={src} />
     </Grid>
   )
@@ -418,8 +416,7 @@ const Experience = React.memo(
       <section
         ref={ref}
         className={(classes.section, classes.experienceContainer)}
-      >
-        <Grid container></Grid>
+      > 
       </section>
     )
   })
@@ -619,20 +616,20 @@ const WhatDoYouNeedDescriptor = ({ description, ctas }) => {
   const { breakpoint } = useBreakpoints()
   return (
     <>
-      <Grid item container sm={12} style={{ minHeight: 250, maxWidth: 400 }}>
+      <Grid item container  style={{ minHeight: 250, maxWidth: 400 }}>
         {/* Typography */}
         <Grid item style={{ paddingBottom: 20 }}>
           <Typography
             color="secondary"
             component="body"
             gutterBottom
-            align={breakpoint === "sm" ? "center" : "left"}
+            align="center"
           >
             {description || ""}
           </Typography>
         </Grid>
         {/* CTA */}
-        <Grid item container justify={breakpoint === "sm" ? "center" : "left"}>
+        <Grid item container justify="center">
           <Grid item style={{ marginRight: 5, paddingBottom: 5 }}>
             {ctas[0] && <ThirdButton>{ctas[0]}</ThirdButton>}
           </Grid>
@@ -703,9 +700,7 @@ const WhatDoYouNeed = React.memo(
         <Grid container spacing={6} justify="center">
           <Grid
             container
-            item
-            md={4}
-            xs={12}
+            item 
             className={classes.offerContainer}
           >
             <Grid item>
@@ -746,9 +741,7 @@ const WhatDoYouNeed = React.memo(
            */}
           <Grid
             container
-            item
-            md={4}
-            xs={12}
+            item 
             className={classes.offerContainer}
           >
             <Grid item>

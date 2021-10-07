@@ -192,7 +192,6 @@ export const SecondaryButton = (props) => {
     <Button
       {...props}
       disableRipple={true}
-
       className={classes.secondaryButton}
       size={size}
       color="primary"
@@ -215,7 +214,6 @@ export const RegularButton = (props) => {
     <Button
       {...props}
       disableRipple={true}
-
       className={classes.regularButton}
       color="primary"
       size={size}
@@ -224,7 +222,6 @@ export const RegularButton = (props) => {
       endIcon={<ButtonArrow />}
     >
       {children}
-
     </Button>
   );
 };

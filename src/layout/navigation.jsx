@@ -34,7 +34,7 @@ import { NavigationBlob } from "../components/custom/navigationBlob"
 import { valtioState } from "../store/store-wrapper"
 import { dt, lt } from "./materialUI"
 
-import { useTriggerTransition } from "gatsby-plugin-transition-link"
+// import { useTriggerTransition } from "gatsby-plugin-transition-link"
 import AniLink from "gatsby-plugin-transition-link/AniLink"
 
 const useStyles = makeStyles(theme => ({
@@ -135,63 +135,64 @@ export default function Navigation({ theme, themeState, children, window }) {
   // ========================================================================== //
   //   Page Navigation
   // ========================================================================== //
-  const changePage = useTriggerTransition()
-  const navigatePage = React.useCallback((page, event) => {
-    changePage({
-      pathname: page,
-      to: page,
-      // trigger: async pages => {
-      //   // wait until we have access to both pages
-      //   const exit = await pages.exit
-      //   const entry = await pages.entry
-      //   // here we can access both pages
+  // const changePage = useTriggerTransition()
+  // const navigatePage = React.useCallback((page, event) => {
+  //   changePage({
+  //     pathname: page,
+  //     to: page,
+  //     // trigger: async pages => {
+  //     //   // wait until we have access to both pages
+  //     //   const exit = await pages.exit
+  //     //   const entry = await pages.entry
+  //     //   // here we can access both pages
 
-      //   // You could measure the entry element here
+  //     //   // You could measure the entry element here
 
-      //   // start exit animation based on measurements if you want
-      //   // wait for the entering page to become visible
-      //   await entry.visible
-      //   // the entering page is visible here.
-      //   // if you want you can animate it now!
-      // },
-      exit: {
-        trigger: ({ exit, node }) => {
-          const transitionStyle = {
-            opacity: 0,
-            transform: "translateY(100%)",
-            background: "black",
-          }
-          node.style = transitionStyle
-          console.log("exit", exit, "node", node)
-        },
-        zIndex: 10,
-        delay: 0.5,
-      },
-      entry: {
-        trigger: ({ entry, node }) => {
-          const transitionStyle = {
-            opacity: 1,
-            transform: "translateX(0%)",
-            background: "black",
-          }
-          node.style = transitionStyle
-          
-          console.log("entry", entry, "node", node)
-        },
-        zIndex: 10,
-        delay: 0.5,
-      },
-      // enter: {
-      //   trigger: ({ enter, node }) => {
-      //     node.style.opacity = "1"
-      //     node.style.transform = "translateX(0)"
-      //     console.log("enter", enter, "node", node)
-      //   },
-      //   zIndex: 10,
-      //   delay: 0.5,
-      // },
-    })
-  }, [])
+  //     //   // start exit animation based on measurements if you want
+  //     //   // wait for the entering page to become visible
+  //     //   await entry.visible
+  //     //   // the entering page is visible here.
+  //     //   // if you want you can animate it now!
+  //     // },
+  //     exit: {
+  //       trigger: ({ exit, node }) => {
+  //         const transitionStyle = {
+  //           opacity: 0,
+  //           transform: "translateY(100%)",
+  //           background: "black",
+  //         }
+  //         node.style = transitionStyle
+  //         console.log("exit", exit, "node", node)
+  //       },
+  //       zIndex: 10,
+  //       delay: 0.5,
+  //     },
+  //     entry: {
+  //       trigger: ({ entry, node }) => {
+  //         const transitionStyle = {
+  //           opacity: 1,
+  //           transform: "translateX(0%)",
+  //           background: "black",
+  //         }
+  //         node.style = transitionStyle
+
+  //         console.log("entry", entry, "node", node)
+  //       },
+  //       zIndex: 10,
+  //       delay: 0.5,
+  //     },
+  //     // enter: {
+  //     //   trigger: ({ enter, node }) => {
+  //     //     node.style.opacity = "1"
+  //     //     node.style.transform = "translateX(0)"
+  //     //     console.log("enter", enter, "node", node)
+  //     //   },
+  //     //   zIndex: 10,
+  //     //   delay: 0.5,
+  //     // },
+  //   })
+  // }, [])
+
   const boldCurrentPage = React.useCallback((name, i) => {
     if (typeof window !== "undefined")
       if (pages[i].url === document.location.hash) return <b>{name}</b>
@@ -224,13 +225,13 @@ export default function Navigation({ theme, themeState, children, window }) {
     if (typeof window == "undefined") return
     console.log(page)
     if (page[0] === "#" && typeof document != "undefined") {
-      navigatePage(page)
-      // scrollToSmoothly(
-      //   document.getElementById(page.slice(1, page.length)).offsetTop,
-      //   2000
-      // )
+      // navigatePage(page)
+      scrollToSmoothly(
+        document.getElementById(page.slice(1, page.length)).offsetTop,
+        2000
+      )
     } else {
-      navigatePage(page)
+      // navigatePage(page)
     }
     // window.location.hash = page.url
   }, [])
@@ -241,12 +242,20 @@ export default function Navigation({ theme, themeState, children, window }) {
 
   const logo = React.useCallback(color => {
     return (
-      <AniLink paintDrip to="/">
-      <div
-        className={(classes.logo, classes.menuIcon)} 
-        style={{ fill: "white" }}
-        dangerouslySetInnerHTML={{
-          __html: `
+      <AniLink
+        hex={"#2E00FF"}
+        duration={1.2}
+        paintDrip
+        cover
+        direction={"top"}
+        // zindex={20}
+        to="/"
+      >
+        <div
+          className={(classes.logo, classes.menuIcon)}
+          style={{ fill: "white" }}
+          dangerouslySetInnerHTML={{
+            __html: `
           <svg width="125" height="40" viewBox="0 0 125 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M20.6864 40C31.6141 40 40.0534 31.0457 40.0534 20C40.0534 8.9543 30.7141 0 19.7864 0C8.85865 0 0 8.9543 0 20C0 31.0457 9.75873 40 20.6864 40ZM17.8412 29.4021H13.9876L21.8365 16.2493L19.6627 12.7759L10.5752 29.4021H6.68751L18.5048 7.87186L20.7865 7.86572C20.7865 7.86572 24.0702 13.597 24.6465 14.5554C25.3627 16.3617 24.2271 19.0775 24.2271 19.0775L17.8412 29.4021ZM24.9596 29.4021H21.3429L25.4086 22.6791L24.8995 21.6519C24.121 20.3365 26.2166 17.2821 26.2166 17.2821C26.2166 17.2821 32.9326 29.3089 33.0154 29.4281C32.4102 29.426 29.0562 29.4021 29.0562 29.4021L27.0268 25.8256L24.9596 29.4021Z" fill="white"/>
           <path d="M69.324 7.81064V29.2307H65.8058V7.81064H69.324Z" fill="white"/>
@@ -256,11 +265,12 @@ export default function Navigation({ theme, themeState, children, window }) {
           <path d="M57.3411 24.8157H48.2811L46.7244 29.2308H43.0195L50.7718 7.59052H54.8815L62.6338 29.2308H58.8977L57.3411 24.8157ZM56.3448 21.9241L52.8267 11.8813L49.2774 21.9241H56.3448Z" fill="white"/>
           </svg>
           `,
-        }}
-      />
-</AniLink>
+          }}
+        />
+      </AniLink>
     )
   }, [])
+ 
 
   const pages = [
     { name: "Book Online", url: "/booking" },
@@ -277,23 +287,41 @@ export default function Navigation({ theme, themeState, children, window }) {
 
   const search = [{ name: "search", url: "#search", icon: "search" }]
 
+  const processPages = React.useCallback((name, url) => {
+    return pages.map((page, i) => {
+      switch (page.url[0]) {
+        case "/":
+          return (
+            <AniLink
+              hex={"#2E00FF"}
+              duration={1.2}
+              paintDrip
+              cover
+              direction={"top"}
+              // zindex={20}
+              key={page.name}
+              to={page.url}
+            >
+              {boldCurrentPage(page.name.toUpperCase(), i)}
+            </AniLink>
+          )
+        case "#":
+          return (
+            <Link key={page.name} to={page.url} className={classes.pageLinks}>
+              {boldCurrentPage(page.name.toUpperCase(), i)}
+            </Link>
+          )
+        default:
+          return null
+      }
+    })
+  }, [])
+
   const pageNavigation = React.useCallback(() => {
     const classes = useStyles()
     return (
       <div className={classes.pageNav} style={{ zIndex: 30 }}>
-        {pages.map((page, i) => (
-          <Link key={page.name} to={page.url} className={classes.pageLinks}>
-            {(page.name === "BOOK ONLINE" && (
-              <SecondaryButton
-                size="small"
-                onClick={event => navigateTo(page.url)}
-              >
-                {boldCurrentPage(page.name.toUpperCase(), i)}
-              </SecondaryButton>
-            )) ||
-              boldCurrentPage(page.name.toUpperCase(), i)}
-          </Link>
-        ))}
+        {processPages(pages)}
       </div>
     )
   }, [])

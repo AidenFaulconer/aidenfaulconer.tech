@@ -66,8 +66,7 @@ export default React.memo(({ children }) => {
   return (
     <footer className={classes.footer}>
       <Grid
-        container
-        xs={12}
+        container 
         spacing={6}
         alignContent="center"
         justify="flex-start"

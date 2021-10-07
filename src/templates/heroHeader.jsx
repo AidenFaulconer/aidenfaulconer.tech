@@ -16,13 +16,8 @@ import {
 } from "@material-ui/core"
 
 import { alpha, makeStyles } from "@material-ui/core/styles"
-import ThreeWrapper from "./threejs/three-wrapper"
-import { RegularButton, SecondaryButton } from "./custom/customButton"
-
-import cubesOffset from "../../static/assets/portfolio/cubesOffset.png"
-import { useBreakpoints } from "react-use-breakpoints"
-import { useSnapshot } from "valtio"
-import { valtioState } from "../store/store-wrapper"
+import ThreeWrapper from "../components/threejs/three-wrapper"
+import { RegularButton, SecondaryButton } from "../components/custom/customButton"
 
 const useStyles = makeStyles(theme => ({
   heroContainer: {
@@ -151,13 +146,8 @@ export const HeroHeader = props => {
           </Grid>
         </Grid>
       </Box>
-    </section>
+      </section>
+      
   )
-}
-
-const mapStateToProps = state => ({})
-
-const mapDispatchToProps = {}
-
-export default React.memo(HeroHeader)
-// export default connect(mapStateToProps, mapDispatchToProps)(HeroHeader);
+} 
+export default React.memo(HeroHeader) 

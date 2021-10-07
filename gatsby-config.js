@@ -30,6 +30,23 @@ module.exports = {
   // eslint-disable-next-line global-require
   siteMetadata: require('./site-meta-data.json'),
   plugins: [
+    
+    // ========================================================================== //
+    //     Page transitioning
+    // ========================================================================== //
+
+    // page, and template components receive, transitionStatus, entry, and exit
+    // instead of gatsby-link use transition link with transition configuration attatched
+    {
+      resolve: 'gatsby-plugin-transition-link',
+      options: {
+        //layout injected manually in gatsby-browser and gatsby-ssr
+        injectPageProps: true,
+        layout: `${__dirname}/src/layout/layout.jsx`, // this is excluded and stays static on transtiions **this means not including layout in pages or templates**
+      }, // performance optimization
+
+    }, // creates the 'tl-edge & tl-wrapper https://github.com/TylerBarnes/gatsby-plugin-transition-link/issues/29
+
     {
       resolve: 'react-refresh',
       options: {},
@@ -181,21 +198,6 @@ module.exports = {
     // `gatsby-plugin-sitemap`,
 
     // ========================================================================== //
-    //     Page transitioning
-    // ========================================================================== //
-
-    // page, and template components receive, transitionStatus, entry, and exit
-    // instead of gatsby-link use transition link with transition configuration attatched
-    {
-      resolve: 'gatsby-plugin-transition-link',
-      options: {
-        injectPageProps: true,
-        layout: `${__dirname}/src/layout/layout.jsx`, // this is excluded and stays static on transtiions **this means not including layout in pages or templates**
-      }, // performance optimization
-
-    }, // creates the 'tl-edge & tl-wrapper https://github.com/TylerBarnes/gatsby-plugin-transition-link/issues/29
-
-    // ========================================================================== //
     //     Offline capabilities
     // ========================================================================== //
     // 'gatsby-plugin-offline',
@@ -248,3 +250,5 @@ module.exports = {
     },
   ].filter(Boolean),
 };
+
+

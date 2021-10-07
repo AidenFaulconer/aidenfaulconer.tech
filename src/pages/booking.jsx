@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Container, Grid, makeStyles, Typography } from "@material-ui/core"
 import Layout from "../layout/layout"
-import HeroHeader from "../components/heroHeader"
 import {
   About,
   Projects,
@@ -84,6 +83,7 @@ const BookingPage = React.memo(
       <>
         <Container maxWidth="xl">
           {/* <Contact id="contact"/> */}
+          <h1>Hello world</h1>
         </Container>
 
         

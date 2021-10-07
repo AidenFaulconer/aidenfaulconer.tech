@@ -18,14 +18,15 @@ import { navigate } from "gatsby"
 
 import shadows from "@material-ui/core/styles/shadows"
 import TiltPhaseSix from "./reactTilt"
-import {
-  RegularButton,
-  SecondaryButton,
-  ThirdButton,
-} from "./customButton"
+import { RegularButton, SecondaryButton, ThirdButton } from "./customButton"
 
 import quoteGraphic from "../../../static/assets/exploration.png"
 import { transition } from "../../store/theme"
+
+// ========================================================================== //
+// React can be a pain if you dont define prop types for certain cases, such as complex data or passing components
+// ========================================================================== //
+import PropTypes from "prop-types"
 
 // ========================================================================== //
 // default card dimensions
@@ -440,14 +441,14 @@ const carouselProps = {
 // ========================================================================== //
 export const CardCarousel = React.memo(
   ({
-    carouselData,
-    title,
-    id,
+    carouselData = [],
+    title = "",
+    id = "card-carousel",
     cardWidth = cardDimensions.width,
     cardHeight = cardDimensions.height,
-    color,
-    subtitle,
-    alt,
+    color = "primary",
+    subtitle = "",
+    alt = false,
   }) => {
     const classes = genericStyles({
       width: cardWidth,
@@ -497,7 +498,7 @@ export const CardCarousel = React.memo(
       <section id={id} className={classes.section}>
         {/* <div className="d-flex flex-wrap justify-content-center"> */}
         <Carousel
-          ssr
+          // ssr
           responsive={carouselProperties}
           infinite
           direction="right"
@@ -598,9 +599,31 @@ export const CardCarousel = React.memo(
   }
 )
 
+//define CardCarousel prop types
+CardCarousel.propTypes = {
+  carouselData: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      description: PropTypes.string,
+      image: PropTypes.string,
+      icon: PropTypes.string,
+      project: PropTypes.string,
+      rating: PropTypes.number,
+    })
+  ),
+  title: PropTypes.string,
+  id: PropTypes.string,
+  cardWidth: PropTypes.number,
+  cardHeight: PropTypes.number,
+  color: PropTypes.string,
+  subtitle: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  alt: PropTypes.bool,
+}
+
 // ========================================================================== //
 // custom card
 // ========================================================================== //
+
 export const CustomCard = React.memo(
   props => {
     // default to empty object or null in the case these props are not used/defined
@@ -702,6 +725,33 @@ export const CustomCard = React.memo(
   }
 )
 
+//define custom cards prop types
+CustomCard.propTypes = {
+  cardContent: PropTypes.node,
+  cardHeader: PropTypes.node,
+  cardActions: PropTypes.node,
+  cardMedia: PropTypes.node,
+  expanded: PropTypes.bool,
+
+  title: PropTypes.string,
+  id: PropTypes.string,
+  cardWidth: PropTypes.number,
+  cardHeight: PropTypes.number,
+  color: PropTypes.string,
+  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  alt: PropTypes.bool,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      description: PropTypes.string,
+      image: PropTypes.string,
+      icon: PropTypes.string,
+      project: PropTypes.string,
+      rating: PropTypes.number,
+    })
+  ),
+}
+
 // ========================================================================== //
 // blog card
 // ========================================================================== //
@@ -797,7 +847,10 @@ export const BlogPostCard = React.memo(
           </CardContent>
 
           <CardActions className={classes.blogCardActions}>
-            <RegularButton size="large" onClick={() => routeToBlog(data.postsUrl)}>
+            <RegularButton
+              size="large"
+              onClick={() => routeToBlog(data.postsUrl)}
+            >
               Read more
             </RegularButton>
           </CardActions>
@@ -809,6 +862,35 @@ export const BlogPostCard = React.memo(
     return pre !== post
   }
 )
+BlogPostCard.propTypes = {
+  cardContent: PropTypes.node,
+  cardHeader: PropTypes.node,
+  cardActions: PropTypes.node,
+  cardMedia: PropTypes.node,
+
+  title: PropTypes.string,
+  id: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  color: PropTypes.string,
+  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  alt: PropTypes.bool,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      description: PropTypes.string,
+      image: PropTypes.string,
+      icon: PropTypes.string,
+      project: PropTypes.string,
+      rating: PropTypes.number,
+    })
+  ),
+
+  size: PropTypes.number,
+  avatarImg: PropTypes.string,
+  featured: PropTypes.bool,
+  breakpointSizes: PropTypes.object,
+}
 
 // ========================================================================== //
 // blog grid

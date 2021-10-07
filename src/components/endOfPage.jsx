@@ -23,7 +23,7 @@ const EndOfPage = () => {
   const classes = useStyles()
   return (
     <section className={classes.endOfPage}>
-      <Grid container justify="center" alignItems="center" xs={12}>
+      <Grid container justify="center" alignItems="center">
         {/* Typography */}
         <Grid item xs={6}>
           <Grid item xs={12}>

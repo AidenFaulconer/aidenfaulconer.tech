@@ -1,3 +1,5 @@
+//https://www.gatsbyjs.org/docs/browser-apis/#wrapRootElement
+
 import "prismjs/themes/prism-okaidia.css"
 import "./src/styles/bootstrap.scss"
 import "@fontsource/poppins" // https://github.com/fontsource/fontsource/blob/main/packages/roboto/README.md
@@ -10,129 +12,23 @@ import Layout from "./src/layout/layout"
 import React from "react"
 import { navigate } from "gatsby"
 import { useStateWithCallbackInstant } from "./src/components/util/customHooks"
-//if it has been created, then we can render the ThreeWrapper
-//if it has not been created, then we can render a loading screen
-//this is done by hooking into gatsbys wrapRootElement
-// //https://www.gatsbyjs.org/docs/browser-apis/#wrapRootElement
 
-// ========================================================================== //
-// Preserve context across multiple wrappers
-// ========================================================================== //
-
-const ContextPreserve = ({ children }) => {
-  const [state, setState] = useStateWithCallbackInstant(valtioState, () => {
-    const prefersReducedMotionSetting =
-      typeof window !== `undefined` &&
-      window.matchMedia("(prefers-reduced-motion: reduce)")
-
-    const prefersReducedMotion = prefersReducedMotionSetting
-
-    if (
-      prefersReducedMotionSetting.matches &&
-      process.env.NODE_ENV === `development`
-    ) {
-      console.warn(
-        `[gatsby-plugin-transition-link] Warning! prefers-reduced-motion is activated via your OS settings. This means TransitionLink animations will not run.`
-      )
-    }
-    //page transtion state added to global state management **valtio**
-      valtioState.transitionContext = {
-        inTransition: false,
-        disableAnimation: prefersReducedMotion.matches,
-        // event
-        e: false,
-        // exit
-        exitDelay: 0,
-        exitLength: 0,
-        exitState: {},
-        exitProps: {},
-        exitTrigger: false,
-        // entry
-        entryDelay: 0,
-        entryLength: 0,
-        entryState: {},
-        entryProps: {},
-        entryTrigger: false,
-        // state updates
-        updateContext: obj => setState(obj),
-      }
-
-    if (
-      prefersReducedMotion &&
-      typeof prefersReducedMotion.addEventListener === `function`
-    ) {
-      prefersReducedMotion.addEventListener("change", () => {
-        setState({
-          disableAnimation: prefersReducedMotion.matches,
-        })
-      })
-    } else if (
-      prefersReducedMotion &&
-      typeof prefersReducedMotion.addListener === `function`
-    ) {
-      prefersReducedMotion.addListener(() => {
-        setState({
-          disableAnimation: prefersReducedMotion.matches,
-        })
-      })
-    }
-  })
-
-  // Did mount
-  useEffect(() => {
-    this.state.updateContext(getPagesPromises())
-  }, [])
-
-  return { children }
-}
-
-// ========================================================================== //
-// NOTE: This code is repeated in ssr
-// ========================================================================== //
-
-// ========================================================================== //
-// Root Preserve MUI and Threejs context
-// ========================================================================== //
-export const wrapRootElement = ({ element }) => {
-  if (typeof window !== `undefined`) {
-    window.addEventListener("popstate", function (event) {
-      // prevent the back button during transitions as it breaks pages
-      if (window.__tl_inTransition) {
-        window.__tl_back_button_pressed = true
-        navigate(window.__tl_desiredPathname)
-      }
-    })
-  }
-
-  return (
-    typeof window !== "undefined" &&
-    React && (
-      <Layout>
-        <MaterialUI>{element}</MaterialUI>
-      </Layout>
-    )
-  )
-}
-
-// const InternalProvider = require('./context/InternalProvider').default
-
-module.exports = ({ element }) => {
-  return <InternalProvider>{element}</InternalProvider>
-}
+import InternalProvider from "gatsby-plugin-transition-link/context/InternalProvider"
 
 // ========================================================================== //
 // Page Preserve transitions
 // ========================================================================== //
-export const shouldUpdateScroll = () => !window.__tl_inTransition
-export const wrapPageElement = ({ element, props }) => {
+export function wrapPageElement({ element, props }, pluginOptions) {
+  console.log(element) //element empty!!! why!
+  if (typeof window === "undefined") return
+  // <Layout {...props}>{element}</Layout>
+
+  //transition-link renders many underlaying components, so we need to wrap them in a div
   return (
-    <Layout {...props}>
-      <TransitionHandler {...props} {...pluginOptions}>
-        {element}
-      </TransitionHandler>
-    </Layout>
+    <MaterialUI>
+      <InternalProvider /*children={[element]}*/ >
+        <Layout {...props}>{[element]}</Layout>
+      </InternalProvider>
+    </MaterialUI>
   )
 }
-
-// wrap threejs here with higher order animation component
-// ...

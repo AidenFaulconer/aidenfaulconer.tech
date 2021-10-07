@@ -13,7 +13,7 @@ import { ResizeObserver } from "@juggle/resize-observer"
 
 // animation and post processing
 import { useSpring, interpolate } from "@react-spring/core"
-import { a } from "@react-spring/three" 
+import { a } from "@react-spring/three"
 
 // three.js in react
 import {
@@ -34,6 +34,7 @@ import {
 } from "@react-three/drei"
 import { Physics, usePlane, useSphere, useBox } from "@react-three/cannon" // not compatible with @react-three/fiber, needs redundant install of react-three-fiber
 // import CurveModifier from "drei/CurveModifier";
+import { Tween } from "gsap/gsap-core"
 
 // asset imports
 // import Post from './post-processing';
@@ -62,23 +63,12 @@ export const Plane = React.memo(({
 }) => {
   const { viewport, gl: { render }, camera } = useThree();
   const [ref, api] = usePlane(() => ({ args: [density, density], ...props }));
-  // const planeRef = React.useRef(ref)
-  // const shadowRef = React.useRef(ref)
-
-  // React.useEffect(()=>{
-  //   // console.log(planeRef.current)
-  //   if (typeof shadowRef.current?.children != 'undefined')
-  //     console.log(shadowRef.current?.children)
-  // },[])
-  // /https://github.com/pmndrs/drei#softshadows
-  // https://threejs.org/docs/#api/en/textures/Texture.dispose
-  // const dispose = React.useCallback(() => {
-  //   if (typeof shadowRef.current?.children != 'undefined')
-  //     {
-  //       console.log(shadowRef.current?.children)
-  //       // shadowRef.current?.children[0].material.map
-  //     }
-  // },[])
+  // useEffect(() => {
+  //   if (ref.current)
+  //     //compute a bounding box on the plane
+  //     // api.setBounds(meshBounds(ref.current));
+    
+  // },[ref])
 
   return (
     <a.mesh receiveShadow={shadows} ref={ref} {...props} dispose={null}>
@@ -331,17 +321,25 @@ export const Model = React.memo(
     inspect,
     ratio,
   }) => {
-    // function that calculates volume
-    // const volume = (x) => {
-    //   const cube = new THREE.Box3().setFromObject(model);
-    //   const cubeSize = cube.getSize(new THREE.Vector3());
-    //   const cubeVolume = cubeSize.x * cubeSize.y * cubeSize.z;
-    //   const cubeVolumeInMeters = cubeVolume * 0.000001;
-    //   const cubeVolumeInMetersCubed = cubeVolumeInMeters * cubeVolumeInMeters * cubeVolumeInMeters;
-    //   const cubeVolumeInMetersCubedInKg = cubeVolumeInMetersCubed * 0.001;
-    //   const cubeVolumeInMetersCubedInKgPerMeter = cubeVolumeInMetersCubed / x;
-    //   return cubeVolumeInMetersCubedInKgPerMeter;
-    // };
+    // ========================================================================== //
+    //     Cube animatin
+    // ========================================================================== //
+    const [animated, setAnimated] = useState(false)
+    const spinCube = useCallback(() => {
+      setAnimated(true)
+      api.applyImpulse([0, 30*5, 0], [0, 0, 0])
+      setTimeout(() => {
+        setAnimated(false)
+      }, 1530)
+    }, [inspect])
+
+    useFrame(state => {
+      if (animated) {
+        //roate the cube in every angle with a quaternion
+        const amnt = Math.sin(state.clock.getElapsedTime()) * 5
+        api.rotation.set(0,amnt,0)
+      }
+    })
 
     const { viewport, set } = useThree()
     const texture =
@@ -377,7 +375,11 @@ export const Model = React.memo(
     // prettier-ignore
     const onClick = useCallback((e) => {
       if (inspect > 0) setInspect(-1)
-      else setInspect(position, e); setColor({ x: color });
+      else {
+        setInspect(position, e);
+        setColor({ x: color })
+        spinCube();
+      };
       
     }, []);
     // prettier-ignore
@@ -568,15 +570,20 @@ export const Camera = React.memo(
 // ========================================================================== //
 
 //create transparent orb in react three fiber
-export const Orb = ({x}) => {
+export const Orb = ({ x }) => {
   const ref = useRef()
   useEffect(() => {
     //set this refs render order to 1
     // if(ref.current)
-      // ref.current.renderOrder = 1
-  },[])
+    // ref.current.renderOrder = 1
+  }, [])
   return (
-    <a.mesh receiveShadow ref={ref} scale={[2.55, 2.55, 2.55]} position={[0, 0, 0]}>
+    <a.mesh
+      receiveShadow
+      ref={ref}
+      scale={[2.55, 2.55, 2.55]}
+      position={[0, 0, 0]}
+    >
       <sphereBufferGeometry
         attach="geometry"
         // args={[1, 1,1]}
@@ -585,7 +592,7 @@ export const Orb = ({x}) => {
         position={[0, 0, 0]}
         onPointerOver={() => {}}
         onPointerOut={() => {}}
-        onClick={() => { }}
+        onClick={() => {}}
         dispose={null}
       />
       {/* glass like material*/}
@@ -635,11 +642,14 @@ export default React.memo(
 
     const { fps, gpu, isMobile, tier } = useDetectGPU()
 
-    //add threejs global state values
-    // const {set} = useThree()
-    // useEffect(() => {
-    //   setThreeState({moveCamera: false})
-    // },[])
+    const physicsProps = {
+      gravity: [0, -20, 0],
+      size: 20,
+      allowSleep: false,
+      step: 1 / 60,
+      shouldInvalidate: true,
+      tolerance: 0.001,
+    }
 
     return (
       <Canvas
@@ -647,6 +657,8 @@ export default React.memo(
         resize={{ polyfill: ResizeObserver }} // dont update canvas on user scroll
         concurrent
         shadowMap
+        // sRGB
+        // orthographic
         id={id}
         pixelRatio={typeof window !== "undefined" && window.devicePixelRatioo}
         gl={{
@@ -690,11 +702,10 @@ export default React.memo(
           {/* not dependant on physics */}
           {/* <SkyScene3> */}
           {/* all dependendant on physics */}
-          <Physics gravity={[0, -20, 0]}>
-            
+          <Physics {...physicsProps}>
             <Orb x={x} />
 
-            <Borders opacity={1}/>
+            <Borders opacity={1} />
 
             <Models set={setColor} x={x} mobile={false} />
             {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
