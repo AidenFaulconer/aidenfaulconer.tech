@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'gatsby';
+import { Link } from 'gatsby-plugin-transition-link';
 import Layout from '../layout/layout';
 
 // import { four0four } from '../../static/assets/svg/hardcoded-svgs';

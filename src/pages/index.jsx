@@ -1,15 +1,16 @@
 import * as React from "react"
 import { Container, Grid, makeStyles, Typography } from "@material-ui/core"
 import Layout from "../layout/layout"
-import HeroHeader from "../components/heroHeader"
 import {
   About,
-  Projects,
+  BlogPosts,
   Languages,
   Contact,
   Experience,
   WhatDoYouNeed,
 } from "../components/indexSections"
+
+import { SecondaryButton } from "../components/custom/customButton"
 
 import cubesOffset from "../../static/assets/portfolio/cubesOffset.png"
 
@@ -68,31 +69,11 @@ const IndexPage = React.memo(
 
     return (
       <>
-        <Container maxWidth="lg">
-          <HeroHeader id="back-to-top-anchor" />
-          {/* <Grid
-            item
-            xs={12}
-            md={5}
-            style={{ paddingBottom: 20, margin: "auto" }}
-          >
-            <Typography
-              align="center"
-              gutterBottom
-              style={{ marginBottom: 25, marginTop: 80 }}
-              variant="h2"
-            >
-              A bit about what I can do for you
-            </Typography>
-            <Typography component="body" gutterBottom align="center">
-              I’ll work with you to create a new Jamstack marketing or eCommerce
-              site that works towards your business goals.
-            </Typography>
-          </Grid> */}
-          <About id="about" />
-          <Languages id="languages" />
-        {/* <Experience id="experience" /> */}
-        <WhatDoYouNeed id="call-to-action" />
+        <Container maxWidth="xl">
+          <About id="services" />
+          <Languages id="skills" />
+          {/* <Experience id="experience" /> */}
+          <WhatDoYouNeed id="contact" />
 
           <Grid
             item
@@ -114,14 +95,13 @@ const IndexPage = React.memo(
               Read on!
             </Typography>
             <Typography component="body" gutterBottom align="center">
-              I’ll work with you to create a new Jamstack marketing or eCommerce
-              site that works towards your business goals.
+              Its an exciting time to be a software developer. Read some of the
+              latest news and articles below about design, business, and the
+              future of software development.
             </Typography>
           </Grid>
-          <Projects id="projects" />
+          <BlogPosts id="blog" />
         </Container>
-
-        {/* <Contact id="contact" /> */}
       </>
     )
   }

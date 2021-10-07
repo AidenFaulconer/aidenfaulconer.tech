@@ -189,7 +189,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-transition-link',
       options: {
-        injectPageProps: false,
+        injectPageProps: true,
         layout: `${__dirname}/src/layout/layout.jsx`, // this is excluded and stays static on transtiions **this means not including layout in pages or templates**
       }, // performance optimization
 

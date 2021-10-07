@@ -25,7 +25,7 @@ import { navigate } from 'gatsby';
 
 import TiltPhaseSix from './reactTilt';
 // import { leafComponent, flowerComponent } from "./imagery"
-import { GoldButton, RegularButton } from './customButton';
+import { RegularButton, RegularButton } from './customButton';
 
 // create jss styles to be used in the following component via const classes=useStyles()
 const cardStyles = makeStyles((theme) => ({
@@ -422,9 +422,9 @@ export const CardCarousel = React.memo(({ carouselData, title, id }) => {
                   Read more
                 </RegularButton>
                 {data.project && (
-                  <GoldButton onClick={() => routeToBlog(data.project || '/')}>
+                  <RegularButton onClick={() => routeToBlog(data.project || '/')}>
                     View project
-                  </GoldButton>
+                  </RegularButton>
                 )}
               </CardActions>
             )}
@@ -531,9 +531,9 @@ export const BlogPostCard = React.memo((props) => {
         </CardContent>
 
         <CardActions className={classes.blogCardActions}>
-          <GoldButton size="large" onClick={() => routeToBlog(data.postsUrl)}>
+          <RegularButton size="large" onClick={() => routeToBlog(data.postsUrl)}>
             Read more
-          </GoldButton>
+          </RegularButton>
         </CardActions>
       </Card>
     </Grid>

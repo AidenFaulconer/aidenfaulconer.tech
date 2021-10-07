@@ -246,6 +246,9 @@ export const valtioState = proxy(
         return true;
       },
     },
+    transitionContext: {
+      //injected in either gatsby-ssr or gatsby-browser **depending on server side or client side rendering**
+    },
     threejsContext: {
       selected: {
         color: '#fff', // x

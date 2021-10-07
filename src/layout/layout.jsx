@@ -26,6 +26,8 @@ import MaterialUI from './materialUI';
 import Navigation from './navigation';
 import Footer from './footer';
 import { useGyro, useStore } from '../components/util/customHooks';
+import EndOfPage from '../components/endOfPage';
+import { HeroHeader } from '../components/heroHeader';
 
 const useStyles = makeStyles((theme) => ({
   threeWrapper: {
@@ -105,22 +107,11 @@ export default function Layout({ children, window }) {
 
   return (
     <>
-      {/* Provide our custom theme to components */}
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      />
-      <MaterialUI>
-
-        <Helmet>
-          {/* <title>{title}</title> */}
-
-        </Helmet>
         <Navigation />
-
+        <HeroHeader id="projects" />
         {children}
         {/* <TableOfContents /> */}
-
+        <EndOfPage/>
         <Footer />
         <Zoom in={trigger} role="presentation">
           <Fab
@@ -131,8 +122,7 @@ export default function Layout({ children, window }) {
           >
             <KeyboardArrowUpIcon />
           </Fab>
-        </Zoom>
-      </MaterialUI>
+        </Zoom> 
     </>
   );
 }

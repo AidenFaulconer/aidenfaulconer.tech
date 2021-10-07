@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => {
     },
     regularButton: {
       ...patternHover,
+      background: ({color}) => color ? color : theme.palette.primary.main,
     },
     secondaryButton: {
       background: `${theme.palette.background.button}`,
@@ -168,6 +169,7 @@ export const ThirdButton = (props) => {
   const classes = useStyles(color);
   return (
     <Button
+      disableRipple={true}
       {...props}
       className={classes.thirdButton}
       size={size}
@@ -189,6 +191,8 @@ export const SecondaryButton = (props) => {
   return (
     <Button
       {...props}
+      disableRipple={true}
+
       className={classes.secondaryButton}
       size={size}
       color="primary"
@@ -206,10 +210,12 @@ export const RegularButton = (props) => {
   const {
     Icon, shadow, children, color = {}, size = 'large',
   } = props;
-  const classes = useStyles(color);
+  const classes = useStyles({color:color});
   return (
     <Button
       {...props}
+      disableRipple={true}
+
       className={classes.regularButton}
       color="primary"
       size={size}

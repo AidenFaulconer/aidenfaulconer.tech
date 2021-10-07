@@ -66,6 +66,7 @@
     "global": "^4.4.0",
     "gltf-webpack-loader": "^1.0.6",
     "google-maps-react": "^2.0.6",
+    "gsap": "^3.8.0",
     "html-react-parser": "^1.1.1",
     "lodash-es": "4.17.21",
     "mobx": "^6.3.3",

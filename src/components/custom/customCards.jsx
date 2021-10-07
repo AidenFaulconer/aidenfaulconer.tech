@@ -18,9 +18,14 @@ import { navigate } from "gatsby"
 
 import shadows from "@material-ui/core/styles/shadows"
 import TiltPhaseSix from "./reactTilt"
-import { GoldButton, RegularButton, SecondaryButton, ThirdButton } from "./customButton"
+import {
+  RegularButton,
+  SecondaryButton,
+  ThirdButton,
+} from "./customButton"
 
 import quoteGraphic from "../../../static/assets/exploration.png"
+import { transition } from "../../store/theme"
 
 // ========================================================================== //
 // default card dimensions
@@ -106,23 +111,24 @@ const blogCardStyles = makeStyles(theme => ({
 const customCardStyles = makeStyles(theme => ({
   // custom card styling
   card: {
-    minHeight: ({ cardHeight }) => cardHeight || cardDimensions.height,
-    minWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
-    maxWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
+    // minHeight: ({ cardHeight }) => cardHeight || cardDimensions.height,
+    // minWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
+    // maxWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
     // maxHeight: ({ cardHeight }) => (cardHeight || '100%'),
     // minHeight: ({ cardHeight }) => (cardHeight || '100%'),
     // height: "100%",
-    
-    background: ({ alt }) => (alt && theme.palette.primary.main) || "none",
+
+    background: ({ alt }) =>
+      alt ? theme.palette.primary.main : theme.palette.secondary,
+
+    //all text inherit this
     color: ({ alt }) =>
-    (alt && theme.palette.primary.main) || theme.palette.secondary.main, // rating stars inherit this
-    
+      (alt && theme.palette.secondary.main) || theme.palette.primary.main, // rating stars inherit this
+
     borderRadius: theme.custom.borders.brandBorderRadius,
     textAlign: "left",
-    // margin: theme.spacing(3),
-    // padding: theme.spacing(1),
-    marginBottom: theme.spacing(6),
-    // boxShadow: theme.custom.shadows.brand,
+    padding: theme.spacing(1),
+    marginRight: theme.spacing(1),
     display: "grid",
     transition: theme.transitions.create("all", {
       duration: theme.transitions.duration.complex,
@@ -153,8 +159,10 @@ const customCardStyles = makeStyles(theme => ({
     transform: "rotate(0deg)",
     width: "100%",
     margin: "auto",
+    color: "inherit",
   },
   expandOpen: {
+    color: "inherit",
     transform: "rotate(180deg)",
   },
   cardHeader: {
@@ -167,7 +175,6 @@ const customCardStyles = makeStyles(theme => ({
 
     width: "100%",
     minHeight: 50,
-    textAlign: "left",
   },
   perspectiveModifier: {
     display: "flex",
@@ -190,6 +197,7 @@ const customCardStyles = makeStyles(theme => ({
   },
   cardContent: {
     marginTop: theme.spacing(3),
+    color: "inherit",
     position: "relative",
     transition: theme.transitions.create(["all"], {
       duration: theme.transitions.duration.complex,
@@ -201,13 +209,19 @@ const customCardStyles = makeStyles(theme => ({
     padding: 0,
     display: "inline-flex",
   },
+  // ========================================================================== //
+  //   buggy
+  // ========================================================================== //
   collapse: {
     transition: theme.transitions.create(["all"], {
       duration: theme.transitions.duration.complex,
     }),
+    marginTop: "-150%",
+    background: theme.palette.text.primary,
+    zIndex: 25,
   },
   cardTypography: {
-    color: theme.palette.text.primary,
+    color: "inherit",
     position: "relative",
     height: "100%",
   },
@@ -257,8 +271,37 @@ const genericStyles = makeStyles(theme => ({
       boxShadow: "0px 0px 0px transparent",
     },
   },
+  cubeCardImage: {
+    "& #cube": {
+      height: "100%",
+      width: "100%",
+      minHeight: 200,
+      minWidth: 200,
+      transformStyle: "preserve-3d",
+      transition: transition,
+    },
+    "& #cube > div:first-child": {
+      transform: "rotateX(90deg) translateZ(200px)",
+    },
+    "& #cube > div:nth-child(2)": {
+      transform: "translateZ(200px)",
+    },
+    "& #cube > div:nth-child(3)": {
+      transform: "rotateY(90deg) translateZ(200px)",
+    },
+    "& #cube > div:nth-child(4)": {
+      transform: "rotateY(180deg) translateZ(200px)",
+    },
+    "& #cube > div:nth-child(5)": {
+      transform: "rotateY(-90deg) translateZ(200px)",
+    },
+    "& #cube > div:nth-child(6)": {
+      transform: "rotateX(-90deg) rotate(180deg) translateZ(200px)",
+    },
+  },
   cardImage: {
     // minHeight: ({ height }) => (height),
+    textAlign: "center",
     minWidth: ({ width }) =>
       width - theme.spacing(4) || cardDimensions.width - theme.spacing(4),
     width: ({ width }) =>
@@ -295,7 +338,7 @@ const genericStyles = makeStyles(theme => ({
     // boxShadow: theme.custom.shadows.brand,
     borderRadius: theme.custom.borders.brandBorderRadius,
     userSelect: "none",
-    width: '100%',
+    width: "100%",
     "& .react-multi-carousel-list": {
       height: "100%", // 400px
       overflow: "visible",
@@ -305,10 +348,11 @@ const genericStyles = makeStyles(theme => ({
       "& .react-multi-carousel-track": {
         height: "100%",
         display: "flex",
+        paddingLeft: 0,
         "& li": {
           width: "100% !Important",
           // listStyle: "hiragana",
-          height: 'fit-content',
+          height: "fit-content",
           listStyle: "none",
           listStylePosition: "inside",
           // width: ({ width }) => (width || cardDimensions.width),
@@ -316,13 +360,12 @@ const genericStyles = makeStyles(theme => ({
       },
       "& .react-multiple-carousel__arrow": {
         "&::after": {
-          content: "",
+          content: '""',
           display: "block",
           width: "200%",
-          height: "200%", 
+          height: "200%",
           background: theme.palette.background.default,
         },
-        // marginLeft: '-100px',
         border: theme.custom.borders.brandBorderSecondary,
         marginTop: `-${theme.spacing(6) * 9.3}px`,
         "&:hover": {
@@ -430,31 +473,44 @@ export const CardCarousel = React.memo(
     const anyExpanded = React.useCallback(index => expanded.some(e => e), [
       expanded,
     ])
-
     const carouselProperties = {
       superLargeDesktop: {
-        // the naming can be any, depends on you.
         breakpoint: { max: 4000, min: 3000 },
-        items: carouselData.length,
+        items: (carouselData.length && carouselData.length + 5) || 3,
       },
       desktop: {
         breakpoint: { max: 3000, min: 1024 },
-        items: carouselData.length,
+        // items:  carouselData.length && carouselData.length+5 || 3,
+        items: 7,
       },
       tablet: {
         breakpoint: { max: 1024, min: 464 },
-        items: carouselData.length,
+        items: (carouselData.length && carouselData.length + 5) || 3,
       },
       mobile: {
         breakpoint: { max: 464, min: 0 },
-        items: carouselData.length,
+        items: (carouselData.length && carouselData.length + 5) || 3,
       },
     }
-
+    const [autoPlay, setAutoPlay] = React.useState(true)
     return (
       <section id={id} className={classes.section}>
         {/* <div className="d-flex flex-wrap justify-content-center"> */}
-        <Carousel responsive={carouselProperties}>
+        <Carousel
+          ssr
+          responsive={carouselProperties}
+          infinite
+          direction="right"
+          draggable
+          renderButtonGroupOutside={true}
+          arrows
+          swipeable
+          autoPlay={autoPlay}
+          autoPlaySpeed={3000}
+          pauseOnHover
+          onHover={e => setAutoPlay(false)}
+          onPointerLeave={e => setAutoPlay(true)}
+        >
           {carouselData.map((data, index) => (
             <CustomCard
               alt={alt}
@@ -485,7 +541,7 @@ export const CardCarousel = React.memo(
                   <Typography
                     variant="body2"
                     align="left"
-                    color="textPrimary"
+                    color="inherit"
                     component="p"
                     className={classes.cardTypography}
                   >
@@ -515,11 +571,11 @@ export const CardCarousel = React.memo(
                     </ThirdButton>
                   )}
                   {data.project && (
-                    <GoldButton
+                    <RegularButton
                       onClick={() => routeToBlog(data.project || "/")}
                     >
                       View project
-                    </GoldButton>
+                    </RegularButton>
                   )}
                 </>
               }
@@ -536,58 +592,80 @@ export const CardCarousel = React.memo(
         </Carousel>
       </section>
     )
+  },
+  (pre, post) => {
+    return pre.carouselData !== post.carouselData
   }
 )
 
 // ========================================================================== //
 // custom card
 // ========================================================================== //
-export const CustomCard = React.memo(props => {
-  // default to empty object or null in the case these props are not used/defined
-  const {
-    rating = false,
-    title = "default title",
-    subheader = "",
-    image = "",
-    expanded = false,
-    index = {},
-    cardHeader = {},
-    cardContent = {},
-    cardActions = {},
-    cardMedia = {},
-    children = {},
-    data = [],
-    alt = false,
-  } = props
-  const classes = customCardStyles({
-    cardWidth: props.cardWidth,
-    cardHeight: props.cardHeight,
-    alt: alt ? alt : false,
-    // color: color ? color : "",
-  })
+export const CustomCard = React.memo(
+  props => {
+    // default to empty object or null in the case these props are not used/defined
+    const {
+      rating = false,
+      title = "default title",
+      subheader = "",
+      image = "",
+      expanded = false,
+      index = {},
+      cardHeader = {},
+      cardContent = {},
+      cardActions = {},
+      cardMedia = {},
+      children = {},
+      data = [],
+      alt = false,
+    } = props
+    const classes = customCardStyles({
+      cardWidth: props.cardWidth,
+      cardHeight: props.cardHeight,
+      alt: alt ? alt : false,
+      // color: color ? color : "",
+    })
 
-  // 3d persepctive
-  const persepctiveModifierOptions = {
-    max: 10,
-    perspective: 1000,
-    scale: 1.05,
-  }
+    // 3d persepctive
+    const persepctiveModifierOptions = {
+      max: 10,
+      perspective: 1000,
+      scale: 1.05,
+    }
 
-  const ratingStars = React.useCallback(
-    (rating, index) =>
-      Array.from(Array(rating).keys()).map(i => (
-        <Star key={`${i}rating-star`} />
-      )),
-    []
-  )
+    const ratingStars = React.useCallback(
+      (rating, index) =>
+        Array.from(Array(rating).keys()).map(i => (
+          <Star key={`${i}rating-star`} />
+        )),
+      []
+    )
 
-  return ( 
+    return (
       <Card {...props} className={classes.card} elevation={0}>
-        <Grid container>
+        <Grid container justify="center">
+          {rating && (
+            <Grid item xs={12} sx={{ mt: 5 }}>
+              <div className="d-flex position-relative">
+                {ratingStars(rating, index)}
+              </div>
+            </Grid>
+          )}
+
+          {cardHeader && cardHeader}
+          {cardMedia && (
+            <TiltPhaseSix
+              key={data.title + index}
+              // disabled={!expanded[index]}
+              className={classes.perspectiveModifierInner}
+            >
+              {cardMedia}
+            </TiltPhaseSix>
+          )}
           {title && (
             <Typography
               variant="h4"
-              align="left"
+              align="center"
               style={{ opacity: 0.6, fontWeight: "bolder" }}
               className={classes.cardHeader}
             >
@@ -598,102 +676,88 @@ export const CustomCard = React.memo(props => {
             <Typography
               variant="h4"
               gutterBottom
-              align="left"
+              align="center"
               style={{ marginBottom: "15px", marginTop: "25px" }}
               className={classes.cardHeader}
             >
               {subheader}
             </Typography>
           )}
-          {rating && (
-            <Grid item xs={12} sx={{ mt: 5 }}>
-              <div className="d-flex position-relative">
-                {ratingStars(rating, index)}
-              </div>
-            </Grid>
-          )}
-
-          <Grid item>
-            {cardHeader && cardHeader}
-            {cardMedia && (
-              <TiltPhaseSix
-                key={data.title + index}
-                // disabled={!expanded[index]}
-                className={classes.perspectiveModifierInner}
-              >
-                {cardMedia}
-              </TiltPhaseSix>
-            )}
-          </Grid>
 
           {/* expand animation handled by collapse */}
-          <Grid item>
-            <Collapse in={expanded} className={classes.collapse}>
-              <CardContent className={classes.cardContent}>
-                {cardContent && cardContent}
-              </CardContent>
-            </Collapse>
-          </Grid>
-          <Grid item>
-            <CardActions className={classes.cardActions}>
-              {cardActions && cardActions}
-            </CardActions>
-          </Grid>
+          <Collapse in={expanded} className={classes.collapse}>
+            <CardContent className={classes.cardContent}>
+              {cardContent && cardContent}
+            </CardContent>
+          </Collapse>
+          <CardActions className={classes.cardActions}>
+            {cardActions && cardActions}
+          </CardActions>
         </Grid>
-      </Card> 
-  )
-})
+      </Card>
+    )
+  },
+  (pre, post) => {
+    return pre !== post
+  }
+)
 
 // ========================================================================== //
 // blog card
 // ========================================================================== //
-export const BlogPostCard = React.memo(props => {
-  const {
-    featured,
-    width = cardDimensions.width,
-    height = cardDimensions.height,
-    title = "default",
-    data = {},
-    size,
-    cardMedia = {},
-    cardHeader = {},
-    cardContent = {},
-    breakpointSizes = {},
-    avatarImg = {},
-  } = props
-  const classes = blogCardStyles({ height, width })
+export const BlogPostCard = React.memo(
+  props => {
+    const {
+      featured,
+      width = cardDimensions.width,
+      height = cardDimensions.height,
+      title = "default",
+      data = {},
+      size,
+      cardMedia = {},
+      cardHeader = {},
+      cardContent = {},
+      breakpointSizes = {},
+      avatarImg = {},
+    } = props
+    const classes = blogCardStyles({ height, width })
 
-  const isAlt = size !== 12
-  const altSize = size === 12 ? 6 : 12
-  return (
-    <Grid container item {...breakpointSizes} key={data.title + Math.random()}>
-      {/* headlined blog post */}
-      <Card className={classes.blogCard} {...props}>
-        <CardHeader
-          avatar={
-            <Avatar
-              aria-label="recipe"
-              className={classes.avatar}
-              src={avatarImg && avatarImg}
-            >
-              AJ
-            </Avatar>
-          }
-        />
-        <CardContent className={classes.blogCardContent}>
-          <Grid container justifyContent="flex-start">
-            {/* blog post content */}
-            <Grid item xs={altSize} style={{ order: isAlt ? 1 : 0 }}>
-              {/* header */}
-              <Typography
-                variant="h3"
-                align="left"
-                className={classes.blogHeading}
+    const isAlt = size !== 12
+    const altSize = size === 12 ? 6 : 12
+    return (
+      <Grid
+        container
+        item
+        {...breakpointSizes}
+        key={data.title + Math.random()}
+      >
+        {/* headlined blog post */}
+        <Card className={classes.blogCard} {...props}>
+          <CardHeader
+            avatar={
+              <Avatar
+                aria-label="recipe"
+                className={classes.avatar}
+                src={avatarImg && avatarImg}
               >
-                {data.title}
-              </Typography>
-              {/* subheader */}
-              {/* <Typography
+                AJ
+              </Avatar>
+            }
+          />
+          <CardContent className={classes.blogCardContent}>
+            <Grid container justifyContent="flex-start">
+              {/* blog post content */}
+              <Grid item xs={altSize} style={{ order: isAlt ? 1 : 0 }}>
+                {/* header */}
+                <Typography
+                  variant="h3"
+                  align="left"
+                  className={classes.blogHeading}
+                >
+                  {data.title}
+                </Typography>
+                {/* subheader */}
+                {/* <Typography
                 variant="h4"
                 gutterBottom
                 align="left"
@@ -701,46 +765,50 @@ export const BlogPostCard = React.memo(props => {
               >
                 {data.subheader}
               </Typography> */}
-              <Typography
-                variant="body2"
-                gutterBottom
-                align="left"
-                className={classes.blogTypography}
-              >
-                {data.description}
-              </Typography>
-            </Grid>
+                <Typography
+                  variant="body2"
+                  gutterBottom
+                  align="left"
+                  className={classes.blogTypography}
+                >
+                  {data.description}
+                </Typography>
+              </Grid>
 
-            {/* blog post image */}
-            <Grid
-              onClick={() => routeToBlog(data.postUrl)}
-              item
-              xs={altSize}
-              style={{
-                order: isAlt ? 1 : 0,
-                pointerEvents: "all",
-                cursor: "pointer",
-              }}
-            >
-              <TiltPhaseSix
-                // disabled={!expanded[index]}
-                className={classes.perspectiveModifierInner}
+              {/* blog post image */}
+              <Grid
+                onClick={() => routeToBlog(data.postUrl)}
+                item
+                xs={altSize}
+                style={{
+                  order: isAlt ? 1 : 0,
+                  pointerEvents: "all",
+                  cursor: "pointer",
+                }}
               >
-                {cardMedia && cardMedia}
-              </TiltPhaseSix>
+                <TiltPhaseSix
+                  // disabled={!expanded[index]}
+                  className={classes.perspectiveModifierInner}
+                >
+                  {cardMedia && cardMedia}
+                </TiltPhaseSix>
+              </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
+          </CardContent>
 
-        <CardActions className={classes.blogCardActions}>
-          <GoldButton size="large" onClick={() => routeToBlog(data.postsUrl)}>
-            Read more
-          </GoldButton>
-        </CardActions>
-      </Card>
-    </Grid>
-  )
-})
+          <CardActions className={classes.blogCardActions}>
+            <RegularButton size="large" onClick={() => routeToBlog(data.postsUrl)}>
+              Read more
+            </RegularButton>
+          </CardActions>
+        </Card>
+      </Grid>
+    )
+  },
+  (pre, post) => {
+    return pre !== post
+  }
+)
 
 // ========================================================================== //
 // blog grid

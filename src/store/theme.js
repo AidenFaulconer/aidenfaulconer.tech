@@ -60,14 +60,14 @@ const TYPOGRAPHY = {
     h1: {
       // textStroke: '2px currentColor',
       fontWeight: 900,
-      fontSize: pxToRem(65),
+      fontSize: pxToRem(40),
       textTransform: 'capitalize',
       // fontSize: pxToRem( '5rem !important'), 
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(70),
+        fontSize: pxToRem(40),
       },
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(50),
+        fontSize: pxToRem(25),
       },
     },
     h2: {
@@ -76,12 +76,12 @@ const TYPOGRAPHY = {
       // color: palette.text.primary,
       fontWeight: 900,
       textTransform: 'capitalize',
-      fontSize: pxToRem(40),
+      fontSize: pxToRem(35),
       [breakpoints.down('lg')]: {
-        fontSize: pxToRem(40),
+        fontSize: pxToRem(35),
       },
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(35),
+        fontSize: pxToRem(40),
       },
       [breakpoints.down('sm')]: {
         fontSize: pxToRem(35),
@@ -101,14 +101,14 @@ const TYPOGRAPHY = {
       },
     },
     h4: {
-      fontSize: pxToRem(20),
+      fontSize: pxToRem(18),
       fontWeight: 500,
       // color: palette.text.primary,
       [breakpoints.down('md')]: {
         fontSize: pxToRem(18),
       },
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(26),
+        fontSize: pxToRem(18),
       },
     },
     button: {
@@ -506,7 +506,9 @@ const OVERRIDES = {
     // ========================================================================== //
     MuiCssBaseline: {
       '@global': {
-        html: {},
+        html: {
+          border: `1px solid ${_theme.palette.text.primary}`,
+        },
         "strong, b": {},
         body: {
           margin: 0,
@@ -566,8 +568,11 @@ const OVERRIDES = {
         // ...common,
       },
     },
-
+    MuiButtonBase: {
+      disableRipple: true//no performance costly ripple effect
+    },
     MuiButton: {
+      disableRipple: true,//no performance costly ripple effect
       // hover keyframes declared locally not on the theme object
       ...commonButton,
     },
@@ -597,6 +602,7 @@ const OVERRIDES = {
         padding: spacing(1,0),
         justifyContent: 'space-between',
         // padding: spacing(3),
+        color: _theme.palette.text.secondary,
       },
     },
     MuiAppBar: {
@@ -605,10 +611,11 @@ const OVERRIDES = {
         // background: 'none !important',
       },
       root: {
-        background: `${hexToAlpha(_theme.palette.background.default, 0.6)} !important`,
-        backdropFilter: 'blur(35px)',
+        background: `${hexToAlpha(_theme.palette.text.primary, 1)} !important`,
+        // backdropFilter: 'blur(35px)',
         // background: _theme.palette.background.default,
         boxShadow: _theme.custom.shadows.brand,
+        color: _theme.palette.text.secondary,
       },
     },
     MuiContainer: {
