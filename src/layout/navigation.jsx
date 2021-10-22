@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect } from 'react';
 
 // ui
 import {
@@ -13,247 +13,189 @@ import {
   ListItemText,
   useScrollTrigger,
   SwipeableDrawer,
-} from "@material-ui/core"
-import { Menu } from "@material-ui/icons"
-import { navigate } from "gatsby-link"
-import Link from "gatsby-plugin-transition-link"
-import { makeStyles } from "@material-ui/core/styles"
-import { proxy, subscribe, useSnapshot } from "valtio"
-import { derive } from "valtio/utils"
+} from '@material-ui/core';
+import { Menu } from '@material-ui/icons';
+// import { navigate } from "gatsby-link"
+// ========================================================================== //
+// Page transitions
+// ========================================================================== //
+import { Link } from 'gatsby';
+
+// ========================================================================== //
+// Styles
+// ========================================================================== //
+import { makeStyles } from '@material-ui/core/styles';
 import {
   customMenuIcon,
   logoFull,
   logoMedium,
   logoSmall,
   menuIcon,
-} from "../../static/svgs/hardcoded-svgs"
+} from '../../static/svgs/hardcoded-svgs';
 
-import logoPng from "../../static/svgs/logo.png"
-import { SecondaryButton } from "../components/custom/customButton"
-import { NavigationBlob } from "../components/custom/navigationBlob"
-import { valtioState } from "../store/store-wrapper"
-import { dt, lt } from "./materialUI"
+import logoPng from '../../static/svgs/logo.png';
+import { RegularButton, SecondaryButton } from '../components/custom/customButton';
+import { NavigationBlob } from '../components/custom/navigationBlob';
+import { dt, lt } from './materialUI';
+import { useStore } from '../store/store';
 
-// import { useTriggerTransition } from "gatsby-plugin-transition-link"
-import AniLink from "gatsby-plugin-transition-link/AniLink"
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   drawer: {},
   drawerList: {
     padding: theme.spacing(5),
     margin: theme.spacing(3),
   },
   pageNav: {
-    display: "flex",
-    display: "block",
-    justifyContent: "space-evenly",
-    [theme.breakpoints.down("md")]: {
-      display: "none",
+    display: 'flex',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
     },
   },
   pageLinks: {
-    fontSize: ".75rem",
-    marginLeft: "15px",
-    marginRight: "15px",
-    fontFamily: "Poppins",
-    textDecoration: "none",
+    fontSize: '.65rem',
+    marginLeft: '15px',
+    marginRight: '15px',
+    fontFamily: 'Poppins',
+    textDecoration: 'none',
     fontWeight: 500,
-    color: "inherit",
-    textTransform: "capitalize",
+    color: 'inherit',
+    textTransform: 'capitalize',
   },
   appBar: {
     // background: `rgba(80, 105, 54, 1),rgba(145, 146, 175, 1)`,
     // theme.palette.background.secondary,//change to "rgba(80,105,54,.6)" when app bar scrolled past initial place
     boxShadow: theme.custom.shadows.brand,
     zIndex: 30, // hidhest
-    height: 115,
-    padding: theme.spacing(0, 1),
-    justifyContent: "space-evenly",
+    height: 85,
+    padding: theme.spacing(0, 14, 0, 14),
+    justifyContent: 'space-evenly',
     color: theme.palette.text.secondary,
+    borderBottom: theme.custom.borders.brandBorder,
+    [theme.breakpoints.down('md')]: {
+      padding: theme.spacing(0, 3),
+    },
   },
   logo: {
-    color: "inherit",
-    cursor: "pointer",
-    maxWidth: "90px",
+    color: 'inherit',
+    cursor: 'pointer',
+    maxWidth: '90px',
   },
   menuIcon: {
-    color: "inherit",
+    color: 'inherit',
+    border: 'none !important',
     maxHeight: 50,
-    cursor: "pointer",
-    "& svg": {
+    transform: 'scale(.7)',
+    cursor: 'pointer',
+    '& svg': {
       transition: theme.transitions.create(
-        ["transform", "box-shadow", "background", "margin", "border"],
-        { duration: "0.3s", easing: "ease-in-out" }
+        ['transform', 'box-shadow', 'background', 'margin', 'border'],
+        { duration: '0.3s', easing: 'ease-in-out' },
       ),
     },
-    "&:hover": {
-      "& svg": {
-        transform: "rotate(340deg) !important",
+    '&:hover': {
+      '& svg': {
+        transform: 'rotate(340deg) !important',
         fill: theme.palette.primary.main,
-        "& #switch-primary": {
+        '& #switch-primary': {
           fill: theme.palette.primary.main,
           stopColor: theme.palette.primary.main,
         },
         transition: theme.transitions.create(
-          ["transform", "box-shadow", "background", "margin", "border"],
-          { duration: "0.3s", easing: "ease-in-out" }
+          ['transform', 'box-shadow', 'background', 'margin', 'border'],
+          { duration: '0.3s', easing: 'ease-in-out' },
         ),
       },
     },
   },
-}))
+}));
 
-export default function Navigation({ theme, themeState, children, window }) {
-  const classes = useStyles()
-  const [drawerState, setDrawerState] = React.useState(false)
-  const iOS =
-    (typeof window !== "undefined" &&
-      /iPad|iPhone|iPod/.test(navigator?.userAgent)) ||
-    false
+const Navigation = React.memo(
+  ({ children, window }) => {
+    const classes = useStyles();
+    const [drawerState, setDrawerState] = React.useState(false);
+    const iOS = (typeof window !== 'undefined'
+        && /iPad|iPhone|iPod/.test(navigator?.userAgent))
+      || false;
 
-  const toggleDrawer = React.useCallback(
-    event => setDrawerState(drawerState => !drawerState),
-    []
-  )
+    const toggleDrawer = React.useCallback(
+      (event) => setDrawerState((drawerState) => !drawerState),
+      [],
+    );
 
-  const menuIcon = React.useCallback(color => {
-    return (
+    const menuIcon = React.useCallback((color) => (
       <div
         className={classes.menuIcon}
-        // eslint-disable-next-line react/no-danger
+          // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: `
           <svg width="47" height="48" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M40.8191 14.9633L40.8147 34.1971L23.717 24.2584L23.7297 4.00901L39.9495 13.4505C40.4881 13.764 40.8193 14.3402 40.8191 14.9633ZM23.2297 4.01698L23.217 24.2608L6.11503 34.5489L6.13552 15.3008C6.13617 14.6878 6.45748 14.1199 6.98255 13.8036L23.2297 4.01698ZM22.5652 44.4101L6.35567 34.9876L23.4691 24.6927L40.5735 34.6352L24.3468 44.3967C23.7998 44.7257 23.1171 44.7309 22.5652 44.4101Z" fill="#000064" stroke="white" stroke-width="0.5"/>
+          <path d="M40.8191 14.9633L40.8147 34.1971L23.717 24.2584L23.7297 4.00901L39.9495 13.4505C40.4881 13.764 40.8193 14.3402 40.8191 14.9633ZM23.2297 4.01698L23.217 24.2608L6.11503 34.5489L6.13552 15.3008C6.13617 14.6878 6.45748 14.1199 6.98255 13.8036L23.2297 4.01698ZM22.5652 44.4101L6.35567 34.9876L23.4691 24.6927L40.5735 34.6352L24.3468 44.3967C23.7998 44.7257 23.1171 44.7309 22.5652 44.4101Z" fill="none" stroke="white" stroke-width="0.5"/>
           </svg>
           `,
         }}
       />
-    )
-  }, [])
+    ), []);
 
-  // ========================================================================== //
-  //   Page Navigation
-  // ========================================================================== //
-  // const changePage = useTriggerTransition()
-  // const navigatePage = React.useCallback((page, event) => {
-  //   changePage({
-  //     pathname: page,
-  //     to: page,
-  //     // trigger: async pages => {
-  //     //   // wait until we have access to both pages
-  //     //   const exit = await pages.exit
-  //     //   const entry = await pages.entry
-  //     //   // here we can access both pages
+    const boldCurrentPage = React.useCallback((name, i) => {
+      if (typeof window !== 'undefined') if (pages[i].url === document.location.hash) return <b>{name}</b>;
+      return <>{name}</>;
+    }, []);
 
-  //     //   // You could measure the entry element here
+    const scrollToSmoothly = (pos, time) => {
+      if (typeof window === 'undefined') return;
+      const currentPos = window.pageYOffset;
+      let start = null;
+      if (time == null) time = 500;
+      (pos = +pos), (time = +time);
+      window.requestAnimationFrame((currentTime) /* step */ => {
+        start = !start ? currentTime : start;
+        const progress = currentTime - start;
+        if (currentPos < pos) {
+          window.scrollTo(
+            0,
+            ((pos - currentPos) * progress) / time + currentPos,
+          );
+        } else {
+          window.scrollTo(
+            0,
+            currentPos - ((currentPos - pos) * progress) / time,
+          );
+        }
+        if (progress < time) {
+          window.requestAnimationFrame(step);
+        } else {
+          window.scrollTo(0, pos);
+        }
+      });
+    };
 
-  //     //   // start exit animation based on measurements if you want
-  //     //   // wait for the entering page to become visible
-  //     //   await entry.visible
-  //     //   // the entering page is visible here.
-  //     //   // if you want you can animate it now!
-  //     // },
-  //     exit: {
-  //       trigger: ({ exit, node }) => {
-  //         const transitionStyle = {
-  //           opacity: 0,
-  //           transform: "translateY(100%)",
-  //           background: "black",
-  //         }
-  //         node.style = transitionStyle
-  //         console.log("exit", exit, "node", node)
-  //       },
-  //       zIndex: 10,
-  //       delay: 0.5,
-  //     },
-  //     entry: {
-  //       trigger: ({ entry, node }) => {
-  //         const transitionStyle = {
-  //           opacity: 1,
-  //           transform: "translateX(0%)",
-  //           background: "black",
-  //         }
-  //         node.style = transitionStyle
-
-  //         console.log("entry", entry, "node", node)
-  //       },
-  //       zIndex: 10,
-  //       delay: 0.5,
-  //     },
-  //     // enter: {
-  //     //   trigger: ({ enter, node }) => {
-  //     //     node.style.opacity = "1"
-  //     //     node.style.transform = "translateX(0)"
-  //     //     console.log("enter", enter, "node", node)
-  //     //   },
-  //     //   zIndex: 10,
-  //     //   delay: 0.5,
-  //     // },
-  //   })
-  // }, [])
-
-  const boldCurrentPage = React.useCallback((name, i) => {
-    if (typeof window !== "undefined")
-      if (pages[i].url === document.location.hash) return <b>{name}</b>
-    return <>{name}</>
-  }, [])
-
-  const scrollToSmoothly = (pos, time) => {
-    if (typeof window == "undefined") return
-    var currentPos = window.pageYOffset
-    var start = null
-    if (time == null) time = 500
-    ;(pos = +pos), (time = +time)
-    window.requestAnimationFrame((currentTime) /*step*/ => {
-      start = !start ? currentTime : start
-      var progress = currentTime - start
-      if (currentPos < pos) {
-        window.scrollTo(0, ((pos - currentPos) * progress) / time + currentPos)
+    const navigateTo = React.useCallback((page) => {
+      if (typeof window === 'undefined') return;
+      console.log(page);
+      if (page[0] === '#' && typeof document !== 'undefined') {
+        // navigatePage(page)
+        scrollToSmoothly(
+          document.getElementById(page.slice(1, page.length)).offsetTop,
+          2000,
+        );
       } else {
-        window.scrollTo(0, currentPos - ((currentPos - pos) * progress) / time)
+        // navigatePage(page)
       }
-      if (progress < time) {
-        window.requestAnimationFrame(step)
-      } else {
-        window.scrollTo(0, pos)
-      }
-    })
-  }
+      // window.location.hash = page.url
+    }, []);
 
-  const navigateTo = React.useCallback(page => {
-    if (typeof window == "undefined") return
-    console.log(page)
-    if (page[0] === "#" && typeof document != "undefined") {
-      // navigatePage(page)
-      scrollToSmoothly(
-        document.getElementById(page.slice(1, page.length)).offsetTop,
-        2000
-      )
-    } else {
-      // navigatePage(page)
-    }
-    // window.location.hash = page.url
-  }, [])
+    // ========================================================================== //
+    //   Logo
+    // ========================================================================== //
 
-  // ========================================================================== //
-  //   Logo
-  // ========================================================================== //
-
-  const logo = React.useCallback(color => {
-    return (
-      <AniLink
-        hex={"#2E00FF"}
-        duration={1.2}
-        paintDrip
-        cover
-        direction={"top"}
-        // zindex={20}
-        to="/"
-      >
+    const logo = React.useCallback((color) => (
+      <Link to="/">
         <div
           className={(classes.logo, classes.menuIcon)}
-          style={{ fill: "white" }}
+          style={{ fill: 'white' }}
           dangerouslySetInnerHTML={{
             __html: `
           <svg width="125" height="40" viewBox="0 0 125 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -267,124 +209,111 @@ export default function Navigation({ theme, themeState, children, window }) {
           `,
           }}
         />
-      </AniLink>
-    )
-  }, [])
- 
+      </Link>
+    ), []);
 
-  const pages = [
-    { name: "Book Online", url: "/booking" },
-    { name: "Projects", url: "#projects" },
-    { name: "Services", url: "#services" },
-    { name: "Skills", url: "#skills" },
-    { name: "Blog", url: "#blog" },
-  ]
+    const pages = [
+      { name: 'Projects', url: '#projects' },
+      { name: 'Services', url: '#services' },
+      { name: 'Skills', url: '#skills' },
+      { name: 'Blog', url: '#blog' },
+      { name: 'Book Online', url: '/booking' },
+    ];
 
-  const contactEmbedded = [
-    { name: "phone", url: "#phone", icon: "phone" },
-    { name: "mail", url: "#mail", icon: "mail" },
-  ]
+    const contactEmbedded = [
+      { name: 'phone', url: '#phone', icon: 'phone' },
+      { name: 'mail', url: '#mail', icon: 'mail' },
+    ];
 
-  const search = [{ name: "search", url: "#search", icon: "search" }]
+    const search = [{ name: 'search', url: '#search', icon: 'search' }];
 
-  const processPages = React.useCallback((name, url) => {
-    return pages.map((page, i) => {
+    const processPages = React.useCallback((name, url) => pages.map((page, i) => {
       switch (page.url[0]) {
-        case "/":
+        case '/':
           return (
-            <AniLink
-              hex={"#2E00FF"}
-              duration={1.2}
-              paintDrip
-              cover
-              direction={"top"}
-              // zindex={20}
-              key={page.name}
-              to={page.url}
-            >
-              {boldCurrentPage(page.name.toUpperCase(), i)}
-            </AniLink>
-          )
-        case "#":
+            <Link key={page.name} to={page.url}>
+              <RegularButton size="small" style={{ fontSize: '.5rem !important' }}>
+                {boldCurrentPage(page.name.toUpperCase(), i)}
+              </RegularButton>
+            </Link>
+          );
+        case '#':
           return (
             <Link key={page.name} to={page.url} className={classes.pageLinks}>
               {boldCurrentPage(page.name.toUpperCase(), i)}
             </Link>
-          )
+          );
         default:
-          return null
+          return null;
       }
-    })
-  }, [])
+    }), []);
 
-  const pageNavigation = React.useCallback(() => {
-    const classes = useStyles()
-    return (
-      <div className={classes.pageNav} style={{ zIndex: 30 }}>
-        {processPages(pages)}
-      </div>
-    )
-  }, [])
+    const pageNavigation = React.useCallback(() => {
+      const classes = useStyles();
+      return (
+        <div className={classes.pageNav} style={{ zIndex: 30 }}>
+          {processPages(pages)}
+        </div>
+      );
+    }, []);
 
-  const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
-    threshold: 6000,
-    disableHysteresis: true,
-  })
+    const trigger = useScrollTrigger({
+      target: window ? window() : undefined,
+      threshold: 6000,
+      disableHysteresis: true,
+    });
 
-  // contains drawer for the menu
+    // contains drawer for the menu
 
-  const list = React.useCallback(
-    () => (
-      <div
-        role="presentation"
-        onClick={e => toggleDrawer(e)}
-        onKeyDown={e => toggleDrawer(e)}
-        className={classes.drawerList}
-      >
-        <List>
-          {pages.map((page, index) => (
-            <ListItem
-              button
-              key={page.name}
-              onClick={e => {
-                navigateTo(page.url)
-                toggleDrawer()
-              }}
-            >
-              <Link
+    const list = React.useCallback(
+      () => (
+        <div
+          role="presentation"
+          onClick={(e) => toggleDrawer(e)}
+          onKeyDown={(e) => toggleDrawer(e)}
+          className={classes.drawerList}
+        >
+          <List>
+            {pages.map((page, index) => (
+              <ListItem
+                button
                 key={page.name}
-                to={page.url}
-                onClick={event => navigateTo(page.url)}
-                className={classes.pageLinks}
+                onClick={(e) => {
+                  navigateTo(page.url);
+                  toggleDrawer();
+                }}
               >
-                {boldCurrentPage(page.name, index)}
-              </Link>
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    ),
-    [drawerState]
-  )
+                <Link
+                  key={page.name}
+                  to={page.url}
+                  onClick={(event) => navigateTo(page.url)}
+                  className={classes.pageLinks}
+                >
+                  {boldCurrentPage(page.name, index)}
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      ),
+      [drawerState],
+    );
 
-  // const { appContext: toggleTheme } = derive(valtioState);
-  // toggleTheme();
-
-  const drawerSwitch = React.useCallback(() => {
-    return (
+    // ========================================================================== //
+    //     Drawer
+    // ========================================================================== //
+    const drawerSwitch = React.useCallback(() => (
       <React.Fragment key="drawer">
         <Button
-          className="p-0"
-          onClick={e => {
-            toggleDrawer(e)
-            valtioState.appContext.toggleTheme()
+          onClick={(e) => {
+            toggleDrawer(e);
           }}
+          style={{ border: 'none', padding: 0 }}
         >
           {menuIcon()}
         </Button>
         <SwipeableDrawer
-          // isableBackdropTransition={!iOS}
+            // isableBackdropTransition={!iOS}
           onOpen={() => setDrawerState(true)}
           onClose={() => setDrawerState(false)}
           disableDiscovery={iOS}
@@ -395,26 +324,31 @@ export default function Navigation({ theme, themeState, children, window }) {
           {list()}
         </SwipeableDrawer>
       </React.Fragment>
-    )
-  }, [drawerState])
+    ), [drawerState]);
 
-  return (
-    <Slide appear direction="down" in={!trigger}>
-      <AppBar
-        elevation={!trigger ? 6 : 0}
-        position="sticky"
-        className={classes.appBar}
-      >
-        <Toolbar className="justify-content-evenly px-3">
-          {logo("inherit")}
+    return (
+      <>
+        <Slide appear direction="down" in={!trigger}>
+          <AppBar
+            elevation={!trigger ? 6 : 0}
+            position="sticky"
+            className={classes.appBar}
+          >
+            <Toolbar className="justify-content-evenly px-3">
+              {logo('inherit')}
 
-          {pageNavigation()}
+              {pageNavigation()}
 
-          {drawerSwitch()}
-        </Toolbar>
+              {drawerSwitch()}
+            </Toolbar>
 
-        {/* <NavigationBlob /> */}
-      </AppBar>
-    </Slide>
-  )
-}
+            {/* <NavigationBlob /> */}
+          </AppBar>
+        </Slide>
+      </>
+    );
+  },
+  (pre, post) => pre.props !== post.props,
+);
+
+export default Navigation;

@@ -1,26 +1,26 @@
-import { Grid, makeStyles, Typography } from "@material-ui/core"
-import { SecondaryButton } from "../components/custom/customButton"
+import { Grid, makeStyles, Typography } from '@material-ui/core';
+import React from 'react';
+import { SecondaryButton } from './custom/customButton';
 
-import React from "react"
-import letsStartSomething from "../../static/assets/portfolio/lets start something together.png"
+import letsStartSomething from '../../static/assets/portfolio/lets start something together.png';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   endOfPage: {
     background: theme.palette.text.primary,
-    minHeight: "70vh",
+    minHeight: '70vh',
     color: theme.palette.text.secondary,
     padding: theme.spacing(18, 6),
     marginTop: theme.spacing(18),
   },
 
   letsStartSomething: {
-    width: "100%",
-    objectFit: "contain",
+    width: '100%',
+    objectFit: 'contain',
   },
-}))
+}));
 
 const EndOfPage = () => {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <section className={classes.endOfPage}>
       <Grid container justify="center" alignItems="center">
@@ -38,7 +38,6 @@ const EndOfPage = () => {
               Lets start something together.
             </Typography>
             <Typography
-              component="body"
               style={{ maxWidth: 325, zIndex: 1 }}
               color="inherit"
               gutterBottom
@@ -53,7 +52,7 @@ const EndOfPage = () => {
             <Grid
               item
               container
-              justify={"flex-start"}
+              justify="flex-start"
               style={{ paddingBottom: 5, marginTop: 20 }}
             >
               <Grid item style={{ marginRight: 10, paddingBottom: 5 }}>
@@ -75,7 +74,7 @@ const EndOfPage = () => {
         </Grid>
       </Grid>
     </section>
-  )
-}
+  );
+};
 
-export default EndOfPage
+export default EndOfPage;

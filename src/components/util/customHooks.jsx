@@ -15,25 +15,26 @@ import React, {
 } from 'react';
 import { useCookies } from 'react-cookie';
 
+// ========================================================================== //
+// Zustand hooks
+// ========================================================================== //
+// get the store
+// add method to store
+// subscribe to store
+// unsubscribe from store
 
 // ========================================================================== //
-// Valtio state hooks
+// Force re render
 // ========================================================================== //
-// valtio comes pre-loaded with a few state hooks here are a few along with some modulations
-// const snap = useSnapshot(); **re-renders on only changes you are using**
-// const useLocalStorage = useLocalStorage('valtio', {}); **persists state to local storage**
-// const subscribe = useSubscribe(); **subscribes to changes in state**
-// subscribe() **actually unsubs from listening, can be passed callback on second param**
+export const forceUpdate = () => React.useReducer(() => ({}))[1];
 
-// const state = proxy({what we want to destructure})
-// subscribe(state.whatever, ()=> handle changes to it)
-// subscribeKey(state, 'count', (v) => console.log('state.count has changed to', v))
-// const stop = watch((get) => {
-//   console.log('state has changed to', get(state)) // auto-subscribe on use
-// })
-
-// const state = proxy({ post: fetch(url).then((res) => res.json()) }) **you can await state existance!!**
-
+// export const usePrevious = (value) => {
+//   const ref = useRef();
+//   useEffect(() => {
+//     ref.current = value;
+//   });
+//   return ref.current;
+// }
 
 // ========================================================================== //
 // Misc
@@ -128,6 +129,7 @@ export const useStaticMethods = (methods, ref) => {
     // callback method extended from this component so its accessible to parent, from the forwarded ref
     () => ({ ...methods.forEach((method) => method) }),
   );
+  return ref;
 };
 
 export const useEffectUpdate = (callback) => {
@@ -478,25 +480,6 @@ export const useCookie = () => {
   );
   // Return enabled state and setter
   return [cookies, setCookie, removeCookie];
-};
-
-// hook into mobx
-const useStores = () => React.useContext(MobXProviderContext);
-
-// https://mobx-react.js.org/recipes-migration
-
-// Hook gets desired data from hook props and returns it while observing it
-export const useStore = (props) => {
-  const data = {};
-  const mobXdata = useStores();
-  // eslint-disable-next-line no-return-assign
-  // assign props to store if not already present
-  props.map((key) => mobXdata[key] || (() => { data[key] = mobXdata[key]; })());
-
-  // return data you are operating on thats being observed simultaneously
-  return useObserver(() => (
-    props.map((key) => data[key])
-  ));
 };
 
 // ========================================================================== //

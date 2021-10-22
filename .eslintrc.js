@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["plugin:react/recommended", "airbnb","eslint-plugin-valtio"],
+  extends: ["plugin:react/recommended", "airbnb"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,

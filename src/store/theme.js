@@ -1,3 +1,7 @@
+/* eslint-disable no-restricted-properties */
+/* eslint-disable no-multi-assign */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-bitwise */
 // This is where I define elements of my theme.
 import {
   createMuiTheme,
@@ -15,6 +19,11 @@ import transitions from '@material-ui/core/styles/transitions';
 import * as React from 'react';
 
 // ========================================================================== //
+// Noise generation
+// ========================================================================== //
+import SimplexNoise from 'simplex-noise';
+
+// ========================================================================== //
 // Base Theme
 // ========================================================================== //
 
@@ -25,16 +34,99 @@ import * as React from 'react';
 // factor: 0.5,
 // variants: ['responsive', 'hover', 'focus', 'active', 'group-hover'],
 // });
-const spacing = createSpacing({});
-const breakpoints = createBreakpoints({});
 
+const defaultSpacing = [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80];
+const defaultPadding = [0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80];
+const defaultMargin = [0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80];
+const defaultLayout = [0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80];
+
+const defaultBreakpoints = ['xs', 'sm', 'md', 'lg', 'xl'];
+
+const customizeGridSystem = (theme, breakpoints) => {
+  const {
+    spacing,
+    gutters,
+    widthCap,
+    gutter,
+    widthCap: widthCap2,
+    gutter: gutter2,
+  } = theme.layout;
+};
+
+const layoutGrid = {
+  spacing: defaultSpacing,
+  gutters: 20,
+  breakpoints: defaultBreakpoints,
+  widthCap: {
+    xs: 600,
+    sm: 960,
+  },
+};
+
+// ========================================================================== //
+// Create default values
+// ========================================================================== //
+
+const spacing = createSpacing(4);
+const breakpoints = createBreakpoints({});
 // createTypography()
+
+// ========================================================================== //
+// Sizing
+// ========================================================================== //
+const inputToGoldenRatio = (input) => {
+  const goldenRatio = 1.61803398875;
+  return input * goldenRatio;
+};
+const parentSizeToChildSizeGoldenRatio = (parentSize) => {
+  const goldenRatio = 1.61803398875;
+  return parentSize / goldenRatio;
+};
 
 // convert object to a string, inject paramater input into the string object, then convert it back to an object
 export const objectTokenizer = (object, parameter) => JSON.stringify(object, null, 2).replace(
   /"([a-zA-Z]+)"/g,
   (match, p1) => `"${parameter[p1]}`,
 );
+
+function generateNoisePng(
+  width,
+  height,
+  seed,
+  octaves,
+  persistence,
+  lacunarity,
+  scale,
+) {
+  const noise = new SimplexNoise(seed);
+  const size = width * height * 4;
+  const data = new Uint8Array(size);
+  for (let i = 0; i < size; i += 4) {
+    const x = (i / 4) % width;
+    const y = ~~(i / 4 / width);
+    let value = 0;
+    for (let j = 0; j < octaves; j++) {
+      const frequency = Math.pow(2, j);
+      const amplitude = Math.pow(persistence, j);
+      value
+        += noise.noise2D(x * scale * frequency, y * scale * frequency) * amplitude;
+    }
+    value = value * 128 + 128;
+    data[i] = data[i + 1] = data[i + 2] = value;
+    data[i + 3] = 255;
+  }
+  // color the noise
+  // const canvas = document.createElement('canvas');
+  // canvas.width = width;
+  // canvas.height = height;
+  // const context = canvas.getContext('2d');
+  // const imageData = context.createImageData(width, height);
+  // imageData.data.set(data);
+  // context.putImageData(imageData, 0, 0);
+  // return canvas.toDataURL();
+
+  return `url(data:image/png;base64,${typeof window !== 'undefined' && btoa(data)})`;
+}
 
 // ========================================================================== //
 // Font scaling
@@ -60,9 +152,9 @@ const TYPOGRAPHY = {
     h1: {
       // textStroke: '2px currentColor',
       fontWeight: 900,
-      fontSize: pxToRem(40),
+      fontSize: pxToRem(32),
       textTransform: 'capitalize',
-      // fontSize: pxToRem( '5rem !important'), 
+      // fontSize: pxToRem( '5rem !important'),
       [breakpoints.down('md')]: {
         fontSize: pxToRem(40),
       },
@@ -76,6 +168,7 @@ const TYPOGRAPHY = {
       // color: palette.text.primary,
       fontWeight: 900,
       textTransform: 'capitalize',
+      // fontSize: pxToRem(35),
       fontSize: pxToRem(35),
       [breakpoints.down('lg')]: {
         fontSize: pxToRem(35),
@@ -112,34 +205,33 @@ const TYPOGRAPHY = {
       },
     },
     button: {
-      fontSize: pxToRem(15),
+      fontSize: pxToRem(12),
       fontWeight: 300,
       fontStyle: 'italic',
-
 
       // color: palette.text.primary,
       background: 'inherit',
       [breakpoints.down('lg')]: {
-        fontSize: pxToRem(15),
+        fontSize: pxToRem(12),
       },
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(15),
+        fontSize: pxToRem(12),
       },
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(11),
+        fontSize: pxToRem(12),
       },
-    }, 
+    },
     body1: {
-      fontSize: pxToRem(18),
+      fontSize: pxToRem(16),
       lineHeight: '150%',
       fontWeight: 200,
       // color: palette.text.primary,
       background: 'inherit',
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(11),
+        fontSize: pxToRem(14),
       },
       [breakpoints.down('lg')]: {
-        fontSize: pxToRem(16),
+        fontSize: pxToRem(14),
       },
     },
     h5: {
@@ -156,30 +248,36 @@ const TYPOGRAPHY = {
   },
 };
 
+// generated wi
+
 // ========================================================================== //
 // THEMES
 // ========================================================================== //
 const CUSTOM_THEME_PROPS = {
   custom: {
     borders: {
-    brandBorderRadius: '4px',
-    brandBorderRadius2: '12px',
-    brandBorderRadius3: '22px',
-    brandBorder: '1px solid rgba(255,255,255,.3)',
-    brandBorderSecondary: '1px solid rgba(0, 0, 100, 0.3)',
+      brandBorderRadius: '4px',
+      brandBorderRadius2: '12px',
+      brandBorderRadius3: '22px',
+      // brandBorder: '1px solid rgba(255,255,255,.2)',
+      brandBorder: '1px solid #979ac9',
+      brandBorderSecondary: '1px solid #979ac9',
+      // brandBorderSecondary: '1px solid rgba(0, 0, 100, 0.3)',
+    },
+    shadows: {
+      brand: '-20px 34px 55px rgba(0, 0, 100, 0.15);',
+      filterShadow: '0px 0px 20px rgba(51, 68, 9,.6)',
+      brandBig:
+        '10px 10px 0px rgba(183, 197, 168, 0.6), 5px 5px 0px rgba(183, 197, 168, 0.6), 46px 31px 75px rgba(0, 0, 0, 0.3)',
+      brandInset: 'inset 0px 0px 55px rgba(0, 0, 100, 0.15)',
+    },
   },
-  shadows: {
-    brand: '-20px 34px 55px rgba(0, 0, 100, 0.15);',
-    filterShadow: '0px 0px 20px rgba(51, 68, 9,.6)',
-    brandBig: '10px 10px 0px rgba(183, 197, 168, 0.6), 5px 5px 0px rgba(183, 197, 168, 0.6), 46px 31px 75px rgba(0, 0, 0, 0.3)',
-    brandInset: 'inset 0px 0px 55px rgba(0, 0, 100, 0.15)',
-}}
 };
 
 const THEME_TYPE = { DARK: 'DARK', LIGHT: 'LIGHT' };
 const LIGHT_THEME = {
   ...TYPOGRAPHY,
-  ...CUSTOM_THEME_PROPS, 
+  ...CUSTOM_THEME_PROPS,
   palette: {
     type: 'light',
     primary: {
@@ -198,8 +296,10 @@ const LIGHT_THEME = {
       default: '#F0F3FC',
       headline: '# ',
       hero: '#DCF15B',
-      primary: 'radial-gradient(52.48% 58.6% at 10.23% 25.21%, #C1DD13 0%, #F4FDBF 100%), radial-gradient(50% 50% at 50% 50%, #F5FEC0 0%, #F6FCD1 100%)',
-      secondary: 'linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(177.95% 1171.31% at -86.48% 213.11%, #3A4D09 22.92%, #6A8B4D 100%)',
+      primary:
+        'radial-gradient(52.48% 58.6% at 10.23% 25.21%, #C1DD13 0%, #F4FDBF 100%), radial-gradient(50% 50% at 50% 50%, #F5FEC0 0%, #F6FCD1 100%)',
+      secondary:
+        'linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(177.95% 1171.31% at -86.48% 213.11%, #3A4D09 22.92%, #6A8B4D 100%)',
     },
   },
 
@@ -207,28 +307,30 @@ const LIGHT_THEME = {
 };
 const DARK_THEME = {
   ...TYPOGRAPHY,
-  ...CUSTOM_THEME_PROPS, 
+  ...CUSTOM_THEME_PROPS,
   palette: {
     type: 'dark',
     primary: {
       main: '#F0F3FC',
     },
     secondary: {
-      main: '#000064',
+      main: '#0D0D0D',
     },
     text: {
       primary: '#F0F3FC',
-      secondary: '#000064',
+      secondary: '#0D0D0D',
     },
     background: {
-      button: '#8EF2D2',
+      button: '#2E00FF',
       main: 'rgb(51, 68, 9)',
       default: '#0D0D0D',
       // default:'#F0F3FC',
       headline: '#BAF7E4',
       hero: '#DCF15B',
-      primary: 'radial-gradient(52.48% 58.6% at 10.23% 25.21%, #C1DD13 0%, #F4FDBF 100%), radial-gradient(50% 50% at 50% 50%, #F5FEC0 0%, #F6FCD1 100%)',
-      secondary: 'linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(177.95% 1171.31% at -86.48% 213.11%, #3A4D09 22.92%, #6A8B4D 100%)',
+      primary:
+        'radial-gradient(52.48% 58.6% at 10.23% 25.21%, #C1DD13 0%, #F4FDBF 100%), radial-gradient(50% 50% at 50% 50%, #F5FEC0 0%, #F6FCD1 100%)',
+      secondary:
+        'linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(177.95% 1171.31% at -86.48% 213.11%, #3A4D09 22.92%, #6A8B4D 100%)',
     },
   },
 
@@ -249,12 +351,13 @@ export const transition = transitions.create(
 // ========================================================================== //
 // use width 52 and height 26 for these type of special svgs
 // string to base64 client side function
-export const stringToBase64 = (str) => (typeof window !== 'undefined') && btoa(
-  new Uint8Array(str.match(/\w{2}/g).map((item) => parseInt(item, 16))).reduce(
-    (acc, curr) => acc + String.fromCharCode(curr),
-    '',
-  ),
-) || '';
+export const stringToBase64 = (str) => (typeof window !== 'undefined'
+    && btoa(
+      new Uint8Array(
+        str.match(/\w{2}/g).map((item) => parseInt(item, 16)),
+      ).reduce((acc, curr) => acc + String.fromCharCode(curr), ''),
+    ))
+  || '';
 // const btoa = (str) => Buffer.from(str).toString('base64');
 
 // const function that calculates alpha value from hex color
@@ -266,7 +369,7 @@ export const hexToAlpha = (hex, alpha) => {
 };
 
 export const svgEncode = (svg) => `url(data:image/svg+xml,${encodeURIComponent(svg)})`;
-export const svgEncodeBaseSixtyFour = (svg) => `url(data:image/svg+xml;base64,${(typeof window !== 'undefined') && btoa(svg)})`;
+export const svgEncodeBaseSixtyFour = (svg) => `url(data:image/svg+xml;base64,${typeof window !== 'undefined' && btoa(svg)})`;
 // ========================================================================== //
 // animations in material-ui need to be pre-pended a $ before the name of animation
 // ========================================================================== //
@@ -274,10 +377,9 @@ export const svgEncodeBaseSixtyFour = (svg) => `url(data:image/svg+xml;base64,${
 // ========================================================================== //
 //    Social media popup https://codepen.io/Mahmood_bagheri/pen/YzqNqEb
 // ========================================================================== //
-export const socialMediaPopupKeyframes = {
-};
+export const socialMediaPopupKeyframes = {};
 export const socialMediaPopup = {
-// button {
+  // button {
   // all: unset;
   // background: var(--white);
   // border: 2px solid var(--gray);
@@ -291,18 +393,15 @@ export const socialMediaPopup = {
   // overflow: hidden;
   // text-align: center;
   // width: 200px;
-
   //   &:hover {
   //     background: var(--blue);
   //     border-color: var(--blue);
   //     color: var(--blue);
   //   }
-
   //   &:hover .icons {
   //     &__icon {
   //       transform: translateY(-75%);
   //       transition: all 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55); /* easeInOutBack */
-
   //       &:nth-child(1) {
   //         transition-delay: 30ms;
   //       }
@@ -321,7 +420,6 @@ export const socialMediaPopup = {
   //     }
   //   }
   // }
-
   // .icons {
   //   position: absolute;
   //   left: 0;
@@ -329,7 +427,6 @@ export const socialMediaPopup = {
   //   display: flex;
   //   width: 100%;
   //   justify-content: space-around;
-
   //   &__icon {
   //     background: var(--white);
   //     height: 25px;
@@ -339,7 +436,6 @@ export const socialMediaPopup = {
   //     padding: 6px;
   //     transform: translateY(60%);
   //     transition: all 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55); /* easeInOutBack */
-
   //     &:nth-child(1) {
   //       transition-delay: 20ms;
   //     }
@@ -355,7 +451,6 @@ export const socialMediaPopup = {
   //     &:nth-child(5) {
   //       transition-delay: 100ms;
   //     }
-
   //     svg {
   //       stroke: var(--blue);
   //     }
@@ -459,6 +554,20 @@ export const patternHover = {
 // ========================================================================== //
 // Theme patterns
 // ========================================================================== //
+// export const sideBorders = {
+//   '&::before': {
+//     background: _theme.palette.text.primary,
+//     content: '""',
+//     left: 0,
+//     top: -1,
+//     position: 'absolute',
+//     height: '100%',
+//     width: '86.5%',
+//     margin: _theme.spacing('auto', 6),
+//     borderLeft: _theme.custom.borders.brandBorder,
+//     borderRight: _theme.custom.borders.brandBorder,
+//   },
+// };
 const commonButton = {
   root: {
     transition,
@@ -470,6 +579,7 @@ const commonButton = {
     // display: 'inline',
     minWidth: 'fit-content',
     textOverflow: 'ellipsis',
+    boxShadow: 'none !important',
     textAlign: 'center',
     textTransform: 'capitalize',
     alignContent: 'center',
@@ -483,7 +593,7 @@ const commonButton = {
   containedSizeLarge: {
     padding: `${8}, ${12} !important`,
     boxShadow: 'none',
-  }
+  },
 };
 
 const commonCard = {
@@ -509,22 +619,54 @@ const OVERRIDES = {
         html: {
           border: `1px solid ${_theme.palette.text.primary}`,
         },
-        "strong, b": {},
+        'strong, b': {},
         body: {
           margin: 0,
           overflowX: 'hidden',
+          // background: generateNoisePng(1000, 1000, 12343412, 4, 3, 2, 29),
+          background: `url(${require('./noise.js').noise})`,
+          // ========================================================================== //
+          //           Customize scrollbar
+          // ========================================================================== //
+          // scrollbarColor: '#6b6b6b #2b2b2b',
+          //   scrollbarColor: 'none',
+          '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+            // backgroundColor: _theme.palette.text.primary,
+            display: 'none',
+          },
+          '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+            // borderRadius: _theme.custom.borders.brandBorderRadius,
+            display: 'none',
+            // backgroundColor: _theme.palette.text.secondary,
+            // minHeight: 24,
+            // border: '3px solid #2b2b2b',
+          },
+          '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
+            // backgroundColor: 'none',
+            display: 'none',
+          },
+          '&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active': {
+            // backgroundColor: 'none',
+            display: 'none',
+          },
+          '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover': {
+            // backgroundColor: 'none',
+            display: 'none',
+          },
+          '&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner': {
+            // backgroundColor: '#2b2b2b',
+            display: 'none',
+          },
+
         },
-        '@font-face': [
-          'Poppins',
-        ],
+        '@font-face': ['Poppins'],
       },
     },
     // ========================================================================== //
     // MUI ovverrides
     // ========================================================================== //
     MuiBackdrop: {
-      root: {
-      },
+      root: {},
     },
 
     // ========================================================================== //
@@ -569,24 +711,23 @@ const OVERRIDES = {
       },
     },
     MuiButtonBase: {
-      disableRipple: true//no performance costly ripple effect
+      // disableRipple: true//no performance costly ripple effect
     },
     MuiButton: {
-      disableRipple: true,//no performance costly ripple effect
+      // disableRipple: true,//no performance costly ripple effect
       // hover keyframes declared locally not on the theme object
       ...commonButton,
     },
     MuiCollapse: {
       hidden: {
         display: 'none',
-      }
+      },
     },
     MuiTextField: {
       ...commonButton,
     },
     KeyboardDatePicker: {
-      root: {
-      },
+      root: {},
     },
     // ========================================================================== //
     //    Nav
@@ -599,7 +740,7 @@ const OVERRIDES = {
     MuiToolbar: {
       root: {
         background: 'none !important',
-        padding: spacing(1,0),
+        padding: spacing(1, 0),
         justifyContent: 'space-between',
         // padding: spacing(3),
         color: _theme.palette.text.secondary,
@@ -611,8 +752,8 @@ const OVERRIDES = {
         // background: 'none !important',
       },
       root: {
-        background: `${hexToAlpha(_theme.palette.text.primary, 1)} !important`,
-        // backdropFilter: 'blur(35px)',
+        background: `${hexToAlpha(_theme.palette.text.primary, 0.6)} !important`,
+        backdropFilter: 'blur(35px)',
         // background: _theme.palette.background.default,
         boxShadow: _theme.custom.shadows.brand,
         color: _theme.palette.text.secondary,
@@ -620,12 +761,12 @@ const OVERRIDES = {
     },
     MuiContainer: {
       root: {
-        padding: `${spacing(24)} !important`
-      }
+        padding: `${spacing(24)} !important`,
+      },
     },
     MuiTypography: {
       colorTextSecondary: {
-        color: 'inherit'
+        color: 'inherit',
       },
     },
   },
@@ -635,6 +776,59 @@ const OVERRIDES = {
 // delete breakpoints;
 // delete spacing;
 
-export {
-  TYPOGRAPHY, LIGHT_THEME, DARK_THEME, OVERRIDES, CUSTOM_THEME_PROPS
+const SCROLL_PROPS = {
+  // 'data-sal="slide-up"',
+  // 'data-sal-duration="2000"',
+  // 'data-sal-delay="300"',
+  // 'data-sal-easing="ease"',
+  'data-sal': 'fade',
+  'data-sal-duration': '500',
+  'data-sal-delay': '0',
+  'data-sal-easing': 'ease-in-out',
 };
+
+export {
+  TYPOGRAPHY,
+  LIGHT_THEME,
+  DARK_THEME,
+  OVERRIDES,
+  CUSTOM_THEME_PROPS,
+  SCROLL_PROPS,
+};
+
+// bubble gradient
+// background: `radial-gradient(50% 50% at 50% 50%, ${hexToAlpha(
+//   theme.palette.text.primary,
+//   1,
+// )} 41.66%, rgba(255, 255, 255, 0) 100%),
+// radial-gradient(21.07% 10.97% at 60.57% 12.66%, rgba(255, 255, 255, 0.6) 54.48%, rgba(255, 255, 255, 0) 100%),
+// radial-gradient(99.61% 99.61% at 87.86% 22.85%, rgba(0, 0, 100, 0) 22.71%, ${hexToAlpha(
+// theme.palette.text.primary,
+// 0.6,
+// )} 78.96%)`,
+// objectFit: 'contain',
+// zIndex: 1,
+// // "&:before": {
+// //     content: "",
+// //     position: 'absolute',
+// //     top: '1%',
+// //     left: '5%',
+// //     width: '90%',
+// //     height: '90%',
+// //     borderRadius: '50%',
+// //     background: `radial-gradient(circle at bottom,white, ${theme.palette.text.secondary},${theme.palette.text.primary} 58%)`,
+// //     filter: 'blur(5px)',
+// //     zIndex: 2,
+// //   },
+// transition: theme.transitions.create(
+//   ['transform', 'box-shadow', 'background', 'margin', 'border'],
+//   { duration: '0.3s', easing: 'ease-in-out' },
+// ),
+// '&:hover': {
+//   transform: 'skew(-5deg, 2deg) !important',
+//   transition: theme.transitions.create(
+//     ['transform', 'box-shadow', 'background', 'margin', 'border'],
+//     { duration: '0.3s', easing: 'ease-in-out' },
+//   ),
+// },
+// },

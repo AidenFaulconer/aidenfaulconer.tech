@@ -30,22 +30,39 @@ module.exports = {
   // eslint-disable-next-line global-require
   siteMetadata: require('./site-meta-data.json'),
   plugins: [
-    
+    // ========================================================================== //
+    //     Scroll animations
+    // ========================================================================== //
+    {
+      resolve: 'gatsby-plugin-scroll-reveal',
+      options: {
+        threshold: 1, // Percentage of an element's area that needs to be visible to launch animation
+        once: true, // Defines if animation needs to be launched once
+        disable: false, // Flag for disabling animations
+
+        // Advanced Options
+        selector: '[data-sal]', // Selector of the elements to be animated
+        animateClassName: 'sal-animate', // Class name which triggers animation
+        disabledClassName: 'sal-disabled', // Class name which defines the disabled state
+        rootMargin: '0% 50%', // Corresponds to root's bounding box margin
+        enterEventName: 'sal:in', // Enter event name
+        exitEventName: 'sal:out', // Exit event name
+      },
+    },
     // ========================================================================== //
     //     Page transitioning
     // ========================================================================== //
 
     // page, and template components receive, transitionStatus, entry, and exit
     // instead of gatsby-link use transition link with transition configuration attatched
-    {
-      resolve: 'gatsby-plugin-transition-link',
-      options: {
-        //layout injected manually in gatsby-browser and gatsby-ssr
-        injectPageProps: true,
-        layout: `${__dirname}/src/layout/layout.jsx`, // this is excluded and stays static on transtiions **this means not including layout in pages or templates**
-      }, // performance optimization
-
-    }, // creates the 'tl-edge & tl-wrapper https://github.com/TylerBarnes/gatsby-plugin-transition-link/issues/29
+    // {
+    //   resolve: "gatsby-plugin-transition-link",
+    //   options: {
+    //     //layout injected manually in gatsby-browser and gatsby-ssr
+    //     injectPageProps: true,
+    //     layout: require.resolve(`${__dirname}/src/layout/layout.jsx`), // this is excluded and stays static on transtiions **this means not including layout in pages or templates**
+    //   },
+    // }, // creates the 'tl-edge & tl-wrapper https://github.com/TylerBarnes/gatsby-plugin-transition-link/issues/29
 
     {
       resolve: 'react-refresh',
@@ -53,7 +70,7 @@ module.exports = {
     },
     // have a custom plugin inject theme before this
     // `gatsby-plugin-top-layout`,
-  
+
     // ========================================================================== //
     //     File system management
     // ========================================================================== //
@@ -222,16 +239,8 @@ module.exports = {
     // Netlify CMS
     // ========================================================================== //
     'gatsby-plugin-netlify-cms',
+    'gatsby-plugin-material-ui',
 
-    {
-      resolve: 'gatsby-plugin-material-ui',
-      options: {
-        stylesProvider: {
-          // injectFirst: true, //* *already done in code ref: MaterialUI component**
-        },
-
-      },
-    },
     // ========================================================================== //
     //     Debugging Webpack bundles
     // ========================================================================== //
@@ -250,5 +259,3 @@ module.exports = {
     },
   ].filter(Boolean),
 };
-
-

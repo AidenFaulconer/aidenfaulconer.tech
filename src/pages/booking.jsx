@@ -1,6 +1,8 @@
-import * as React from "react"
-import { Container, Grid, makeStyles, Typography } from "@material-ui/core"
-import Layout from "../layout/layout"
+import * as React from 'react';
+import {
+  Container, Grid, makeStyles, Typography,
+} from '@material-ui/core';
+import Layout from '../layout/layout';
 import {
   About,
   Projects,
@@ -8,26 +10,26 @@ import {
   Contact,
   Experience,
   WhatDoYouNeed,
-} from "../components/indexSections"
+} from '../components/indexSections';
 
-import { SecondaryButton } from "../components/custom/customButton"
+import { SecondaryButton } from '../components/custom/customButton';
 
-import letsStartSomething from "../../static/assets/portfolio/lets start something together.png"
-import cubesOffset from "../../static/assets/portfolio/cubesOffset.png"
+import letsStartSomething from '../../static/assets/portfolio/lets start something together.png';
+import cubesOffset from '../../static/assets/portfolio/cubesOffset.png';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   underlay: {
-    position: "relative",
+    position: 'relative',
     // top: '-400px',
-    content: "",
+    content: '',
     margin: theme.spacing(3),
     padding: theme.spacing(12),
-    paddingTop: "unset",
-    pointerEvents: "all",
-    overflow: "hidden",
+    paddingTop: 'unset',
+    pointerEvents: 'all',
+    overflow: 'hidden',
     // boxShadow: theme.custom.shadows.brandBig,
     background:
-      "linear-gradient(180deg, #324308 15.49%, #8BAD6B 68.98%, #AAC882 103.74%)",
+      'linear-gradient(180deg, #324308 15.49%, #8BAD6B 68.98%, #AAC882 103.74%)',
     borderRadius: theme.custom.borders.brandBorderRadius3,
   },
   endOfPage: {
@@ -38,29 +40,29 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(18),
   },
   sectionCurve: {
-    borderRadius: "100%",
-    margin: "auto",
-    width: "100%",
-    left: "0px",
-    fill: "#324308",
+    borderRadius: '100%',
+    margin: 'auto',
+    width: '100%',
+    left: '0px',
+    fill: '#324308',
     // marginTop: '-43px',
     // fill: theme.palette.background.default,
   },
   cubesOffset: {
-    top: "-7%",
-    left: "37%",
-    top: "-6%",
-    left: "38%",
+    top: '-7%',
+    left: '37%',
+    top: '-6%',
+    left: '38%',
     opacity: 0.6,
     zIndex: -1,
-    position: "absolute",
+    position: 'absolute',
     maxWidth: 860,
   },
   letsStartSomething: {
-    width: "100%",
-    objectFit: "contain",
+    width: '100%',
+    objectFit: 'contain',
   },
-}))
+}));
 
 // <video preload="true" controls loop autoPlay="true">
 //                       <source src="https://imgur.com/5QFU0PB.mp4" />
@@ -72,12 +74,10 @@ const BookingPage = React.memo(
     // data: {
     //   allMarkdownRemark: { edges },
     // },
-    transitionStatus,
-    entry,
-    exit,
+    location,
   }) => {
-    const marginAmount = "175px"
-    const classes = useStyles()
+    const marginAmount = '175px';
+    const classes = useStyles();
 
     return (
       <>
@@ -86,14 +86,13 @@ const BookingPage = React.memo(
           <h1>Hello world</h1>
         </Container>
 
-        
         {/* <Contact id="contact" /> */}
       </>
-    )
-  }
-)
+    );
+  },
+);
 
-export default BookingPage
+export default BookingPage;
 
 // autorun at gatsby rebuild-cycle
 // export const pageQuery = graphql`

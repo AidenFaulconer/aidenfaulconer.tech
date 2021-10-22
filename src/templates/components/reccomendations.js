@@ -1,7 +1,8 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
-import Layout from '../../layout/layout';
 import { makeStyles } from '@material-ui/core';
+import Layout from '../../layout/layout';
+
 const useStyles = makeStyles((theme) => ({
   container: {
     margin: '50px 0px',
@@ -87,13 +88,13 @@ export default ({ otherBlogs }) => {
       Read more
       {otherBlogs.map((post, i) => {
         //  alert(JSON.stringify(post, null, 2))
-        {/* const {
+        { /* const {
           catagory,
           path,
           title,
           thumbnail_,
           metaDescription,
-        } = post.node.frontmatter; */}
+        } = post.node.frontmatter; */ }
         return (
           <Link to={path} className={classes.post}>
             {/* <img src={thumbnail_} /> */}
