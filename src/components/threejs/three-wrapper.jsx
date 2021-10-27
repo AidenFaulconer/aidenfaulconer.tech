@@ -44,10 +44,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     position: 'absolute',
     zIndex: 21,
-    boxShadow: theme.custom.shadows.brand,
     '& canvas': {
       zIndex: 21,
-      boxShadow: theme.custom.shadows.brandInset,
       minHeight: '100%',
       minWidth: '100%',
       maxHeight: 200,

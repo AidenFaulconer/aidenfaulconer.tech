@@ -10,6 +10,7 @@ import {
   Contact,
   Experience,
   WhatDoYouNeed,
+  Skills,
 } from '../components/indexSections';
 
 import { SecondaryButton } from '../components/custom/customButton';
@@ -32,7 +33,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.custom.borders.brandBorderRadius3,
   },
   contentContainer: {
-    padding: theme.spacing(12, 0),
+    // padding: theme.spacing(12, 0),
+    scrollSnapType: 'x  proximity',
+    overflowX: 'scroll',
   },
   sectionCurve: {
     borderRadius: '100%',
@@ -49,9 +52,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// <video preload="true" controls loop autoPlay="true">
-//                       <source src="https://imgur.com/5QFU0PB.mp4" />
-// </video>
+const handler = (
+  entries = [],
+  observer = null,
+) => {
+  for (const entry of entries) {
+    if (entry.intersectionRatio >= 1) {
+      console.log('i Am visible', entry.target);
+    }
+  }
+};
+
+const options = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 1.0,
+};
+
+const getObserver = (ref) => {
+  const observer = ref.current;
+  if (observer !== null) {
+    return observer;
+  }
+  const newObserver = new IntersectionObserver(handler, options);
+  ref.current = newObserver;
+  return newObserver;
+};
+
 const IndexPage = React.memo(
   ({
     // returned from pageQuery as props
@@ -61,21 +88,58 @@ const IndexPage = React.memo(
     location,
   }) => {
     const marginAmount = '175px';
+
+    // ========================================================================== //
+    //     Scroll snapping
+    // ========================================================================== //
+    const [count, setCount] = React.useState(0);
+    const refs = React.useRef([]);
+    const observer = React.useRef(null);
+    const addNode = React.useCallback((node) => refs.current.push(node), []);
+    // ref callback is called twice: once when the DOM
+    // node is created, and once (with null) when the DOM
+    // node is removed.
+    // TRY IT OUT => Comment the other addNode and uncomment this one
+    // const addNode = (node: HTMLDivElement) => refs.current.push(node);
+
+    React.useEffect(() => {
+      if (observer.current) observer.current.disconnect();
+      const newObserver = getObserver(observer);
+      for (const node of refs.current) {
+        newObserver.observe(node);
+      }
+      console.log(refs.current);
+      return () => newObserver.disconnect();
+    }, []);
+
     const classes = useStyles();
 
     return (
       <>
         <Grid container maxWidth="xl" className={classes.contentContainer}>
-          <Grid item xs={1} />
-          <Grid item xs={10}>
-            <About id="services" />
-            <Experience id="skills" />
-            <Languages id="languages" />
+          {/* section 1 */}
+          <Grid item md={1} xs={0} />
+          <Grid item md={4} xs={5}>
+            <About id="services" ref={addNode} />
           </Grid>
+          <Grid item md={6} xs={7}>
+            <Experience id="skills" ref={addNode} />
+          </Grid>
+          <Grid item md={1} xs={0} />
+
+          {/* section 2 */}
+          <Grid item md={1} xs={0} />
+          <Grid item md={4} xs={5}>
+            <Languages id="languages" ref={addNode} />
+          </Grid>
+          <Grid item md={6} xs={7}>
+            <Skills id="skills" ref={addNode} />
+          </Grid>
+          <Grid item md={1} xs={0} />
           {/* <Experience id="experience" /> */}
-          <Grid item xs={1} />
         </Grid>
-        <WhatDoYouNeed id="contact" />
+
+        <WhatDoYouNeed id="contact" ref={addNode} />
 
         <Grid
           item
@@ -85,7 +149,6 @@ const IndexPage = React.memo(
         >
           <Typography
             align="center"
-            
             gutterBottom
             style={{ marginBottom: 25, marginTop: 80 }}
             variant="h2"
@@ -98,7 +161,7 @@ const IndexPage = React.memo(
             future of software development.
           </Typography>
         </Grid>
-        <BlogPosts id="blog" />
+        <BlogPosts id="blog" ref={addNode} />
       </>
     );
   },

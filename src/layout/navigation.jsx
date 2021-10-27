@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'capitalize',
   },
   appBar: {
+    background: `linear-gradient(-90deg, ${theme.custom.contrast.black} 23.52%, ${theme.palette.text.primary} 23.52%, ${theme.palette.text.primary}) 61.89%`,
     // background: `rgba(80, 105, 54, 1),rgba(145, 146, 175, 1)`,
     // theme.palette.background.secondary,//change to "rgba(80,105,54,.6)" when app bar scrolled past initial place
     boxShadow: theme.custom.shadows.brand,

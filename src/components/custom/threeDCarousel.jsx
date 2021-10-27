@@ -57,17 +57,25 @@ export const useStyles = makeStyles((theme) => ({
   },
   // wrapper size, and hardcoded translateZ all correlate to a ratio to be z aligned
   wrapper: {
-    width: 320,
+    // width: ({ cardDimension, carouselLength }) => cardDimension + 20 || 420,
+    width: '100%',
     // margin: '100 auto 0 auto',
-    height: 350,
-    margin: theme.spacing(2, 'auto'),
+    minHeight: ({ cardDimension, carouselLength }) => cardDimension / 1.5 || 450,
     position: 'relative',
+    // minHeight: 300,
+    height: '100%',
+    display: 'grid',
+    alignContent: 'center',
+    justifyContent: 'center',
+    // top: '50%',
+    // left: '50%',
     // overflowY: 'hidden',
-    perspective: 1000, // This is the perspective of the 3D circle.
-    transform: 'scale(.5)',
+    perspective: ({ cardDimension, carouselLength }) => cardDimension + 1250 + carouselLength ** 4 || 1000, // This is the perspective of the 3D circle.
+    transform: 'scale(.2) rotateX(30deg)',
   },
   // root container, this is tilted to tilt the entire carousel, rotate to position to selected card
   carousel: {
+    marginTop: -285,
     position: 'absolute',
     width: '100%',
     height: '100%',
@@ -76,13 +84,13 @@ export const useStyles = makeStyles((theme) => ({
     // animation: '$rotate360 60s linear infinite',
   },
   slide: {
-    background: hexToAlpha('#5e60a8', 0.6),
+    background: hexToAlpha(theme.palette.text.primary, 1),
     padding: 0,
-    backdropFilter: 'blur(5px)',
-    boxShadow: theme.custom.shadows.brandShadow,
+    // backdropFilter: 'blur(5px)',
+    boxShadow: 'none !important',
     position: 'absolute',
-    height: 300,
-    width: 300,
+    height: ({ cardDimension, carouselLength }) => cardDimension || 400,
+    width: ({ cardDimension, carouselLength }) => cardDimension || 400 + 50,
     // height: 187,
     top: 20,
     left: 10,
@@ -99,20 +107,26 @@ export const useStyles = makeStyles((theme) => ({
   },
   itemDisplay: {
     position: 'relative',
+    alignContent: 'space-between',
+    height: '100% !important',
+    borderBottom: '82px solid',
     width: '100%',
-    height: 400,
     '& > .MuiGrid-root': {
       transition: 'all .3s ease-in-out',
       border: theme.custom.borders.brandBorderSecondary,
+      borderLeft: 0,
+      borderRight: 0,
       textAlign: 'center',
       display: 'grid',
-      padding: theme.spacing(2),
+      alignContent: 'center',
+      padding: theme.spacing(3),
+      // padding: theme.spacing(2),
     },
   },
 }));
 
-export const ThreeDCarousel = ({ carouselData, cardHeight, cardWidth }) => {
-  const classes = useStyles();
+export const ThreeDCarousel = ({ carouselData, cardHeight, cardWidth = 600 }) => {
+  const classes = useStyles({ cardDimension: cardWidth, carouselLength: carouselData.length });
   const theme = useTheme();
   // ========================================================================== //
   //     Carousel interaction
@@ -193,88 +207,98 @@ export const ThreeDCarousel = ({ carouselData, cardHeight, cardWidth }) => {
   const computeTransform = React.useCallback((index) => { // translateZ(412px);
     // transform: rotateY(320deg)
     const y = 0;
-    return ({ transform: `rotateY(${slideAngle * index}deg) translateZ(${430}px)`, zIndex: (5 * index) + 1 });
+    return ({ transform: `rotateY(${slideAngle * index}deg) translateZ(${cardWidth + carouselData.length ** 1.25 + cardWidth || 430}px)`, zIndex: (5 * index) + 1 });
   }, []);
 
-  const itemDisplay = React.useCallback(() => {
-    const {
-      title, description, icon, image, cta,
-    } = carouselData[current];
-    return (
-      <Grid container xs={12} className={classes.itemDisplay}>
-
-        {/* row 1 */}
-        <Grid item xs={3}>
-          Category
-        </Grid>
-        <Grid item xs={6}>
-          <Typography variant="h3" color="inherit" align="center" component="h3">
-            {title}
-          </Typography>
-        </Grid>
-        <Grid item xs={3}>
-          icon
-        </Grid>
-
-        {/* row 2 */}
-        <Grid item xs={7}>
-          <Typography
-            variant="body2"
-            color="inherit"
-            component="p"
-            align="left"
-          >
-            {description}
-          </Typography>
-        </Grid>
-        <Grid item xs={5}>
-          <ThirdButton onClick={(e) => {
-            e.preventDefault();
-            setCurrent(current === carouselData.length ? 0 : current + 1);
-          }}
-          >
-            {cta}
-          </ThirdButton>
-        </Grid>
-      </Grid>
-    );
-  });
-
   return (
-    <>
-      <div className={classes.wrapper}>
-        {computeCarousel()}
-        <a.div className={classes.carousel} style={transitionProps}>
-          {carouselData.map((data, index) => {
-            const {
-              title, image, alt, description, icon,
-            } = data;
+    <ItemDisplay current={current} carouselData={carouselData}>
+      <Grid
+        item
+        xs={12}
+        style={{
+          position: 'relative',
+        }}
+      >
+        <div className={classes.wrapper}>
+          {computeCarousel()}
+          <a.div className={classes.carousel} style={transitionProps}>
+            {carouselData.map((data, index) => {
+              const {
+                title, image, alt, description, icon,
+              } = data;
 
-            return (
-              <>
-                <Card
-                  className={classes.slide}
-                  style={{ ...computeTransform(index), opacity: current === index ? 1 : 0.3 }}
-                  onClick={() => {
-                    setCurrent(index);
-                    //   + `rotateZ(${400 * current}deg)`
-                    //   + `rotateX(-5deg) translateZ(${420}px)`
-                  }}
-                >
-                  <CardMedia
-                    className={classes.media}
-                    image={image}
-                    title={title}
-                    component="img"
-                    height={cardHeight}
-                  />
-                </Card>
-              </>
-            );
-          })}
-        </a.div>
-      </div>
-      {itemDisplay()}
-    </>
+              return (
+                <>
+                  <Card
+                    className={classes.slide}
+                    style={{ ...computeTransform(index), ...(current === index ? ({ opacity: 1, background: theme.custom.contrast.black }) : ({ opacity: 0.9, background: theme.palette.text.primary })) }}
+                    onClick={() => {
+                      setCurrent(index);
+                      //   + `rotateZ(${400 * current}deg)`
+                      //   + `rotateX(-5deg) translateZ(${420}px)`
+                    }}
+                  >
+                    <CardMedia
+                      className={classes.media}
+                      image={image}
+                      title={title}
+                      component="img"
+                      height={cardHeight}
+                    />
+                  </Card>
+                </>
+              );
+            })}
+          </a.div>
+        </div>
+      </Grid>
+    </ItemDisplay>
+  );
+};
+
+const ItemDisplay = ({ children, current, carouselData }) => {
+  const {
+    title, description, icon, image, cta,
+  } = carouselData[current];
+  const classes = useStyles();
+  return (
+    <Grid container xs={12} className={classes.itemDisplay}>
+
+      {/* row 1 title */}
+      <Grid item xs={3} style={{ maxHeight: 150 }}>
+        Category
+      </Grid>
+      <Grid item xs={6} style={{ maxHeight: 150 }}>
+        <Typography variant="h2" color="inherit" align="center" component="h3">
+          {title}
+        </Typography>
+      </Grid>
+      <Grid item xs={3} style={{ maxHeight: 150 }}>
+        icon
+      </Grid>
+      {/* carousel */}
+      {children}
+
+      {/* row 2 details */}
+      <Grid item xs={7} style={{ minHeight: 400 }}>
+        <Typography
+          variant="body2"
+          color="inherit"
+          component="p"
+          align="left"
+        >
+          {description}
+        </Typography>
+      </Grid>
+      <Grid item xs={5}>
+        <ThirdButton onClick={(e) => {
+          e.preventDefault();
+          setCurrent(current === carouselData.length ? 0 : current + 1);
+        }}
+        >
+          {cta}
+        </ThirdButton>
+      </Grid>
+    </Grid>
   );
 };

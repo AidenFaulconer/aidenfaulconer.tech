@@ -152,14 +152,20 @@ const TYPOGRAPHY = {
     h1: {
       // textStroke: '2px currentColor',
       fontWeight: 900,
-      fontSize: pxToRem(32),
+      // fontSize: pxToRem(32),
       textTransform: 'capitalize',
       // fontSize: pxToRem( '5rem !important'),
+      [breakpoints.down('xl')]: {
+        fontSize: pxToRem(75),
+      },
+      [breakpoints.down('lg')]: {
+        fontSize: pxToRem(70),
+      },
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(40),
+        fontSize: pxToRem(60),
       },
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(25),
+        fontSize: pxToRem(35),
       },
     },
     h2: {
@@ -169,7 +175,9 @@ const TYPOGRAPHY = {
       fontWeight: 900,
       textTransform: 'capitalize',
       // fontSize: pxToRem(35),
-      fontSize: pxToRem(35),
+      [breakpoints.down('xl')]: {
+        fontSize: pxToRem(40),
+      },
       [breakpoints.down('lg')]: {
         fontSize: pxToRem(35),
       },
@@ -182,10 +190,15 @@ const TYPOGRAPHY = {
     },
     h3: {
       // fontSize: pxToRem( "16px"),
-      fontSize: pxToRem(20),
       fontWeight: 900,
       textTransform: 'capitalize',
       // color: palette.text.primary,
+      [breakpoints.down('xl')]: {
+        fontSize: pxToRem(35),
+      },
+      [breakpoints.down('lg')]: {
+        fontSize: pxToRem(30),
+      },
       [breakpoints.down('md')]: {
         fontSize: pxToRem(25),
       },
@@ -227,11 +240,17 @@ const TYPOGRAPHY = {
       fontWeight: 200,
       // color: palette.text.primary,
       background: 'inherit',
-      [breakpoints.down('sm')]: {
-        fontSize: pxToRem(14),
+      [breakpoints.down('xl')]: {
+        fontSize: pxToRem(25),
       },
       [breakpoints.down('lg')]: {
-        fontSize: pxToRem(14),
+        fontSize: pxToRem(25),
+      },
+      [breakpoints.down('md')]: {
+        fontSize: pxToRem(20),
+      },
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(13),
       },
     },
     h5: {
@@ -255,21 +274,23 @@ const TYPOGRAPHY = {
 // ========================================================================== //
 const CUSTOM_THEME_PROPS = {
   custom: {
+    contrast: {
+      black: '#00004D',
+    },
     borders: {
       brandBorderRadius: '4px',
       brandBorderRadius2: '12px',
       brandBorderRadius3: '22px',
       // brandBorder: '1px solid rgba(255,255,255,.2)',
-      brandBorder: '1px solid #979ac9',
-      brandBorderSecondary: '1px solid #979ac9',
+      brandBorder: '1px double #313183',
+      brandBorderSecondary: '1px double #979ac9',
       // brandBorderSecondary: '1px solid rgba(0, 0, 100, 0.3)',
     },
     shadows: {
       brand: '-20px 34px 55px rgba(0, 0, 100, 0.15);',
       filterShadow: '0px 0px 20px rgba(51, 68, 9,.6)',
       brandBig:
-        '10px 10px 0px rgba(183, 197, 168, 0.6), 5px 5px 0px rgba(183, 197, 168, 0.6), 46px 31px 75px rgba(0, 0, 0, 0.3)',
-      brandInset: 'inset 0px 0px 55px rgba(0, 0, 100, 0.15)',
+        '-46px 31px 75px rgba(0, 0, 0, 0.4)',
     },
   },
 };
@@ -464,21 +485,21 @@ export const socialMediaPopup = {
 export const threeDHoverKeyframes = {
   '@keyframes rotateAngle': {
     '0%': {
-      transform: 'rotateY(0deg) rotateX(10deg)',
+      transform: 'rotateY(0deg) rotateX(10deg) rotateZ(0deg)',
       animationTimingFunction: 'cubic-bezier(0.61, 1, 0.88, 1)',
     },
     '25%': {
-      transform: 'rotateY(20deg) rotateX(10deg)',
+      transform: 'rotateY(20deg) rotateX(10deg) rotateZ(20deg)',
     },
     '50%': {
-      transform: 'rotateY(0deg) rotateX(10deg)',
+      transform: 'rotateY(0deg) rotateX(10deg) rotateZ(60deg)',
       animationTimingFunction: 'cubic-bezier(0.61, 1, 0.88, 1)',
     },
     '75%': {
-      transform: 'rotateY(-20deg) rotateX(10deg)',
+      transform: 'rotateY(180deg) rotateX(10deg) rotateZ(160deg)',
     },
     '100%': {
-      transform: 'rotateY(0deg) rotateX(10deg)',
+      transform: 'rotateY(360deg) rotateX(10deg) rotateZ(360deg)',
     },
   },
 };
@@ -512,6 +533,7 @@ export const patternHover = {
     boxShadow: `${_theme.custom.shadows.brand} !important`,
     borderRadius: _theme.custom.borders.brandBorderRadius,
     color: `${_theme.palette.background.default} !important`,
+
     backgroundColor: _theme.palette.background.button,
     backgroundImage: svgEncodeBaseSixtyFour(`
       <svg width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -752,7 +774,7 @@ const OVERRIDES = {
         // background: 'none !important',
       },
       root: {
-        background: `${hexToAlpha(_theme.palette.text.primary, 0.6)} !important`,
+        // background: `${hexToAlpha(_theme.palette.text.primary, 0.6)} !important`,
         backdropFilter: 'blur(35px)',
         // background: _theme.palette.background.default,
         boxShadow: _theme.custom.shadows.brand,
