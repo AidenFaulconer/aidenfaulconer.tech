@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => {
     background: theme.palette.background.button,
     boxShadow: theme.custom.shadows.brand,
     borderRadius: theme.custom.borders.brandBorderRadius,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1) * 0.5,
   };
 
   const inputLabel = {

@@ -244,10 +244,10 @@ const TYPOGRAPHY = {
         fontSize: pxToRem(25),
       },
       [breakpoints.down('lg')]: {
-        fontSize: pxToRem(25),
+        fontSize: pxToRem(22),
       },
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(20),
+        fontSize: pxToRem(18),
       },
       [breakpoints.down('sm')]: {
         fontSize: pxToRem(13),
@@ -282,7 +282,9 @@ const CUSTOM_THEME_PROPS = {
       brandBorderRadius2: '12px',
       brandBorderRadius3: '22px',
       // brandBorder: '1px solid rgba(255,255,255,.2)',
-      brandBorder: '1px double #313183',
+      // brandBorder: '1px double #313183',
+      // brandBorder: '1px double #313183',
+      brandBorder: '1px double #121270',
       brandBorderSecondary: '1px double #979ac9',
       // brandBorderSecondary: '1px solid rgba(0, 0, 100, 0.3)',
     },
@@ -762,7 +764,7 @@ const OVERRIDES = {
     MuiToolbar: {
       root: {
         background: 'none !important',
-        padding: spacing(1, 0),
+        // padding: spacing(1, 0),
         justifyContent: 'space-between',
         // padding: spacing(3),
         color: _theme.palette.text.secondary,
@@ -783,7 +785,7 @@ const OVERRIDES = {
     },
     MuiContainer: {
       root: {
-        padding: `${spacing(24)} !important`,
+        // padding: '8.333333% !important',
       },
     },
     MuiTypography: {
@@ -803,8 +805,8 @@ const SCROLL_PROPS = {
   // 'data-sal-duration="2000"',
   // 'data-sal-delay="300"',
   // 'data-sal-easing="ease"',
-  'data-sal': 'fade',
-  'data-sal-duration': '500',
+  'data-sal': 'slide-up',
+  'data-sal-duration': '1350',
   'data-sal-delay': '0',
   'data-sal-easing': 'ease-in-out',
 };

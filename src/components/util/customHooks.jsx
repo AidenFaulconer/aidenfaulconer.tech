@@ -24,6 +24,16 @@ import { useCookies } from 'react-cookie';
 // unsubscribe from store
 
 // ========================================================================== //
+// Re render on variable change
+// ========================================================================== //
+export const reRenderOnVariables = (variables = []) => {
+  const [rerender, setRerender] = useState(false);
+  useEffect(() => {
+    setRerender(!rerender);
+  }, [...variables]);
+};
+
+// ========================================================================== //
 // Force re render
 // ========================================================================== //
 export const forceUpdate = () => React.useReducer(() => ({}))[1];
@@ -406,6 +416,31 @@ export const useEventListener = (eventName, handler, element = window) => {
     },
     [eventName, element], // Re-run if eventName or element changes
   );
+};
+
+// Hook
+export const useDimensions = (targetRef) => {
+  const getDimensions = () => ({
+    width: targetRef.current ? targetRef.current.clientWidth : 0,
+    height: targetRef.current ? targetRef.current.clientHeight : 0,
+  });
+
+  const [dimensions, setDimensions] = useState(getDimensions);
+
+  const handleResize = () => {
+    setDimensions(getDimensions());
+    // console.log(targetRef.current.clientWidth, getDimensions());
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useLayoutEffect(() => {
+    handleResize();
+  }, []);
+  return dimensions;
 };
 
 // Hook

@@ -4,6 +4,7 @@ import create from 'zustand';
 // ========================================================================== //
 // Handle theming
 // ========================================================================== //
+import { navigate } from 'gatsby-link';
 import {
   DARK_THEME,
   LIGHT_THEME,
@@ -65,10 +66,48 @@ export const useStore = create((set) =>
       },
     },
     threejsContext: {
-      selected: {
+      context: {
         color: '#fff', // x
-        selectedIndex: 0,
+        selectedIndex: -1,
         position: { x: 0, y: 0, z: 0 },
+        pageLink: '/',
+        // react spring animated values from three wrapper and page transition overlay
+        animatedColor: '#fff',
+        animatedOpacity: 1,
+      },
+      methods: {
+        changeContext: (newContext) => {
+          set((state) => ({
+            ...state,
+            threejsContext: {
+              ...state.threejsContext,
+              context: {
+                ...state.threejsContext.context,
+                ...newContext,
+              },
+            },
+          }));
+        },
+        changePage: (newSelectedData) => {
+          if (typeof window === 'undefined') return;
+
+          // set theme from selected props
+          set((state) => ({
+            ...state,
+            threejsContext: {
+              ...state.threejsContext,
+              context: {
+                ...state.threejsContext.context,
+                ...newSelectedData,
+              },
+            },
+          }));
+          // route to page
+          navigate(newSelectedData.pageLink);
+        },
+        // overritten by page transition overlay
+        triggerPageChange: () => { },
+        setColor: () => {},
       },
       gameObjects: [
         {
@@ -79,6 +118,12 @@ export const useStore = create((set) =>
       ],
       setNewObjects: (newObjects) => set((state) => ({ threejsContext: { gameObjects: newObjects } })),
       pushGameObject: (newObject) => set((state) => ({ threejsContext: { gameObjects: [...state.threejsContext.gameObjects, newObject] } })),
-      setSelected: (newSelected) => set((state) => ({ threejsContext: { selected: newSelected } })),
     },
   }));
+
+//   import { devtools } from 'zustand/middleware'
+
+// // Usage with a plain action store, it will log actions as "setState"
+// const useStore = create(devtools(store))
+// // Usage with a redux store, it will log full action types
+// const useStore = create(devtools(redux(reducer, initialState)))

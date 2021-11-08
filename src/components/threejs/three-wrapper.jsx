@@ -23,9 +23,8 @@ import {
 // const Canvas = lazy(() => import("./Canvas"));
 // import { Html, useProgress } from "drei";
 import { Backdrop, makeStyles, useTheme } from '@material-ui/core';
-import { useProgress } from '@react-three/drei';
 import Canvas from './three-portfolio';
-import { forceUpdate, useStaticMethods } from '../util/customHooks';
+import { forceUpdate, useStaticMethods, reRenderOnVariables } from '../util/customHooks';
 import { useStore } from '../../store/store';
 
 // reference for the data passed into this 3d experience
@@ -43,9 +42,9 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     width: '100%',
     position: 'absolute',
-    zIndex: 21,
+    zIndex: 31,
     '& canvas': {
-      zIndex: 21,
+      zIndex: 31,
       minHeight: '100%',
       minWidth: '100%',
       maxHeight: 200,
@@ -53,20 +52,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
       position: 'relative',
     },
-  },
-
-  transitionWrapper: {
-    position: 'absolute',
-    zIndex: 20,
-    background: theme.palette.text.primary,
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
-    top: '0px',
-    left: '0px',
-    opacity: 1,
-    visibility: 'visible',
-    pointerEvents: 'all',
   },
 }));
 
@@ -76,25 +61,55 @@ const ThreeWrapper = React.memo(
     const theme = useTheme();
 
     // ========================================================================== //
-    //   Initial react-spring
+    //   color change spring
     // ========================================================================== //
-    const [{ x }, set] = useSpring(() => ({
+    const [{ x, y }, set] = useSpring(() => ({
       // when we pass an object through set, it updates this to property and puts the old property in the from object, for internal interpolation
-      to: { x: theme.palette.text.primary },
+      to: { x: theme.palette.text.primary, y: 1 },
       // tells spring what the values mean, and what they should start with
-      from: { color: theme.palette.text.primary },
+      // from: { x: theme.palette.text.primary, y: 1 },
       // tell spring how the transition should be smoothed between values
-      delay: '100',
+      // delay: '100',
+
       config: {
-        mass: 5,
-        tension: 500,
-        friction: 50,
-        precision: 0.0001,
+        mass: 15,
+        duration: 550,
+        tension: 1500,
+        friction: 150,
+        precision: 0.01,
       },
     }));
     // useEffect(() => {
-    // }, [x])
+      // }, [x])
     const threeContext = useStore((state) => state.threeContext);
+    // ========================================================================== //
+    //     Add color change spring to global state
+    // ========================================================================== //
+    useStore.setState((state) => ({
+      ...state,
+      threejsContext: {
+        ...state.threejsContext,
+        context: {
+          ...state.threejsContext.context,
+          aniamtedeColor: x,
+          animatedOpacity: y,
+        },
+        methods: {
+          ...state.threejsContext.methods,
+          setColor: set,
+        },
+      },
+    }));
+
+    // {
+    //   ...state,
+    //   threejsContext: {
+    //     ...state.threejsContext,
+    //     selected: {
+    //       ...state.threejsContext.selected,
+    //       selectedIndex: state.threejsContext.selected.selectedIndex + 1,
+    //     },
+    //   },
 
     return (
       <>
@@ -103,7 +118,6 @@ const ThreeWrapper = React.memo(
             <Canvas x={x} setColor={set} />
           </Suspense>
         </a.div>
-        <PageTransitionOverlay />
       </>
     );
   },
@@ -112,45 +126,5 @@ const ThreeWrapper = React.memo(
   //   return pre.threeContext !== post.threeContext && pre.props !== post.props
   // }
 );
-
-const PageTransitionOverlay = () => {
-  const classes = useStyles();
-  // ========================================================================== //
-  //         Trigger and animate page transitions
-  // ========================================================================== //
-  const [animatedStyles, triggerTransition] = useSpring(() => ({
-    to: [
-      { opacity: 0.1, visibility: 'visible' },
-      { opacity: 0, visibility: 'hidden' },
-    ],
-    from: { opacity: 1, visibility: 'visible' },
-    // delay: 2000,
-    immediate: true,
-    // loop: true,
-    config: { ...config.molasses, duration: 500 },
-  }));
-
-  // ========================================================================== //
-  //   Listen to store for location changes
-  // ========================================================================== //
-  const location = useStore((state) => state.appContext.location);
-  useEffect(() => {
-    triggerTransition();
-  }, [location]);
-
-  // ========================================================================== //
-  //   Wrap a loading cover
-  // ========================================================================== //
-  const {
-    active, progress, errors, item, loaded, total,
-  } = useProgress();
-
-  return (
-    <>
-      {/* page transitions */}
-      <a.div className={classes.transitionWrapper} style={animatedStyles} />
-    </>
-  );
-};
 
 export default ThreeWrapper;

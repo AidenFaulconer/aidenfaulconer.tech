@@ -13,6 +13,7 @@ import {
   ListItemText,
   useScrollTrigger,
   SwipeableDrawer,
+  Grid,
 } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 // import { navigate } from "gatsby-link"
@@ -34,10 +35,14 @@ import {
 } from '../../static/svgs/hardcoded-svgs';
 
 import logoPng from '../../static/svgs/logo.png';
-import { RegularButton, SecondaryButton } from '../components/custom/customButton';
+import {
+  RegularButton,
+  SecondaryButton,
+} from '../components/custom/customButton';
 import { NavigationBlob } from '../components/custom/navigationBlob';
 import { dt, lt } from './materialUI';
 import { useStore } from '../store/store';
+import { SCROLL_PROPS } from '../store/theme';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {},
@@ -65,18 +70,20 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'capitalize',
   },
   appBar: {
-    background: `linear-gradient(-90deg, ${theme.custom.contrast.black} 23.52%, ${theme.palette.text.primary} 23.52%, ${theme.palette.text.primary}) 61.89%`,
+    // background: `linear-gradient(-90deg, ${theme.custom.contrast.black} 23.52%, ${theme.palette.text.primary} 23.52%, ${theme.palette.text.primary}) 61.89%`,
     // background: `rgba(80, 105, 54, 1),rgba(145, 146, 175, 1)`,
     // theme.palette.background.secondary,//change to "rgba(80,105,54,.6)" when app bar scrolled past initial place
     boxShadow: theme.custom.shadows.brand,
     zIndex: 30, // hidhest
-    height: 85,
-    padding: theme.spacing(0, 14, 0, 14),
+    minHeight: 85,
+    height: '7vh',
+    // padding: theme.spacing(0, 14, 0, 14),
+    padding: `${theme.spacing(0)}px calc(8.33333% + ${theme.spacing(0)}px)`,
     justifyContent: 'space-evenly',
     color: theme.palette.text.secondary,
     borderBottom: theme.custom.borders.brandBorder,
     [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(0, 3),
+      // padding: theme.spacing(0, 3),
     },
   },
   logo: {
@@ -88,16 +95,22 @@ const useStyles = makeStyles((theme) => ({
     color: 'inherit',
     border: 'none !important',
     maxHeight: 50,
-    transform: 'scale(.7)',
+    height: '100%',
     cursor: 'pointer',
     '& svg': {
+      transform: 'scale(.5)',
+      position: 'relative',
+      left: 0,
+      top: '-12mm',
+      display: 'inline-block',
       transition: theme.transitions.create(
-        ['transform', 'box-shadow', 'background', 'margin', 'border'],
+        ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
         { duration: '0.3s', easing: 'ease-in-out' },
       ),
     },
     '&:hover': {
       '& svg': {
+        top: '0mm',
         transform: 'rotate(340deg) !important',
         fill: theme.palette.primary.main,
         '& #switch-primary': {
@@ -105,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
           stopColor: theme.palette.primary.main,
         },
         transition: theme.transitions.create(
-          ['transform', 'box-shadow', 'background', 'margin', 'border'],
+          ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
           { duration: '0.3s', easing: 'ease-in-out' },
         ),
       },
@@ -126,22 +139,28 @@ const Navigation = React.memo(
       [],
     );
 
-    const menuIcon = React.useCallback((color) => (
-      <div
-        className={classes.menuIcon}
+    const menuIcon = React.useCallback(
+      (color) => (
+        <div
+          className={classes.menuIcon}
           // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{
-          __html: `
-          <svg width="47" height="48" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M40.8191 14.9633L40.8147 34.1971L23.717 24.2584L23.7297 4.00901L39.9495 13.4505C40.4881 13.764 40.8193 14.3402 40.8191 14.9633ZM23.2297 4.01698L23.217 24.2608L6.11503 34.5489L6.13552 15.3008C6.13617 14.6878 6.45748 14.1199 6.98255 13.8036L23.2297 4.01698ZM22.5652 44.4101L6.35567 34.9876L23.4691 24.6927L40.5735 34.6352L24.3468 44.3967C23.7998 44.7257 23.1171 44.7309 22.5652 44.4101Z" fill="none" stroke="white" stroke-width="0.5"/>
-          </svg>
+          dangerouslySetInnerHTML={{
+            __html: `
+            <svg width="133" height="144" viewBox="0 0 133 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M47.8515 122.374L89.3249 85.8964L43.7908 58.1714L2.35653 94.6746L47.8515 122.374Z" fill="#000064" stroke="white"/>
+            <path d="M1.40864 94.0984L10.6285 37.9842L56.1645 65.7058L46.9037 121.797L1.40864 94.0984Z" fill="white" stroke="white"/>
+            <path d="M99.0269 28.9016L89.8071 85.0158L44.271 57.2942L53.5319 1.20275L99.0269 28.9016Z" fill="white" stroke="white"/>
+            <path d="M52.584 0.6265L11.1106 37.1036L56.6448 64.8286L98.079 28.3254L52.584 0.6265Z" fill="#000064" stroke="white"/>
+            </svg>
           `,
-        }}
-      />
-    ), []);
+          }}
+        />
+      ),
+      [],
+    );
 
     const boldCurrentPage = React.useCallback((name, i) => {
-      if (typeof window !== 'undefined') if (pages[i].url === document.location.hash) return <b>{name}</b>;
+      if (typeof window !== 'undefined') { if (pages[i].url === document.location.hash) return <b>{name}</b>; }
       return <>{name}</>;
     }, []);
 
@@ -192,26 +211,37 @@ const Navigation = React.memo(
     //   Logo
     // ========================================================================== //
 
-    const logo = React.useCallback((color) => (
-      <Link to="/">
-        <div
-          className={(classes.logo, classes.menuIcon)}
-          style={{ fill: 'white' }}
-          dangerouslySetInnerHTML={{
-            __html: `
-          <svg width="125" height="40" viewBox="0 0 125 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M20.6864 40C31.6141 40 40.0534 31.0457 40.0534 20C40.0534 8.9543 30.7141 0 19.7864 0C8.85865 0 0 8.9543 0 20C0 31.0457 9.75873 40 20.6864 40ZM17.8412 29.4021H13.9876L21.8365 16.2493L19.6627 12.7759L10.5752 29.4021H6.68751L18.5048 7.87186L20.7865 7.86572C20.7865 7.86572 24.0702 13.597 24.6465 14.5554C25.3627 16.3617 24.2271 19.0775 24.2271 19.0775L17.8412 29.4021ZM24.9596 29.4021H21.3429L25.4086 22.6791L24.8995 21.6519C24.121 20.3365 26.2166 17.2821 26.2166 17.2821C26.2166 17.2821 32.9326 29.3089 33.0154 29.4281C32.4102 29.426 29.0562 29.4021 29.0562 29.4021L27.0268 25.8256L24.9596 29.4021Z" fill="white"/>
-          <path d="M69.324 7.81064V29.2307H65.8058V7.81064H69.324Z" fill="white"/>
-          <path d="M79.4055 7.81064C81.6893 7.81064 83.685 8.2524 85.3926 9.13591C87.1209 9.99888 88.4479 11.2522 89.3737 12.896C90.3202 14.5192 90.7934 16.4197 90.7934 18.5977C90.7934 20.7757 90.3202 22.666 89.3737 24.2686C88.4479 25.8713 87.1209 27.1041 85.3926 27.967C83.685 28.8095 81.6893 29.2307 79.4055 29.2307H72.4V7.81064H79.4055ZM79.4055 26.3644C81.9156 26.3644 83.8393 25.6864 85.1766 24.3303C86.5139 22.9742 87.1826 21.0633 87.1826 18.5977C87.1826 16.1115 86.5139 14.1699 85.1766 12.7727C83.8393 11.3755 81.9156 10.6769 79.4055 10.6769H75.9182V26.3644H79.4055Z" fill="white"/>
-          <path d="M96.2553 10.6461V16.9334H103.662V19.7997H96.2553V26.3644H104.588V29.2307H92.7371V7.77982H104.588V10.6461H96.2553Z" fill="white"/>
-          <path d="M125 29.2307H121.482L110.896 13.235V29.2307H107.378V7.77982H110.896L121.482 23.7447V7.77982H125V29.2307Z" fill="white"/>
-          <path d="M57.3411 24.8157H48.2811L46.7244 29.2308H43.0195L50.7718 7.59052H54.8815L62.6338 29.2308H58.8977L57.3411 24.8157ZM56.3448 21.9241L52.8267 11.8813L49.2774 21.9241H56.3448Z" fill="white"/>
-          </svg>
+    const logo = React.useCallback(
+      (color) => (
+        <Link to="/">
+          <div
+            className={(classes.menuIcon)}
+            {...SCROLL_PROPS}
+            style={{
+              fill: 'white',
+            }}
+            dangerouslySetInnerHTML={{
+              __html: `
+              <svg width="133" height="144" viewBox="0 0 133 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M39.2405 0C60.3591 0 66.1187 7.67947 66.1187 7.67947V34.5593L31.561 19.2004L0.998047 31C0.998047 0.279963 39.2405 0 39.2405 0Z" fill="white"/>
+              <path d="M92.8781 0C71.7596 0 66 7.67947 66 7.67947V34.5593L100.558 19.2004L131.121 31C131.121 0.279963 92.8781 0 92.8781 0Z" fill="white"/>
+              <path d="M87.498 41L112.036 43.5L114.998 42.5V17H87.498V41Z" fill="white"/>
+              <path d="M44.5638 55.5979V119.616L20.5361 126.056V59.9181L44.5638 55.5979Z" fill="#000064" stroke="white"/>
+              <path d="M87.5 81.5L111.5 87.5L115.498 85V68.5L88 69L87.5 81.5Z" fill="white"/>
+              <path d="M20.0365 126.707L0.5 119.894V33.5C0.5 2.78256 31.5557 3.83514 31.5557 3.83514C66.1133 5.75517 66.1133 26.8737 66.1133 38.3929V143.985L43.0749 135.5V84.9953C43.0749 73.4761 20.0365 66.1183 20.0365 78.1231L20.0365 126.707Z" fill="white"/>
+              <path d="M86.998 53.5L122.5 59.5L86.998 67.5V53.5Z" fill="white"/>
+              <path d="M20.0361 34.5555C20.0361 23.0363 43.0745 26.876 43.0745 38.3966V65.2734L20.0361 59.5138V34.5555Z" fill="#000064" stroke="#000064"/>
+              <path d="M43.2152 65.364L20.0366 59.5132V34.5549C20.0366 23.3119 43.2152 25.81 43.2152 37.4681V65.364Z" fill="#000064" stroke="#000064"/>
+              <path d="M43.8811 66.4856L44.5 66.6372V66V55.5V54.8998L43.9097 55.0082L19.4097 59.5082L19.3811 60.4856L43.8811 66.4856Z" fill="#000064" stroke="white"/>
+              <path d="M88.6512 64V64.5793L89.2243 64.4946L106.142 61.9956L122 60.0646V83.6344L111.998 86.8163V77.0001C111.998 75.8722 111.6 74.9286 110.9 74.1919C110.21 73.4644 109.247 72.9608 108.141 72.6514C105.933 72.034 103.043 72.1581 100.19 72.9561C94.5052 74.546 88.6512 78.9234 88.6512 86.0001L88.6512 135.944L66.6128 143.291L66.6128 142.925L66.6129 139.92L66.6131 129.105L66.6135 95.508C66.6137 70.55 66.6137 44.1521 66.6128 38.393C66.6119 32.6167 66.6229 24.5998 70.8573 17.7779C75.0638 11.0011 83.5207 5.29055 100.683 4.33333L100.689 4.33338L100.753 4.33415C100.811 4.335 100.897 4.33668 101.01 4.33994C101.237 4.34647 101.57 4.35934 101.996 4.38474C102.848 4.43554 104.067 4.53637 105.53 4.73642C108.459 5.13689 112.353 5.93321 116.233 7.51369C120.113 9.09455 123.957 11.4505 126.814 14.9573C129.664 18.4553 131.557 23.126 131.5 29.3884V29.3929V39.0901L112.498 42.8902V34C112.498 31.3888 110.917 29.4312 108.666 28.2136C106.422 27.0001 103.465 26.4865 100.532 26.7361C97.5974 26.9858 94.6349 28.0044 92.3964 29.916C90.1447 31.8388 88.6512 34.6452 88.6512 38.393L88.6512 64Z" fill="#000064" stroke="white"/>
+              </svg>
           `,
-          }}
-        />
-      </Link>
-    ), []);
+            }}
+          />
+        </Link>
+      ),
+      [],
+    );
 
     const pages = [
       { name: 'Projects', url: '#projects' },
@@ -228,26 +258,36 @@ const Navigation = React.memo(
 
     const search = [{ name: 'search', url: '#search', icon: 'search' }];
 
-    const processPages = React.useCallback((name, url) => pages.map((page, i) => {
-      switch (page.url[0]) {
-        case '/':
-          return (
-            <Link key={page.name} to={page.url}>
-              <RegularButton size="small" style={{ fontSize: '.5rem !important' }}>
+    const processPages = React.useCallback(
+      (name, url) => pages.map((page, i) => {
+        switch (page.url[0]) {
+          case '/':
+            return (
+              <Link key={page.name} to={page.url}>
+                <RegularButton
+                  size="small"
+                  style={{ fontSize: '.5rem !important' }}
+                >
+                  {boldCurrentPage(page.name.toUpperCase(), i)}
+                </RegularButton>
+              </Link>
+            );
+          case '#':
+            return (
+              <Link
+                key={page.name}
+                to={page.url}
+                className={classes.pageLinks}
+              >
                 {boldCurrentPage(page.name.toUpperCase(), i)}
-              </RegularButton>
-            </Link>
-          );
-        case '#':
-          return (
-            <Link key={page.name} to={page.url} className={classes.pageLinks}>
-              {boldCurrentPage(page.name.toUpperCase(), i)}
-            </Link>
-          );
-        default:
-          return null;
-      }
-    }), []);
+              </Link>
+            );
+          default:
+            return null;
+        }
+      }),
+      [],
+    );
 
     const pageNavigation = React.useCallback(() => {
       const classes = useStyles();
@@ -303,29 +343,32 @@ const Navigation = React.memo(
     // ========================================================================== //
     //     Drawer
     // ========================================================================== //
-    const drawerSwitch = React.useCallback(() => (
-      <React.Fragment key="drawer">
-        <Button
-          onClick={(e) => {
-            toggleDrawer(e);
-          }}
-          style={{ border: 'none', padding: 0 }}
-        >
-          {menuIcon()}
-        </Button>
-        <SwipeableDrawer
+    const drawerSwitch = React.useCallback(
+      () => (
+        <React.Fragment key="drawer">
+          <Button
+            onClick={(e) => {
+              toggleDrawer(e);
+            }}
+            style={{ border: 'none', padding: 0 }}
+          >
+            {menuIcon()}
+          </Button>
+          <SwipeableDrawer
             // isableBackdropTransition={!iOS}
-          onOpen={() => setDrawerState(true)}
-          onClose={() => setDrawerState(false)}
-          disableDiscovery={iOS}
-          anchor="right"
-          open={drawerState}
-          className={classes.drawer}
-        >
-          {list()}
-        </SwipeableDrawer>
-      </React.Fragment>
-    ), [drawerState]);
+            onOpen={() => setDrawerState(true)}
+            onClose={() => setDrawerState(false)}
+            disableDiscovery={iOS}
+            anchor="right"
+            open={drawerState}
+            className={classes.drawer}
+          >
+            {list()}
+          </SwipeableDrawer>
+        </React.Fragment>
+      ),
+      [drawerState],
+    );
 
     return (
       <>
@@ -335,14 +378,14 @@ const Navigation = React.memo(
             position="sticky"
             className={classes.appBar}
           >
-            <Toolbar className="justify-content-evenly px-3">
+            <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
+
               {logo('inherit')}
 
               {pageNavigation()}
 
               {drawerSwitch()}
             </Toolbar>
-
             {/* <NavigationBlob /> */}
           </AppBar>
         </Slide>

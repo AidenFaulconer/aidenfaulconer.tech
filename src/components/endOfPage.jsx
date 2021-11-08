@@ -7,7 +7,7 @@ import letsStartSomething from '../../static/assets/portfolio/lets start somethi
 const useStyles = makeStyles((theme) => ({
   endOfPage: {
     background: theme.palette.text.primary,
-    minHeight: '70vh',
+    // minHeight: '70vh',
     color: theme.palette.text.secondary,
     padding: theme.spacing(18, 6),
     marginTop: theme.spacing(18),

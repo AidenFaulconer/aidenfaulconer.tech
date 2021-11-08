@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   Container, Grid, makeStyles, Typography,
 } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
 import Layout from '../layout/layout';
 import {
   About,
@@ -11,6 +12,7 @@ import {
   Experience,
   WhatDoYouNeed,
   Skills,
+  Intro,
 } from '../components/indexSections';
 
 import { SecondaryButton } from '../components/custom/customButton';
@@ -102,21 +104,28 @@ const IndexPage = React.memo(
     // TRY IT OUT => Comment the other addNode and uncomment this one
     // const addNode = (node: HTMLDivElement) => refs.current.push(node);
 
-    React.useEffect(() => {
-      if (observer.current) observer.current.disconnect();
-      const newObserver = getObserver(observer);
-      for (const node of refs.current) {
-        newObserver.observe(node);
-      }
-      console.log(refs.current);
-      return () => newObserver.disconnect();
-    }, []);
+    // React.useEffect(() => {
+    //   if (observer.current) observer.current.disconnect();
+    //   const newObserver = getObserver(observer);
+    //   for (const node of refs.current) {
+    //     newObserver.observe(node);
+    //   }
+    //   console.log(refs.current);
+    //   return () => newObserver.disconnect();
+    // }, []);
 
     const classes = useStyles();
+    const theme = useTheme();
 
     return (
       <>
-        <Grid container maxWidth="xl" className={classes.contentContainer}>
+        <Grid container className={classes.contentContainer}>
+
+          {/* Intro */}
+          <Grid item md={1} xs={0} />
+          <Intro />
+          <Grid item md={1} xs={0} />
+
           {/* section 1 */}
           <Grid item md={1} xs={0} />
           <Grid item md={4} xs={5}>
@@ -125,7 +134,15 @@ const IndexPage = React.memo(
           <Grid item md={6} xs={7}>
             <Experience id="skills" ref={addNode} />
           </Grid>
-          <Grid item md={1} xs={0} />
+          <Grid
+            item
+            md={1}
+            xs={0}
+            // style={{
+            //   // borderLeft: theme.custom.borders.brandBorder,
+            //   background: theme.palette.text.primary,
+            // }}
+          />
 
           {/* section 2 */}
           <Grid item md={1} xs={0} />
@@ -135,7 +152,15 @@ const IndexPage = React.memo(
           <Grid item md={6} xs={7}>
             <Skills id="skills" ref={addNode} />
           </Grid>
-          <Grid item md={1} xs={0} />
+          <Grid
+            item
+            md={1}
+            xs={0}
+            // style={{
+            //   // borderLeft: theme.custom.borders.brandBorder,
+            //   background: theme.palette.text.primary,
+            // }}
+          />
           {/* <Experience id="experience" /> */}
         </Grid>
 
@@ -162,6 +187,11 @@ const IndexPage = React.memo(
           </Typography>
         </Grid>
         <BlogPosts id="blog" ref={addNode} />
+
+        {/* Intro */}
+        <Grid item md={1} xs={0} />
+        <Intro />
+        <Grid item md={1} xs={0} />
       </>
     );
   },

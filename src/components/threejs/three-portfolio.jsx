@@ -50,6 +50,7 @@ import { useBreakpoints } from 'react-use-breakpoints';
 import { clamp } from 'three/src/math/MathUtils';
 import { EffectComposer, SSAO, Bloom } from '@react-three/postprocessing';
 import { KernelSize, BlendFunction } from 'postprocessing';
+import { navigate } from 'gatsby-link';
 import cube_import from '../../../static/assets/gameModels/cube.glb';
 
 // eslint-disable-next-line import/no-unresolved
@@ -61,6 +62,9 @@ import five from '../../../static/assets/portfolio/na na nas.png';
 
 import envMap from './design.png';
 import cloudImg from '../../../static/assets/cloud.png';
+// import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
+import pingSound from '../../../static/assets/portfolio/transition.mp3';
+import { useStore } from '../../store/store';
 
 // ========================================================================== //
 // Clouds
@@ -207,117 +211,95 @@ useGLTF.preload(cube_import);
 // ========================================================================== //
 // Models
 // ========================================================================== //
-export const Models = React.memo(
-  ({
-    children, set, x, mobile,
-  }) => {
-    // tier: number;
-    // type: TierType;
-    // isMobile?: boolean;
-    // fps?: number;
-    // gpu?: string;
-    // device?: string;
-    const { tier } = useDetectGPU();
+export const Models = ({
+  children, set, x, mobile,
+}) => {
+  // tier: number;
+  // type: TierType;
+  // isMobile?: boolean;
+  // fps?: number;
+  // gpu?: string;
+  // device?: string;
+  const { tier } = useDetectGPU();
 
-    // valtioState.threejsContext.toggleCamera = () => {
-    //   return ZoomCamera()
-    // }
+  // valtioState.threejsContext.toggleCamera = () => {
+  //   return ZoomCamera()
+  // }
 
-    let textureData = [
-      // TODO find a way to dynamically import, so get the webpack shit bundled then reference it in require
-      // require('../../../static/assets/graphic.png'),
-      // require('../../../static/assets/frame-95.png'),
-      // require('../../../static/assets/hero.png'),
-      // require('../../../static/assets/tank-driver.png'),
-      one,
-      two,
-      three,
-      four,
-      five,
-    ];
+  let textureData = [
+    // TODO find a way to dynamically import, so get the webpack shit bundled then reference it in require
+    // require('../../../static/assets/graphic.png'),
+    // require('../../../static/assets/frame-95.png'),
+    // require('../../../static/assets/hero.png'),
+    // require('../../../static/assets/tank-driver.png'),
+    one,
+    two,
+    three,
+    four,
+    five,
+  ];
 
-    // slice textureData length to three if tier is 1
-    textureData = tier === 1 ? textureData.slice(0, 3) : textureData;
+  // slice textureData length to three if tier is 1
+  textureData = tier === 1 ? textureData.slice(0, 3) : textureData;
 
-    // three loader **use draco one**
-    // const {
-    //   nodes: { Cube },
-    // } = useLoader(GLTFLoader, cube_import);
-    const {
-      nodes: { Cube },
-    } = useGLTF(cube_import);
+  // three loader **use draco one**
+  // const {
+  //   nodes: { Cube },
+  // } = useLoader(GLTFLoader, cube_import);
+  const {
+    nodes: { Cube },
+  } = useGLTF(cube_import);
+  // ========================================================================== //
+  //   Global state
+  // ========================================================================== //
+  const {
+    selectedIndex, color, position, pageLink,
+  } = useStore((state) => state.threejsContext.context);
 
-    const [current, setCurrent] = useState(0);
-    const [inspect, setInspect] = useState(-1);
-    useEffect(() => {
-      console.log(inspect);
-    }, [inspect]);
+  // ========================================================================== //
+  //     Project selection
+  // ========================================================================== //
 
-    const colors = ['#000064', '#21bcfe', '#28bd7f', '#21bcfe'];
+  // useEffect(() => {
+  //   console.log(selectedIndex);
+  // }, [selectedIndex]);
+  // ========================================================================== //
+  //  Handle selection state
+  // ========================================================================== //
+  const colors = ['#000064', '#21bcfe', '#28bd7f', '#21bcfe'];
 
-    const mapObjects = useCallback(
-      () => textureData.map((url, i) => (
-        <Model
-          color={colors[i]}
-          model={Cube}
-          mobile={mobile}
-          url={url}
-          key={i}
-          position={i}
-          setColor={set}
-          x={x}
-          setCurrent={setCurrent}
-          setInspect={setInspect}
-          inspect={inspect}
-          ratio={textureData.length - 1}
-        />
-      )),
-      [inspect],
-    );
-    const inspectObject = useCallback(
-      (index, e) => (
-        // trigger(e);
-        // const xyzpdq = e.target.getWorldPosition();
-        <Model
-          mobile={mobile}
-          // determined by number of posts displayed
-          ratio={textureData.length - 1}
-          color={colors[index]}
-          model={Cube}
-          url={textureData[index]}
-          key={index}
-          position={index}
-          inspect={inspect}
-          setColor={set}
-          x={x}
-          setCurrent={setCurrent}
-          setInspect={setInspect}
-        />
-      ),
-      [inspect],
-    );
+  const mapObjects = useCallback((showState) => textureData.map((url, i) => (
+    <Model
+      color={colors[i]}
+      model={Cube}
+      mobile={mobile}
+      url={url}
+      key={i}
+      position={i}
+      setColor={set}
+      x={x}
+      ratio={textureData.length - 1}
+    />
+  ), []));
 
-    const handleState = useCallback(() => {
-      if (inspect >= 0) return inspectObject(inspect);
-      return mapObjects();
-    }, [inspect]);
+  // const handleState = () => {
+  //   console.log(selectedIndex);
+  //   if (selectedIndex === -1) return mapObjects(true);
+  //   return mapObjects(selectedIndex);
+  //   // inspectObject(selectedIndex);
+  // };
 
-    return (
-      <a.group
-        receiveShadow
-        castShadow
-        position={[0, 0, 0]}
-        scale={[0.5, 0.5, 0.5]}
-      >
-        {handleState()}
-      </a.group>
-    );
-  },
-  (pre, post) => {
-    const { x } = pre;
-    return pre.inspect === post.inspect;
-  },
-);
+  return (
+    <a.group
+      receiveShadow
+      castShadow
+      position={[0, 0, 0]}
+      scale={[0.5, 0.5, 0.5]}
+    >
+      {mapObjects()}
+    </a.group>
+  );
+};
 
 // ========================================================================== //
 // Cubes
@@ -326,28 +308,35 @@ export const Model = React.memo(
   ({
     children,
     color,
-    setColor,
     x,
+    // setColor,
     model,
     mobile = false,
     url,
     position,
     setCurrent,
-    setInspect,
-    inspect,
     ratio,
   }) => {
     // ========================================================================== //
-    //     Cube animatin
+    // Global state methods
+    // ========================================================================== //
+    const triggerPageChange = useStore((state) => state.threejsContext.methods.triggerPageChange);
+    const setColor = useStore((state) => state.threejsContext.methods.setColor);
+    const changePage = useStore((state) => state.threejsContext.methods.changePage);
+    const { selectedIndex, animatedColor, animatedOpacity } = useStore((state) => state.threejsContext.context);
+    const context = useStore((state) => state.threejsContext.context);
+    const isSelectedProject = React.useCallback(() => selectedIndex === position, [selectedIndex, position]);
+    // ========================================================================== //
+    //     Cube animation
     // ========================================================================== //
     const [animated, setAnimated] = useState(false);
-    const spinCube = useCallback(() => {
+    const animateCube = useCallback((useForce) => {
       setAnimated(true);
-      api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
+      if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
       setTimeout(() => {
         setAnimated(false);
-      }, 1530);
-    }, [inspect]);
+      }, 530);
+    }, [selectedIndex]);
 
     useFrame((state) => {
       if (animated) {
@@ -360,6 +349,9 @@ export const Model = React.memo(
     const { viewport, set } = useThree();
     const texture = (url && useLoader(THREE.TextureLoader, url)) || new THREE.Texture();
 
+    // ========================================================================== //
+    //     Cube physics properties
+    // ========================================================================== //
     const scale = Number(viewport.width / viewport.height / ratio + 0.7);
 
     // tier: number;
@@ -387,30 +379,63 @@ export const Model = React.memo(
     // zoom camera to this model
     const zoomCamera = React.useCallback((to) => {}, []);
 
+    const ping = useMemo(() => new Audio(pingSound), []);
+
     // prettier-ignore
     const onClick = useCallback((e) => {
-      if (inspect > 0) setInspect(-1);
-      else {
-        setInspect(position, e);
-        setColor({ x: color });
-        spinCube();
+      e.stopPropagation();
+
+      if (selectedIndex === position) {
+        ping.play();
+        animateCube(true);
+
+        triggerPageChange({ background: color, left: '-100vw' });
+        changePage({
+          selectedIndex: -1,
+          position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
+          pageLink: '/',
+        });
+        setColor({ x: color, y: 1.0 });
+        // console.log(animatedOpacity, animatedColor);
+        console.log(context);
+        // console.log(`go back -1 ${selectedIndex}`);
+      } else {
+        ping.play();
+        setColor({ x: color, y: 0 });
+        animateCube(true);
+
+        triggerPageChange({ background: color, left: '100vw' });
+        changePage({
+          selectedIndex: position,
+          position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
+          pageLink: '/booking',
+        });
+        // console.log(`inspect ${selectedIndex} at ${position}`);
       }
-    }, []);
+    }, [selectedIndex]);
+
     // prettier-ignore
     const onPointerOver = useCallback((e) => {
     // when hovering over a cube in react three fiber ensure it only hovers the first raycast hit
       e.stopPropagation();
       // get this cubes position relative to usecannon
       // valtioState.threejsContext.color = x;
+      // triggerPageChange({ background: color, left: '200vw' });
       setHovered(true);
-      setColor({ x: color }); setCurrent(position);
+      setColor({ x: color });
+      animateCube(false);
       set({ moveCameraTo: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z) });
       set({ moveCamera: true });
+
+      // if (isSelectedProject()) { triggerPageChange({ background: color, left: '-90vw' }); } else { triggerPageChange({ background: color, left: '90vw' }); }
     }, [hovered]);
+
     // prettier-ignore
     const onPointerOut = useCallback(() => {
       setHovered(false);/* set({ x: "#FFFFFF" });* */
       set({ moveCamera: false });
+
+      // if (isSelectedProject()) { triggerPageChange({ background: color, left: '-100vw' }); } else { triggerPageChange({ background: color, left: '100vw' }); }
     }, [hovered]);
 
     const determineMaterialFactor = useMemo(() => (hovered ? 0.9 : 0.6), [
@@ -434,65 +459,68 @@ export const Model = React.memo(
       normalMap.blending = THREE.NormalBlending;
       return normalMap;
     }, [texture]);
-
     return (
     // make a.mesh an instanced mesh
+      <>
+        {/* (selectedIndex === -1 || selectedIndex === position) && ( */}
+        {
+          <a.mesh
+            scale={mobile ? [0.5, 0.5, 0.5] : [scale, scale, scale]}
+            onPointerOver={onPointerOver}
+            onPointerOut={onPointerOut}
+            geometry={model.geometry}
+        // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
+            dispose={null} // dont dispose objects once spawned for performance
+            onClick={onClick}
+            position={position + viewport.height}
+            receiveShadow
+            castShadow
+            ref={ref}
+          >
+            {/* repalce with animatedMaterial(drei) where the props are the props from this material in a js object */}
 
-      <a.mesh
-        scale={mobile ? [0.5, 0.5, 0.5] : [scale, scale, scale]}
-        onPointerOver={onPointerOver}
-        onPointerOut={onPointerOut}
-        geometry={model.geometry}
-        // raycast={meshBounds} somehow fix's raycasting, not sure how its working without yet
-        dispose={null} // dont dispose objects once spawned for performance
-        onClick={onClick}
-        position={position + viewport.height}
-        receiveShadow
-        castShadow
-        ref={ref}
-      >
-        {/* repalce with animatedMaterial(drei) where the props are the props from this material in a js object */}
-
-        {/*
+            {/*
           // ========================================================================== //
           //       Cube material
           // ========================================================================== //
        */}
-        <a.meshPhysicalMaterial
-          map={texture}
-          map-flipY={false}
-          map-wrapS={THREE.RepeatWrapping}
-          map-wrapT={THREE.RepeatWrapping}
-          map-repeat={[1, 1]}
-          map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
-          map-anisotropy={tier == 1 ? 3 : 10}
+            <a.meshPhysicalMaterial
+              map={texture}
+              map-flipY={false}
+              map-wrapS={THREE.RepeatWrapping}
+              map-wrapT={THREE.RepeatWrapping}
+              map-repeat={[1, 1]}
+              map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
+              map-anisotropy={tier == 1 ? 3 : 10}
           // flatShading
-          toneMapped
-          attach="material"
-          receiveShadow
-          castShadow
-          color={determineColor}
-          roughness={0.5}
+              toneMapped
+              transparent
+              opacity={isSelectedProject() && 1 || animatedOpacity}
+              // visible={selectedIndex === -1 || selectedIndex === position}// disable ghost cubes
+              attach="material"
+              receiveShadow
+              castShadow
+              color={determineColor}
+              roughness={0.5}
           // alphaMap={checkTier(texture)}
           // aoMap={checkTier(texture)}
-          roughnessMap={texture} // sexy
+              roughnessMap={texture} // sexy
           // lightMap={checkTier(texture)}// sexy
           // clearcoat={determineClearcoat}
           // envMap={[texture, texture, texture]}
           // opacity={0.7}
-          envMapIntensity={0.6}
+              envMapIntensity={0.6}
           // dispose={null}
-          normalMap={normalMap}
-          normalMap-repeat={[35, 35]}
-          normalScale={[0.15, 0.15]}
-        />
-      </a.mesh>
+              normalMap={normalMap}
+              normalMap-repeat={[35, 35]}
+              normalScale={[0.15, 0.15]}
+            />
+          </a.mesh>
+        }
+        {/* ) */}
+      </>
     );
   },
-  // ========================================================================== //
-  //   Cube memo optimizations
-  // ========================================================================== //
-  (pre, post) => pre.x !== post.x || pre.inspect !== post.inspect,
 );
 
 // ========================================================================== //
@@ -542,7 +570,7 @@ export const Camera = React.memo(
       state.camera.lookAt(0, 0, 0);
       state.camera.updateProjectionMatrix();
     };
-
+    const mouseMultiplier = 20;
     return useFrame((state) => {
       // move camera to selected cube
       if (state.zoomCamera) {
@@ -565,17 +593,17 @@ export const Camera = React.memo(
       }
       // rotate camera in a sphere around origin 0,0,1 based on mouse position
       if (state.mouse.x !== 0 && state.mouse.y !== 0 && state.camera) {
-        const px = defaultCamera.x - state.mouse.x;
-        const py = defaultCamera.y - state.mouse.y;
+        const px = defaultCamera.x - state.mouse.x * mouseMultiplier;
+        const py = defaultCamera.y - state.mouse.y * mouseMultiplier;
         moveRelativeToMouse(px, py, state, 7);
-      } else {
       }
     });
   },
   (pre, post) =>
     // pre.mouse.x !== post.mouse.x ||
     // pre.mouse.y !== post.mouse.y ||
-    pre.moveCameraTo !== post.moveCameraTo,
+    pre.selectedIndex !== post.selectedIndex
+    || pre.moveCameraTo !== post.moveCameraTo,
 );
 
 // ========================================================================== //

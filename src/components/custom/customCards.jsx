@@ -64,8 +64,8 @@ const customCardStyles = makeStyles((theme) => ({
 
     borderRadius: theme.custom.borders.brandBorderRadius,
     textAlign: 'left',
-    padding: theme.spacing(1),
-    marginRight: theme.spacing(3),
+    padding: theme.spacing(2),
+    marginRight: theme.spacing(2),
     display: 'grid',
     transition: theme.transitions.create('all', {
       duration: theme.transitions.duration.complex,
@@ -247,6 +247,7 @@ const genericStyles = makeStyles((theme) => ({
     pointerEvents: 'none',
     display: 'inline-block',
     position: 'relative',
+    border: theme.custom.borders.brandBorder,
     // boxShadow: theme.custom.shadows.brandInset,
     filter: `drop-shadow(${theme.custom.shadows.filterShadow})`,
   },
