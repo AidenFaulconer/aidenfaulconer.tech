@@ -55,12 +55,39 @@ const limiter = rateLimit({
   })
 ); */
 
+/**
+ *  app.use(
+    session({
+      name: COOKIE_NAME,
+      store: new RedisStore({
+        client: redisClient,
+        disableTouch: true,
+      }),
+      cookie: {
+        maxAge: 1000 * 81600 * 365,
+        httpOnly: true,
+        sameSite: "lax",
+        secure: false, // TODO change to true when prod
+      },
+      secret: "HARDCODED-SECRET", // TODO
+      resave: false,
+      saveUninitialized: false,
+    })
+  )
+ */
+
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 // see https://expressjs.com/en/guide/behind-proxies.html
-// app.set('trust proxy', 1);
-app.set('trust proxy', 1); // trust first proxy
+// app.set('trust proxy', 1); // trust first proxy
 app.use(helmet());
-app.use(cors({ origin: true, methods: ['GET', 'POST'] }));// enable requests from website origin
+const corsOptions = {
+  // origin: 'http://localhost:8000',
+  origin: '*',
+  credentials: false,
+  methods: 'GET,POST',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+// app.options('*', cors());
 
 // if (process.env.NODE_ENV === "production")
 // app.use(contentSecurityPolicy.getDefaultDirectives());
@@ -79,12 +106,24 @@ process.on('unhandledRejection', (err) => {
 });
 
 // ========================================================================== //
+// Middleware
+// ========================================================================== //
+
+// const functionName = 'standalone-aws-serverless-express-example'
+// const basePath = `/.netlify/functions/${functionName}/`
+
+// app.use(morgan({ format: 'dev', immediate: true }));
+// router.use(compression());
+// router.use(awsServerlessExpressMiddleware.eventContext())
+/* We need to set our base path for express to match on our function route */
+
+// ========================================================================== //
 // API setup
 // ========================================================================== //
 const router = express.Router();
 router.get('/', (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>Hello from AJ Garden Care!</h1>');
+  res.write('<h1>Hello from Aiden Faulconer!</h1>');
   res.end();
 });
 
@@ -132,7 +171,7 @@ const serialize = (obj) => {
 // ========================================================================== //
 
 // https://docs.textbelt.com/
-app.use('/api/sms', (req, res) => {
+app.post('/api/sms2', (req, res) => {
   const { body: { phone, message } } = req;
   const opts = {
     fromAddr: 'some@email.com', // "from" address in received text
@@ -162,18 +201,30 @@ body: 'username=aidenf09%40gmail.com
 &message=tesgasdfasdfasdf
 &sms=%2B61475565709',
 */
-app.use('/api/sms', (req, res) => {
-  const { body: { phone, message } } = req;
-  const opts = {
-    fromAddr: 'some@email.com', // "from" address in received text
-    fromName: 'joe smith', // "from" name in received text
-    region: 'us', // region the receiving number is in: 'us', 'canada', 'intl'
-    subject: 'something', // subject of the message
-  };
+
+app.post('/api/sms', (req, res) => {
+  const { body: { recipient, message } } = req;
+  console.log(recipient, message);
   res.send(
-    text.sendText(phone, message, {}, () => 'success')
-      .then((data) => data)
-      .catch((err) => err),
+    axios.request({
+      method: 'POST',
+      url: `${process.env.SERVERADDRESS}sms`,
+      headers: {
+        ...commonHeaders,
+        'x-rapidapi-host': process.env.SMSHOST,
+        'x-rapidapi-key': process.env.RAPIDAPIKEY,
+      },
+      data: {
+        username: process.env.CLICKSENDUSERNAME,
+        key: process.env.CLICKSENDAPIKEY,
+        return: './',
+        schedule: '1377959755',
+        senderid: 'AidenFaucloner.tech',
+        // message,
+        message,
+        sms: `+${recipient}`,
+      },
+    }).then((data) => data).catch((err) => err),
   );
 });
 
@@ -241,6 +292,63 @@ fetch('https://inteltech.p.rapidapi.com/send.php', {
 */
 
 // ========================================================================== //
+// Send emails *netlify background function*
+// ========================================================================== //
+const { jsPDF } = require('jspdf');
+const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
+
+const transporter = nodemailer.createTransport(
+  mg({
+    auth: {
+      // api_key: process.env.MAILGUN_API_KEY,
+      apiKey: process.env.MAILGUN_API_KEY || '394b1cc46202ded744e9437fd5f658cd-45f7aa85-719a1d13',
+      domain: process.env.MAILGUN_DOMAIN || 'sandbox44a24e3174d54769aeab5887bd0badd6.mailgun.org',
+    },
+  }),
+);
+
+app.post('/api/send-email', async (req, res) => {
+  const { message, recipient } = req.body;
+  console.log(`Sending PDF report to ${recipient}`);
+
+  const report = Buffer.from(
+    new jsPDF().text(message, 10, 10).output('arraybuffer'),
+  );
+  const invoice = await transporter.sendMail({
+    from: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',
+    to: recipient,
+    subject: 'Your booking with Aiden Faulconer',
+    text: 'See attached booking PDF',
+    attachments: [
+      {
+        filename: `report-${new Date().toDateString()}.pdf`,
+        content: report,
+        contentType: 'application/pdf',
+      },
+    ],
+    message,
+  });
+  const notify = await transporter.sendMail({
+    from: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',,
+    to: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',,
+    subject: 'Your booking with Aiden Faulconer',
+    text: 'See attached booking PDF',
+    attachments: [
+      {
+        filename: `report-${new Date().toDateString()}.pdf`,
+        content: report,
+        contentType: 'application/pdf',
+      },
+    ],
+    message,
+  });
+  console.log(`PDF report sent: ${invoice.messageId}`);
+  res.send(invoice, notify);
+  // res.send(notify);
+});
+
+// ========================================================================== //
 //      Test server and requests
 // ========================================================================== //
 app.use('/api/test', (req, res) => {
@@ -267,6 +375,14 @@ app.use('/api/test', (req, res) => {
     statusMessage,
   }, null, 2));
 });
+app.use('/api/test2', (req, res) => {
+  const {
+    body, headers, readable, rawTrailers, socket, secure, subdomains, statusMessage, complete, fresh, ip, method, originalUrl, params, protocol, query,
+  } = req;
+  res.write(JSON.stringify({
+    message: 'hey, you said hi!',
+  }, null, 2));
+});
 
 // ========================================================================== //
 //      Query user information
@@ -284,7 +400,7 @@ app.use('/api/test', (req, res) => {
 // ========================================================================== //
 //      Search Weather
 // ========================================================================== //
-app.use('/api/weather', (req, res) => {
+app.get('/api/weather', (req, res) => {
   const { query } = req;
   res.send(axios.get(
     `${process.env.NODE_ENV.APIURL}/data/2.5/weather?q=${query}&appid=${process.env.OPENWEATHERAPIKEY}`,
@@ -303,7 +419,7 @@ app.use('/api/recaptcha', (req, res) => {
 // ========================================================================== //
 //      Google spreadsheet api
 // ========================================================================== //
-app.use('/api/spreadsheets', (req, res) => {
+app.post('/api/spreadsheets', (req, res) => {
   const { body } = req;
   res.send(axios.post({
     url: `${process.env.GOOGLESPREADSHEETSURL}/${process.env.GOOGLESPREADSHEETID}/values/A57:append`,
@@ -330,7 +446,7 @@ app.use('/api/spreadsheets', (req, res) => {
 // ========================================================================== //
 //      Google maps search
 // ========================================================================== //
-app.use('/api/spreadsheets', (req, res) => {
+app.get('/api/spreadsheets', (req, res) => {
   const { body: { lat, lng } } = req;
   res.send(axios.get(
     `${process.env.GOOGLEMAPAPIURL}?latlng=${lat},${lng}&key=${process.env.GOOGLEAPIKEY}`,
@@ -342,7 +458,7 @@ app.use('/api/spreadsheets', (req, res) => {
 // ========================================================================== //
 //      Reverse geocode
 // ========================================================================== //
-app.use('/api/reversegeocode', (req, res) => {
+app.get('/api/reversegeocode', (req, res) => {
   const { params: { location, language } } = req;
   res.send(axios(process.env.RGEOCODEURL, {
     method: 'get',
@@ -388,5 +504,42 @@ const authorizeAppWithGoogle = async () => `Bearer ${new google.auth.JWT({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 }).authorize()}`;
 
+// ========================================================================== //
+// Server Side Rendering **ref: https://github.com/netlify-labs/netlify-functions-express**
+// ========================================================================== //
+/**
+ // const functionName = 'react-express-ssr'
+ // import { renderToString } from "react-dom/server"
+ // const Html = ({ body, styles, title }) => {
+   //   const stylesheet = (styles) ? `<style>${styles}</style>` : ''
+   //   return `
+   //     <!DOCTYPE html>
+   //     <html>
+   //       <head>
+   //         <title>${title}</title>
+   //         ${stylesheet}
+   //       </head>
+   //       <body style="margin:0">
+   //         <div id="root">${body}</div>
+   //         <script src="/dev/bundle.js"></script>
+   //       </body>
+   //     </html>
+   //   `
+// }
+
+// const routerBasePath = (process.env.NODE_ENV === 'dev') ? `/${functionName}` : `/.netlify/functions/${functionName}/`
+
+// app.get(routerBasePath, (req, res) => {
+  //   Data().then(users => {
+    //     const reactAppHtml = renderToString(<App data={users} />)
+    //     const html = Html({
+      //       title: 'React SSR!',
+      //       body: reactAppHtml
+      //     })
+      //     res.send(html)
+      //   })
+      // })
+*/
+
 module.exports = app;
-module.exports.handler = serverless(app);
+module.exports.handler = serverless(app/* {debug: true} */);

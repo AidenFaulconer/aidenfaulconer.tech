@@ -38,6 +38,7 @@ import { HeroHeader } from '../templates/heroHeader';
 import { useStore } from '../store/store';
 import { hexToAlpha } from '../store/theme';
 import ambianceSound from '../../static/assets/portfolio/ambiance.mp3';
+import MaterialUI from './materialUI';
 
 // Platform knowledge is in here ...
 
@@ -76,9 +77,10 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.text.secondary,
     width: '100vw',
     height: '100vh',
+    transform: 'skew(10deg)',
     overflow: 'hidden',
     top: '0px',
-    left: '-100vw',
+    left: '-115vw',
     opacity: 1,
     zIndex: 30,
     visibility: 'visible',
@@ -172,7 +174,7 @@ const Layout = (props) => {
   // }, [toggleAudio]);
 
   return (
-    <>
+    <MaterialUI>
       <Navigation />
       <HeroHeader id="projects" />
       <PageTransitionOverlay />
@@ -213,7 +215,7 @@ const Layout = (props) => {
         {(ambianceState && <AudiotrackRounded />) || <AudiotrackOutlined />}
       </Fab> */}
 
-    </>
+    </MaterialUI>
   );
 };
 
@@ -245,12 +247,12 @@ const PageTransitionOverlay = React.forwardRef(({ x }, ref) => {
   // ========================================================================== //
   //   page change spring
   // ========================================================================== //
-  const [{ left, background }, triggerPageChange] = useSpring(() => ({
+  const [{ left, background, transform }, triggerPageChange] = useSpring(() => ({
     // to: [
     //   // { left: '-200vw', background: 'black' },
     //   // { left: '200vw' /* background: 'white' */ },
     // ],
-    from: { left: '-100vw', background: 'white' },
+    from: { left: '-115vw', background: 'white', transform: 'skew(0deg)' },
     // delay: 2000,
     immediate: true,
     // loop: true,
@@ -308,6 +310,7 @@ const PageTransitionOverlay = React.forwardRef(({ x }, ref) => {
         style={{
           background,
           left,
+          transform,
         }}
       />
     </>

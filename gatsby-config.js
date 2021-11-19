@@ -20,11 +20,11 @@ const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE;
 
 module.exports = {
   flags: {
-    PRESERVE_WEBPACK_CACHE: true,
-    GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
+    // PRESERVE_WEBPACK_CACHE: true,
+    // GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
     // FAST_DEV: true,
     // DEV_SSR: true,
-    PARALLEL_SOURCING: true,
+    // PARALLEL_SOURCING: true,
   },
   /* Your site config here */
   // eslint-disable-next-line global-require
@@ -69,8 +69,12 @@ module.exports = {
       options: {},
     },
     // have a custom plugin inject theme before this
-    // `gatsby-plugin-top-layout`,
-
+    {
+      resolve: 'gatsby-plugin-layout',
+      options: {
+        component: require.resolve('./src/layout/layout.jsx'),
+      },
+    },
     // ========================================================================== //
     //     File system management
     // ========================================================================== //

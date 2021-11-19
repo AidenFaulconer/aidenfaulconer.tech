@@ -187,18 +187,18 @@ export const useStyles = makeStyles((theme) => ({
       zIndex: 'inherit',
       fontWeight: 100,
       // copied from theme for H1
-      [theme.breakpoints.down('xl')]: {
-        fontSize: pxToRem(65 + 5),
-      },
-      [theme.breakpoints.down('lg')]: {
-        fontSize: pxToRem(60 + 15),
-      },
-      [theme.breakpoints.down('md')]: {
-        fontSize: pxToRem(50 + 20),
-      },
-      [theme.breakpoints.down('sm')]: {
-        fontSize: pxToRem(25 + 15),
-      },
+      // [theme.breakpoints.down('xl')]: {
+      //   fontSize: pxToRem(65 + 5),
+      // },
+      // [theme.breakpoints.down('lg')]: {
+      //   fontSize: pxToRem(60 + 15),
+      // },
+      // [theme.breakpoints.down('md')]: {
+      //   fontSize: pxToRem(50 + 20),
+      // },
+      // [theme.breakpoints.down('sm')]: {
+      //   fontSize: pxToRem(25 + 15),
+      // },
     },
   },
 }));
@@ -336,26 +336,25 @@ export const ThreeDCarousel = ({
             const ping = useMemo(() => new Audio(pingSound), []);
 
             return (
-              <>
-                <Card
-                  className={classes.slide}
-                  style={{ ...computeTransform(index), ...(current === index ? ({ opacity: 1, background: theme.palette.text.primary }) : ({ opacity: 0.9, background: hexToAlpha(theme.palette.text.secondary, 0.6) })) }}
-                  onClick={() => {
-                    setCurrent(index);
-                    ping.play();
-                    //   + `rotateZ(${400 * current}deg)`
-                    //   + `rotateX(-5deg) translateZ(${420}px)`
-                  }}
-                >
-                  <CardMedia
-                    className={classes.media}
-                    image={image}
-                    title={title}
-                    component="img"
-                    height={cardHeight}
-                  />
-                </Card>
-              </>
+              <Card
+                key={title + index}
+                className={classes.slide}
+                style={{ ...computeTransform(index), ...(current === index ? ({ opacity: 1, background: theme.palette.text.secondary }) : ({ opacity: 0.6, background: hexToAlpha(theme.palette.text.secondary, 0.6) })) }}
+                onClick={() => {
+                  setCurrent(index);
+                  ping.play();
+                  //   + `rotateZ(${400 * current}deg)`
+                  //   + `rotateX(-5deg) translateZ(${420}px)`
+                }}
+              >
+                <CardMedia
+                  className={classes.media}
+                  image={image}
+                  title={title}
+                  component="img"
+                  height={cardHeight}
+                />
+              </Card>
             );
           })}
         </a.div>
@@ -368,22 +367,18 @@ const ItemDisplay = ({
   children, current, carouselData, setCurrent,
 }) => {
   const {
-    title, description, icon, image, cta,
+    title, description, icon, image, cta, category = '',
   } = carouselData[current];
   const classes = useStyles();
   const theme = useTheme();
   return (
     <Grid
       container
-      xs={12}
       className={classes.itemDisplay}
     >
 
       {/* row 1 title */}
-      <Grid item xs={3} style={{ maxHeight: 150 }}>
-        Category
-      </Grid>
-      <Grid item xs={6} style={{ maxHeight: 150 }}>
+      <Grid item xs={6} style={{ maxHeight: 150, borderRight: theme.custom.borders.brandBorder }}>
         <Typography
           variant="h2"
           color="inherit"
@@ -393,8 +388,10 @@ const ItemDisplay = ({
           {title}
         </Typography>
       </Grid>
-      <Grid item xs={3} style={{ maxHeight: 150 }}>
-        icon
+      <Grid item xs={6} style={{ maxHeight: 150 }}>
+
+        Category
+        {category}
       </Grid>
       {/* carousel */}
       {children}
@@ -407,7 +404,7 @@ const ItemDisplay = ({
       >
 
         <Typography color="inherit" variant="h3" align="left" gutterBottom>
-          How?
+          {`About ${title}`}
         </Typography>
         {/* description */}
         <Grid
@@ -433,7 +430,6 @@ const ItemDisplay = ({
           container
           justify="space-between"
           alignContent="center"
-          xs={12}
           style={{ marginTop: theme.spacing(2) }}
         >
           <ThirdButton

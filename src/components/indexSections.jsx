@@ -48,13 +48,13 @@ import brandingImage from '../../static/assets/portfolio/branding.jpg';
 // ========================================================================== //
 // Experience images
 // ========================================================================== //
-import awmImage from '../../static/assets/portfolio/Frame 593.png';
-import rvrImage from '../../static/assets/portfolio/Frame 594.png';
-import rgImage from '../../static/assets/portfolio/Frame 595.png';
-import afImage from '../../static/assets/portfolio/Frame 596.png';
-import lgImage from '../../static/assets/portfolio/Frame 597.png';
-import xprtImage from '../../static/assets/portfolio/Frame 598.png';
-import ajImage from '../../static/assets/portfolio/Frame 599.png';
+import awmImage from '../../static/assets/blog/awm.png';
+import rvrImage from '../../static/assets/blog/rvr.png';
+import rgImage from '../../static/assets/blog/railgun.png';
+import afImage from '../../static/assets/blog/me.png';
+import lgImage from '../../static/assets/blog/uc.png';
+import xprtImage from '../../static/assets/blog/xperthubb.png';
+import ajImage from '../../static/assets/blog/aj.png';
 
 import ThreeWrapper from './threejs/three-wrapper';
 import { ThreeDCarousel } from './custom/threeDCarousel';
@@ -132,10 +132,7 @@ export const MovingType = ({ svg }) => {
   const classes = useSlidingText({ svg });
   return (
     <div className={classes.movingType}>
-      {[0].map((text, index) => {
-        const x = 0;
-        return <span className={classes.type} />;
-      })}
+      <span className={classes.type} />
     </div>
   );
 };
@@ -153,7 +150,8 @@ const useStyles = makeStyles((theme) => {
     maxHeight: '90vh',
     height: '90vh',
     position: 'relative',
-    scrollSnapAlign: 'start',
+    // scrollSnapAlign: 'start',
+
   };
   return {
     section: {
@@ -207,7 +205,7 @@ const useStyles = makeStyles((theme) => {
       borderLeft: 0,
       borderRight: 0,
       // alignContent: 'end',
-      alignContent: 'end',
+      alignContent: 'flex-end',
       '& h1': {
         textTransform: 'capitalize',
         textAlign: 'center',
@@ -370,7 +368,7 @@ export const Intro = React.forwardRef((props, ref) => {
       container
       alignContent="stretch"
       xs={12}
-      md={10}
+      md={12}
       className={styles.introContainer}
     >
       {/* Left */}
@@ -413,7 +411,7 @@ export const Intro = React.forwardRef((props, ref) => {
       <Grid
         item
         container
-        md={4}
+        sm={4}
         xs={7}
         justify="center"
         alignContent="center"
@@ -429,7 +427,7 @@ export const Intro = React.forwardRef((props, ref) => {
         <Typography color="inherit" variant="h3" align="left" gutterBottom>
           Download my CV
         </Typography>
-        <Grid item contain justify="space-between">
+        <Grid item container justify="space-between">
           {/* <svg
               width="116"
               height="122"
@@ -566,8 +564,7 @@ const Descriptor = ({ styleData, children }) => {
         <Grid
           item
           container
-          justify="left"
-          alignContent="end"
+          alignContent="flex-end"
           style={{
             // display: 'inline-block',
             // background: theme.palette.text.secondary,
@@ -618,17 +615,17 @@ const Descriptor = ({ styleData, children }) => {
           >
             {ctas[0]
               && ((altButtons === 0 && (
-                <RegularButton size="extraLarge">{ctas[0]}</RegularButton>
+                <RegularButton size="large">{ctas[0]}</RegularButton>
               ))
                 || (altButtons === 1 && (
-                  <SecondaryButton size="extraLarge">{ctas[0]}</SecondaryButton>
+                  <SecondaryButton size="large">{ctas[0]}</SecondaryButton>
                 )) || <ThirdButton color="textPrimary">{ctas[0]}</ThirdButton>)}
             {ctas[1]
               && ((altButtons === 0 && (
-                <RegularButton size="extraLarge">{ctas[1]}</RegularButton>
+                <RegularButton size="large">{ctas[1]}</RegularButton>
               ))
                 || (altButtons === 1 && (
-                  <SecondaryButton size="extraLarge">{ctas[1]}</SecondaryButton>
+                  <SecondaryButton size="large">{ctas[1]}</SecondaryButton>
                 )) || <ThirdButton color="textPrimary">{ctas[1]}</ThirdButton>)}
           </Grid>
         </Grid>
@@ -715,7 +712,7 @@ const Graphic = (props) => {
 // ========================================================================== //
 // ABOUT
 // ========================================================================== //
-const About = React.forwardRef((props, ref) => {
+const About = (props) => {
   const classes = useStyles();
   const { id } = props;
   const styleData = {
@@ -727,7 +724,7 @@ const About = React.forwardRef((props, ref) => {
       'I’ve taken all roles in the creation of software products, meaning I am ccapable of delivering a full software product, from its database, communicating brand and intention in design, and building a fast and intuitive client facing application spanning its needs',
   };
   return (
-    <section id={id} ref={ref} className={classes.section}>
+    <article id={id} className={classes.section}>
       <Descriptor styleData={styleData}>
         <Graphic
           src={aboutImage}
@@ -744,9 +741,9 @@ const About = React.forwardRef((props, ref) => {
           spinText="CREATE OUTSIDE THE BOX ✍"
         />
       </Descriptor>
-    </section>
+    </article>
   );
-});
+};
 
 // ========================================================================== //
 // Languages
@@ -820,6 +817,7 @@ const languageData = [
     power comes from its abiliy to use modules written in other languages, and reduce the amount of code written
     greatly, we see developments in the field of  Machine Learning exploding due to its ability to use Python as
     a scripting language.
+
     `,
     icon: '',
   },
@@ -828,7 +826,14 @@ const languageData = [
     image: awmImage,
     alt: 'Front-End',
     description: `
-    
+    Where I specialise the most, I create full front-end applications using a full process of planning,
+    ideating, iterating, procurement, and deployment of a web applications using the software development life cycle and design thinking process in harmony.
+    I've become accustomed to many frameworks, preparing me for anything that comes next, because I want my applications to be as prepared for the future as you do.
+    Some frameworks i've become very accustomed to through my career are React, Vue, Quasar,
+    Gatsby, AngularJS, Django, Next.js, and ASP.NET, where they have been expanded upon
+    at scales both large and small, and addressing the scalability proportionally in code.
+
+    Lets create some wacky, user friendly, and interactive applications together. 🥳
     `,
     icon: '',
   },
@@ -843,12 +848,21 @@ const languageData = [
     title: 'Business accumen',
     image: awmImage,
     alt: 'Business accumen',
-    description: '',
+    description: `
+    The biggest challenges I see in the IT and Design industries are 
+    the unpredictible scheduling involved, and lack of business focus, I provide detailed plans with enough contingincy time to
+    allow for a realistic and predictible timeline for your end product, involving you wherever you
+    wish to, so you can have measured results, and plenty of room for collaboration. Alongside this, I document the entire process both in code, and through documentation.
+
+    Businessses today may find it harder to understand and manage the expectations of there users, I've had enough expereince to know how to prototype, do user testing, and turn there ideas into reality taking into account your visions, business processes, and goals.
+
+    Lets create some milestones together. 🤠
+    `,
     icon: '',
   },
 ];
 
-const Languages = React.forwardRef((props, ref) => {
+const Languages = (props) => {
   const classes = useStyles();
   const styleData = {
     slidingText: anyLanguageAnyFrameworkSlidingText,
@@ -861,7 +875,7 @@ const Languages = React.forwardRef((props, ref) => {
       'I’ve taken all roles in the creation of software products, meaning I am ccapable of delivering a full software product, from its database, communicating brand and intention in design, and building a fast and intuitive client facing application spanning its needs',
   };
   return (
-    <section ref={ref} className={classes.section}>
+    <article className={classes.section}>
       <Descriptor styleData={styleData}>
         <Graphic
           src={languagesImage}
@@ -876,9 +890,9 @@ const Languages = React.forwardRef((props, ref) => {
           spinText="WORK SMARTER NOT HARDER 🤓"
         />
       </Descriptor>
-    </section>
+    </article>
   );
-});
+};
 
 // ========================================================================== //
 // Experience
@@ -888,6 +902,7 @@ const experienceData = [
     title: 'Australian War Memorial',
     image: awmImage,
     alt: 'JavaScript',
+    category: 'Full-Stack Developer',
     description: `
     • Used C#, JavaScript, JSON, REST, back-end & frontend developed 
     • developed in Drupal, React, React360, Unity, JavaScript, & C# 
@@ -901,6 +916,7 @@ const experienceData = [
     title: 'Recovery VR',
     image: rvrImage,
     alt: 'JavaScript',
+    category: 'Full-Stack Developer',
     description: (
       <>
         Use C#, typescript, javascript, with a back-end firebase/graphql and
@@ -940,6 +956,7 @@ const experienceData = [
     title: 'Freelance',
     image: afImage,
     alt: 'JavaScript',
+    category: 'Graphic Design, Full-Stack Development',
     description: `
     • Designing and iterating through logos to match the desired image of a given brand 
     • Website design, including interactions prototyped through framer 
@@ -954,6 +971,7 @@ const experienceData = [
     title: 'XpertHubb',
     image: xprtImage,
     alt: 'JavaScript',
+    category: 'Full-Stack Developer',
     description: `
     • Working in a very high-paced startup environment, networking and managing through startup school and IACT community engagement 
     • Development through Javascript, React, and back-end development through express and MongoDB 
@@ -967,6 +985,7 @@ const experienceData = [
     title: 'Railgun',
     image: rgImage,
     alt: 'JavaScript',
+    category: 'Full-Stack Developer',
     description: `
     • Typescript, vue, quasar, frontend development with blockchain api’s 
     • Design and brand consultation for communicating the wallet and brands purpose 
@@ -979,6 +998,7 @@ const experienceData = [
     title: "L'arche Genesaret",
     image: lgImage,
     alt: 'JavaScript',
+    category: 'Disability support worker',
     description: `
     • Creating harmony and wellbeing amongst different individuals in a shared space  
     • Identifying emotional and social pressure points and alleviating them 
@@ -993,6 +1013,7 @@ const experienceData = [
     title: 'AJ Gardencare',
     image: ajImage,
     alt: 'JavaScript',
+    category: 'Full-Stack Developer',
     description: `
     • Creating harmony and wellbeing amongst different individuals in a shared space  
     • Identifying emotional and social pressure points and alleviating them 
@@ -1007,6 +1028,7 @@ const experienceData = [
     title: 'You',
     image: ajImage,
     alt: 'JavaScript',
+    category: 'Lets find out together',
     description: `
     • Creating harmony and wellbeing amongst different individuals in a shared space  
     • Identifying emotional and social pressure points and alleviating them 
@@ -1021,6 +1043,7 @@ const experienceData = [
     title: 'ICN',
     image: ajImage,
     alt: 'JavaScript',
+    category: 'Consulting',
     description: `
     • Creating harmony and wellbeing amongst different individuals in a shared space  
     • Identifying emotional and social pressure points and alleviating them 
@@ -1032,11 +1055,11 @@ const experienceData = [
     icon: '',
   },
 ];
-const Experience = React.forwardRef((props, ref) => {
+const Experience = (props) => {
   const classes = useStyles();
   return (
     <>
-      <section ref={ref} className={classes.carouselSection}>
+      <article className={classes.carouselSection}>
         {/* title */}
         {/* <Typography
             color="inherit"
@@ -1062,15 +1085,15 @@ const Experience = React.forwardRef((props, ref) => {
             cardWidth={600}
           />
         </Grid>
-      </section>
+      </article>
     </>
   );
-});
-const Skills = React.forwardRef((props, ref) => {
+};
+const Skills = (props) => {
   const classes = useStyles();
   return (
     <>
-      <section ref={ref} className={classes.carouselSection}>
+      <article className={classes.carouselSection}>
         {/* title */}
         {/* <Typography
             color="inherit"
@@ -1096,10 +1119,10 @@ const Skills = React.forwardRef((props, ref) => {
             special
           />
         </Grid>
-      </section>
+      </article>
     </>
   );
-});
+};
 // ========================================================================== //
 // Blog Posts
 // ========================================================================== //
@@ -1222,7 +1245,7 @@ const servicesData = [
     priceRange: '$300-$3000',
     color: '#119F74',
     description: (
-      <>
+      <div>
         <h3>Do you need</h3>
         <ul>
           <li>to maintain a new or current website?</li>
@@ -1232,7 +1255,7 @@ const servicesData = [
             a fast, well designed, user centered landing page or web platform
           </li>
         </ul>
-      </>
+      </div>
     ),
     ctas: ['Book now'],
   },
@@ -1242,7 +1265,7 @@ const servicesData = [
     priceRange: '$300-$3000',
     color: '#B314CD',
     description: (
-      <>
+      <div>
         <h3>Do you need</h3>
         <ul>
           <li>
@@ -1261,7 +1284,7 @@ const servicesData = [
             a fast, well designed, user centered landing page or web platform
           </li>
         </ul>
-      </>
+      </div>
     ),
     ctas: ['Book now'],
   },
@@ -1271,7 +1294,7 @@ const servicesData = [
     priceRange: '$300-$3000',
     color: '#DF650D',
     description: (
-      <>
+      <div>
         <h3>Do you need</h3>
         <ul>
           <li>
@@ -1290,7 +1313,7 @@ const servicesData = [
             a fast, well designed, user centered landing page or web platform
           </li>
         </ul>
-      </>
+      </div>
     ),
     ctas: ['Book now'],
   },
@@ -1300,7 +1323,7 @@ const servicesData = [
     priceRange: '$300-$3000',
     color: '#2E00FF',
     description: (
-      <>
+      <div>
         <h3>Do you need</h3>
         <ul>
           <li>
@@ -1319,7 +1342,7 @@ const servicesData = [
             a fast, well designed, user centered landing page or web platform
           </li>
         </ul>
-      </>
+      </div>
     ),
     ctas: ['Book now'],
   },
@@ -1328,7 +1351,7 @@ const servicesData = [
     src: vrImage,
     color: '#C71073',
     description: (
-      <>
+      <div>
         <h3>Do you need</h3>
         <ul>
           <li>
@@ -1347,7 +1370,7 @@ const servicesData = [
             a fast, well designed, user centered landing page or web platform
           </li>
         </ul>
-      </>
+      </div>
     ),
     ctas: ['Book now'],
   },
@@ -1357,7 +1380,7 @@ const servicesData = [
     priceRange: '$300-$3000',
     color: '#A4AF1D',
     description: (
-      <>
+      <div>
         <h3>Do you need</h3>
         <ul>
           <li>
@@ -1376,7 +1399,7 @@ const servicesData = [
             a fast, well designed, user centered landing page or web platform
           </li>
         </ul>
-      </>
+      </div>
     ),
     ctas: ['Book now'],
   },
@@ -1456,15 +1479,14 @@ const WhatDoYouNeedCard = ({ data, index }) => {
           > */}
           <Typography
             color="secondary"
-            zeroMinWidth
             align="left"
-            component="body1"
+            variant="body1"
           >
             {description}
           </Typography>
           {/* </LinesEllipsis> */}
           <Grid item>
-            <RegularButton size="extraLarge">{ctas[0]}</RegularButton>
+            <RegularButton size="large">{ctas[0]}</RegularButton>
           </Grid>
         </Card>
         {/* CTA */}
@@ -1490,9 +1512,8 @@ const WhatDoYouNeed = React.forwardRef((props, ref) => {
         alignItems="center"
         alignContent="center"
       >
-        <Grid lg={1} direction="row" />
+        <Grid lg={1} />
         <Grid
-          direction="row"
           container
           justify="center"
           alignContent="stretch"
@@ -1526,7 +1547,7 @@ const WhatDoYouNeed = React.forwardRef((props, ref) => {
             <WhatDoYouNeedCard key={index} index={index} data={service} />
           ))}
         </Grid>
-        <Grid lg={1} direction="row" />
+        <Grid lg={1} />
       </Grid>
     </section>
   );

@@ -159,10 +159,10 @@ const TYPOGRAPHY = {
         fontSize: pxToRem(75),
       },
       [breakpoints.down('lg')]: {
-        fontSize: pxToRem(70),
+        fontSize: pxToRem(60),
       },
       [breakpoints.down('md')]: {
-        fontSize: pxToRem(60),
+        fontSize: pxToRem(50),
       },
       [breakpoints.down('sm')]: {
         fontSize: pxToRem(35),
@@ -185,7 +185,7 @@ const TYPOGRAPHY = {
         fontSize: pxToRem(40),
       },
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(35),
+        fontSize: pxToRem(25),
       },
     },
     h3: {
@@ -241,10 +241,10 @@ const TYPOGRAPHY = {
       // color: palette.text.primary,
       background: 'inherit',
       [breakpoints.down('xl')]: {
-        fontSize: pxToRem(25),
+        fontSize: pxToRem(20),
       },
       [breakpoints.down('lg')]: {
-        fontSize: pxToRem(22),
+        fontSize: pxToRem(20),
       },
       [breakpoints.down('md')]: {
         fontSize: pxToRem(18),
@@ -805,8 +805,8 @@ const SCROLL_PROPS = {
   // 'data-sal-duration="2000"',
   // 'data-sal-delay="300"',
   // 'data-sal-easing="ease"',
-  'data-sal': 'slide-up',
-  'data-sal-duration': '1350',
+  'data-sal': 'zoom-out',
+  'data-sal-duration': '750',
   'data-sal-delay': '0',
   'data-sal-easing': 'ease-in-out',
 };

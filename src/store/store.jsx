@@ -15,18 +15,20 @@ import {
 } from './theme';
 
 // create themes to be used in valtio
-const createTheme = (theme) => {
+export const createTheme = (theme) => {
+  const muiTheme = createMuiTheme({ ...theme });
   const newTheme = Object.assign(
-    createMuiTheme({ ...theme }),
+    muiTheme,
     CUSTOM_THEME_PROPS,
     OVERRIDES,
   );
-  // custom theme properties
-  // newTheme.custom = CUSTOM_THEME_PROPS;
+    // custom theme properties
+    // newTheme.custom = CUSTOM_THEME_PROPS;
 
   newTheme.typography.h1.fontWeight = 900;
   newTheme.typography.h2.fontWeight = 900;
   newTheme.typography.h2.textTransform = 'capitalize';
+  console.log(newTheme);
   // newTheme.typography = TYPOGRAPHY;
   return newTheme;
 };
@@ -74,6 +76,12 @@ export const useStore = create((set) =>
         // react spring animated values from three wrapper and page transition overlay
         animatedColor: '#fff',
         animatedOpacity: 1,
+        subtitle: 'default',
+        headline: 'THE BUILDING BLOCK FOR YOUR ORGANISATION',
+        pageTheme: {
+          primary: '#fff',
+          secondary: '#fff',
+        },
       },
       methods: {
         changeContext: (newContext) => {

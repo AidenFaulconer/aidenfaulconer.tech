@@ -3,6 +3,7 @@ import {
   createMuiTheme, CssBaseline, StylesProvider, MuiThemeProvider,
 } from '@material-ui/core';
 import { dt, lt, useStore } from '../store/store';
+import { LIGHT_THEME, createTheme } from '../store/theme';
 
 // import { dt, lt, valtioState } from "../store/store-wrapper"
 // import { ServerStyleSheets } from "@material-ui/core/styles"
@@ -49,7 +50,7 @@ const MaterialUI = React.memo(({ children }) => {
 
       <MuiThemeProvider
         // needs to be cloned to work with material-ui
-        theme={type === 'light' && lt || dt}
+        theme={type === 'light' && lt || dt || createTheme(LIGHT_THEME)}
         key="ThemeProvider"
       >
         {/* inject first adds styles that override existin MUI styles from external files */}

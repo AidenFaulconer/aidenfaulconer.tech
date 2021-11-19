@@ -732,7 +732,7 @@ export const QuoteCalculator = React.forwardRef((
       <Grid container spacing={1} style={{ zIndex: 1 }} className={`${classes.invoiceCard} position-relative text-center mx-auto w-100 p-4 mb-6 justify-content-evenly`}>
         {Object.keys(invoiceState).map((key) => invoiceState[key] > 0
           && (
-            <Grid container item xs={12} spacing={2} key={invoiceState[key]}>
+            <Grid container item   spacing={2} key={invoiceState[key]}>
               <Grid item xs={8} key={`${invoiceState}-container`}>
                 {/* <Icon color="primary">{inv}</Icon> */}
                 <Typography align="left" variant="h4" key={`${invoiceState}-title`} className={`${classes.invoice}w-100`}>{key}</Typography>
@@ -1052,7 +1052,7 @@ export const Forms = ({
             onChange={(date) => calculateUserInputs({ date, availibility: date })}
           />
         </Gridify>
-        <Grid container item xs={12}>
+        <Grid container item >
           <Grid item xs={12}>
             <TextInput
               InputProps={{

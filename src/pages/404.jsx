@@ -1,11 +1,11 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from '@reach/router';
+import { Link } from 'gatsby';
 import Layout from '../layout/layout';
 
 // import { four0four } from '../../static/assets/svg/hardcoded-svgs';
 
-export default ({ location }) => (
+export const FourOFour = React.memo(({ location }) => (
   <>
     <Helmet>
       <title>Page not found</title>
@@ -20,4 +20,6 @@ export default ({ location }) => (
       </p>
     </div>
   </>
-);
+));
+
+export default FourOFour;

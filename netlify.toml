@@ -13,11 +13,22 @@
   publish = "public/"
 
   # Default build command.
-  command = "echo 'default context'"
+  # command = "echo 'default context'"
+  functions = "netlify/functions"
+  command = "npm run build"
 
 [[plugins]]
   # Installs the Lighthouse Build Plugin for all deploy contexts
   package = "@netlify/plugin-lighthouse"
+
+
+[[redirects]]
+    from = "/api/*"
+    # to = ".netlify/functions/:splat"
+    to = ".netlify/functions/"
+    status = 200
+    force = true # COMMENT: ensure that we always redirect
+
 
 # Production context: all deploys from the Production branch set in your site’s
 # Branches settings in the UI will inherit these settings.
@@ -25,6 +36,24 @@
 #   publish = "public/"
 #   command = "make publish"
 #   environment = { ACCESS_TOKEN = "super secret", NODE_VERSION = "14.15.3" }
+
+  
+# # Here is another way to define context specific environment variables.
+# [context.deploy-preview.environment]
+#   ACCESS_TOKEN = "not so secret"
+
+# Specific branch context: all deploys from this specific branch will inherit
+# these settings.
+[context.staging] # “staging” is a branch name
+  command = "echo 'staging'"
+  base = "staging"
+
+# For contexts of branches with special characters, enclose the branch name
+# with quotes.
+[context."feat/branch"]
+  command = "echo 'special branch'"
+  base = "branch"
+
 
 # Deploy Preview context: all deploys generated from a pull/merge request will
 # inherit these settings.
@@ -42,17 +71,6 @@
 [context.branch-deploy.environment]
   NODE_ENV = "development"
 
-# Specific branch context: all deploys from this specific branch will inherit
-# these settings.
-[context.staging] # “staging” is a branch name
-  command = "echo 'staging'"
-  base = "staging"
-
-# For contexts of branches with special characters, enclose the branch name
-# with quotes.
-[context."feat/branch"]
-  command = "echo 'special branch'"
-  base = "branch"
 
 # Redirects and headers are GLOBAL for all builds – they do not get scoped to
 # contexts no matter where you define them in the file.
@@ -138,3 +156,22 @@
 [[edge_handlers]]
   path = "/*"
   handler = "filterRequests"
+
+
+  
+# note: each of these fields are OPTIONAL
+[dev]
+  command = "npm run develop" # Command to start your dev server
+  targetPort = 8001 # The port for your application server, framework or site generator
+  port = 3001 # The port that the netlify dev will be accessible on
+  publish = "public" # The path to your static content folder
+  # jwtSecret = "secret" # The secret used to verify tokens for JWT based redirects
+  # jwtRolePath = "app_metadata.authorization.roles" # Object path we should look for role values for JWT based redirects
+  autoLaunch = true # a Boolean value that determines if Netlify Dev launches the local server address in your browser
+
+
+  # to start an https server instead of an http one, configure a certificate and key files
+  # https://medium.com/beyond-the-helpdesk/lets-encrypt-for-windows-10-e07556c811b4 get lets encrypt cert, or have netlify create one for you
+  # [dev.https]
+  #   certFile = "cert.pem" # path to the certificate file
+  #   keyFile = "key.pem" # path to the private key file

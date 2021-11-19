@@ -322,6 +322,7 @@ export const Model = React.memo(
     // ========================================================================== //
     const triggerPageChange = useStore((state) => state.threejsContext.methods.triggerPageChange);
     const setColor = useStore((state) => state.threejsContext.methods.setColor);
+    const changeContext = useStore((state) => state.threejsContext.methods.changeContext);
     const changePage = useStore((state) => state.threejsContext.methods.changePage);
     const { selectedIndex, animatedColor, animatedOpacity } = useStore((state) => state.threejsContext.context);
     const context = useStore((state) => state.threejsContext.context);
@@ -389,7 +390,7 @@ export const Model = React.memo(
         ping.play();
         animateCube(true);
 
-        triggerPageChange({ background: color, left: '-100vw' });
+        triggerPageChange({ background: color, transform: 'skew(10deg)', left: '-115vw' });
         changePage({
           selectedIndex: -1,
           position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
@@ -404,11 +405,13 @@ export const Model = React.memo(
         setColor({ x: color, y: 0 });
         animateCube(true);
 
-        triggerPageChange({ background: color, left: '100vw' });
+        triggerPageChange({ background: color, transform: 'skew(-10deg)', left: '115vw' });
+
         changePage({
           selectedIndex: position,
           position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
           pageLink: '/booking',
+          // PAGE CHANGE DATA
         });
         // console.log(`inspect ${selectedIndex} at ${position}`);
       }
@@ -420,14 +423,14 @@ export const Model = React.memo(
       e.stopPropagation();
       // get this cubes position relative to usecannon
       // valtioState.threejsContext.color = x;
-      // triggerPageChange({ background: color, left: '200vw' });
+      // triggerPageChange({ background: color, transform: "skew(10deg)", left: '200vw' });
       setHovered(true);
       setColor({ x: color });
       animateCube(false);
       set({ moveCameraTo: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z) });
       set({ moveCamera: true });
 
-      // if (isSelectedProject()) { triggerPageChange({ background: color, left: '-90vw' }); } else { triggerPageChange({ background: color, left: '90vw' }); }
+      // if (isSelectedProject()) { triggerPageChange({ background: color, transform: "skew(10deg)", left: '-90vw' }); } else { triggerPageChange({ background: color, transform: "skew(10deg)", left: '90vw' }); }
     }, [hovered]);
 
     // prettier-ignore
@@ -435,7 +438,7 @@ export const Model = React.memo(
       setHovered(false);/* set({ x: "#FFFFFF" });* */
       set({ moveCamera: false });
 
-      // if (isSelectedProject()) { triggerPageChange({ background: color, left: '-100vw' }); } else { triggerPageChange({ background: color, left: '100vw' }); }
+      // if (isSelectedProject()) { triggerPageChange({ background: color, transform: "skew(10deg)", left: '-115vw' }); } else { triggerPageChange({ background: color, transform: "skew(10deg)", left: '115vw' }); }
     }, [hovered]);
 
     const determineMaterialFactor = useMemo(() => (hovered ? 0.9 : 0.6), [

@@ -167,16 +167,16 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
     // filter through data
     // Filter out the footer, navbar, and meetups so we don't create pages for those
-    // const postOrPage = result.data.allMarkdownRemark.edges.filter((edge) => {
-    //   let layout = edge.node.frontmatter.layout
-    //   return layout == null || layout == 'hidden'
-    // })
+    const postOrPage = result.data.allMarkdownRemark.edges.filter((edge) => {
+      const { layout } = edge.node.frontmatter;
+      return layout == null || layout == 'hidden';
+    });
 
     // postOrPage.forEach((edge) => {
-    //   const id = edge.node.id
-    //   let component = path.resolve(
+    //   const { id } = edge.node;
+    //   const component = path.resolve(
     //     `src/templates/${String(edge.node.frontmatter.layout)}.js`,
-    //   )
+    //   );
     //   if (fs.existsSync(component)) {
     //     switch (edge.node.frontmatter.layout) {
     //       case 'page':
@@ -186,12 +186,20 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     //           context: {
     //             id,
     //           },
-    //         })
-    //         break
-    //         ...
+    //         });
+    //       case 'blog':
+    //         createPage({
+    //           path: `/${Helper.slugify(edge.node.frontmatter.slug)}/`,
+    //           component,
+    //           context: {
+    //             id,
+    //           },
+    //         });
+    //         break;
+    //         // ...
     //     }
     //   }
-    // })
+    // });
 
     const posts = result.data.allMarkdownRemark.edges;
     posts.forEach(async ({ node }, i) => {

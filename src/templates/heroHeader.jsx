@@ -24,6 +24,7 @@ import {
 } from '../components/custom/customButton';
 
 import { SCROLL_PROPS, svgEncodeBaseSixtyFour } from '../store/theme';
+import { useStore } from '../store/store';
 // // draw circle underneath text
 // context.arc(centerX, centerY, radius - 10, 0, 2 * Math.PI, false);
 // context.stroke();
@@ -68,7 +69,7 @@ import { SCROLL_PROPS, svgEncodeBaseSixtyFour } from '../store/theme';
 
 const useStyles = makeStyles((theme) => ({
   heroContainer: {
-    minHeight: '93vh',
+    height: '93vh',
     width: '100vw',
     position: 'relative',
     // marginBottom: theme.spacing(3),
@@ -109,19 +110,21 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 860,
   },
   headline: {
-    '& .headline-container': {
-      borderTop: theme.custom.borders.brandBorder,
-    },
+    borderTop: theme.custom.borders.brandBorder,
+    // '& .headline-container': {
+    // },
+    padding: theme.spacing(2),
     alignSelf: 'end',
     bottom: 0,
     pointerEvents: 'none',
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    maxHeight: '26%',
-    minHeight: '26%',
+    alignContent: 'center',
+    flexDirection: 'row',
+    // justifyContent: 'flex-end',
+    maxHeight: '38%',
+    minHeight: '38%',
     background: theme.palette.text.primary,
 
     // width:
@@ -144,8 +147,8 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
     width: '100%',
     display: 'block',
-    minHeight: '74%',
-    maxHeight: '74%',
+    minHeight: '62%',
+    maxHeight: '62%',
     overflow: 'hidden',
     marginTop: -theme.spacing(0),
     [theme.breakpoints.down('md')]: {
@@ -207,10 +210,7 @@ export const MovingType = (props) => {
   const classes = useSlidingText();
   return (
     <div className={classes.movingType}>
-      {[0].map((text, index) => {
-        const x = 0;
-        return <span className={classes.type} />;
-      })}
+      <span className={classes.type} />
     </div>
   );
 };
@@ -218,6 +218,10 @@ export const MovingType = (props) => {
 // headline dynamic on threejs interaction, button to go back plug action in threejs, go to blog in the headline project selection?
 export const HeroHeader = (props) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const {
+    subtitle, headline, pageTheme, subheader,
+  } = useStore((state) => state.threejsContext.context);
 
   const {
     id,
@@ -239,7 +243,6 @@ export const HeroHeader = (props) => {
       </>
     ),
   } = props;
-  const theme = useTheme();
   return (
     <section id={id}>
       <Grid container className={classes.heroContainer}>
@@ -290,19 +293,16 @@ export const HeroHeader = (props) => {
 
         {/* Headline */}
         <Grid
-          container
           item
-          // justify="flex-start"
-          justify="center"
+          container
           xs={10}
           className={classes.headline}
+          // {...SCROLL_PROPS}
         >
           {/* Typography */}
           <Grid
             item
-            className="headline-container"
             style={{
-              padding: 50,
               // borderTop: '1px solid rgba(255,255,255,.3)',
             }}
           >
@@ -313,9 +313,9 @@ export const HeroHeader = (props) => {
                 gutterBottom
                 variant="h1"
                 style={{ zIndex: -1, textTransform: 'uppercase' }}
-                {...SCROLL_PROPS}
               >
-                {title}
+                {/* {title} */}
+                {headline}
               </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -326,7 +326,8 @@ export const HeroHeader = (props) => {
                 align="left"
                 gutterBottom
               >
-                {description}
+                {/* {description} */}
+                {subheader}
               </Typography>
             </Grid>
             {/* Buttons */}
