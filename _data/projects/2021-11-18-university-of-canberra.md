@@ -1,6 +1,6 @@
 ---
 template: BlogPost
-catagory: University of canberra
+catagory: projects
 path: /projects/uc
 date: 2021-11-18T08:46:55.976Z
 title: University of Canberra
