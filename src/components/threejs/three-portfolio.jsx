@@ -222,30 +222,11 @@ export const Models = ({
   // device?: string;
   const { tier } = useDetectGPU();
 
-  // valtioState.threejsContext.toggleCamera = () => {
-  //   return ZoomCamera()
-  // }
-
-  let textureData = [
-    // TODO find a way to dynamically import, so get the webpack shit bundled then reference it in require
-    // require('../../../static/assets/graphic.png'),
-    // require('../../../static/assets/frame-95.png'),
-    // require('../../../static/assets/hero.png'),
-    // require('../../../static/assets/tank-driver.png'),
-    one,
-    two,
-    three,
-    four,
-    five,
-  ];
-
-  // slice textureData length to three if tier is 1
-  textureData = tier === 1 ? textureData.slice(0, 3) : textureData;
-
   // three loader **use draco one**
   // const {
   //   nodes: { Cube },
   // } = useLoader(GLTFLoader, cube_import);
+  const postData = useStore((state) => state.threejsContext.context.postData);
   const {
     nodes: { Cube },
   } = useGLTF(cube_import);
@@ -267,20 +248,34 @@ export const Models = ({
   //  Handle selection state
   // ========================================================================== //
   const colors = ['#000064', '#21bcfe', '#28bd7f', '#21bcfe'];
+  const mapObjects = useCallback((showState) => postData.map((post, i) => {
+    const {
+      node: {
+        frontmatter: {
+          thumbnail, path, title, metaDescription,
+        },
+      },
+    } = post;
+    // slice textureData length to three if tier is 1
+    // tier === 1 ? textureData.slice(0, 3) : textureData;
+    const texture = (thumbnail && useLoader(THREE.TextureLoader, thumbnail)) || new THREE.Texture();
 
-  const mapObjects = useCallback((showState) => textureData.map((url, i) => (
-    <Model
-      color={colors[i]}
-      model={Cube}
-      mobile={mobile}
-      url={url}
-      key={i}
-      position={i}
-      setColor={set}
-      x={x}
-      ratio={textureData.length - 1}
-    />
-  ), []));
+    // const image = require(`${__dirname}static${thumbnail}`);
+    return (
+      <Model
+        color={colors[i]}
+        model={Cube}
+        mobile={mobile}
+        link={`/blog/${path}`}
+        texture={texture}
+        key={i}
+        position={i}
+        setColor={set}
+        x={x}
+        ratio={postData.length - 1}
+      />
+    );
+  }, []));
 
   // const handleState = () => {
   //   console.log(selectedIndex);
@@ -312,7 +307,8 @@ export const Model = React.memo(
     // setColor,
     model,
     mobile = false,
-    url,
+    texture,
+    link,
     position,
     setCurrent,
     ratio,
@@ -348,7 +344,6 @@ export const Model = React.memo(
     });
 
     const { viewport, set } = useThree();
-    const texture = (url && useLoader(THREE.TextureLoader, url)) || new THREE.Texture();
 
     // ========================================================================== //
     //     Cube physics properties
@@ -397,9 +392,6 @@ export const Model = React.memo(
           pageLink: '/',
         });
         setColor({ x: color, y: 1.0 });
-        // console.log(animatedOpacity, animatedColor);
-        console.log(context);
-        // console.log(`go back -1 ${selectedIndex}`);
       } else {
         ping.play();
         setColor({ x: color, y: 0 });
@@ -410,10 +402,9 @@ export const Model = React.memo(
         changePage({
           selectedIndex: position,
           position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
-          pageLink: '/booking',
+          pageLink: link,
           // PAGE CHANGE DATA
         });
-        // console.log(`inspect ${selectedIndex} at ${position}`);
       }
     }, [selectedIndex]);
 

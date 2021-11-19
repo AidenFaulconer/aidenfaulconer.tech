@@ -86,6 +86,15 @@ module.exports = {
     //     path: `${__dirname}/_data`,
     //   },
     // },
+    // call on each plugin instance
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'data/posts',
+        // everything netlify cms outputs is now accessible under markdown-pages
+        path: `${__dirname}/_data`,
+      },
+    },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -151,28 +160,23 @@ module.exports = {
           //   },
           // },
           // proportion and make iframe content responsive in blogs
-          {
-            resolve: 'gatsby-transformer-remark',
-            options: {
-              plugins: ['gatsby-remark-responsive-iframe'],
-            },
-          },
+          'gatsby-remark-responsive-iframe',
           // make blog content more customizable **not compatible with gatsby-transformer-remark@^4.0.0
           // reference: https://www.gatsbyjs.com/plugins/gatsby-remark-custom-blocks/?=remark
-          {
-            resolve: 'gatsby-remark-custom-blocks',
-            options: {
-              blocks: {
-                danger: {
-                  classes: 'danger',
-                },
-                info: {
-                  classes: 'info',
-                  title: 'optional',
-                },
-              },
-            },
-          },
+          // {
+          //   resolve: 'gatsby-remark-custom-blocks',
+          //   options: {
+          //     blocks: {
+          //       danger: {
+          //         classes: 'danger',
+          //       },
+          //       info: {
+          //         classes: 'info',
+          //         title: 'optional',
+          //       },
+          //     },
+          //   },
+          // },
         ],
       },
     },

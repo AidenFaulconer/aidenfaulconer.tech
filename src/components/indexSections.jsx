@@ -1179,20 +1179,7 @@ const projectsData = [
 const BlogPosts = React.memo(
   React.forwardRef((props, ref) => {
     const classes = useStyles();
-    const { id } = props;
-    // const projectData = useStaticQuery(graphql`
-    //   query {
-    //     allMarkdownRemark(
-    //       filter: { frontmatter: { templateKey: { eq: "project" } } }
-    //     )
-    //     nodes {
-    //       frontmatter {
-    //         title
-    //       }
-    //       tableOfContents
-    //     }
-    //   }
-    // `)
+    const { id,posts } = props; 
 
     return (
       <section
@@ -1207,7 +1194,7 @@ const BlogPosts = React.memo(
               {...SCROLL_PROPS}
               title="Languages"
               key="languages"
-              carouselData={projectsData}
+              carouselData={posts}
               alt
               cardHeight={310}
               cardWidth={310}

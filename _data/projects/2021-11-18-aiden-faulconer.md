@@ -5,6 +5,6 @@ path: /projects/af
 date: 2021-11-18T09:04:24.319Z
 title: Aiden Faulconer
 metaDescription: tmp
-"thumbnail,": /assets/me.png
+thumbnail: /assets/me.png
 ---
 tmp

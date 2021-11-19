@@ -23,12 +23,10 @@ export const createTheme = (theme) => {
     OVERRIDES,
   );
     // custom theme properties
-    // newTheme.custom = CUSTOM_THEME_PROPS;
-
   newTheme.typography.h1.fontWeight = 900;
   newTheme.typography.h2.fontWeight = 900;
   newTheme.typography.h2.textTransform = 'capitalize';
-  console.log(newTheme);
+  // console.log(newTheme);
   // newTheme.typography = TYPOGRAPHY;
   return newTheme;
 };
@@ -73,11 +71,12 @@ export const useStore = create((set) =>
         selectedIndex: -1,
         position: { x: 0, y: 0, z: 0 },
         pageLink: '/',
+        postData: [],
         // react spring animated values from three wrapper and page transition overlay
         animatedColor: '#fff',
         animatedOpacity: 1,
-        subtitle: 'default',
-        headline: 'THE BUILDING BLOCK FOR YOUR ORGANISATION',
+        // subtitle: 'default',
+        // headline: 'THE BUILDING BLOCK FOR YOUR ORGANISATION',
         pageTheme: {
           primary: '#fff',
           secondary: '#fff',

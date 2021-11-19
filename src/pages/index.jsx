@@ -6,6 +6,7 @@ import { useTheme } from '@material-ui/core/styles';
 import ScrollSnap from 'scroll-snap';
 import { useGesture, useScroll } from 'react-use-gesture';
 import { a } from '@react-spring/web';
+import { graphql } from 'gatsby';
 import Layout from '../layout/layout';
 import {
   About,
@@ -167,14 +168,13 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
 const IndexPage = React.memo(
   ({
     // returned from pageQuery as props
-    data,
-    // : {
-    //   allMarkdownRemark: { edges },
-    // },
+    data: {
+      allMarkdownRemark: { edges },
+    },
     location,
   }) => {
     const marginAmount = '175px';
-    alert(JSON.stringify(data));
+    // alert(JSON.stringify(edges));
     // ========================================================================== //
     //     Scroll snapping
     // ========================================================================== //
@@ -230,7 +230,7 @@ const IndexPage = React.memo(
             future of software development.
           </Typography>
         </Grid>
-        <BlogPosts id="blog" /* ref={addNode} */ />
+        <BlogPosts id="blog" posts={edges}/* ref={addNode} */ />
 
       </>
     );
@@ -242,7 +242,7 @@ export default IndexPage;
 // autorun at gatsby rebuild-cycle
 export const pageQuery = graphql`
   query indexPageQuery {
-    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date],category: { eq: "project" } }) {
+    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}, filter: {frontmatter: {catagory: {eq: "blog"}}}) {
       edges {
         node {
           id
@@ -250,8 +250,10 @@ export const pageQuery = graphql`
           frontmatter {
             date(formatString: "MMMM DD, YYYY")
             path
+            catagory
             title
-            thumbnail_
+            thumbnail
+            metaDescription
           }
         }
       }

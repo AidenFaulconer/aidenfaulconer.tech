@@ -482,7 +482,7 @@ export const CardCarousel = React.memo(
                     component="p"
                     className={classes.cardTypography}
                   >
-                    {data.description}
+                    {data.metaDescription}
                   </Typography>
                 </>
               )}
@@ -520,7 +520,7 @@ export const CardCarousel = React.memo(
                 <CardMedia
                   component="img"
                   className={classes.cardImage}
-                  src={data.image}
+                  src={data.thumbnail_}
                   title={data.image}
                 />
               )}

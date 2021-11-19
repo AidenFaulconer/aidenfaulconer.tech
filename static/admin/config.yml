@@ -124,8 +124,8 @@ collections:
       - { label: Body, name: body, widget: markdown, minimal: true }
       # - { label: blog Category, name: category }
       # - { label: Body, name: body, widget: markdown}
-      - label: Featured Image,
-        name: thumbnail,
+      - label: "Featured Image"
+        name: "thumbnail"
         widget: "image"
         hint: "Image size 1280x800 works best :)"
         media_library:
@@ -166,8 +166,8 @@ collections:
       - { label: Body, name: body, widget: markdown, minimal: true }
       # - { label: blog Category, name: category }
       # - { label: Body, name: body, widget: markdown}
-      - label: Featured Image,
-        name: thumbnail,
+      - label: "Featured Image"
+        name: "thumbnail"
         widget: "image"
         hint: "Image size 1280x800 works best :)"
         media_library:

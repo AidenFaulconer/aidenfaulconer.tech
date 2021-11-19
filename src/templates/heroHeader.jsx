@@ -17,6 +17,7 @@ import {
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
+import { graphql, useStaticQuery } from 'gatsby';
 import ThreeWrapper from '../components/threejs/three-wrapper';
 import {
   RegularButton,
@@ -219,29 +220,83 @@ export const MovingType = (props) => {
 export const HeroHeader = (props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const {
-    subtitle, headline, pageTheme, subheader,
-  } = useStore((state) => state.threejsContext.context);
+
+  // ========================================================================== //
+  //   Handle project posts
+  // ========================================================================== //
+  const { allMarkdownRemark: { edges } } = useStaticQuery(graphql`
+      query projectQuery {
+      allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}, filter: {frontmatter: {catagory: {eq: "project"}}}) {
+      edges {
+        node {
+          id
+          excerpt(pruneLength: 250)
+          frontmatter {
+            date(formatString: "MMMM DD, YYYY")
+            metaDescription
+            thumbnail
+            catagory
+            title
+            path
+          }
+        }
+      }
+    }
+      }
+  `);
+
+  useStore.setState((state) => ({
+    ...state,
+    threejsContext: {
+      ...state.threejsContext,
+      context: {
+        ...state.threejsContext.context,
+        postData: edges,
+      },
+    },
+  }));
+
+  const selectedIndex = useStore((state) => state.threejsContext.context.selectedIndex);
+  const postsData = useStore((state) => state.threejsContext.context.postsData);
+  const post = postsData ? postsData[selectedIndex] : {
+    node: {
+      frontmatter: {
+        data: Date.now(),
+        metaDescription: (
+          <>
+            I design and code experiences
+            for online businesses like yours
+            <br />
+            so you can focus on getting your
+            users needs fulfilled.
+          </>
+        ),
+        title: (
+          <>
+            The Building Block
+            <br />
+            for your organisation
+          </>
+        ),
+        path: '/',
+        catagory: 'project',
+        thumbnail: './static/assets/hero.png',
+      },
+    },
+  };
 
   const {
+    node: {
+      frontmatter: {
+        path, catagory, title, thumbnail, metaDescription, date,
+      },
+    },
+  } = post;
+  // ========================================================================== //
+  // Hero content
+  // ========================================================================== //
+  const {
     id,
-    data,
-    title = (
-      <>
-        The Building Block
-        <br />
-        for your organisation
-      </>
-    ),
-    description = (
-      <>
-        I design and code experiences
-        for online businesses like yours
-        <br />
-        so you can focus on getting your
-        users needs fulfilled.
-      </>
-    ),
   } = props;
   return (
     <section id={id}>
@@ -249,7 +304,7 @@ export const HeroHeader = (props) => {
         <Grid item xs={1} className={classes.borderR} />
         {/* ThreeJS */}
         <Box className={classes.threeWrapperPosition}>
-          <ThreeWrapper />
+          <ThreeWrapper posts={edges} />
           {/* <div style={{ position: 'realtive', height: 0, width: '100%' }}>
             <div
               style={{
@@ -315,7 +370,7 @@ export const HeroHeader = (props) => {
                 style={{ zIndex: -1, textTransform: 'uppercase' }}
               >
                 {/* {title} */}
-                {headline}
+                {title}
               </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -327,7 +382,7 @@ export const HeroHeader = (props) => {
                 gutterBottom
               >
                 {/* {description} */}
-                {subheader}
+                {metaDescription}
               </Typography>
             </Grid>
             {/* Buttons */}
