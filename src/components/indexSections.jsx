@@ -61,6 +61,8 @@ import { ThreeDCarousel } from './custom/threeDCarousel';
 
 import introImage from '../../static/assets/portfolio/intro.png';
 
+import resume from '../../static/assets/portfolio/resume.pdf';
+
 // ========================================================================== //
 // SVGS
 // ========================================================================== //
@@ -476,20 +478,11 @@ export const Intro = React.forwardRef((props, ref) => {
             </svg> */}
           {/* download a file onclick */}
           <ThirdButton
-            size="extraSmall"
+            size="small"
             onClick={() => {
               // write code to download a file in javascript
-              fetch('https://reqres.in/api/users')
-                .then((res) => res.json())
-                .then((json) => {
-                  const data = JSON.stringify(json);
+              // window.location.href = "https://www.google.com";
 
-                  // Create a Blob object
-                  const blob = new Blob([data], { type: 'application/json' });
-                  const url = URL.createObjectURL(blob);
-                  download(url, 'users.json');
-                })
-                .catch((err) => console.error(err));
             }}
           >
             Download CV
@@ -502,7 +495,7 @@ export const Intro = React.forwardRef((props, ref) => {
         item
         container
         sm={3}
-        xs={0}
+        xs={false}
         style={{
           border: theme.custom.borders.brandBorderSecondary,
           borderRight: 0,
@@ -666,7 +659,6 @@ const Graphic = (props) => {
     <>
       <MovingType svg={slidingText} />
       <div
-        item
         className={classes.graphic}
         style={{ transform: `scale(${scale})` }}
       >
@@ -869,7 +861,7 @@ const Languages = (props) => {
     spinText: anyLanguageAnyFrameworkSpinText,
     bgAlt: 0,
     altButtons: 0,
-    rounded: true,
+    // rounded: true,
     ctas: ['Read More', 'Book Online'],
     description:
       'I’ve taken all roles in the creation of software products, meaning I am ccapable of delivering a full software product, from its database, communicating brand and intention in design, and building a fast and intuitive client facing application spanning its needs',
@@ -1418,7 +1410,7 @@ const WhatDoYouNeedCard = ({ data, index }) => {
           {/* Typography */}
           <Typography
             color="inherit"
-            variant="h2"
+            component="h2"
             align="left"
             className={classes.typography}
           >
@@ -1426,7 +1418,7 @@ const WhatDoYouNeedCard = ({ data, index }) => {
           </Typography>
           <Typography
             color="inherit"
-            variant="h4"
+            component="h4"
             align="left"
             className={classes.typography}
           >
@@ -1467,7 +1459,7 @@ const WhatDoYouNeedCard = ({ data, index }) => {
           <Typography
             color="secondary"
             align="left"
-            variant="body1"
+            component="body1"
           >
             {description}
           </Typography>
@@ -1499,8 +1491,9 @@ const WhatDoYouNeed = React.forwardRef((props, ref) => {
         alignItems="center"
         alignContent="center"
       >
-        <Grid lg={1} />
+        <Grid lg={1} item xs={false} />
         <Grid
+          item
           container
           justify="center"
           alignContent="stretch"
@@ -1534,7 +1527,7 @@ const WhatDoYouNeed = React.forwardRef((props, ref) => {
             <WhatDoYouNeedCard key={index} index={index} data={service} />
           ))}
         </Grid>
-        <Grid lg={1} />
+        <Grid item xs={false} lg={1} />
       </Grid>
     </section>
   );

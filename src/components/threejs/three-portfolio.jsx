@@ -386,25 +386,26 @@ export const Model = React.memo(
         animateCube(true);
 
         triggerPageChange({ background: color, transform: 'skew(10deg)', left: '-115vw' });
+        setColor({ x: color, y: 1.0 });
         changePage({
           selectedIndex: -1,
           position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
           pageLink: '/',
         });
-        setColor({ x: color, y: 1.0 });
+        // navigate('/', { replace: true });
       } else {
         ping.play();
         setColor({ x: color, y: 0 });
         animateCube(true);
 
         triggerPageChange({ background: color, transform: 'skew(-10deg)', left: '115vw' });
-
         changePage({
           selectedIndex: position,
           position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
           pageLink: link,
           // PAGE CHANGE DATA
         });
+        // navigate(link, { replace: true });
       }
     }, [selectedIndex]);
 

@@ -1,5 +1,5 @@
 import React, {
-  Component, useEffect, useState, useCallback, useMemo,
+  Component, useEffect, useState, useCallback, useMemo, Suspense,
 } from 'react';
 
 import { useCookies } from 'react-cookie';
@@ -88,19 +88,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Layout = (props) => {
+const Layout = React.memo((props) => {
   //   //prettier-ignore
-  //   const { site: { siteMetadata: { title, description } } } = useStaticQuery(
-  //     graphql`
-  //   query layoutQuery {
-  //     site {
-  //       siteMetadata {
-  //         title
-  //         description
-  //       }
-  //     }
-  //   }
-  // `);
+  const { site: { siteMetadata: { seoTitle, seoDescription } } } = useStaticQuery(
+    graphql`
+    query layoutQuery {
+      site {
+        siteMetadata {
+          seoTitle: title
+          seoDescription: description
+        }
+      }
+    }
+  `,
+  );
+
   const { children, window } = props;
   // if (typeof window === "undefined") return
 
@@ -126,7 +128,13 @@ const Layout = (props) => {
   });
 
   const Head = () => (
-    <Helmet>
+    <Helmet
+      title={seoTitle}
+      meta={[
+        { name: 'description', content: seoDescription },
+        // { name: 'keywords', content: 'sample, something' },
+      ]}
+    >
       <meta
         name="viewpoint"
         content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -160,6 +168,7 @@ const Layout = (props) => {
   const classes = useStyles();
   const toggleTheme = useStore((state) => state.appContext.toggleTheme);
   const type = useStore((state) => state.appContext.type);
+  const selectedIndex = useStore((state) => state.threejsContext.context.selectedIndex);
 
   // const ambiance = useMemo(() => {
   //   const ambiance = new Audio(ambianceSound);
@@ -172,13 +181,24 @@ const Layout = (props) => {
   //   if (ambianceState) ambiance.play();
   //   else ambiance.pause();
   // }, [toggleAudio]);
+  // if (typeof window === 'undefined') return null;
+  // const [pageChanged, setPageChanged] = useState(false);
+  // useEffect(() => {
+  //   setPageChanged(true);
+
+  //   setPageChanged(false);
+  // }, [selectedIndex]);
 
   return (
     <MaterialUI>
       <Navigation />
-      <HeroHeader id="projects" />
-      <PageTransitionOverlay />
-      {children}
+
+      <Suspense fallback={<div />}>
+        <HeroHeader id="projects" />
+        <PageTransitionOverlay />
+        {children}
+      </Suspense>
+
       {/* <TableOfContents /> */}
       {/* <EndOfPage /> */}
       <Footer />
@@ -217,15 +237,15 @@ const Layout = (props) => {
 
     </MaterialUI>
   );
-};
+}, (pre, post) => pre !== post);
 
-const PageTransitionOverlay = React.forwardRef(({ x }, ref) => {
+const PageTransitionOverlay = (props) => {
   const classes = useStyles();
 
   // ========================================================================== //
   //         Trigger and animate page transitions
   // ========================================================================== //
-  const [animatedStyles, triggerTransition] = useSpring(() => ({
+  const [animatedStyles, triggerTransition, stopTransition] = useSpring(() => ({
     to: [
       { opacity: 0.1, visibility: 'visible' },
       { opacity: 0, visibility: 'hidden' },
@@ -247,7 +267,7 @@ const PageTransitionOverlay = React.forwardRef(({ x }, ref) => {
   // ========================================================================== //
   //   page change spring
   // ========================================================================== //
-  const [{ left, background, transform }, triggerPageChange] = useSpring(() => ({
+  const [{ left, background, transform }, triggerPageChange, stopPageChangeTransition] = useSpring(() => ({
     // to: [
     //   // { left: '-200vw', background: 'black' },
     //   // { left: '200vw' /* background: 'white' */ },
@@ -315,6 +335,6 @@ const PageTransitionOverlay = React.forwardRef(({ x }, ref) => {
       />
     </>
   );
-});
+};
 
 export default Layout;

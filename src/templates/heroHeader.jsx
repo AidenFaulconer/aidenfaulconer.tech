@@ -217,7 +217,7 @@ export const MovingType = (props) => {
 };
 
 // headline dynamic on threejs interaction, button to go back plug action in threejs, go to blog in the headline project selection?
-export const HeroHeader = (props) => {
+export const HeroHeader = React.memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -404,6 +404,6 @@ export const HeroHeader = (props) => {
       {/* // create a svg circle in html */}
     </section>
   );
-};
+}, (pre, post) => pre !== post);
 
 export default React.memo(HeroHeader);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Container, Grid, makeStyles, Typography,
+  Container, FormControl, FormControlLabel, FormLabel, Grid, makeStyles, Radio, RadioGroup, Typography,
 } from '@material-ui/core';
 import Layout from '../layout/layout';
 import {
@@ -78,12 +78,55 @@ const BookingPage = React.memo(
   }) => {
     const marginAmount = '175px';
     const classes = useStyles();
-
+    const defaultValues = {
+      name: '',
+      age: 0,
+      sex: '',
+      os: '',
+      favoriteNumber: 0,
+    };
+    const [formValues, setFormValues] = React.useState(defaultValues);
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormValues({
+        ...formValues,
+        [name]: value,
+      });
+    };
     return (
       <>
         <Container maxWidth="xl">
           {/* <Contact id="contact"/> */}
           <h1>Hello world</h1>
+          {/* write a form for me materialui */}
+          <FormControl>
+            <FormLabel>Gender</FormLabel>
+            <RadioGroup
+              name="gender"
+              value={formValues.gender}
+              onChange={handleInputChange}
+              row
+            >
+              <FormControlLabel
+                key="male"
+                value="male"
+                control={<Radio size="small" />}
+                label="Male"
+              />
+              <FormControlLabel
+                key="female"
+                value="female"
+                control={<Radio size="small" />}
+                label="Female"
+              />
+              <FormControlLabel
+                key="other"
+                value="other"
+                control={<Radio size="small" />}
+                label="Other"
+              />
+            </RadioGroup>
+          </FormControl>
         </Container>
 
         {/* <Contact id="contact" /> */}

@@ -75,6 +75,12 @@ module.exports = {
         component: require.resolve('./src/layout/layout.jsx'),
       },
     },
+    {
+      resolve: 'gatsby-plugin-catch-links',
+      options: {
+        // excludePattern: /^\/_/,
+      },
+    },
     // ========================================================================== //
     //     File system management
     // ========================================================================== //
@@ -247,7 +253,10 @@ module.exports = {
     // Netlify CMS
     // ========================================================================== //
     'gatsby-plugin-netlify-cms',
-    'gatsby-plugin-material-ui',
+    {
+      resolve: 'gatsby-plugin-material-ui',
+      // options: { stylesProvider: { injectFirst: true } },
+    },
 
     // ========================================================================== //
     //     Debugging Webpack bundles

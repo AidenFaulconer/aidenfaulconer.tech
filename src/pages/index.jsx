@@ -133,14 +133,14 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
         position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
       }}
       >
-        <Grid item md={1} xs={0} />
+        <Grid item md={1} xs={false} />
         <Grid item md={4} xs={5}>
           <About id="services" />
         </Grid>
         <Grid item md={6} xs={7}>
           <Experience id="skills" />
         </Grid>
-        <Grid item md={1} xs={0} />
+        <Grid item md={1} xs={false} />
       </a.div>
 
       {/* section 2 */}
@@ -148,7 +148,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
         position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
       }}
       >
-        <Grid item md={1} xs={0} />
+        <Grid item md={1} xs={false} />
         <Grid item md={4} xs={5}>
           <Languages id="languages" />
         </Grid>
@@ -158,7 +158,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
         <Grid
           item
           md={1}
-          xs={0}
+          xs={false}
         />
       </a.div>
     </section>
@@ -201,9 +201,9 @@ const IndexPage = ({
 
   return (
     <>
-      {/* <Grid item md={1} xs={0} /> */}
+      {/* <Grid item md={1} xs={false} /> */}
       <Intro />
-      {/* <Grid item md={1} xs={0} /> */}
+      {/* <Grid item md={1} xs={false} /> */}
       {/* <Grid container className={classes.contentContainer}> */}
 
       {/* section 1 */}

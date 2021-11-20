@@ -4,7 +4,7 @@ import create from 'zustand';
 // ========================================================================== //
 // Handle theming
 // ========================================================================== //
-import { navigate } from 'gatsby-link';
+import { navigate, Link, createHistory } from '@reach/router';
 import {
   DARK_THEME,
   LIGHT_THEME,
@@ -111,7 +111,9 @@ export const useStore = create((set) =>
           }));
           // route to page
           // alert(newSelectedData.pageLink);
-          navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
+          // navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
+          // navigate to another page with @react/router
+          navigate(newSelectedData.pageLink, { replace: true });
         },
         // overritten by page transition overlay
         triggerPageChange: () => { },
@@ -128,7 +130,6 @@ export const useStore = create((set) =>
       pushGameObject: (newObject) => set((state) => ({ threejsContext: { gameObjects: [...state.threejsContext.gameObjects, newObject] } })),
     },
   }));
-
 //   import { devtools } from 'zustand/middleware'
 
 // // Usage with a plain action store, it will log actions as "setState"

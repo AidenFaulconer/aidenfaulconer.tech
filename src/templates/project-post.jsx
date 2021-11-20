@@ -203,7 +203,7 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
             marginBottom: theme.spacing(2),
           }}
         />
-        <Link to={path} rel="prev">
+        <Link to={path || '/'} rel="prev">
           <SecondaryButton size="large">
             {parse(title)}
           </SecondaryButton>
@@ -240,7 +240,7 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
           </Grid>
         ) } */}
 
-        <Grid item md={1} xs={0} />
+        <Grid item md={1} xs={false} />
         <Grid item className={classes.blogPost} md={10} xs={12}>
           <article
             className="blog-post"
@@ -275,7 +275,7 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
             </footer>
           </article>
         </Grid>
-        <Grid item md={1} xs={0} />
+        <Grid item md={1} xs={false} />
 
         {/* will include comments, likes, subscribe to newsletter, etc */}
         {/* <Grid item xs={1} id="#stickySideBar" className={classes.blogSideBar}>
