@@ -448,111 +448,100 @@ export const CardCarousel = React.memo(
           onHover={(e) => setAutoPlay(false)}
           onPointerLeave={(e) => setAutoPlay(true)}
         >
-          {carouselData.map((data, index) => (
-            <CustomCard
-              alt={alt}
-              title={
-                subtitle === true ? (
-                  data.icon ? (
-                    <Icon className={classes.cardIcon} fontSize="large">
-                      {data.icon.toLowerCase()}
-                    </Icon>
-                  ) : (
-                    `${index + 1}.`
-                  )
-                ) : (
-                  ''
-                )
-              }
-              subheader={data.title}
-              color={color}
-              image={data.image}
-              expanded={expanded[index]}
-              index={index}
-              cardWidth={cardWidth}
-              rating={data.rating}
-              cardHeight={cardHeight}
-              key={`${data.title}customCard${index}`}
-              cardContent={(
-                <>
-                  <Typography
-                    variant="body2"
-                    align="left"
-                    color="inherit"
-                    component="p"
-                    className={classes.cardTypography}
-                  >
-                    {data.metaDescription}
-                  </Typography>
-                </>
-              )}
-              cardHeader={<></>}
-              /* some data into the carousel includes links to various content, here we handle the various content being passed into the custom cards */
-              cardActions={(
-                <>
-                  {(alt && (
-                    <RegularButton
-                      size="small"
-                      fullWidth
-                      onClick={() => handleExpandClick(index)}
-                    >
-                      Read more
-                    </RegularButton>
-                  )) || (
-                    <ThirdButton
-                      size="small"
-                      fullWidth
-                      onClick={() => handleExpandClick(index)}
-                    >
-                      Read more
-                    </ThirdButton>
-                  )}
-                  {data.project && (
-                    <RegularButton
-                      onClick={() => routeToBlog(data.project || '/')}
-                    >
-                      View project
-                    </RegularButton>
-                  )}
-                </>
-              )}
-              cardMedia={(
-                <CardMedia
-                  component="img"
-                  className={classes.cardImage}
-                  src={data.thumbnail_}
-                  title={data.image}
+          {carouselData.map((post, index) => {
+            const {
+              title, metaDescription, thumbnail, path,
+            } = post.node.frontmatter;
+
+            const project = false;
+
+            return (
+              <>
+                <CustomCard
+                // alt={ 'alt'}
+                // title={
+                //   subtitle === true ? (
+                //     data.icon ? (
+                //       <Icon className={classes.cardIcon} fontSize="large">
+                //         {data.icon.toLowerCase()}
+                //       </Icon>
+                //     ) : (
+                //       `${index + 1}.`
+                //     )
+                //   ) : (
+                //     title
+                //   )
+                // }
+                  subheader={title}
+                  color={color}
+                  image={thumbnail}
+                  expanded={expanded[index]}
+                  index={index}
+                  cardWidth={cardWidth}
+                  // rating={data.rating}
+                  cardHeight={cardHeight}
+                  key={`${title}customCard${index}`}
+                  cardContent={(
+                    <>
+                      <Typography
+                        variant="body2"
+                        align="left"
+                        color="inherit"
+                        component="p"
+                        className={classes.cardTypography}
+                      >
+                        {metaDescription}
+                      </Typography>
+                    </>
+                )}
+                  cardHeader={<></>}
+                /* some data into the carousel includes links to various content, here we handle the various content being passed into the custom cards */
+                  cardActions={(
+                    <>
+                      {(alt && (
+                      <RegularButton
+                        size="small"
+                        fullWidth
+                        onClick={() => handleExpandClick(index)}
+                      >
+                        Read more
+                      </RegularButton>
+                      )) || (
+                      <ThirdButton
+                        size="small"
+                        fullWidth
+                        onClick={() => handleExpandClick(index)}
+                      >
+                        Read more
+                      </ThirdButton>
+                      )}
+                      {project && (
+                      <RegularButton
+                        onClick={() => routeToBlog(`/blog${path}` || '/')}
+                      >
+                        View project
+                      </RegularButton>
+                      )}
+                    </>
+                )}
+                  cardMedia={(
+                    <CardMedia
+                      component="img"
+                      className={classes.cardImage}
+                      src={thumbnail}
+                      title={title}
+                    />
+                )}
                 />
-              )}
-            />
-          ))}
+              </>
+            );
+          })}
         </Carousel>
       </section>
     );
   },
   (pre, post) => pre.carouselData !== post.carouselData,
 );
-
-// define CardCarousel prop types
-CardCarousel.propTypes = {
-  carouselData: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      description: PropTypes.string,
-      image: PropTypes.string,
-      icon: PropTypes.string,
-      project: PropTypes.string,
-      rating: PropTypes.number,
-    }),
-  ),
-  title: PropTypes.string,
-  id: PropTypes.string,
-  cardWidth: PropTypes.number,
-  cardHeight: PropTypes.number,
-  color: PropTypes.string,
-  subtitle: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  alt: PropTypes.bool,
-};
 
 // ========================================================================== //
 // custom card
