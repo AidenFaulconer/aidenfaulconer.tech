@@ -135,24 +135,36 @@ async function getPosts({ graphql, reporter, regex }) {
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
-  // configure and set where and how content gets processed down
+  // ========================================================================== //
+  //   function to Get and create blog posts
+  // ========================================================================== //
   async function buildPageFromQuery(regex, template) {
+    // sort: {order: DESC, fields: [frontmatter__date]}
     const result = await graphql(`
     query blogBuilderQuery {
       allMarkdownRemark(
-        filter: { frontmatter: { catagory: { regex: "/${regex}/" } } },
+        filter: {frontmatter: {catagory: {regex: "/${regex}/"}}}
         limit: 1000
       ) {
         edges {
           node {
             id
             html
+            excerpt
             frontmatter {
               catagory
+              metaDescription
+              date
               path
               title
-              thumbnail_
+              thumbnail
             }
+          }
+          next {
+            nid: id
+          }
+          previous {
+            pid: id
           }
         }
       }
@@ -165,252 +177,37 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       return;
     }
 
-    // filter through data
-    // Filter out the footer, navbar, and meetups so we don't create pages for those
-    const postOrPage = result.data.allMarkdownRemark.edges.filter((edge) => {
-      const { layout } = edge.node.frontmatter;
-      return layout == null || layout == 'hidden';
-    });
-
-    // postOrPage.forEach((edge) => {
-    //   const { id } = edge.node;
-    //   const component = path.resolve(
-    //     `src/templates/${String(edge.node.frontmatter.layout)}.js`,
-    //   );
-    //   if (fs.existsSync(component)) {
-    //     switch (edge.node.frontmatter.layout) {
-    //       case 'page':
-    //         createPage({
-    //           path: `/${Helper.slugify(edge.node.frontmatter.slug)}/`,
-    //           component,
-    //           context: {
-    //             id,
-    //           },
-    //         });
-    //       case 'blog':
-    //         createPage({
-    //           path: `/${Helper.slugify(edge.node.frontmatter.slug)}/`,
-    //           component,
-    //           context: {
-    //             id,
-    //           },
-    //         });
-    //         break;
-    //         // ...
-    //     }
-    //   }
-    // });
-
-    const posts = result.data.allMarkdownRemark.edges;
-    posts.forEach(async ({ node }, i) => {
-      // calculate which posts are previous and next
-      const { start, end } = getStartEnd(i, posts.length - 1);
-
-      await createPage({
-        path: node.frontmatter.path,
+    // ========================================================================== //
+    //     Build all the pages
+    // ========================================================================== //
+    result.data.allMarkdownRemark.edges.forEach((edge, i) => {
+      // reporter.warn(JSON.stringify(edge, null, 2));
+      const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
+      return createPage({
+        path,
         component: template,
         context: {
-          otherBlogs: [posts[start], posts[end]], // all other blogs of this catagory (get previous and current one)
-        }, // additional data can be passed via context
+          id,
+          nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
+          previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
+        },
       });
     });
   }
 
-  // now put this all together here
+  // ========================================================================== //
+  //   Build pages
+  // ========================================================================== //
+  await buildPageFromQuery(
+    'b|Blog',
+    path.resolve('src/templates/blog-post.jsx'),
+  ); // build blog pages
 
-  // await buildPageFromQuery(
-  //   'b|Blog',
-  //   path.resolve('src/templates/blogTemplate.jsx'),
-  // ); // build blog pages
-
-  // await buildPageFromQuery(
-  //   'P|project',
-  //   path.resolve('src/templates/projectTemplate.jsx'),
-  // ); // build project pages
+  await buildPageFromQuery(
+    'P|project',
+    path.resolve('src/templates/project-post.jsx'),
+  ); // build project pages
 };
-
-const getStartEnd = (i, len) => {
-  let start;
-  let end;
-  if (i === 0) {
-    start = 1;
-    end = len;
-  } else if (i === len) {
-    start = 0;
-    end = len - 1;
-  } else {
-    start = i - 1;
-    end = i + 1;
-  }
-  return { start, end };
-};
-
-// ========================================================================== //
-// TABLE OF CONTENTS
-// ========================================================================== //
-// #region create a table of contents for every post
-function UniqueId() {
-  const tempMap = {};
-  return (el) => {
-    if (tempMap[el]) {
-      tempMap[el] += 1;
-      const result = `${el}-${tempMap[el]}`;
-      tempMap[result] = 1;
-      return result;
-    }
-    tempMap[el] = 1;
-    return el;
-  };
-}
-
-function createId($, title) {
-  let id = $(title).attr('id');
-
-  if (!id) {
-    id = $(title)
-      .text()
-      .toLowerCase()
-      .replace(/[^a-z_0-9]+/gi, '-')
-      .replace(/-+/g, '-');
-  }
-
-  return id;
-}
-
-function extendContentField(options, prevFieldConfig) {
-  return {
-    resolve(source) {
-      const $ = cheerio.load(source.content);
-      const titles = $('h2,h3,h4,h5');
-      const getUniqueId = UniqueId();
-      Array.from(titles).forEach((title) => {
-        const id = createId($, title);
-        $(title).attr('id', getUniqueId(id));
-      });
-
-      return $('body').html();
-    },
-  };
-}
-
-function groupHeadings(index, grouping, headings) {
-  if (index < headings.length) {
-    const nextHeading = headings[index];
-
-    if (grouping.length) {
-      const prevHeading = grouping.slice().pop();
-
-      try {
-        if (nextHeading.depth > prevHeading.depth) {
-          prevHeading.items = prevHeading.items || [];
-          return groupHeadings(index, prevHeading.items, headings);
-        }
-        if (nextHeading.depth === prevHeading.depth) {
-          grouping.push({ ...nextHeading });
-          return groupHeadings(++index, grouping, headings);
-        }
-        throw { index, heading: nextHeading };
-      } catch (higherHeading) {
-        if (higherHeading.heading.depth === prevHeading.depth) {
-          grouping.push({ ...higherHeading.heading });
-          return groupHeadings(++higherHeading.index, grouping, headings);
-        }
-        throw higherHeading;
-      }
-    } else {
-      grouping.push({ ...nextHeading });
-      groupHeadings(++index, grouping, headings);
-    }
-  }
-
-  return grouping;
-}
-
-async function createTableOfContents(source, args, context, info) {
-  const $ = cheerio.load(source.content);
-  const titles = $('h1,h2,h3,h4,h5');
-  reporter.log('titles', titles);
-  const getUniqueId = UniqueId();
-
-  const headings = Array.from(titles).map((title) => {
-    const depth = parseInt($(title).prop('tagName').substr(1), 10);
-    const id = createId($, title);
-    return { url: `#${getUniqueId(id)}`, title: $(title).text(), depth };
-  });
-
-  const reduced = groupHeadings(0, [], headings);
-  return { items: reduced };
-}
-
-// ========================================================================== //
-// graphql schema customization
-// ========================================================================== //
-exports.createSchemaCustomization = ({ actions }) => {
-  const { createTypes, createFieldExtension } = actions;
-  createFieldExtension({
-    name: 'content',
-    extend: extendContentField,
-  });
-
-  const typeDefs = `
-  #was implements Node 
-    type wpPost implements Node {
-      toc: JSON
-      content: String @content 
-    }
-
-    type Button {
-      text: String
-      link: String
-    }
-      
-    type List {
-      title: String
-      content: String
-    }
-      
-    type Form {
-      provider: String
-      title: String
-      formid: Int
-      redirect: String
-      button: String
-    }
-      
-    type FAQ {
-      question: String
-      answer: String
-    }
-      
-    type MarkdownRemarkFrontmatterSections @infer {
-      id: String
-      type: String
-      subheader: String
-      title: String
-      subtitle: String
-      background: String
-      content: String
-      variant: String
-      video: String
-      bulletpoints: [String]
-      secondarycontent: String
-      button: Button
-      list: [List]
-      form: Form
-      faqs: [FAQ]
-    }`;
-  createTypes(typeDefs);
-};
-
-exports.createResolvers = ({ createResolvers, schema }) => createResolvers({
-  wpPost: {
-    toc: {
-      resolve: createTableOfContents,
-    },
-  },
-});
-
-// #endregion
 
 // ========================================================================== //
 // webpack configuration
@@ -530,3 +327,246 @@ exports.onCreateWebpackConfig = ({
 // //     'material-ui': '@material-ui',
 // //   };
 // // };
+
+// filter through data
+// Filter out the footer, navbar, and meetups so we don't create pages for those
+// const postOrPage = result.data.allMarkdownRemark.edges.filter((edge) => {
+//   const { layout } = edge.node.frontmatter;
+//   return layout == null || layout == 'hidden';
+// });
+
+// postOrPage.forEach((edge) => {
+//   const { metaDescription,title,content,catagory,path } = edge.node.frontmatter;
+//   const component =
+//   if (fs.existsSync(component)) {
+//     switch (catagory) {
+//       case 'project':
+//         createPage({
+//           // path: `/${Helper.slugify(edge.node.frontmatter.slug)}/`,
+//           path,
+//           component: path.resolve(
+//             `src/templates/blog-post.js`,
+//           ),
+//           context: {
+//             id,
+//           },
+//         });
+//       case 'blog':
+//         createPage({
+//           path,
+//             component: path.resolve(
+//             `src/templates/blog-post.js`,
+//           ),
+//           context: {
+//             id,
+//           },
+//         });
+//         break;
+//         // ...
+//     }
+//   }
+// });
+
+//   const posts = result.data.allMarkdownRemark.edges;
+//   posts.forEach(async ({ node }, i) => {
+//     // calculate which posts are previous and next
+//     const { start, end } = getStartEnd(i, posts.length - 1);
+
+//     await createPage({
+//       path: node.frontmatter.path,
+//       component: template,
+//       context: {
+//         otherBlogs: [posts[start], posts[end]], // all other blogs of this catagory (get previous and current one)
+//       }, // additional data can be passed via context
+//     });
+//   });
+// }
+
+// now put this all together here
+
+// ========================================================================== //
+//   add later
+// ========================================================================== //
+
+// const getStartEnd = (i, len) => {
+//   let start;
+//   let end;
+//   if (i === 0) {
+//     start = 1;
+//     end = len;
+//   } else if (i === len) {
+//     start = 0;
+//     end = len - 1;
+//   } else {
+//     start = i - 1;
+//     end = i + 1;
+//   }
+//   return { start, end };
+// };
+
+// // ========================================================================== //
+// // TABLE OF CONTENTS
+// // ========================================================================== //
+// // #region create a table of contents for every post
+// function UniqueId() {
+//   const tempMap = {};
+//   return (el) => {
+//     if (tempMap[el]) {
+//       tempMap[el] += 1;
+//       const result = `${el}-${tempMap[el]}`;
+//       tempMap[result] = 1;
+//       return result;
+//     }
+//     tempMap[el] = 1;
+//     return el;
+//   };
+// }
+
+// function createId($, title) {
+//   let id = $(title).attr('id');
+
+//   if (!id) {
+//     id = $(title)
+//       .text()
+//       .toLowerCase()
+//       .replace(/[^a-z_0-9]+/gi, '-')
+//       .replace(/-+/g, '-');
+//   }
+
+//   return id;
+// }
+
+// function extendContentField(options, prevFieldConfig) {
+//   return {
+//     resolve(source) {
+//       const $ = cheerio.load(source.content);
+//       const titles = $('h2,h3,h4,h5');
+//       const getUniqueId = UniqueId();
+//       Array.from(titles).forEach((title) => {
+//         const id = createId($, title);
+//         $(title).attr('id', getUniqueId(id));
+//       });
+
+//       return $('body').html();
+//     },
+//   };
+// }
+
+// function groupHeadings(index, grouping, headings) {
+//   if (index < headings.length) {
+//     const nextHeading = headings[index];
+
+//     if (grouping.length) {
+//       const prevHeading = grouping.slice().pop();
+
+//       try {
+//         if (nextHeading.depth > prevHeading.depth) {
+//           prevHeading.items = prevHeading.items || [];
+//           return groupHeadings(index, prevHeading.items, headings);
+//         }
+//         if (nextHeading.depth === prevHeading.depth) {
+//           grouping.push({ ...nextHeading });
+//           return groupHeadings(++index, grouping, headings);
+//         }
+//         throw { index, heading: nextHeading };
+//       } catch (higherHeading) {
+//         if (higherHeading.heading.depth === prevHeading.depth) {
+//           grouping.push({ ...higherHeading.heading });
+//           return groupHeadings(++higherHeading.index, grouping, headings);
+//         }
+//         throw higherHeading;
+//       }
+//     } else {
+//       grouping.push({ ...nextHeading });
+//       groupHeadings(++index, grouping, headings);
+//     }
+//   }
+
+//   return grouping;
+// }
+
+// async function createTableOfContents(source, args, context, info) {
+//   const $ = cheerio.load(source.content);
+//   const titles = $('h1,h2,h3,h4,h5');
+//   reporter.log('titles', titles);
+//   const getUniqueId = UniqueId();
+
+//   const headings = Array.from(titles).map((title) => {
+//     const depth = parseInt($(title).prop('tagName').substr(1), 10);
+//     const id = createId($, title);
+//     return { url: `#${getUniqueId(id)}`, title: $(title).text(), depth };
+//   });
+
+//   const reduced = groupHeadings(0, [], headings);
+//   return { items: reduced };
+// }
+
+// // ========================================================================== //
+// // graphql schema customization
+// // ========================================================================== //
+// // exports.createSchemaCustomization = ({ actions }) => {
+// //   const { createTypes, createFieldExtension } = actions;
+// //   createFieldExtension({
+// //     name: 'content',
+// //     extend: extendContentField,
+// //   });
+
+// //   const typeDefs = `
+// //   #was implements Node
+// //     type wpPost implements Node {
+// //       toc: JSON
+// //       content: String @content
+// //     }
+
+// //     type Button {
+// //       text: String
+// //       link: String
+// //     }
+
+// //     type List {
+// //       title: String
+// //       content: String
+// //     }
+
+// //     type Form {
+// //       provider: String
+// //       title: String
+// //       formid: Int
+// //       redirect: String
+// //       button: String
+// //     }
+
+// //     type FAQ {
+// //       question: String
+// //       answer: String
+// //     }
+
+// //     type MarkdownRemarkFrontmatterSections @infer {
+// //       id: String
+// //       type: String
+// //       subheader: String
+// //       title: String
+// //       subtitle: String
+// //       background: String
+// //       content: String
+// //       variant: String
+// //       video: String
+// //       bulletpoints: [String]
+// //       secondarycontent: String
+// //       button: Button
+// //       list: [List]
+// //       form: Form
+// //       faqs: [FAQ]
+// //     }`;
+// //   createTypes(typeDefs);
+// // };
+
+// // exports.createResolvers = ({ createResolvers, schema }) => createResolvers({
+// //   allMarkdownRemark: {
+// //     tableOfContents: {
+// //       resolve: createTableOfContents,
+// //     },
+// //   },
+// // });
+
+// // #endregion

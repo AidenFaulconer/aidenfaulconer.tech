@@ -227,20 +227,20 @@ export const HeroHeader = (props) => {
   const { allMarkdownRemark: { edges } } = useStaticQuery(graphql`
       query projectQuery {
       allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}, filter: {frontmatter: {catagory: {eq: "project"}}}) {
-      edges {
-        node {
-          id
-          excerpt(pruneLength: 250)
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            metaDescription
-            thumbnail
-            catagory
-            title
-            path
+        edges {
+          node {
+            id
+            excerpt(pruneLength: 250)
+            frontmatter {
+              date(formatString: "MMMM DD, YYYY")
+              metaDescription
+              thumbnail
+              catagory
+              title
+              path
+            }
           }
         }
-      }
     }
       }
   `);
@@ -261,7 +261,7 @@ export const HeroHeader = (props) => {
   const post = postsData ? postsData[selectedIndex] : {
     node: {
       frontmatter: {
-        data: Date.now(),
+        date: Date.now(),
         metaDescription: (
           <>
             I design and code experiences

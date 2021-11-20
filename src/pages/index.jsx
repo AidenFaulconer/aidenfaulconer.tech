@@ -124,7 +124,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   return (
     <section
       style={{
-        width: '100vw', height: '90vh', display: 'block', scrollSnapAlign: 'x y proximity', overflowX: 'scroll',
+        width: '100vw', /* height: '90vh', */ display: 'block', scrollSnapAlign: 'x y proximity', overflowX: 'scroll',
       }}
       {...bind()}
       ref={ref}
@@ -165,77 +165,75 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   );
 });
 
-const IndexPage = React.memo(
-  ({
-    // returned from pageQuery as props
-    data: {
-      allMarkdownRemark: { edges },
-    },
-    location,
-  }) => {
-    const marginAmount = '175px';
-    // alert(JSON.stringify(edges));
-    // ========================================================================== //
-    //     Scroll snapping
-    // ========================================================================== //
-    const [count, setCount] = React.useState(0);
-    const refs = React.useRef([]);
-    const observer = React.useRef(null);
-    const addNode = React.useCallback((node) => refs.current.push(node), []);
-    // ref callback is called twice: once when the DOM
-    // node is created, and once (with null) when the DOM
-    // node is removed.
-    // TRY IT OUT => Comment the other addNode and uncomment this one
-
-    React.useEffect(() => {
-      if (observer.current) observer.current.disconnect();
-      const newObserver = getObserver(observer);
-      for (const node of refs.current) {
-        newObserver.observe(node);
-      }
-      console.log(refs.current);
-      return () => newObserver.disconnect();
-    }, []);
-
-    const classes = useStyles();
-    const theme = useTheme();
-
-    return (
-      <>
-        {/* <Grid item md={1} xs={0} /> */}
-        <Intro />
-        {/* <Grid item md={1} xs={0} /> */}
-        {/* <Grid container className={classes.contentContainer}> */}
-
-        {/* section 1 */}
-        <ScrollContainer ref={addNode} />
-
-        {/* <Experience id="experience" /> */}
-        {/* </Grid> */}
-
-        <WhatDoYouNeed id="contact" /* ref={addNode} */ />
-
-        <Grid item xs={12} md={5} style={{ paddingBottom: 20, margin: 'auto' }}>
-          <Typography
-            align="left"
-            gutterBottom
-            style={{ marginBottom: 25, marginTop: 80 }}
-            variant="h2"
-          >
-            Read on!
-          </Typography>
-          <Typography gutterBottom align="left">
-            Its an exciting time to be a software developer. Read some of the
-            latest news and articles below about design, business, and the
-            future of software development.
-          </Typography>
-        </Grid>
-        <BlogPosts id="blog" posts={edges}/* ref={addNode} */ />
-
-      </>
-    );
+const IndexPage = ({
+  // returned from pageQuery as props
+  data: {
+    allMarkdownRemark: { edges },
   },
-);
+  location,
+}) => {
+  const marginAmount = '175px';
+  // alert(JSON.stringify(edges));
+  // ========================================================================== //
+  //     Scroll snapping
+  // ========================================================================== //
+  const [count, setCount] = React.useState(0);
+  const refs = React.useRef([]);
+  const observer = React.useRef(null);
+  const addNode = React.useCallback((node) => refs.current.push(node), []);
+  // ref callback is called twice: once when the DOM
+  // node is created, and once (with null) when the DOM
+  // node is removed.
+  // TRY IT OUT => Comment the other addNode and uncomment this one
+
+  React.useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+    const newObserver = getObserver(observer);
+    for (const node of refs.current) {
+      newObserver.observe(node);
+    }
+    console.log(refs.current);
+    return () => newObserver.disconnect();
+  }, []);
+
+  const classes = useStyles();
+  const theme = useTheme();
+
+  return (
+    <>
+      {/* <Grid item md={1} xs={0} /> */}
+      <Intro />
+      {/* <Grid item md={1} xs={0} /> */}
+      {/* <Grid container className={classes.contentContainer}> */}
+
+      {/* section 1 */}
+      <ScrollContainer ref={addNode} />
+
+      {/* <Experience id="experience" /> */}
+      {/* </Grid> */}
+
+      <WhatDoYouNeed id="contact" /* ref={addNode} */ />
+
+      <Grid item xs={12} md={5} style={{ paddingBottom: 20, margin: 'auto' }}>
+        <Typography
+          align="left"
+          gutterBottom
+          style={{ marginBottom: 25, marginTop: 80 }}
+          variant="h2"
+        >
+          Read on!
+        </Typography>
+        <Typography gutterBottom align="left">
+          Its an exciting time to be a software developer. Read some of the
+          latest news and articles below about design, business, and the
+          future of software development.
+        </Typography>
+      </Grid>
+      <BlogPosts id="blog" posts={edges}/* ref={addNode} */ />
+
+    </>
+  );
+};
 
 export default IndexPage;
 

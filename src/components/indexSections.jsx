@@ -240,7 +240,7 @@ const useStyles = makeStyles((theme) => {
       flexDirection: 'column',
       alignContent: 'stretch',
       maxHeight: 850,
-      margin: theme.spacing(3, 0),
+      margin: theme.spacing(3),
       transform: `scale(${0.85})`,
       padding: theme.spacing(3),
       position: 'relative',
@@ -1179,7 +1179,7 @@ const projectsData = [
 const BlogPosts = React.memo(
   React.forwardRef((props, ref) => {
     const classes = useStyles();
-    const { id,posts } = props; 
+    const { id, posts } = props;
 
     return (
       <section
@@ -1405,13 +1405,13 @@ const WhatDoYouNeedCard = ({ data, index }) => {
         item
         lg={Math.ceil(12 / (index % 3 === 0 ? 3 : 4))}
         sm={Math.ceil(12 / (index % 2 === 0 ? 2 : 3))}
-        {...SCROLL_PROPS}
         style={{
           border: theme.custom.borders.brandBorder,
         }}
         xs={12}
       >
         <Card
+          {...SCROLL_PROPS}
           className={classes.serviceCard}
           style={{ zIndex: 1, marginTop: index % 2 === 0 ? 200 : 0 }}
         >

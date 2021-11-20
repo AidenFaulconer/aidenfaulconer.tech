@@ -3,7 +3,9 @@ import { Link, graphql, StaticQuery } from 'gatsby';
 import Image from 'gatsby-image';
 import parse from 'html-react-parser';
 import stickybits from 'stickybits';
-import { makeStyles, Box, Grid } from '@material-ui/core';
+import {
+  makeStyles, Box, Grid, useTheme,
+} from '@material-ui/core';
 
 // We're using Gutenberg so we need the block styles
 // these are copied into this project due to a conflict in the postCSS
@@ -14,7 +16,7 @@ import { makeStyles, Box, Grid } from '@material-ui/core';
 // import Bio from "../components/bio"
 // import Seo from "../components/seo"
 import Layout from '../layout/layout';
-import { RegularButton } from '../components/custom/customButton';
+import { RegularButton, SecondaryButton } from '../components/custom/customButton';
 
 // ========================================================================== //
 // Blog post styles
@@ -84,16 +86,16 @@ const useStyles = makeStyles((theme) => {
       objectFit: 'cover',
     },
     suggestedBlogPost: {
-      maxWidth: 350,
+    //   maxWidth: 350,
       margin: 'auto',
       marginBottom: theme.spacing(6),
-      maxHeight: 500,
+      //   maxHeight: 500,
       border: theme.custom.borders.brandBorderSecondary,
       boxShadow: theme.custom.shadows.brandBig,
       borderRadius: theme.custom.borders.brandBorderRadius,
       padding: theme.spacing(6),
       color: theme.palette.text.primary,
-      background: theme.palette.background.main,
+      background: theme.palette.text.primary,
       textDecoration: 'none',
       '& img': {
         border: theme.custom.borders.brandBorder,
@@ -164,16 +166,19 @@ const useStyles = makeStyles((theme) => {
 // ========================================================================== //
 const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => {
   const classes = useStyles();
+  const theme = useTheme();
+
   useEffect(() => {
     stickybits('#stickySideBar', { usePlaceholder: true });
   }, []);
 
+  //   alert(JSON.stringify(previous, null, 2));
   const {
     path, title, metaDescription, thumbnail, template, date, catagory,
-  } = post.edges.node.frontmatter;
+  } = post.edges[0].node.frontmatter;
   const {
     html, excerpt, tableOfContents, timeToRead,
-  } = post.edges.node;
+  } = post.edges[0].node;
 
   // ========================================================================== //
   //   Blog suggestions
@@ -181,22 +186,27 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
   const blogSuggestionLink = useCallback((blogPostData, type) => {
     const {
       path, title, metaDescription, thumbnail, template, date, catagory,
-    } = post.edges.node.frontmatter;
+    } = post.edges[0].node.frontmatter;
     // console.log(postLink, blogPostData);
     return (
-      <Grid item xs={12} sm={6} className={classes.suggestedBlogPost}>
-        <Image
-          fixed
-          objectFit="contain"
+      <Grid item container justify="center" xs={4} className={classes.suggestedBlogPost}>
+        <img
           src={thumbnail}
-        //   fluid={otherBlogFeatured?.fluid}
-          alt="alt"
-          style={{ marginBottom: 50 }}
+          style={{
+            position: 'relative',
+            display: 'inline',
+            width: '100%',
+            height: '100%',
+            maxWidth: 200,
+            maxHeight: 200,
+            objectFit: 'cover',
+            marginBottom: theme.spacing(2),
+          }}
         />
         <Link to={path} rel="prev">
-          <RegularButton size="large">
+          <SecondaryButton size="large">
             {parse(title)}
-          </RegularButton>
+          </SecondaryButton>
           {/* ← */}
           {/* {' '} */}
         </Link>
@@ -206,7 +216,7 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
 
   return (
     <>
-      <div className={classes.blogHeroUnderlay}>
+      {/* <div className={classes.blogHeroUnderlay}>
         <img src={template} alt="welcome to the blog graphic" />
         <svg
           height="140"
@@ -219,7 +229,7 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
             fill="#E1F2D4"
           />
         </svg>
-      </div>
+      </div> */}
 
       <Grid container className={classes.blogContainer} spacing={12} alignContent="center" justifyContent="flex-start" alignItems="center">
 
@@ -230,7 +240,8 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
           </Grid>
         ) } */}
 
-        <Grid item className={classes.blogPost} lg={8} xs={10}>
+        <Grid item md={1} xs={0} />
+        <Grid item className={classes.blogPost} md={10} xs={12}>
           <article
             className="blog-post"
             itemScope
@@ -264,6 +275,7 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
             </footer>
           </article>
         </Grid>
+        <Grid item md={1} xs={0} />
 
         {/* will include comments, likes, subscribe to newsletter, etc */}
         {/* <Grid item xs={1} id="#stickySideBar" className={classes.blogSideBar}>
@@ -312,7 +324,7 @@ const TableOfContent = ({ toc, className }) => (
 // graphql blog query
 // ========================================================================== //
 export const pageQuery = graphql`
-query BlogPost(
+query ProjectPost(
   # these variables are passed in via createPage.pageContext in gatsby-node.js
   $id: String!
   $previousPostId: String
@@ -342,42 +354,42 @@ query BlogPost(
   # this gets us the previous post by id (if it exists)
   previous: allMarkdownRemark(filter: {id: { eq: $previousPostId }}) {
    edges {
-        node {
-        excerpt
-        fileAbsolutePath
-        tableOfContents
-        timeToRead
-        id
+    node {
+    excerpt
+    fileAbsolutePath
+    tableOfContents
+    timeToRead
+    id
 
-        frontmatter {
-            title
-            metaDescription
-            date(formatString: "MMMM DD, YYYY")
-            thumbnail
-          }
+    frontmatter {
+        title
+        metaDescription
+        date(formatString: "MMMM DD, YYYY")
+        thumbnail
         }
-      }
     }
+}
+}
 
   # this gets us the next post by id (if it exists)
   next: allMarkdownRemark(filter: {id: { eq: $nextPostId }}) {
     edges {
-        node {
-        excerpt
-        fileAbsolutePath
-        tableOfContents
-        timeToRead
-        id
+    node {
+    excerpt
+    fileAbsolutePath
+    tableOfContents
+    timeToRead
+    id
 
-        frontmatter {
-            title
-            metaDescription
-            date(formatString: "MMMM DD, YYYY")
-            thumbnail
-          }
+    frontmatter {
+        title
+        metaDescription
+        date(formatString: "MMMM DD, YYYY")
+        thumbnail
         }
-      }
     }
+}
+}
 }`;
 
 export default BlogPostTemplate;

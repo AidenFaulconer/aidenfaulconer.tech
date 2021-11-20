@@ -345,7 +345,7 @@ const DARK_THEME = {
     },
     background: {
       button: '#2E00FF',
-      main: 'rgb(51, 68, 9)',
+      main: '#F0F3FC',
       default: '#0D0D0D',
       // default:'#F0F3FC',
       headline: '#BAF7E4',

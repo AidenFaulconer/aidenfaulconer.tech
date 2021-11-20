@@ -110,7 +110,8 @@ export const useStore = create((set) =>
             },
           }));
           // route to page
-          navigate(newSelectedData.pageLink);
+          // alert(newSelectedData.pageLink);
+          navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
         },
         // overritten by page transition overlay
         triggerPageChange: () => { },

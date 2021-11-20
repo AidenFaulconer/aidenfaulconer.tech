@@ -517,7 +517,7 @@ export const CardCarousel = React.memo(
                       )}
                       {project && (
                       <RegularButton
-                        onClick={() => routeToBlog(`/blog${path}` || '/')}
+                        onClick={() => routeToBlog(`./${path}` || '/')}
                       >
                         View project
                       </RegularButton>
