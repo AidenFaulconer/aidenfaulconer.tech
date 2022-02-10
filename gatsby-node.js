@@ -6,9 +6,7 @@ const path = require('path');
 const chunk = require('lodash/chunk');
 
 const { graphql } = require('gatsby');
-const {
-  reporter,
-} = require('gatsby/node_modules/gatsby-cli/lib/reporter/reporter');
+
 const cheerio = require('cheerio');
 //  dd() will prettily dump to the terminal and kill the process
 // const { dd } = require('dumper.js');
@@ -183,15 +181,20 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     result.data.allMarkdownRemark.edges.forEach((edge, i) => {
       // reporter.warn(JSON.stringify(edge, null, 2));
       const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
-      return createPage({
-        path,
-        component: template,
-        context: {
-          id,
-          nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
-          previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
-        },
-      });
+      try {
+        return;
+        createPage({
+          path,
+          component: template,
+          context: {
+            id,
+            nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
+            previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
+          },
+        });
+      } catch (e) {
+        return reporter.warn(`Error creating page for ${path}`, e);
+      }
     });
   }
 

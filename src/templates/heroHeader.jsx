@@ -22,10 +22,11 @@ import ThreeWrapper from '../components/threejs/three-wrapper';
 import {
   RegularButton,
   SecondaryButton,
-} from '../components/custom/customButton';
+} from '../components/custom/buttons';
 
 import { SCROLL_PROPS, svgEncodeBaseSixtyFour } from '../store/theme';
 import { useStore } from '../store/store';
+import { ColorFocus, DesignWorld, Illustration } from '../components/custom/illustrations';
 // // draw circle underneath text
 // context.arc(centerX, centerY, radius - 10, 0, 2 * Math.PI, false);
 // context.stroke();
@@ -70,23 +71,17 @@ import { useStore } from '../store/store';
 
 const useStyles = makeStyles((theme) => ({
   heroContainer: {
-    height: '93vh',
+    height: '89.5vh',
     width: '100vw',
     position: 'relative',
     // marginBottom: theme.spacing(3),
     // marginBottom: theme.spacing(0),
     // background: theme.palette.text.primary,
-    background: `linear-gradient(-90deg, ${theme.custom.contrast.black} 23.52%, ${theme.palette.text.primary} 23.52%, ${theme.palette.text.primary}) 61.89%`,
-    '&::before': {
-      content: '""',
-      top: -85,
-      // border: `1px solid ${theme.palette.background.button}`,
-      background: 'inherit',
-      position: 'absolute',
-      display: 'inline',
-      height: 85,
-      width: '100vw',
-    },
+    // background: `linear-gradient(-90deg, ${theme.custom.contrast.black} 23.52%, ${theme.palette.text.primary} 23.52%, ${theme.palette.text.primary}) 61.89%`,
+    display: 'inline-flex',
+    justifyContent: 'center',
+    background: theme.palette.text.primary,
+
   },
   borderL: {
     display: 'block',
@@ -111,23 +106,18 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 860,
   },
   headline: {
-    borderTop: theme.custom.borders.brandBorder,
-    // '& .headline-container': {
-    // },
-    padding: theme.spacing(2),
-    alignSelf: 'end',
+    alignSelf: 'center',
+    margin: '0px auto',
+    display: 'inline-flex',
+    gap: theme.spacing(4),
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
     bottom: 0,
     pointerEvents: 'none',
-    overflow: 'hidden',
+    overflowY: 'clip',
     position: 'relative',
-    display: 'flex',
-    alignContent: 'center',
-    flexDirection: 'row',
     // justifyContent: 'flex-end',
-    maxHeight: '38%',
-    minHeight: '38%',
     background: theme.palette.text.primary,
-
     // width:
     zIndex: 20,
     color: theme.palette.text.primary,
@@ -140,17 +130,20 @@ const useStyles = makeStyles((theme) => ({
     pointerEvents: 'all',
     zIndex: 2,
     position: 'relative',
-    paddingTop: theme.spacing(2),
     maxWidth: 525,
+    display: 'inline-flex',
+    gap: theme.spacing(2),
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   threeWrapperPosition: {
-    position: 'absolute',
+    position: 'relative',
     zIndex: 1,
     width: '100%',
-    display: 'block',
-    minHeight: '62%',
-    maxHeight: '62%',
-    overflow: 'hidden',
+    display: 'inline-flex',
+    minHeight: '70%',
+    maxHeight: '70%',
+    overflowY: 'clip',
     marginTop: -theme.spacing(0),
     [theme.breakpoints.down('md')]: {
       // marginTop: -theme.spacing(12),
@@ -220,7 +213,7 @@ export const MovingType = (props) => {
 export const HeroHeader = React.memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-
+  if (typeof window === 'undefined') return;
   // ========================================================================== //
   //   Handle project posts
   // ========================================================================== //
@@ -264,18 +257,17 @@ export const HeroHeader = React.memo((props) => {
         date: Date.now(),
         metaDescription: (
           <>
-            I design and code experiences
-            for online businesses like yours
+            I follow design processes to design + code unique experiences for your users, with a distinct taste for
+            <br /> 
+            virtual reality and 3d applications...
             <br />
-            so you can focus on getting your
-            users needs fulfilled.
+            so you can deliver a truly useful and targetted software product
+            <br />
           </>
         ),
         title: (
           <>
-            The Building Block
-            <br />
-            for your organisation
+            I'm Aiden, I understand your users, your brand, virtual reality, <br /> and software
           </>
         ),
         path: '/',
@@ -298,108 +290,65 @@ export const HeroHeader = React.memo((props) => {
   const {
     id,
   } = props;
+  // eslint-disable-next-line consistent-return
   return (
     <section id={id}>
       <Grid container className={classes.heroContainer}>
-        <Grid item xs={1} className={classes.borderR} />
         {/* ThreeJS */}
-        <Box className={classes.threeWrapperPosition}>
+        <Grid md={10} className={classes.threeWrapperPosition} style={{ margin: '0px auto' }}>
           <ThreeWrapper posts={edges} />
-          {/* <div style={{ position: 'realtive', height: 0, width: '100%' }}>
-            <div
-              style={{
-              // background: theme.palette.text.secondary,
-                position: 'absolute',
-                width: '100%',
-                top: 0,
-                left: '10%',
-                opacity: 1,
-                zIndex: 0,
-                height: '100%',
-                color: 'white',
-                borderTop: theme.custom.borders.brandBorder,
-                transformStyle: 'preserve-3d',
-                perspective: '1000px',
-                transform: 'rotateY(-4deg) rotateZ(-45deg)',
-                textAlign: 'center',
-              }}
-            />
-            <div
-              style={{
-              // background: theme.palette.text.secondary,
-                position: 'absolute',
-                width: '100%',
-                top: 5,
-                left: '10%',
-                opacity: 1,
-                zIndex: 0,
-                height: '100%',
-                color: 'white',
-                borderTop: theme.custom.borders.brandBorder,
-                transformStyle: 'preserve-3d',
-                perspective: '1000px',
-                transform: 'rotateY(4deg) rotateZ(45deg)',
-                textAlign: 'center',
-              }}
-            />
-          </div> */}
-          <MovingType />
-        </Box>
+          {/* <ColorFocus /> */}
+          {/* <DesignWorld /> */}
+          <Illustration type="computer" margin="60px,0px,0px,0px" />
+          {/* <MovingType /> */}
+        </Grid>
 
         {/* Headline */}
         <Grid
-          item
-          container
-          xs={10}
-          className={classes.headline}
-          // {...SCROLL_PROPS}
+          md={12}
+          style={{
+            borderTop: theme.custom.borders.brandBorder,
+            background: theme.palette.text.primary,
+            alignSelf: 'end',
+            justifyContent: 'center',
+            maxHeight: '30%',
+            minHeight: '30%',
+            display: 'inline-flex',
+          }}
         >
-          {/* Typography */}
-          <Grid
-            item
-            style={{
-              // borderTop: '1px solid rgba(255,255,255,.3)',
-            }}
-          >
-            <Grid item xs={12}>
-              <Typography
-                align="left"
-                color="secondary"
-                gutterBottom
-                variant="h1"
-                style={{ zIndex: -1, textTransform: 'uppercase' }}
-              >
-                {/* {title} */}
-                {title}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography
-                style={{ maxWidth: '100%', zIndex: 1 }}
-                variant="body1"
-                color="secondary"
-                align="left"
-                gutterBottom
-              >
-                {/* {description} */}
-                {metaDescription}
-              </Typography>
-            </Grid>
+          <Grid md={10} className={classes.headline}>
+
+            {/* Typography */}
+
+            <Typography
+              align="left"
+              color="secondary"
+              variant="h1"
+              style={{ zIndex: -1, textTransform: 'uppercase' }}
+            >
+              {/* {title} */}
+              {title}
+            </Typography>
+            <Typography
+              style={{ maxWidth: 500, zIndex: 1 }}
+              variant="body1"
+              color="secondary"
+              align="left"
+            >
+              {/* {description} */}
+              {metaDescription}
+            </Typography>
             {/* Buttons */}
-            <Grid item container justify="flex-start" className={classes.cta}>
-              <Grid item style={{ marginRight: 10, paddingBottom: 5 }}>
-                <SecondaryButton>
-                  Lets get in touch
-                </SecondaryButton>
-              </Grid>
-              <Grid item>
-                <SecondaryButton>See my work</SecondaryButton>
-              </Grid>
-            </Grid>
+            <div className={classes.cta}>
+              <RegularButton>
+                Lets get in touch
+              </RegularButton>
+              <SecondaryButton>See my work</SecondaryButton>
+            </div>
           </Grid>
+
         </Grid>
 
-        <Grid item xs={1} className={classes.borderL} />
       </Grid>
       {/* // create a svg circle in html */}
     </section>

@@ -15,7 +15,7 @@ import {
 } from './theme';
 
 // create themes to be used in valtio
-export const createTheme = (theme) => {
+const createTheme = (theme) => {
   const muiTheme = createMuiTheme({ ...theme });
   const newTheme = Object.assign(
     muiTheme,
@@ -32,13 +32,13 @@ export const createTheme = (theme) => {
 };
 
 // To avoid 'this' pitfall, the recommended pattern is not to use this and prefer arrow function.
-export const lt = createTheme(LIGHT_THEME);
-export const dt = createTheme(DARK_THEME);
+const lt = createTheme(LIGHT_THEME);
+const dt = createTheme(DARK_THEME);
 
 // ========================================================================== //
 // App State
 // ========================================================================== //
-export const useStore = create((set) =>
+const useStore = create((set) =>
   // ========================================================================== //
   //   State
   // ========================================================================== //
@@ -123,6 +123,7 @@ export const useStore = create((set) =>
         {
           blogUrl: './',
           textureUrl: './',
+           
           color: '#fff',
         },
       ],
@@ -136,3 +137,8 @@ export const useStore = create((set) =>
 // const useStore = create(devtools(store))
 // // Usage with a redux store, it will log full action types
 // const useStore = create(devtools(redux(reducer, initialState)))
+// export all
+export {
+  createTheme, lt, dt, useStore,
+};
+ 

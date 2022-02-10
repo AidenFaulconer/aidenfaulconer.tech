@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {
-  Container, Grid, makeStyles, Typography,
+  Container, Grid, makeStyles, Typography, useTheme,
 } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
 import ScrollSnap from 'scroll-snap';
-import { useGesture, useScroll } from 'react-use-gesture';
+import { useGesture, useScroll } from '@use-gesture/react';
 import { a } from '@react-spring/web';
 import { graphql } from 'gatsby';
 import Layout from '../layout/layout';
@@ -19,9 +18,10 @@ import {
   Intro,
 } from '../components/indexSections';
 
-import { SecondaryButton } from '../components/custom/customButton';
+import { SecondaryButton } from '../components/custom/buttons';
 
 import cubesOffset from '../../static/assets/portfolio/cubesOffset.png';
+import SectionHeader from '../components/section-header';
 
 const useStyles = makeStyles((theme) => ({
   underlay: {
@@ -106,7 +106,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   },
   {
     // domTarget: typeof window !== 'undefined' && window,
-    domTarget: ref.current,
+    target: ref.current,
   });
 
   // const [props, api] = useSprings(pages.length, i => ({
@@ -120,50 +120,103 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   // }, []);
   // React.useEffect(() => {
   // }, [bind]);
-
+  const theme = useTheme();
+  // <section
+  //   style={{
+  //     width: '100vw', /* height: '90vh', */ display: 'block', scrollSnapAlign: 'x y proximity', overflowX: 'scroll',
+  //   }}
+  //   {...bind()}
+  //   ref={ref}
+  // >
   return (
-    <section
-      style={{
-        width: '100vw', /* height: '90vh', */ display: 'block', scrollSnapAlign: 'x y proximity', overflowX: 'scroll',
-      }}
-      {...bind()}
-      ref={ref}
-    >
-      <a.div style={{
-        position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
-      }}
-      >
-        <Grid item md={1} xs={false} />
-        <Grid item md={4} xs={5}>
-          <About id="services" />
-        </Grid>
-        <Grid item md={6} xs={7}>
-          <Experience id="skills" />
-        </Grid>
-        <Grid item md={1} xs={false} />
-      </a.div>
+  // <Container maxWidth={false} style={{ border: theme.custom.brandBorder }}>
+
+    <Grid container xs={12}>
+
+      {/* section 1 */}
+      {/* <a.div style={{
+          position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
+        }}
+        > */}
+      <SectionWrapper>
+        <SectionHeader headline="Services" />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <WhatDoYouNeed id="contact" /* ref={addNode} */ />
+      </SectionWrapper>
+
+      {/* </a.div> */}
 
       {/* section 2 */}
-      <a.div style={{
-        position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
-      }}
-      >
-        <Grid item md={1} xs={false} />
-        <Grid item md={4} xs={5}>
+      {/* <a.div style={{
+          position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
+        }}
+        > */}
+      <SectionWrapper>
+        <SectionHeader headline="Experience" illustrationType="confidence" />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <Intro />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <Grid item md={5}>
+          <About id="services" />
+        </Grid>
+        <Grid item md={7}>
+          <Experience id="skills" />
+        </Grid>
+      </SectionWrapper>
+
+      {/* </a.div> */}
+
+      {/* section 3 */}
+      {/* <a.div style={{
+          position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
+        }}
+        > */}
+      <SectionWrapper>
+        <SectionHeader headline="Skills" illustrationType="moustache" />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <Grid item md={5}>
           <Languages id="languages" />
         </Grid>
-        <Grid item md={6} xs={7}>
+        <Grid item md={7}>
           <Skills id="skills" />
         </Grid>
-        <Grid
-          item
-          md={1}
-          xs={false}
-        />
-      </a.div>
-    </section>
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <SectionHeader headline="Blog" illustrationType="moustache" />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <SectionHeader headline="Contact me" illustrationType="genie" />
+      </SectionWrapper>
+      {/* </a.div> */}
+    </Grid>
+
+  // </Container>
   );
+  // </section>
 });
+
+const SectionWrapper = ({ children, colorType = 'primary' }) => {
+  const theme = useTheme();
+  return (
+    <>
+      <Grid item md={1} xs={false} style={{ background: theme.palette.text[colorType] }} />
+      <Grid item container md={10} xs={12} style={{ maxHeight: '90vh', overflow: 'hidden' }}>
+        {children}
+      </Grid>
+      <Grid item md={1} xs={false} style={{ background: theme.palette.text[colorType] }} />
+    </>
+  );
+};
 
 const IndexPage = ({
   // returned from pageQuery as props
@@ -202,17 +255,11 @@ const IndexPage = ({
   return (
     <>
       {/* <Grid item md={1} xs={false} /> */}
-      <Intro />
       {/* <Grid item md={1} xs={false} /> */}
       {/* <Grid container className={classes.contentContainer}> */}
 
       {/* section 1 */}
       <ScrollContainer ref={addNode} />
-
-      {/* <Experience id="experience" /> */}
-      {/* </Grid> */}
-
-      <WhatDoYouNeed id="contact" /* ref={addNode} */ />
 
       <Grid item xs={12} md={5} style={{ paddingBottom: 20, margin: 'auto' }}>
         <Typography

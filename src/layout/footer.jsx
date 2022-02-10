@@ -23,7 +23,7 @@ import {
 import {
   RegularButton,
   SecondaryButton,
-} from '../components/custom/customButton';
+} from '../components/custom/buttons';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -113,6 +113,8 @@ export default React.memo(({ children }) => {
     ),
     [],
   );
+
+  
 
   const makeCall = useCallback(
     () => typeof window !== 'undefined' && window.open('tel:+61-475-565-709'),

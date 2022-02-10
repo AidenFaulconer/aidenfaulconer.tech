@@ -15,7 +15,7 @@
   # Default build command.
   # command = "echo 'default context'"
   functions = "netlify/functions"
-  command = "npm run build"
+  command = "npm build"
 
 [[plugins]]
   # Installs the Lighthouse Build Plugin for all deploy contexts
@@ -118,6 +118,7 @@
   status = 200
   conditions = {Role = ["admin"]}
   force = true
+  to = '/admin'
 
 # The following redirect is intended for use with most SPAs that handle
 # routing internally.
@@ -175,3 +176,5 @@
   # [dev.https]
   #   certFile = "cert.pem" # path to the certificate file
   #   keyFile = "key.pem" # path to the private key file
+
+ 

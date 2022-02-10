@@ -15,9 +15,10 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import {
   RegularButton,
   SecondaryButton,
+  SelectionButton,
   ThirdButton,
-} from './custom/customButton';
-import { CardCarousel } from './custom/customCards';
+} from './custom/buttons';
+import { CardCarousel } from './custom/cards';
 
 import {
   hexToAlpha,
@@ -62,6 +63,9 @@ import { ThreeDCarousel } from './custom/threeDCarousel';
 import introImage from '../../static/assets/portfolio/intro.png';
 
 import resume from '../../static/assets/portfolio/resume.pdf';
+import { embroidery } from './custom/illustrations';
+
+import services_image from '../../static/assets/portfolio/service-web.png';
 
 // ========================================================================== //
 // SVGS
@@ -178,6 +182,36 @@ const useStyles = makeStyles((theme) => {
         overflowY: 'hidden',
         // background: `linear-gradient(45deg, ${hexToAlpha(theme.palette.text.secondary, 0.3)}, ${hexToAlpha(theme.palette.text.primary, 1)})`,
         // background: theme.palette.text.primary,
+      },
+    },
+    selectionMenu: {
+      minHeight: 600,
+      position: 'relative',
+      border: theme.custom.borders.brandBorder,
+      flexDirection: 'row',
+      // display: 'flex',
+      // alignItems: 'flex-start',
+      // flexWrap: 'wrap',
+      [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+      },
+    },
+    selectionOptions: {
+      display: 'inline-flex',
+      gap: theme.spacing(4),
+      width: '100%',
+      overflowX: 'scroll',
+      padding: theme.spacing(8, 8),
+      flexDirection: 'column',
+      background: theme.palette.text.secondary,
+      border: theme.custom.borders.brandBorder,
+
+      flexWrap: 'nowrap',
+      [theme.breakpoints.down('sm')]: {
+        flexDirection: 'row !important',
+      },
+      '& * > ul': {
+        width: '100%',
       },
     },
     container: {
@@ -311,10 +345,14 @@ const useStyles = makeStyles((theme) => {
       height: '100%',
     },
     introContainer: {
-      color: theme.palette.text.secondary,
+      color: theme.palette.text.primary,
       overflow: 'hidden',
       maxHeight: 400,
-      background: theme.palette.background.button,
+      border: theme.custom.borders.brandBorderSecondary,
+      // background: theme.palette.background.secondary,
+      // background: svgEncodeBaseSixtyFour(embroidery),
+      background: '#B7CAFF',
+      backgroundRepeat: '160%',
       '& #brandImage': {
         // 3d animation
       },
@@ -359,7 +397,7 @@ export const scaledTypography = (text) => {
   );
 };
 // ========================================================================== //
-// Education and intro
+// INTRO
 // ========================================================================== //
 export const Intro = React.forwardRef((props, ref) => {
   const styles = useStyles();
@@ -379,10 +417,8 @@ export const Intro = React.forwardRef((props, ref) => {
         container
         xs={5}
         style={{
-          border: theme.custom.borders.brandBorderSecondary,
-          borderLeft: 0,
+          borderRight: theme.custom.borders.brandBorderSecondary,
           padding: theme.spacing(3),
-          borderBottom: 0,
         }}
       >
         {/* Qualification */}
@@ -416,108 +452,46 @@ export const Intro = React.forwardRef((props, ref) => {
         sm={4}
         xs={7}
         justify="center"
-        alignContent="center"
+        alignItems="center"
         style={{
-          border: theme.custom.borders.brandBorderSecondary,
-          padding: theme.spacing(3),
-          borderLeft: 0,
-          borderRight: 0,
-          borderBottom: 0,
+          padding: theme.spacing(4),
+          margin: 'auto',
         }}
       >
-        {/* Resume */}
-        <Typography color="inherit" variant="h3" align="left" gutterBottom>
-          Download my CV
-        </Typography>
-        <Grid item container justify="space-between">
-          {/* <svg
-              width="116"
-              height="122"
-              viewBox="0 0 116 122"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M89.1716 37.5119L51.6749 45.0267L69.3848 77.4237L106.867 69.8797L89.1716 37.5119Z"
-                fill="white"
-                stroke="white"
-                strokeWidth="0.5"
-              />
-              <path
-                d="M106.945 70.0456L81.99 100.501L64.2777 68.1056L89.2493 37.6778L106.945 70.0456Z"
-                fill="#000064"
-                stroke="white"
-                strokeWidth="0.5"
-              />
-              <path
-                d="M26.2905 75.7435L51.2453 45.2878L68.9576 77.6834L43.986 108.111L26.2905 75.7435Z"
-                fill="white"
-                stroke="white"
-                strokeWidth="0.5"
-              />
-              <path
-                d="M44.0638 108.277L81.5605 100.762L63.8505 68.3654L26.3682 75.9094L44.0638 108.277Z"
-                fill="white"
-                stroke="white"
-                strokeWidth="0.5"
-              />
-              <path
-                d="M39.4304 73.7195L56.5847 105.398L68.2944 103.123L51.0299 71.4096L39.4304 73.7195Z"
-                fill="#000064"
-              />
-              <path
-                d="M81.4043 47.6289L98.9859 79.3581L91.4969 88.5254L73.704 57.0027L81.4043 47.6289Z"
-                fill="white"
-              />
-              <path
-                d="M36.2552 38.8549C35.8624 38.7112 35.4762 38.57 35.0978 38.4373C33.9551 38.0578 32.9085 37.9359 32.0444 37.9849C31.1826 38.0455 30.478 38.2719 30.0035 38.5307L30.0012 38.5319L30.0012 38.5319C29.7613 38.6563 29.5761 38.784 29.4515 38.88C29.3892 38.928 29.3421 38.968 29.311 38.9957C29.2955 39.0095 29.2839 39.0202 29.2764 39.0272L29.2683 39.035L29.2666 39.0367L29.2664 39.0369L29.2664 39.0369L29.2663 39.037L29.2663 39.037L29.2663 39.037L29.2655 39.0378C28.3504 39.9354 27.4726 41.0205 26.7642 42.1461C21.7454 50.1651 24.1306 60.7941 32.1159 65.9327L32.116 65.9327L32.116 65.9327L32.116 65.9327L32.1163 65.9329L32.1185 65.9343L32.1283 65.9403C32.1373 65.9458 32.151 65.954 32.1694 65.9645C32.2061 65.9854 32.2611 66.0152 32.3325 66.0499C32.4753 66.1194 32.6831 66.208 32.9412 66.2833L32.9434 66.2839C33.459 66.4447 34.198 66.5263 35.0594 66.4174C35.9263 66.2942 36.9093 65.9586 37.948 65.362C38.4615 65.0386 39.0089 64.7061 39.5552 64.3743C39.744 64.2472 39.934 64.1256 40.123 64.0047L40.1238 64.0042C40.4828 63.7744 40.8386 63.5467 41.1885 63.2808L41.4464 63.0848L41.387 63.4032L38.9002 76.7351C38.8087 78.5842 40.876 79.731 42.3669 78.6526L45.2478 76.5666C45.2479 76.5666 45.2479 76.5665 45.248 76.5665L45.2482 76.5664L36.2552 38.8549ZM36.2552 38.8549L36.2552 38.8549L36.2552 38.8549ZM76.9809 48.4397C76.7102 48.9089 76.2218 49.4717 75.5147 49.9777L61.3024 25.8969C70.704 26.1785 78.1503 34.1044 77.9275 43.6042C77.8838 44.9703 77.6672 46.3618 77.3526 47.6173L77.3522 47.6187L77.3488 47.6297C77.3472 47.6349 77.3452 47.6414 77.3426 47.6493C77.3403 47.6567 77.3375 47.6652 77.3343 47.6748C77.3209 47.7146 77.3 47.7733 77.2705 47.8471C77.2114 47.9948 77.1179 48.2024 76.9809 48.4397Z"
-                fill="#000064"
-                stroke="white"
-                strokeWidth="0.25"
-              />
-            </svg> */}
-          {/* download a file onclick */}
-          <ThirdButton
-            size="small"
-            onClick={() => {
+        <div style={{ alignSelf: 'center' }}>
+          {/* Resume */}
+          <Typography color="inherit" variant="h3" align="left" gutterBottom>
+            Download my CV
+          </Typography>
+          <Grid item container>
+            <img
+              src={introImage}
+              id="introImage"
+              style={{
+                borderRadius: theme.custom.borders.brandBorderRadius,
+                objectFit: 'cover',
+                height: '100%',
+                width: '100%',
+                maxHeight: 200,
+                minWidth: 360,
+                transformStyle: 'preserve-3d',
+                transform: 'rotate3d(0, 0, 0, 0)',
+              }}
+              alt="intro"
+            />
+            {/* download a file onclick */}
+            <ThirdButton
+              size="small"
+              onClick={() => {
               // write code to download a file in javascript
               // window.location.href = "https://www.google.com";
 
-            }}
-          >
-            Download CV
-          </ThirdButton>
-        </Grid>
-      </Grid>
-
-      {/* Middle */}
-      <Grid
-        item
-        container
-        sm={3}
-        xs={false}
-        style={{
-          border: theme.custom.borders.brandBorderSecondary,
-          borderRight: 0,
-          padding: theme.spacing(3),
-          borderBottom: 0,
-        }}
-      >
-        {/* old school spin animation */}
-        <img
-          src={introImage}
-          id="introImage"
-          style={{
-            border: theme.custom.borders.brandBorderSecondary,
-            borderRadius: '100%',
-            objectFit: 'cover',
-            height: '100%',
-            width: '100%',
-            transformStyle: 'preserve-3d',
-            transform: 'rotate3d(0, 0, 0, 0)',
-          }}
-          alt="intro"
-        />
+              }}
+            >
+              Download CV
+            </ThirdButton>
+          </Grid>
+        </div>
       </Grid>
 
     </Grid>
@@ -525,7 +499,7 @@ export const Intro = React.forwardRef((props, ref) => {
 });
 
 // ========================================================================== //
-// Cta text arrangement
+// descriptor
 // ========================================================================== //
 const Descriptor = ({ styleData, children }) => {
   const {
@@ -1485,51 +1459,139 @@ const WhatDoYouNeed = React.forwardRef((props, ref) => {
       ref={ref}
       className={(classes.section, classes.whatDoYouNeed)}
     >
-      <Grid
-        container
-        justify="center"
-        alignItems="center"
-        alignContent="center"
-      >
-        <Grid lg={1} item xs={false} />
-        <Grid
-          item
-          container
-          justify="center"
-          alignContent="stretch"
-          alignItems="stretch"
-          lg={7}
-          xs={12}
-          style={{
-            paddingBottom: 20,
-            margin: 'auto',
-            position: 'relative',
-            // transform: 'scale(.88)',
-          }}
-          className={classes.typography}
-        >
-          {/* <div style={{
-            position: 'absolute', transform: 'translate(50%,50%)', top: '50%', zIndex: 0,
-          }}
-          >
-            <Graphic
-              absolute
-              scale={0.5}
-              spinText="PRODUCTIVE 🤩 ENGAGING 🤩 TECH 🤩 THAT 🤩 DELIVERS"
-            />
-            <Graphic
-              absolute
-              scale={1}
-              spinText="APPS BRANDING VR WEBSITES UI/UX"
-            />
-          </div> */}
-          {servicesData.map((service, index) => (
-            <WhatDoYouNeedCard key={index} index={index} data={service} />
-          ))}
-        </Grid>
-        <Grid item xs={false} lg={1} />
-      </Grid>
+      <SelectionMenu />
     </section>
+  );
+});
+// ========================================================================== //
+// Selection Menu
+// ========================================================================== //
+const SelectionMenu = React.forwardRef((props, red) => {
+  const [selections, setSelections] = React.useState({
+    websites: {
+      title: 'Websites',
+      costRange: '400$-5000$',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+      image: services_image,
+      name: 'Websites',
+    },
+    design: {
+      title: 'Design',
+      costRange: '',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+      image: services_image,
+      name: 'Design',
+    },
+    vr: {
+      title: 'Virtual Reality',
+      costRange: '',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+      image: services_image,
+      name: 'Virtual Reality',
+    },
+    branding: {
+      title: 'Branding',
+      costRange: '',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+      image: services_image,
+      name: 'Branding',
+    },
+    other: {
+      title: 'Other',
+      costRange: '',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+      image: services_image,
+      name: 'Other',
+    },
+  });
+  const [selected, setSelected] = React.useState(selections.websites);
+  const classes = useStyles();
+  const theme = useTheme();
+  return (
+    // container
+    <Grid container xs={12} className={classes.selectionMenu}>
+      {/* menu of services to scroll and select through */}
+      <Grid
+        item
+        xs={12}
+        md={3}
+        className={classes.selectionOptions}
+      >
+        {Object.keys(selections).map((key) => {
+          const item = selections[key];
+          return (
+            <SelectionButton selected={item.name === selected.name} onClick={() => setSelected(selections[key])}>{item.name}</SelectionButton>
+          );
+        })}
+      </Grid>
+
+      {/* description of service */}
+      <Grid
+        item
+        xs={6}
+        md={5}
+        style={{
+          display: 'inline-flex',
+          gap: theme.spacing(4),
+          height: 600,
+          flexDirection: 'column',
+          background: theme.palette.text.secondary,
+          color: theme.palette.text.primary,
+          padding: theme.spacing(4),
+          border: theme.custom.borders.brandBorder,
+        }}
+      >
+        {/* {JSON.stringify(selected, null, 2)} */}
+        <Typography align="left" variant="h2" component="h2" color="primary">
+          {selected.title}
+        </Typography>
+
+        <Typography align="left" variant="h3" gutterBottom component="h3" color="primary" style={{ height: 300, fontWeight: 'regular !important' }}>
+          {selected.costRange}
+        </Typography>
+
+        <Typography align="left" variant="body1" component="body1" color="primary">
+          {selected.description}
+        </Typography>
+
+        <div style={{
+          display: 'inline-flex',
+          gap: theme.spacing(4),
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          alignSelf: 'flex-end',
+        }}
+        >
+          <RegularButton onClick={() => {}}>
+            Start
+            {' '}
+            {selected.name}
+            {' '}
+            project
+          </RegularButton>
+          <SecondaryButton onClick={() => {}}>
+            Contact me
+          </SecondaryButton>
+        </div>
+      </Grid>
+
+      {/* Image representing service */}
+      <Grid
+        item
+        xs={2}
+        md={4}
+      >
+        <img
+          src={selected.image}
+          style={{
+            objectFit: 'fill', height: '100%', width: '100%', position: 'relative',
+          }}
+        />
+      </Grid>
+
+    </Grid>
   );
 });
 

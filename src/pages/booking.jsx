@@ -12,7 +12,7 @@ import {
   WhatDoYouNeed,
 } from '../components/indexSections';
 
-import { SecondaryButton } from '../components/custom/customButton';
+import { SecondaryButton } from '../components/custom/buttons';
 
 import letsStartSomething from '../../static/assets/portfolio/lets start something together.png';
 import cubesOffset from '../../static/assets/portfolio/cubesOffset.png';

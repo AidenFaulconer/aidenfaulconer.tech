@@ -149,121 +149,100 @@ const TYPOGRAPHY = {
     // body2.overflow = 'hidden';
     // body2.maxHeight = '200px';
     fontFamily: 'Poppins',
+
     h1: {
-      // textStroke: '2px currentColor',
+      fontStyle: 'normal',
       fontWeight: 900,
-      // fontSize: pxToRem(32),
-      textTransform: 'capitalize',
-      // fontSize: pxToRem( '5rem !important'),
-      [breakpoints.down('xl')]: {
-        fontSize: pxToRem(75),
-      },
-      [breakpoints.down('lg')]: {
-        fontSize: pxToRem(60),
-      },
-      [breakpoints.down('md')]: {
-        fontSize: pxToRem(50),
-      },
+      fontSize: pxToRem(45),
+      lineHeight: '105%',
+      letterSpacing: '0.1em',
+      textTransform: 'uppercase',
+      fontFeatureSettings: "'ss03' on",
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(35),
+        fontSize: pxToRem(37),
       },
     },
     h2: {
-      // fontSize: pxToRem( "5rem"),
-      // textStroke: '2px currentColor',
-      // color: palette.text.primary,
+      textTransform: 'uppercase',
+      fontStyle: 'normal',
       fontWeight: 900,
-      textTransform: 'capitalize',
-      // fontSize: pxToRem(35),
-      [breakpoints.down('xl')]: {
-        fontSize: pxToRem(40),
-      },
-      [breakpoints.down('lg')]: {
-        fontSize: pxToRem(35),
-      },
-      [breakpoints.down('md')]: {
-        fontSize: pxToRem(40),
-      },
+      fontSize: pxToRem(35),
+      lineHeight: '96%',
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(25),
+        fontSize: pxToRem(20),
       },
     },
     h3: {
-      // fontSize: pxToRem( "16px"),
-      fontWeight: 900,
       textTransform: 'capitalize',
-      // color: palette.text.primary,
-      [breakpoints.down('xl')]: {
-        fontSize: pxToRem(35),
-      },
-      [breakpoints.down('lg')]: {
-        fontSize: pxToRem(30),
-      },
-      [breakpoints.down('md')]: {
-        fontSize: pxToRem(25),
-      },
+      fontStyle: 'normal',
+      fontWeight: 'bold',
+      fontSize: pxToRem(28),
+      lineHeight: '120%',
       [breakpoints.down('sm')]: {
         fontSize: pxToRem(20),
       },
     },
     h4: {
-      fontSize: pxToRem(18),
-      fontWeight: 500,
-      // color: palette.text.primary,
-      [breakpoints.down('md')]: {
-        fontSize: pxToRem(18),
-      },
+      fontWeight: 'bold',
+      fontSize: pxToRem(14),
+      lineHeight: '110%',
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(18),
+        fontSize: pxToRem(14),
+      },
+    },
+    h5: {
+      fontSize: pxToRem(12),
+      fontWeight: 400,
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(12),
+      },
+    },
+    body1: {
+      lineHeight: '150%',
+      fontStyle: 'normal',
+      fontWeight: 200,
+      fontSize: pxToRem(17),
+      background: 'inherit',
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(12),
       },
     },
     button: {
       fontSize: pxToRem(12),
       fontWeight: 300,
       fontStyle: 'italic',
+      background: 'inherit',
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(12),
+      },
+    },
+    // extras
+    title: {
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(12),
+      },
+    },
+    selection: {
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(12),
+      },
+    },
+    small: {
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(12),
+      },
+    },
+    extraSmall: {
+      fontFamily: 'Poppins',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: pxToRem(14),
+      lineHeight: '105%',
+      [breakpoints.down('sm')]: {
+        fontSize: pxToRem(12),
+      },
+    },
 
-      // color: palette.text.primary,
-      background: 'inherit',
-      [breakpoints.down('lg')]: {
-        fontSize: pxToRem(12),
-      },
-      [breakpoints.down('md')]: {
-        fontSize: pxToRem(12),
-      },
-      [breakpoints.down('sm')]: {
-        fontSize: pxToRem(12),
-      },
-    },
-    body1: {
-      fontSize: pxToRem(16),
-      lineHeight: '150%',
-      fontWeight: 200,
-      // color: palette.text.primary,
-      background: 'inherit',
-      [breakpoints.down('xl')]: {
-        fontSize: pxToRem(20),
-      },
-      [breakpoints.down('lg')]: {
-        fontSize: pxToRem(20),
-      },
-      [breakpoints.down('md')]: {
-        fontSize: pxToRem(18),
-      },
-      [breakpoints.down('sm')]: {
-        fontSize: pxToRem(13),
-      },
-    },
-    h5: {
-      fontSize: pxToRem(12),
-      fontWeight: 400,
-      // color: palette.text.primary,
-      [breakpoints.down('sm')]: {
-        fontSize: pxToRem(12),
-      },
-      [breakpoints.down('md')]: {
-        fontSize: pxToRem(12),
-      },
-    },
   },
 };
 
@@ -278,13 +257,13 @@ const CUSTOM_THEME_PROPS = {
       black: '#00004D',
     },
     borders: {
-      brandBorderRadius: '4px',
-      brandBorderRadius2: '12px',
+      brandBorderRadius: '3px',
+      brandBorderRadius2: '13px',
       brandBorderRadius3: '22px',
       // brandBorder: '1px solid rgba(255,255,255,.2)',
       // brandBorder: '1px double #313183',
       // brandBorder: '1px double #313183',
-      brandBorder: '1px double #121270',
+      brandBorder: '1px double #635AB2',
       brandBorderSecondary: '1px double #979ac9',
       // brandBorderSecondary: '1px solid rgba(0, 0, 100, 0.3)',
     },
@@ -307,59 +286,74 @@ const LIGHT_THEME = {
       main: '#000064',
     },
     secondary: {
-      main: '#F0F3FC',
+      main: '#E6EBFA',
     },
     text: {
       primary: '#000064',
-      secondary: '#F0F3FC',
+      secondary: '#E6EBFA',
     },
     background: {
       button: '#2E00FF',
-      main: 'rgb(51, 68, 9)',
-      default: '#F0F3FC',
-      headline: '# ',
-      hero: '#DCF15B',
-      primary:
-        'radial-gradient(52.48% 58.6% at 10.23% 25.21%, #C1DD13 0%, #F4FDBF 100%), radial-gradient(50% 50% at 50% 50%, #F5FEC0 0%, #F6FCD1 100%)',
-      secondary:
-        'linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(177.95% 1171.31% at -86.48% 213.11%, #3A4D09 22.92%, #6A8B4D 100%)',
+      soft: '#20188D',
+      default: '#E6EBFA',
+      special: '#B466FF',
+      specialTwo: '#1AE6C7',
+      pipes: `linear-gradient(180deg, rgba(180, 102, 255, 0) 0%, rgba(180, 102, 255, 0) 0%, #B466FF 0.01%, rgba(58, 195, 223, 0) 55.73%, #1AE6C7 55.73%, #34CFD1 55.74%, rgba(135, 139, 239, 0) 99.26%, #6496FF 99.27%, rgba(180, 102, 255, 0) 99.28%)
+      `,
+      pipesTwo: `
+      linear-gradient(180deg, #6496FF 0%, rgba(100, 150, 255, 0) 12.04%, rgba(180, 102, 255, 0) 30.72%, #B466FF 43.61%, rgba(180, 102, 255, 0) 43.67%, rgba(58, 195, 223, 0) 55.45%, #1AE6C7 55.73%, #34CFD1 55.74%, rgba(52, 207, 209, 0) 68.05%, rgba(100, 150, 255, 0) 87.03%, #6496FF 99.28%)
+      `,
     },
   },
-
-  // error.main = "red,
 };
 const DARK_THEME = {
   ...TYPOGRAPHY,
   ...CUSTOM_THEME_PROPS,
   palette: {
-    type: 'dark',
-    primary: {
-      main: '#F0F3FC',
-    },
+    type: 'light',
     secondary: {
-      main: '#0D0D0D',
+      main: '#000064',
+    },
+    primary: {
+      main: '#E6EBFA',
     },
     text: {
-      primary: '#F0F3FC',
-      secondary: '#0D0D0D',
+      secondary: '#000064',
+      primary: '#E6EBFA',
     },
     background: {
       button: '#2E00FF',
-      main: '#F0F3FC',
-      default: '#0D0D0D',
-      // default:'#F0F3FC',
-      headline: '#BAF7E4',
-      hero: '#DCF15B',
-      primary:
-        'radial-gradient(52.48% 58.6% at 10.23% 25.21%, #C1DD13 0%, #F4FDBF 100%), radial-gradient(50% 50% at 50% 50%, #F5FEC0 0%, #F6FCD1 100%)',
-      secondary:
-        'linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(177.95% 1171.31% at -86.48% 213.11%, #3A4D09 22.92%, #6A8B4D 100%)',
+      soft: '#20188D',
+      default: '#E6EBFA',
+      special: '#B466FF',
+      specialTwo: '#1AE6C7',
+      pipes: 'radial-gradient(121.02% 50% at 50% 50%, rgba(180, 102, 255, 0) 0%, rgba(180, 102, 255, 0) 0%, #B466FF 0.01%, rgba(58, 195, 223, 0) 55.73%, #1AE6C7 55.73%, #34CFD1 55.74%, rgba(135, 139, 239, 0) 99.26%, #6496FF 99.27%, rgba(180, 102, 255, 0) 99.28%)',
+      pipesTwo: `
+        linear-gradient(180deg, 
+          rgba(180, 102, 255, 0) 15.57%, 
+        rgba(180, 102, 255, 0) 30.21%, 
+        #B466FF 43.73%, 
+        #6496FF 43.74%, 
+        rgba(58, 195, 223, 0) 55.73%, 
+        #1AE6C7 55.73%, 
+        #34CFD1 55.74%,
+        rgba(135, 139, 239, 0) 69.53%, 
+        rgba(180, 102, 255, 0) 99.28%)
+      `,
     },
   },
-
-  // error.main = "red,
 };
-
+// linear-gradient(180deg, #6496FF 0%,
+// rgba(100, 150, 255, 0) 12.04%,
+// rgba(180, 102, 255, 0) 30.72%,
+// #B466FF 43.61%,
+// rgba(180, 102, 255, 0) 43.67%,
+// rgba(58, 195, 223, 0) 55.45%,
+// #1AE6C7 55.73%,
+// #34CFD1 55.74%,
+// rgba(52, 207, 209, 0) 68.05%,
+// rgba(100, 150, 255, 0) 87.03%,
+// #6496FF 99.28%)
 // ========================================================================== //
 // Special Patterns
 // ========================================================================== //
@@ -400,7 +394,9 @@ export const svgEncodeBaseSixtyFour = (svg) => `url(data:image/svg+xml;base64,${
 // ========================================================================== //
 //    Social media popup https://codepen.io/Mahmood_bagheri/pen/YzqNqEb
 // ========================================================================== //
+
 export const socialMediaPopupKeyframes = {};
+
 export const socialMediaPopup = {
   // button {
   // all: unset;
@@ -764,6 +760,7 @@ const OVERRIDES = {
     MuiToolbar: {
       root: {
         background: 'none !important',
+        // padding: 0,
         // padding: spacing(1, 0),
         justifyContent: 'space-between',
         // padding: spacing(3),

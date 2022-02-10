@@ -40,6 +40,7 @@ import {
 import {
   Physics, usePlane, useSphere, useBox,
 } from '@react-three/cannon'; // not compatible with @react-three/fiber, needs redundant install of react-three-fiber
+
 // import CurveModifier from "drei/CurveModifier";
 import { Tween } from 'gsap/gsap-core';
 
@@ -47,10 +48,11 @@ import { Tween } from 'gsap/gsap-core';
 // import Post from './post-processing';
 import { ref } from 'yup';
 import { useBreakpoints } from 'react-use-breakpoints';
-import { clamp } from 'three/src/math/MathUtils';
+import { clamp, degToRad } from 'three/src/math/MathUtils';
 import { EffectComposer, SSAO, Bloom } from '@react-three/postprocessing';
 import { KernelSize, BlendFunction } from 'postprocessing';
 import { navigate } from 'gatsby-link';
+// import { SVGLoader } from 'three/jsm/loaders/SVGLoader.js';
 import cube_import from '../../../static/assets/gameModels/cube.glb';
 
 // eslint-disable-next-line import/no-unresolved
@@ -65,6 +67,12 @@ import cloudImg from '../../../static/assets/cloud.png';
 // import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
 import pingSound from '../../../static/assets/portfolio/transition.mp3';
 import { useStore } from '../../store/store';
+
+import brandImage from '../../../static/assets/brand_ring.png';
+
+import ring_import from '../../../static/assets/gameModels/ring.gltf';
+
+import HandModel from './hand';
 
 // ========================================================================== //
 // Clouds
@@ -235,7 +243,9 @@ export const Models = ({
   // ========================================================================== //
   const {
     selectedIndex, color, position, pageLink,
-  } = useStore((state) => state.threejsContext.context);
+  } = useStore(
+    (state) => state.threejsContext.context,
+  );
 
   // ========================================================================== //
   //     Project selection
@@ -256,9 +266,10 @@ export const Models = ({
         },
       },
     } = post;
-    // slice textureData length to three if tier is 1
-    // tier === 1 ? textureData.slice(0, 3) : textureData;
-    const texture = (thumbnail && useLoader(THREE.TextureLoader, thumbnail)) || new THREE.Texture();
+      // slice textureData length to three if tier is 1
+      // tier === 1 ? textureData.slice(0, 3) : textureData;
+    const texture = (thumbnail && useLoader(THREE.TextureLoader, thumbnail))
+        || new THREE.Texture();
 
     // const image = require(`${__dirname}static${thumbnail}`);
     return (
@@ -316,24 +327,38 @@ export const Model = React.memo(
     // ========================================================================== //
     // Global state methods
     // ========================================================================== //
-    const triggerPageChange = useStore((state) => state.threejsContext.methods.triggerPageChange);
+    const triggerPageChange = useStore(
+      (state) => state.threejsContext.methods.triggerPageChange,
+    );
     const setColor = useStore((state) => state.threejsContext.methods.setColor);
-    const changeContext = useStore((state) => state.threejsContext.methods.changeContext);
-    const changePage = useStore((state) => state.threejsContext.methods.changePage);
-    const { selectedIndex, animatedColor, animatedOpacity } = useStore((state) => state.threejsContext.context);
+    const changeContext = useStore(
+      (state) => state.threejsContext.methods.changeContext,
+    );
+    const changePage = useStore(
+      (state) => state.threejsContext.methods.changePage,
+    );
+    const { selectedIndex, animatedColor, animatedOpacity } = useStore(
+      (state) => state.threejsContext.context,
+    );
     const context = useStore((state) => state.threejsContext.context);
-    const isSelectedProject = React.useCallback(() => selectedIndex === position, [selectedIndex, position]);
+    const isSelectedProject = React.useCallback(
+      () => selectedIndex === position,
+      [selectedIndex, position],
+    );
     // ========================================================================== //
     //     Cube animation
     // ========================================================================== //
     const [animated, setAnimated] = useState(false);
-    const animateCube = useCallback((useForce) => {
-      setAnimated(true);
-      if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
-      setTimeout(() => {
-        setAnimated(false);
-      }, 530);
-    }, [selectedIndex]);
+    const animateCube = useCallback(
+      (useForce) => {
+        setAnimated(true);
+        if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
+        setTimeout(() => {
+          setAnimated(false);
+        }, 530);
+      },
+      [selectedIndex],
+    );
 
     useFrame((state) => {
       if (animated) {
@@ -455,7 +480,7 @@ export const Model = React.memo(
       return normalMap;
     }, [texture]);
     return (
-    // make a.mesh an instanced mesh
+      // make a.mesh an instanced mesh
       <>
         {/* (selectedIndex === -1 || selectedIndex === position) && ( */}
         {
@@ -464,7 +489,7 @@ export const Model = React.memo(
             onPointerOver={onPointerOver}
             onPointerOut={onPointerOut}
             geometry={model.geometry}
-        // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
+            // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
             dispose={null} // dont dispose objects once spawned for performance
             onClick={onClick}
             position={position + viewport.height}
@@ -487,25 +512,25 @@ export const Model = React.memo(
               map-repeat={[1, 1]}
               map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
               map-anisotropy={tier == 1 ? 3 : 10}
-          // flatShading
+              // flatShading
               toneMapped
               transparent
-              opacity={isSelectedProject() && 1 || animatedOpacity}
+              opacity={(isSelectedProject() && 1) || animatedOpacity}
               // visible={selectedIndex === -1 || selectedIndex === position}// disable ghost cubes
               attach="material"
               receiveShadow
               castShadow
               color={determineColor}
               roughness={0.5}
-          // alphaMap={checkTier(texture)}
-          // aoMap={checkTier(texture)}
+              // alphaMap={checkTier(texture)}
+              // aoMap={checkTier(texture)}
               roughnessMap={texture} // sexy
-          // lightMap={checkTier(texture)}// sexy
-          // clearcoat={determineClearcoat}
-          // envMap={[texture, texture, texture]}
-          // opacity={0.7}
+              // lightMap={checkTier(texture)}// sexy
+              // clearcoat={determineClearcoat}
+              // envMap={[texture, texture, texture]}
+              // opacity={0.7}
               envMapIntensity={0.6}
-          // dispose={null}
+              // dispose={null}
               normalMap={normalMap}
               normalMap-repeat={[35, 35]}
               normalScale={[0.15, 0.15]}
@@ -600,6 +625,109 @@ export const Camera = React.memo(
     pre.selectedIndex !== post.selectedIndex
     || pre.moveCameraTo !== post.moveCameraTo,
 );
+
+// ========================================================================== //
+// Brand ring
+// ========================================================================== //
+useGLTF.preload(ring_import);
+
+export const BrandRing = ({ x, rotation }) => {
+  const ref = useRef();
+  const { viewport } = useThree();
+  const scale = clamp((viewport.width / 7) * 2.55, 2, 2.55);
+
+  const {
+    nodes: { Cylinder },
+  } = useGLTF(ring_import);
+  const texture = (brandImage && useLoader(THREE.TextureLoader, brandImage))
+    || new THREE.Texture();
+
+  const degsPerSecond = 0.25;
+  useFrame((state) => {
+    // move camera to selected cube
+    ref.current.rotateY(degToRad(degsPerSecond));
+    // ref.current.rotateZ(degToRad(degsPerSecond));
+    // ref.current.rotateX(degToRad(degsPerSecond));
+  });
+  const vertexShader = `
+uniform vec3 viewVector;
+uniform float c;
+uniform float p;
+varying float intensity;
+void main() 
+{
+    vec3 vNormal = normalize( normalMatrix * normal );
+	vec3 vNormel = normalize( normalMatrix * viewVector );
+	intensity = pow( c - dot(vNormal, vNormel), p );
+	
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+}`;
+
+  const fragmentShader = `
+uniform vec3 glowColor;
+varying float intensity;
+void main() 
+{
+	vec3 glow = glowColor * intensity;
+    gl_FragColor = vec4( glow, 1.0 );
+}
+  `;
+  const createEmissiveMap = React.useCallback((x) => {
+    const shader = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        c: { type: 'f', value: 1 },
+        p: { type: 'f', value: 1 },
+        glowColor: { type: 'c', value: new THREE.Color(x) },
+      },
+    });
+  });
+
+  return (
+    <>
+      <a.mesh
+        receiveShadow
+        ref={ref}
+        rotation={rotation || [degToRad(90), 0, 0]}
+        // scale={[scale, scale, scale]}
+        scale={[3, 3, 3]}
+        castShadow
+        position={[0, 0, 0]}
+        geometry={Cylinder.geometry}
+        dispose={null} // dont dispose objects once spawned for performance
+        // attach="geometry"
+      >
+        {/* glass like material */}
+        <a.meshPhysicalMaterial
+          attach="material"
+          // transparent
+          // opacity={0.3}
+          flatShading={false}
+          // clearcoat
+          // wireframe
+          emissive={x}
+          emissiveIntensity={4}
+          emissiveMap={createEmissiveMap(x)}
+          roughness={0.5}
+          // clearcoatRoughness={0.25}
+          reflectivity={0.5}
+          color={x}
+          side={THREE.DoubleSide}
+          // depthTest={false}
+          // depthWrite={false}
+          //   map={texture}
+          //   map-flipY
+          //   map-wrapS={THREE.WrapAroundEnding}
+          //   map-wrapT={THREE.WrapAroundEnding}
+          //   map-repeat={[5, 5]}
+          // map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
+          //   map-anisotropy={10}
+        />
+      </a.mesh>
+    </>
+  );
+};
 
 // ========================================================================== //
 // Orb
@@ -711,7 +839,10 @@ function Cloud({
   }));
   return (
     <group {...props}>
-      <group position={[position[0], position[1], (segments / 2) * length]} ref={group}>
+      <group
+        position={[position[0], position[1], (segments / 2) * length]}
+        ref={group}
+      >
         {clouds.map(({
           x, y, scale, density,
         }, index) => (
@@ -727,7 +858,6 @@ function Cloud({
               alphaTest={-1}
               opacity={(scale / 6) * density * opacity}
               depthTest={false}
-              // depthWrite={false}
             />
           </Billboard>
         ))}
@@ -832,23 +962,24 @@ export default React.memo(
           {/* not dependant on physics */}
           {/* <SkyScene3> */}
           {/* <Clouds /> */}
-          <Orb x={x} />
-          {/* all dependendant on physics */}
-          <Physics {...physicsProps}>
-            <Borders opacity={1} />
 
-            <Models set={setColor} x={x} mobile={false} />
-            {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
-            {/* <PreviewPlane /> */}
-            {/* <Scene set={set} x={x} mobile={false}/> */}
-          </Physics>
+          <Environment preset="studio" scene={undefined} />
+          <HandModel />
 
-          <Environment
-            preset="studio"
-            scene={
-              undefined
-            } /* files="design.png" background={false} path="/" */
-          />
+          <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
+            {/* <BrandRing x={x} /> */}
+            <Orb x={x} />
+            {/* all dependendant on physics */}
+            <Physics {...physicsProps}>
+              <Borders opacity={1} />
+              <Models set={setColor} x={x} mobile={false} />
+
+              {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
+              {/* <PreviewPlane /> */}
+              {/* <Scene set={set} x={x} mobile={false}/> */}
+            </Physics>
+          </group>
+
           {/* </SkyScene3> */}
         </Suspense>
 

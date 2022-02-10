@@ -16,8 +16,8 @@ import GraphemeSplitter from 'grapheme-splitter';
 import {
   hexToAlpha, pxToRem, SCROLL_PROPS, threeDHoverKeyframes,
 } from '../../store/theme.js';
-import { usePrevious, useDimensions } from '../util/customHooks.jsx';
-import { RegularButton, SecondaryButton, ThirdButton } from './customButton';
+import { usePrevious, useDimensions } from '../util/customHooks';
+import { RegularButton, SecondaryButton, ThirdButton } from './buttons';
 
 import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
 
@@ -380,9 +380,9 @@ const ItemDisplay = ({
       {/* row 1 title */}
       <Grid item xs={6} style={{ maxHeight: 150, borderRight: theme.custom.borders.brandBorder }}>
         <Typography
-          variant="h2"
           color="inherit"
           align="center"
+          variant="h3"
           component="h3"
         >
           {title}
@@ -403,7 +403,7 @@ const ItemDisplay = ({
         style={{ borderBottom: 'none' }}
       >
 
-        <Typography color="inherit" variant="h3" align="left" gutterBottom>
+        <Typography color="inherit" variant="h2" align="left" gutterBottom>
           {`About ${title}`}
         </Typography>
         {/* description */}
@@ -417,7 +417,7 @@ const ItemDisplay = ({
           <Typography
             variant="body1"
             color="inherit"
-            component="p"
+            component="body1"
             align="left"
           >
             {description}

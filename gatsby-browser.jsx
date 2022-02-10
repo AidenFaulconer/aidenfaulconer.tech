@@ -5,7 +5,7 @@ import './src/styles/bootstrap.scss';
 import '@fontsource/poppins'; // https://github.com/fontsource/fontsource/blob/main/packages/roboto/README.md
 
 // wrap entire app in custom element, this is done by hooking into gatsbys wrapRootElement
-import React from 'react';
+import React, { useEffect } from 'react';
 import { navigate } from 'gatsby';
 import { useStore } from './src/store/store';
 import MaterialUI from './src/layout/materialUI';
@@ -25,6 +25,10 @@ import { useStateWithCallbackInstant } from './src/components/util/customHooks';
 // { console.log('test'); }
 
 // wont unmount on page change
-export function wrapPageElement({ element, props }) { return <Layout {...props}>{element}</Layout>; }
+export function wrapPageElement({ element, props }) {
+  return <Layout {...props}>{element}</Layout>;
+}
 
-export function wrapRootElement({ element, props }) { return <Layout {...props}>{element}</Layout>; }
+export function wrapRootElement({ element, props }) {
+  return <Layout {...props}>{element}</Layout>;
+}

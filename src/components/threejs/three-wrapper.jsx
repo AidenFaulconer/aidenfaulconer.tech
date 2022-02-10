@@ -38,7 +38,6 @@ export const colors = ['#823B3B', '#76EFA6', '#F4D1A4', '#666666'];
 
 const useStyles = makeStyles((theme) => ({
   threeWrapper: {
-    overflow: 'hidden',
     height: '100%',
     width: '100%',
     position: 'absolute',
@@ -48,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
       minHeight: '100%',
       minWidth: '100%',
       maxHeight: 200,
-      height: '100% !important',
+      height: ' 100% !important',
       display: 'block',
       position: 'relative',
     },
