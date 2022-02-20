@@ -19,7 +19,7 @@ import StarBorder from '@material-ui/icons/StarBorder';
 
 import stickybits from 'stickybits';
 import { Box, Container, makeStyles } from '@material-ui/core';
-import { render } from 'react-three-fiber';
+import { render } from '@react-three/fiber';
 
 const useStyles = makeStyles((theme) => ({
   threeWrapper: {

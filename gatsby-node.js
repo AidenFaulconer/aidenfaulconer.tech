@@ -5,7 +5,7 @@
 const path = require('path');
 const chunk = require('lodash/chunk');
 
-const { graphql } = require('gatsby');
+const { graphql, Reporter } = require('gatsby');
 
 const cheerio = require('cheerio');
 //  dd() will prettily dump to the terminal and kill the process
@@ -18,8 +18,7 @@ const cheerio = require('cheerio');
 // BLOG POST ARCHIVE
 // ========================================================================== //
 async function createBlogPostArchive({ edges, gatsbyUtilities }) {
-  const graphqlResult = await gatsbyUtilities.graphql(/* GraphQL */ `
-    {
+  const graphqlResult = await gatsbyUtilities.graphql(/* GraphQL */ `   {
       wp {
         readingSettings {
           postsPerPage
@@ -38,10 +37,10 @@ async function createBlogPostArchive({ edges, gatsbyUtilities }) {
 
       const getPagePath = (page) => {
         if (page > 0 && page <= totalPages) {
-          // Since our homepage is our blog page
-          // we want the first page to be "/" and any additional pages
-          // to be numbered.
-          // "/blog/2" for example
+        // Since our homepage is our blog page
+        // we want the first page to be "/" and any additional pages
+        // to be numbered.
+        // "/blog/2" for example
           return page === 1 ? '/' : `/blog/${page}`;
         }
 
@@ -66,9 +65,9 @@ async function createBlogPostArchive({ edges, gatsbyUtilities }) {
         // `context` is available in the template as a prop and
         // as a variable in GraphQL.
         context: {
-          // the index of our loop is the offset of which posts we want to display
-          // so for page 1, 0 * 10 = 0 offset, for page 2, 1 * 10 = 10 posts offset,
-          // etc
+        // the index of our loop is the offset of which posts we want to display
+        // so for page 1, 0 * 10 = 0 offset, for page 2, 1 * 10 = 10 posts offset,
+        // etc
           offset: index * postsPerPage,
 
           // We need to tell the template how many posts to display too
@@ -178,6 +177,8 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     // ========================================================================== //
     //     Build all the pages
     // ========================================================================== //
+    reporter.warn(JSON.stringify(result, null, 2));
+
     result.data.allMarkdownRemark.edges.forEach((edge, i) => {
       // reporter.warn(JSON.stringify(edge, null, 2));
       const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
@@ -203,12 +204,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   // ========================================================================== //
   await buildPageFromQuery(
     'b|Blog',
-    path.resolve('src/templates/blog-post.jsx'),
+    path.resolve(__dirname, 'src/templates/blog-post.jsx'),
   ); // build blog pages
 
   await buildPageFromQuery(
     'P|project',
-    path.resolve('src/templates/project-post.jsx'),
+    path.resolve(__dirname, 'src/templates/project-post.jsx'),
   ); // build project pages
 };
 
@@ -227,32 +228,29 @@ exports.onCreateWebpackConfig = ({
     devtool: 'eval-source-map',
     module: {
       rules: [
+        { test: /\.(glb|gltf)$/i, use: 'file-loader' }, // or gltf-webpack-loader
+        { test: /react-hot-loader/, use: [loaders.js()] },
+        // expose, svgs, pdfs, and gifs publicly from the website https://stackoverflow.com/questions/36643649/serving-static-pdf-with-react-webpack-file-loader
         {
-          test: /react-hot-loader/,
-          use: [
-            loaders.js(),
-          ],
+          test: /\.(pdf|gif|svg)$/,
+          use: 'file-loader?name=[path][name].[ext]',
+          include: path.resolve(__dirname, 'static/assets'),
         },
-        // {
-        //   test: /\.(woff|woff2|eot|ttf|otf|png|jp(e*)g|svg|gif|glb|gltf)$/i,
-        //   use: 'file-loader',
-        // //   options: {
-        // //     publicPath: './',
-        // //     name: '[name].[ext]'
-        // // },
-        // },
-        { test: /\.(glb|gltf)$/i, use: 'file-loader' },
-        // {
-        //   test: /\.(png|jpg|gif|svg)$/,
-        //   type: 'asset/resource',
-        // }, {
-        //   test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
-        //   type: 'asset/resource',
-        // },
+        // { test: /\.(woff|woff2|eot|ttf|otf|png|jp(e*)g|svg|gif|glb|gltf)$/i, use: 'file-loader' },
+        // { test: /\.(bin)$/, use: 'file-loader' },
+        // { test: /\.(png|jpg|gif|svg)$/, type: 'asset/resource' },
+        // {test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/, type: 'asset/resource' },
       ],
+    },
+    // externals: [ nodeExternals() ],
+    resolve: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      symlinks: false,
     },
   });
 };
+
+// pnpm i @babel/core @date-io/core @date-io / date-fns @fontsource/poppins @iconify/iconify @iconify/icons-ic @iconify/react @juggle/resize-observer @material-ui/core @material-ui / icons @material-ui / pickers @material-ui / styles @react-hook / mouse - position @react-hook / window - size @react-spring / core @react-spring / three @react-spring / web @react-three / cannon @react-three / drei @react-three / fiber @react-three / postprocessing @react-three / xr @types/react @use-gesture/react axios babel - eslint cheerio circletype compression - webpack - plugin cross - env css - loader date - fns dotenv exit gatsby gatsby - image gatsby - plugin -catch-links gatsby - plugin - feed gatsby - plugin - gatsby - cloud gatsby - plugin - google - analytics gatsby - plugin - image gatsby - plugin - layout gatsby - plugin - manifest gatsby - plugin - material - ui gatsby - plugin - minify - html gatsby - plugin - netlify - cms gatsby - plugin - offline gatsby - plugin - perf - budgets gatsby - plugin - preload - fonts gatsby - plugin - react - helmet gatsby - plugin - remove - trailing - slashes gatsby - plugin - sass gatsby - plugin - scroll - reveal gatsby - plugin - scss - typescript gatsby - plugin - sharp gatsby - plugin - webpack - bundle - analyser - v2 gatsby - remark - copy - linked - files gatsby - remark - custom - blocks gatsby - remark - emojis gatsby - remark - images gatsby - remark - prismjs gatsby - remark - responsive - iframe gatsby - source - filesystem gatsby - transformer - remark gatsby - transformer - sharp global gltf - webpack - loader google - maps - react grapheme - splitter graphql gsap html - react - parser immutable local - cors - proxy lodash lodash - es minipass netlify - cms - app netlify - cms - lib - util node - gyp node - sass postprocessing prismjs programming - languages - logos prop - types react - confetti react - cookie react - custom - scrollbars react react - dom react - geolocated react - google - recaptcha react - helmet react - lines - ellipsis react - multi - carousel react - phone - number - input react - refresh react - use - breakpoints redux redux - persist sass scroll - snap sharp simplex - noise stickybits three typescript webpack yup zustand
 
 // const CompressionPlugin = require('compression-webpack-plugin');
 // const webpack = require('webpack');

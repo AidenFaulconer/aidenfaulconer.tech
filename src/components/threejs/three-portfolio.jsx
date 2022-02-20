@@ -46,7 +46,6 @@ import { Tween } from 'gsap/gsap-core';
 
 // asset imports
 // import Post from './post-processing';
-import { ref } from 'yup';
 import { useBreakpoints } from 'react-use-breakpoints';
 import { clamp, degToRad } from 'three/src/math/MathUtils';
 import { EffectComposer, SSAO, Bloom } from '@react-three/postprocessing';
@@ -60,7 +59,7 @@ import one from '../../../static/assets/portfolio/dibbles.png';
 import two from '../../../static/assets/portfolio/ajgardencare.png';
 import three from '../../../static/assets/portfolio/hakn.png';
 import four from '../../../static/assets/portfolio/railgun.png';
-import five from '../../../static/assets/portfolio/na na nas.png';
+import five from '../../../static/assets/portfolio/clouds.png';
 
 import envMap from './design.png';
 import cloudImg from '../../../static/assets/cloud.png';
@@ -897,6 +896,7 @@ export default React.memo(
     const {
       fps, gpu, isMobile, tier,
     } = useDetectGPU();
+    const { propsUsing } = useStore((state) => state.threejsContext.context.hand);
 
     const physicsProps = {
       gravity: [0, -20, 0],
@@ -906,6 +906,20 @@ export default React.memo(
       shouldInvalidate: true,
       tolerance: 0.001,
     };
+
+    const determineScene = useCallback(() => (
+      <>
+        {(propsUsing.length > 0)
+          || (
+          <>
+            <Borders opacity={1} />
+            <Models set={setColor} x={x} mobile={false} />
+            <Orb x={x} />
+          </>
+          )}
+      </>
+    ),
+    [propsUsing]);
 
     return (
       <Canvas
@@ -968,11 +982,9 @@ export default React.memo(
 
           <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
             {/* <BrandRing x={x} /> */}
-            <Orb x={x} />
             {/* all dependendant on physics */}
             <Physics {...physicsProps}>
-              <Borders opacity={1} />
-              <Models set={setColor} x={x} mobile={false} />
+              {determineScene()}
 
               {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
               {/* <PreviewPlane /> */}

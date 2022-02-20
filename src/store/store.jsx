@@ -1,10 +1,10 @@
 import React from 'react';
-import { createMuiTheme } from '@material-ui/core';
+import { createTheme } from '@material-ui/core';
 import create from 'zustand';
 // ========================================================================== //
 // Handle theming
 // ========================================================================== //
-import { navigate, Link, createHistory } from '@reach/router';
+import { navigate } from 'gatsby-link';
 import {
   DARK_THEME,
   LIGHT_THEME,
@@ -15,8 +15,8 @@ import {
 } from './theme';
 
 // create themes to be used in valtio
-const createTheme = (theme) => {
-  const muiTheme = createMuiTheme({ ...theme });
+const afCreateTheme = (theme) => {
+  const muiTheme = createTheme({ ...theme });
   const newTheme = Object.assign(
     muiTheme,
     CUSTOM_THEME_PROPS,
@@ -32,8 +32,8 @@ const createTheme = (theme) => {
 };
 
 // To avoid 'this' pitfall, the recommended pattern is not to use this and prefer arrow function.
-const lt = createTheme(LIGHT_THEME);
-const dt = createTheme(DARK_THEME);
+const lt = afCreateTheme(LIGHT_THEME);
+const dt = afCreateTheme(DARK_THEME);
 
 // ========================================================================== //
 // App State
@@ -76,6 +76,10 @@ const useStore = create((set) =>
         animatedColor: '#fff',
         animatedOpacity: 1,
         // subtitle: 'default',
+        hand: {
+          animationsPlaying: ['hold'],
+          propsUsing: [],
+        },
         // headline: 'THE BUILDING BLOCK FOR YOUR ORGANISATION',
         pageTheme: {
           primary: '#fff',
@@ -91,6 +95,20 @@ const useStore = create((set) =>
               context: {
                 ...state.threejsContext.context,
                 ...newContext,
+              },
+            },
+          }));
+        },
+        changeHand: (newContext) => {
+          set((state) => ({
+            ...state,
+            threejsContext: {
+              ...state.threejsContext,
+              context: {
+                ...state.threejsContext.context,
+                hand: {
+                  ...newContext,
+                },
               },
             },
           }));
@@ -123,7 +141,7 @@ const useStore = create((set) =>
         {
           blogUrl: './',
           textureUrl: './',
-           
+
           color: '#fff',
         },
       ],
@@ -141,4 +159,3 @@ const useStore = create((set) =>
 export {
   createTheme, lt, dt, useStore,
 };
- 

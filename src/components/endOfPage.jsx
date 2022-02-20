@@ -2,8 +2,6 @@ import { Grid, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import { SecondaryButton } from './custom/buttons';
 
-import letsStartSomething from '../../static/assets/portfolio/lets start something together.png';
-
 const useStyles = makeStyles((theme) => ({
   endOfPage: {
     background: theme.palette.text.primary,

@@ -153,13 +153,13 @@ const TYPOGRAPHY = {
     h1: {
       fontStyle: 'normal',
       fontWeight: 900,
-      fontSize: pxToRem(45),
+      fontSize: pxToRem(38),
       lineHeight: '105%',
       letterSpacing: '0.1em',
       textTransform: 'uppercase',
       fontFeatureSettings: "'ss03' on",
       [breakpoints.down('sm')]: {
-        fontSize: pxToRem(37),
+        fontSize: pxToRem(23),
       },
     },
     h2: {

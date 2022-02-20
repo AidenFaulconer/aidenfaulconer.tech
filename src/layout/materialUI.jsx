@@ -2,8 +2,9 @@ import * as React from 'react';
 import {
   createMuiTheme, CssBaseline, StylesProvider, MuiThemeProvider,
 } from '@material-ui/core';
-import { dt, lt, useStore } from '../store/store';
-import { LIGHT_THEME, createTheme } from '../store/theme';
+import {
+  dt, lt, useStore, LIGHT_THEME, createTheme,
+} from '../store/store';
 
 // import { dt, lt, valtioState } from "../store/store-wrapper"
 // import { ServerStyleSheets } from "@material-ui/core/styles"
@@ -39,6 +40,11 @@ const MaterialUI = React.memo(({ children }) => {
   const type = useStore((state) => state.appContext.type);
   return (
     <>
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0,
+        maximum-scale=1.0, user-scalable=no"
+      />
       <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -50,15 +56,14 @@ const MaterialUI = React.memo(({ children }) => {
 
       <MuiThemeProvider
         // needs to be cloned to work with material-ui
-        theme={type === 'light' && lt || dt || createTheme(LIGHT_THEME)}
+        theme={type === 'light' && lt || dt}
         key="ThemeProvider"
       >
-        {/* inject first adds styles that override existin MUI styles from external files */}
         <StylesProvider injectFirst>
           <CssBaseline />
-          {/* <React.StrictMode> */}
-          {children}
-          {/* </React.StrictMode> */}
+          <React.StrictMode>
+            {children}
+          </React.StrictMode>
         </StylesProvider>
       </MuiThemeProvider>
     </>

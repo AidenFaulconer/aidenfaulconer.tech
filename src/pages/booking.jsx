@@ -3,19 +3,7 @@ import {
   Container, FormControl, FormControlLabel, FormLabel, Grid, makeStyles, Radio, RadioGroup, Typography,
 } from '@material-ui/core';
 import Layout from '../layout/layout';
-import {
-  About,
-  Projects,
-  Languages,
-  Contact,
-  Experience,
-  WhatDoYouNeed,
-} from '../components/indexSections';
-
 import { SecondaryButton } from '../components/custom/buttons';
-
-import letsStartSomething from '../../static/assets/portfolio/lets start something together.png';
-import cubesOffset from '../../static/assets/portfolio/cubesOffset.png';
 
 const useStyles = makeStyles((theme) => ({
   underlay: {

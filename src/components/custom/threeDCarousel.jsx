@@ -66,7 +66,8 @@ export const useStyles = makeStyles((theme) => ({
     // width: ({ cardDimension, carouselLength }) => cardDimension + 20 || 420,
     width: '100%',
     // margin: '100 auto 0 auto',
-    minHeight: ({ cardDimension, carouselLength }) => cardDimension /* 1.5 */ || 450,
+    height: 500,
+    // minHeight: ({ cardDimension, carouselLength }) => cardDimension /* 1.5 */ || 450,
     position: 'relative',
     // minHeight: 300,
     display: 'grid',
@@ -318,12 +319,15 @@ export const ThreeDCarousel = ({
     );
   }, []);
 
+  // ========================================================================== //
+  //   carousel
+  // ========================================================================== //
   return (
     <ItemDisplay setCurrent={setCurrent} current={current} carouselData={carouselData}>
       <div
         className={classes.wrapper}
       >
-        {spinText('CREATE OUTSIDE THE BOX ✍', 2.5)}
+        {/* {spinText('CREATE OUTSIDE THE BOX ✍', 6)} */}
         {computeCarousel()}
         <a.div
           className={classes.carousel}
@@ -358,6 +362,30 @@ export const ThreeDCarousel = ({
             );
           })}
         </a.div>
+
+        <div style={{
+          width: '100%', height: 50, display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          {/* carousel nav */}
+          <ThirdButton
+            style={{ transform: 'rotate(180deg)' }}
+            onClick={(e) => {
+              if (current !== carouselData.length) setCurrent(current + 1);
+              else e.preventDefault();
+            }}
+          >
+            {'>'}
+          </ThirdButton>
+          <ThirdButton onClick={(e) => {
+            if (current !== carouselData.length) setCurrent(current - 1);
+            else e.preventDefault();
+          }}
+          >
+            {'<'}
+          </ThirdButton>
+        </div>
+
       </div>
     </ItemDisplay>
   );
@@ -377,41 +405,58 @@ const ItemDisplay = ({
       className={classes.itemDisplay}
     >
 
+      {/* carousel */}
+      {children}
+
       {/* row 1 title */}
       <Grid item xs={6} style={{ maxHeight: 150, borderRight: theme.custom.borders.brandBorder }}>
         <Typography
           color="inherit"
-          align="center"
-          variant="h3"
-          component="h3"
+          align="left"
+          variant="h2"
+          component="h2"
         >
           {title}
         </Typography>
       </Grid>
-      <Grid item xs={6} style={{ maxHeight: 150 }}>
-
-        Category
-        {category}
+      <Grid item xs={6} style={{ maxHeight: 150, display: 'inline-flex', alignItems: 'center' }}>
+        <div
+          dangerouslySetInnerHTML={{
+            __html:
+            `<svg width="36" height="36" viewBox="0 0 36 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M33.5296 18.7598L26.5996 15.5698V6.42978C26.5964 6.23802 26.5382 6.05123 26.4318 5.89166C26.3254 5.73208 26.1754 5.60647 25.9996 5.52978L18.4996 2.07978C18.368 2.01886 18.2247 1.9873 18.0796 1.9873C17.9346 1.9873 17.7912 2.01886 17.6596 2.07978L10.1596 5.52978C9.98603 5.61011 9.83913 5.73854 9.73633 5.89983C9.63353 6.06112 9.57914 6.24851 9.57961 6.43978V15.5798L2.67961 18.7598C2.50603 18.8401 2.35913 18.9685 2.25633 19.1298C2.15353 19.2911 2.09914 19.4785 2.09961 19.6698V29.4498C2.09914 29.641 2.15353 29.8284 2.25633 29.9897C2.35913 30.151 2.50603 30.2794 2.67961 30.3598L10.1796 33.8098C10.3112 33.8707 10.4546 33.9023 10.5996 33.9023C10.7447 33.9023 10.888 33.8707 11.0196 33.8098L18.0996 30.5498L25.1796 33.8098C25.3112 33.8707 25.4546 33.9023 25.5996 33.9023C25.7447 33.9023 25.888 33.8707 26.0196 33.8098L33.5196 30.3598C33.6932 30.2794 33.8401 30.151 33.9429 29.9897C34.0457 29.8284 34.1001 29.641 34.0996 29.4498V19.6698C34.101 19.4796 34.0481 19.293 33.9471 19.1318C33.8462 18.9706 33.7013 18.8416 33.5296 18.7598V18.7598ZM25.6096 21.9998L20.4996 19.6698L25.6096 17.3198L30.7196 19.6698L25.6096 21.9998ZM24.6096 15.5598L18.1696 18.5598V10.8698C18.2902 10.8644 18.4087 10.8373 18.5196 10.7898L24.5996 7.99978V15.5798L24.6096 15.5598ZM18.0996 4.07978L23.2096 6.42978L18.0996 8.77978L12.9996 6.42978L18.0996 4.07978ZM10.5996 17.3098L15.7096 19.6598L10.5996 21.9998L5.48961 19.6698L10.5996 17.3098ZM17.0996 28.7998L10.5996 31.7998V24.1098C10.7392 24.1015 10.8754 24.064 10.9996 23.9998L17.0796 21.1998L17.0996 28.7998ZM32.0996 28.7998L25.6396 31.7998V24.1098C25.7655 24.0962 25.8877 24.0589 25.9996 23.9998L32.0796 21.1998L32.0996 28.7998Z" />
+            </svg>`,
+          }}
+          style={{
+            borderRadius: '100%',
+            width: 50,
+            height: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 10,
+            border: '1px solid currentColor',
+          }}
+        />
+        <b>Category:</b>
+        {` ${category}`}
       </Grid>
-      {/* carousel */}
-      {children}
 
       {/* row 2 details / carousel nav */}
       <Grid
         item
         xs={12}
-        style={{ borderBottom: 'none' }}
+        style={{
+          borderBottom: 'none', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+        }}
       >
 
-        <Typography color="inherit" variant="h2" align="left" gutterBottom>
-          {`About ${title}`}
-        </Typography>
         {/* description */}
         <Grid
           item
           xs={12}
           style={{
-            alignContent: 'center', display: 'grid', height: 310, maxHeight: 310,
+            alignContent: 'flex-start', display: 'flex', height: 210, maxHeight: 310,
           }}
         >
           <Typography
@@ -424,31 +469,6 @@ const ItemDisplay = ({
           </Typography>
         </Grid>
 
-        {/* carousel nav */}
-        <Grid
-          item
-          container
-          justify="space-between"
-          alignContent="center"
-          style={{ marginTop: theme.spacing(2) }}
-        >
-          <ThirdButton
-            style={{ transform: 'rotate(180deg)' }}
-            onClick={(e) => {
-              if (current !== carouselData.length) setCurrent(current + 1);
-              else e.preventDefault();
-            }}
-          >
-            {cta}
-          </ThirdButton>
-          <ThirdButton onClick={(e) => {
-            if (current !== carouselData.length) setCurrent(current - 1);
-            else e.preventDefault();
-          }}
-          >
-            {cta}
-          </ThirdButton>
-        </Grid>
       </Grid>
 
     </Grid>

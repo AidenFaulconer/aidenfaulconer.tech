@@ -64,10 +64,6 @@ module.exports = {
     //   },
     // }, // creates the 'tl-edge & tl-wrapper https://github.com/TylerBarnes/gatsby-plugin-transition-link/issues/29
 
-    {
-      resolve: 'react-refresh',
-      options: {},
-    },
     // have a custom plugin inject theme before this
     {
       resolve: 'gatsby-plugin-layout',

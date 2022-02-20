@@ -7,20 +7,14 @@ import { useGesture, useScroll } from '@use-gesture/react';
 import { a } from '@react-spring/web';
 import { graphql } from 'gatsby';
 import Layout from '../layout/layout';
-import {
-  About,
-  BlogPosts,
-  Languages,
-  Contact,
-  Experience,
-  WhatDoYouNeed,
-  Skills,
-  Intro,
-} from '../components/indexSections';
+
+import Qualifications from '../components/portfolio-page/qualifications';
+import Services from '../components/portfolio-page/services';
+import { Languages, Experience } from '../components/portfolio-page/skills';
 
 import { SecondaryButton } from '../components/custom/buttons';
 
-import cubesOffset from '../../static/assets/portfolio/cubesOffset.png';
+import cubesOffset from '../../static/assets/portfolio/clouds.png';
 import SectionHeader from '../components/section-header';
 
 const useStyles = makeStyles((theme) => ({
@@ -143,7 +137,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       </SectionWrapper>
 
       <SectionWrapper>
-        <WhatDoYouNeed id="contact" /* ref={addNode} */ />
+        <Services id="contact" /* ref={addNode} */ />
       </SectionWrapper>
 
       {/* </a.div> */}
@@ -158,16 +152,11 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       </SectionWrapper>
 
       <SectionWrapper>
-        <Intro />
+        <Qualifications />
       </SectionWrapper>
 
       <SectionWrapper>
-        <Grid item md={5}>
-          <About id="services" />
-        </Grid>
-        <Grid item md={7}>
-          <Experience id="skills" />
-        </Grid>
+        <Experience id="skills" />
       </SectionWrapper>
 
       {/* </a.div> */}
@@ -182,21 +171,16 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       </SectionWrapper>
 
       <SectionWrapper>
-        <Grid item md={5}>
-          <Languages id="languages" />
-        </Grid>
-        <Grid item md={7}>
-          <Skills id="skills" />
-        </Grid>
+        <Languages id="languages" />
       </SectionWrapper>
 
-      <SectionWrapper>
+      {/* <SectionWrapper>
         <SectionHeader headline="Blog" illustrationType="moustache" />
       </SectionWrapper>
 
       <SectionWrapper>
         <SectionHeader headline="Contact me" illustrationType="genie" />
-      </SectionWrapper>
+      </SectionWrapper> */}
       {/* </a.div> */}
     </Grid>
 
@@ -254,14 +238,14 @@ const IndexPage = ({
 
   return (
     <>
+      <ScrollContainer ref={addNode} />
       {/* <Grid item md={1} xs={false} /> */}
       {/* <Grid item md={1} xs={false} /> */}
       {/* <Grid container className={classes.contentContainer}> */}
 
       {/* section 1 */}
-      <ScrollContainer ref={addNode} />
 
-      <Grid item xs={12} md={5} style={{ paddingBottom: 20, margin: 'auto' }}>
+      {/* <Grid item xs={12} md={5} style={{ paddingBottom: 20, margin: 'auto' }}>
         <Typography
           align="left"
           gutterBottom
@@ -275,9 +259,7 @@ const IndexPage = ({
           latest news and articles below about design, business, and the
           future of software development.
         </Typography>
-      </Grid>
-      <BlogPosts id="blog" posts={edges}/* ref={addNode} */ />
-
+      </Grid> */}
     </>
   );
 };

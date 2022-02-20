@@ -22,10 +22,14 @@ import {
 // Canvas contents are loaded through an async split bundle
 // const Canvas = lazy(() => import("./Canvas"));
 // import { Html, useProgress } from "drei";
-import { Backdrop, makeStyles, useTheme } from '@material-ui/core';
+import {
+  Backdrop, Box, LinearProgress, makeStyles, Typography, useTheme,
+} from '@material-ui/core';
+import { Html, useProgress } from '@react-three/drei';
 import Canvas from './three-portfolio';
 import { forceUpdate, useStaticMethods, reRenderOnVariables } from '../util/customHooks';
 import { useStore } from '../../store/store';
+import { DesignWorld } from '../custom/illustrations';
 
 // reference for the data passed into this 3d experience
 export const textureRefs = [
@@ -110,10 +114,38 @@ const ThreeWrapper = React.memo(
     //     },
     //   },
 
+    // ========================================================================== //
+    //     Handle three.js loading progress
+    // ========================================================================== //
+    const { progress } = useProgress();
+    useEffect(() => {
+      console.log(progress);
+    }, [progress]);
+
+    const loadingScreen = React.useCallback(() => (progress < 99 && (
+      <div sx={{
+        width: '100%', height: '100%', zIndex: 10000, top: 0, margin: 'auto',
+      }}
+      >
+        <div style={{
+          position: 'absolute', margin: 'auto', width: '100%', height: '100%', top: '30%', zIndex: 30,
+        }}
+        >
+          <Typography variant="h2" color="secondary" align="center">
+            Loading projects
+          </Typography>
+          <LinearProgressWithLabel value={progress} />
+        </div>
+        <DesignWorld />
+      </div>
+    )
+    ), [progress]);
+
     return (
       <>
         <a.div className={classes.threeWrapper}>
-          <Suspense fallback={null}>
+          {loadingScreen()}
+          <Suspense fallback={<></>}>
             <Canvas x={x} setColor={set} />
           </Suspense>
         </a.div>
@@ -127,3 +159,45 @@ const ThreeWrapper = React.memo(
 );
 
 export default ThreeWrapper;
+
+// ========================================================================== //
+// progress bar
+// ========================================================================== //
+function LinearProgressWithLabel(props) {
+  return (
+    <div style={{
+      display: 'inline-flex', flexDirection: 'column', width: '100%', alignItems: 'center',
+    }}
+    >
+      <div style={{ width: '50%' }}>
+        <LinearProgress color="primary" style={{ border: '1px solid rgba(255,255,255,.3)', height: 15, marginTop: 15 }} variant="determinate" {...props} />
+      </div>
+      <div style={{ minWidth: 35, marginTop: 15 }}>
+        <Typography variant="body2" color="secondary">
+          {`${Math.round(
+            props.value,
+          )}%`}
+
+        </Typography>
+      </div>
+    </div>
+  );
+}
+function LinearWithValueLabel() {
+  const [progress, setProgress] = React.useState(10);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+    }, 800);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <LinearProgressWithLabel value={_progress} />
+    </Box>
+  );
+}

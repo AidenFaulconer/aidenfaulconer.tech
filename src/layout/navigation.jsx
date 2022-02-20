@@ -14,8 +14,12 @@ import {
   useScrollTrigger,
   SwipeableDrawer,
   Grid,
+  Typography,
+  useTheme,
 } from '@material-ui/core';
-import { Menu } from '@material-ui/icons';
+import {
+  Brightness2, Brightness5, Close, ClosedCaptionOutlined, Menu,
+} from '@material-ui/icons';
 // import { navigate } from "gatsby-link"
 // ========================================================================== //
 // Page transitions
@@ -26,13 +30,13 @@ import { Link } from 'gatsby';
 // Styles
 // ========================================================================== //
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  customMenuIcon,
-  logoFull,
-  logoMedium,
-  logoSmall,
-  menuIcon,
-} from '../../static/svgs/hardcoded-svgs';
+// import {
+//   customMenuIcon,
+//   logoFull,
+//   logoMedium,
+//   logoSmall,
+//   menuIcon,
+// } from '../../static/svgs/hardcoded-svgs';
 
 import logoPng from '../../static/svgs/logo.png';
 import {
@@ -40,22 +44,22 @@ import {
   SecondaryButton,
 } from '../components/custom/buttons';
 import { NavigationBlob } from '../components/custom/navigationBlob';
-import { dt, lt } from './materialUI';
 import { useStore } from '../store/store';
 import { SCROLL_PROPS } from '../store/theme';
+import { Illustration } from '../components/custom/illustrations';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {},
   drawerList: {
-    padding: theme.spacing(5),
-    margin: theme.spacing(3),
+    width: '100vw',
+    height: '100vh',
   },
   pageNav: {
     display: 'flex',
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       display: 'none',
     },
   },
@@ -67,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     fontWeight: 500,
     color: 'inherit',
+    textAlign: 'center',
     textTransform: 'capitalize',
   },
   appBar: {
@@ -84,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     borderBottom: theme.custom.borders.brandBorder,
     [theme.breakpoints.down('sm')]: {
-      // padding: theme.spacing(0, 3),
+      padding: theme.spacing(0, 4),
     },
   },
   logo: {
@@ -137,6 +142,20 @@ const Navigation = React.memo(
       (event) => setDrawerState((drawerState) => !drawerState),
       [],
     );
+
+    const pages = [
+      { name: 'Projects', url: '#projects' },
+      { name: 'Services', url: '#services' },
+      { name: 'Skills', url: '#skills' },
+      { name: 'Blog', url: '#blog' },
+    ];
+
+    const contactEmbedded = [
+      { name: 'phone', url: '#phone', icon: 'phone' },
+      { name: 'mail', url: '#mail', icon: 'mail' },
+    ];
+
+    const search = [{ name: 'search', url: '#search', icon: 'search' }];
 
     const menuIcon = React.useCallback(
       (color) => (
@@ -246,20 +265,6 @@ const Navigation = React.memo(
       [],
     );
 
-    const pages = [
-      { name: 'Projects', url: '#projects' },
-      { name: 'Services', url: '#services' },
-      { name: 'Skills', url: '#skills' },
-      { name: 'Blog', url: '#blog' },
-    ];
-
-    const contactEmbedded = [
-      { name: 'phone', url: '#phone', icon: 'phone' },
-      { name: 'mail', url: '#mail', icon: 'mail' },
-    ];
-
-    const search = [{ name: 'search', url: '#search', icon: 'search' }];
-
     const processPages = React.useCallback(
       (name, url) => pages.map((page, i) => {
         switch (page.url[0]) {
@@ -298,6 +303,7 @@ const Navigation = React.memo(
       return (
         <div className={classes.pageNav} style={{ zIndex: 30 }}>
           {processPages(pages)}
+          <RegularButton style={{ marginLeft: 30 }} onClick={() => navigateTo('./booking')}>Start Project</RegularButton>
         </div>
       );
     }, []);
@@ -310,73 +316,177 @@ const Navigation = React.memo(
 
     // contains drawer for the menu
     // ========================================================================== //
-    // Menu
+    // Popup drawer Menu
     // ========================================================================== //
-    const list = React.useCallback(
-      () => (
+    const toggleTheme = useStore((state) => state.appContext.toggleTheme);
+    const theme = useTheme();
+    const type = useStore((state) => state.appContext.type);
+
+    const drawerMenu = React.useCallback(() => (
+      <div role="presentation" onClick={(e) => toggleDrawer(e)} onKeyDown={(e) => toggleDrawer(e)} className={classes.drawerList}>
+
         <div
-          role="presentation"
-          onClick={(e) => toggleDrawer(e)}
-          onKeyDown={(e) => toggleDrawer(e)}
-          className={classes.drawerList}
+          id="menu-header"
+          style={{
+            display: 'inline-flex', padding: 30, justifyContent: 'center', width: '100%', maxHeight: '23.5%',
+          }}
         >
-          <List>
-            {pages.map((page, index) => (
-              <ListItem
-                button
-                key={page.name}
-                onClick={(e) => {
-                  navigateTo(page.url);
-                  toggleDrawer();
-                }}
-              >
-                <Link
-                  key={page.name}
-                  to={page.url}
-                  onClick={(event) => navigateTo(page.url)}
-                  className={classes.pageLinks}
-                >
-                  {boldCurrentPage(page.name, index)}
-                </Link>
-              </ListItem>
-            ))}
-
-          </List>
+          <button
+            type="button"
+            className={classes.fab}
+            onClick={() => setDrawerState(true)}
+            style={{
+              width: 50, height: 50, color: 'white', borderRadius: '100%', background: theme.palette.text.primary/** themeprimary */ }}
+            aria-label="change theme"
+          >
+            <Close />
+          </button>
         </div>
-      ),
-      [drawerState],
-    );
 
+        <List style={{
+          height: '61.72%', width: '100%', background: theme.palette.text.primary, alignItems: 'center', display: 'inline-flex',
+        }}
+        >
+          {pages.map((page, index) => (
+            <ListItem
+              button
+              style={{ justifyContent: 'center', maxWidth: 300 }}
+              key={page.name}
+              onClick={(e) => {
+                navigateTo(page.url);
+                toggleDrawer();
+              }}
+            >
+              <Link
+                style={{
+                  color: 'white', fontSize: '2rem', textTransform: 'capitalize', display: 'inline-flex', justifyContent: 'center',
+                }}
+                className={classes.pageLinks}
+                key={page.name}
+                to={page.url}
+                onClick={(event) => navigateTo(page.url)}
+              >
+                {boldCurrentPage(page.name, index)}
+              </Link>
+            </ListItem>
+          ))}
+          <Illustration flip maxWidth={240} type="moustache" margin="60px,0px,0px,0px" />
+        </List>
+
+        <div
+          id="menu-footer"
+          style={{
+            height: '27.1%', width: '100%', gap: 60, display: 'inline-flex', justifyContent: 'center', alignItems: 'center', padding: 30,
+          }}
+        >
+
+          <div
+            id="theme-switch"
+            style={{
+              display: 'inline-flex', height: 100, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 10,
+            }}
+          >
+            <Typography gutterBottom variant="body1" color="primary" align="center">{`${type} theme`}</Typography>
+            <div
+              id="social-media"
+              style={{
+                display: 'inline-flex', width: '100%', flexDirection: 'row', alignItems: 'center', gap: 10,
+              }}
+            >
+              <button
+                type="button"
+                className={classes.fab}
+              // onClick={() => toggleTheme()}
+                style={{
+                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
+                }}
+                aria-label="change theme"
+              >
+                {(type === 'light' && <Brightness5 />) || <Brightness2 />}
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="social-media-container"
+            style={{
+              display: 'inline-flex', width: '100%', height: 100, flexDirection: 'column', maxWidth: 250, alignItems: 'center', gap: 10,
+            }}
+          >
+            <Typography gutterBottom variant="body1" color="primary" align="center">Follow me</Typography>
+            <div
+              id="social-media"
+              style={{
+                display: 'inline-flex', width: '100%', flexDirection: 'row', alignItems: 'center', gap: 10,
+              }}
+            >
+              <button
+                type="button"
+                onClick={navigateTo('./instagram')}
+                style={{
+                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
+                }}
+              />
+              <button
+                type="button"
+                onClick={navigateTo('./linkedin')}
+                style={{
+                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
+                }}
+              />
+              <button
+                type="button"
+                onClick={navigateTo('./github')}
+                style={{
+                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
+                }}
+              />
+              <button
+                type="button"
+                onClick={navigateTo('./facebook')}
+                style={{
+                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
+                }}
+              />
+              <div />
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    ), [drawerState]);
     // ========================================================================== //
     //     Drawer
     // ========================================================================== //
-    const drawerSwitch = React.useCallback(
-      () => (
-        <React.Fragment key="drawer">
-          <Button
-            onClick={(e) => {
-              toggleDrawer(e);
-            }}
-            style={{ border: 'none', padding: 0 }}
-          >
-            {menuIcon()}
-          </Button>
-          <SwipeableDrawer
+    const drawerSwitch = React.useCallback(() => (
+      <React.Fragment key="drawer">
+        <Button
+          onClick={(e) => {
+            toggleDrawer(e);
+          }}
+          style={{ border: 'none', padding: 0 }}
+        >
+          {menuIcon()}
+        </Button>
+        <SwipeableDrawer
             // isableBackdropTransition={!iOS}
-            onOpen={() => setDrawerState(true)}
-            onClose={() => setDrawerState(false)}
-            disableDiscovery={iOS}
-            anchor="right"
-            open={drawerState}
-            className={classes.drawer}
-          >
-            {list()}
-          </SwipeableDrawer>
-        </React.Fragment>
-      ),
-      [drawerState],
-    );
+          onOpen={() => setDrawerState(true)}
+          onClose={() => setDrawerState(false)}
+          disableDiscovery={iOS}
+          anchor="right"
+          open={drawerState}
+          className={classes.drawer}
+        >
+          {drawerMenu()}
+        </SwipeableDrawer>
+      </React.Fragment>
+    ),
+    [drawerState]);
 
+    // ========================================================================== //
+    //     app bar
+    // ========================================================================== //
     return (
       <>
         <Slide appear direction="down" in={!trigger}>
@@ -385,7 +495,6 @@ const Navigation = React.memo(
             position="sticky"
             className={classes.appBar}
           >
-            <Grid item sm={false} md={1} />
 
             <Grid item sm={false} md={10} style={{ width: '100%' }}>
               <Toolbar disableGutters style={{ height: '100%', display: 'flex', justifyContent: 'space-between' }}>
@@ -397,7 +506,6 @@ const Navigation = React.memo(
               </Toolbar>
             </Grid>
 
-            <Grid item sm={false} md={1} />
             {/* <NavigationBlob /> */}
           </AppBar>
         </Slide>

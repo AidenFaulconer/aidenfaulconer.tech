@@ -15,8 +15,8 @@ import {
 
 // import Bio from "../components/bio"
 // import Seo from "../components/seo"
-import Layout from '../layout/layout';
-import { RegularButton, SecondaryButton } from '../components/custom/buttons';
+import Layout from '../../layout/layout';
+import { RegularButton, SecondaryButton } from '../custom/buttons';
 
 // ========================================================================== //
 // Blog post styles

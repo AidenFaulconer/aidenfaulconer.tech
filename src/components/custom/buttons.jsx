@@ -12,12 +12,18 @@ import {
 // Button styles
 // ========================================================================== //
 
-const useStyles = makeStyles((theme) => {
+const useStyles = makeStyles((theme, selected) => {
   const transistion = theme.transitions.create(
     ['color', 'box-shadow', 'background', 'margin', 'border'],
     { duration: '0.3s', easing: 'ease-in-out' },
   );
 
+  const buttonReuse = {
+    height: 40,
+    display: 'inline-flex',
+    lineHeight: '100%',
+    alignItems: 'center',
+  };
   return ({
     // ========================================================================== //
     //     define animation names at top level
@@ -30,25 +36,32 @@ const useStyles = makeStyles((theme) => {
     // dark (in default theme)
     regularButton: {
       ...patternHover,
+      ...buttonReuse,
+      height: 40,
+      display: 'inline-flex',
+      alignItems: 'center',
       // background: ({ color }) => (color || theme.palette.primary.main),
       background: `${theme.palette.background.primary}`,
       color: theme.palette.text.secondary,
     },
     // light (in default theme)
     secondaryButton: {
+      ...buttonReuse,
+      ...patternHover,
       background: `${theme.palette.background.secondary}`,
       color: theme.palette.text.primary,
       border: `${theme.custom.borders.brandBorderSecondary}`,
-      ...patternHover,
     },
     thirdButton: {
+      ...buttonReuse,
+      ...patternHover,
       background: `${theme.palette.background.default}`,
       border: `${theme.custom.borders.brandBorderSecondary}`,
       color: `${theme.palette.text.primary.main}`,
-      ...patternHover,
     },
     selectionButton: {
       opacity: 0.6,
+      ...buttonReuse,
       border: `${theme.custom.borders.brandBorderSecondary}`,
       fill: theme.palette.text.secondary,
       background: theme.palette.text.secondary,
@@ -57,7 +70,27 @@ const useStyles = makeStyles((theme) => {
         fill: theme.palette.text.secondary,
       },
       '&::hover': {
-        background: theme.palette.text.primary,
+        background: theme.palette.text.secondary,
+        '& svg': {
+          fill: theme.palette.text.secondary,
+        },
+      },
+    },
+    selectedSelectionButton: {
+      opacity: 0.6,
+      ...buttonReuse,
+      border: `${theme.custom.borders.brandBorderSecondary}`,
+      fill: theme.palette.text.secondary,
+      background: theme.palette.text.primary,
+      '& * >': {
+        color: theme.palette.secondary,
+      },
+      justifyContent: 'flex-start',
+      '& svg': {
+        fill: theme.palette.text.secondary,
+      },
+      '&::hover': {
+        background: theme.palette.text.secondary,
         '& svg': {
           fill: theme.palette.text.secondary,
         },
@@ -260,7 +293,7 @@ export const SelectionButton = (props) => {
     <Button
       {...props}
       disableRipple
-      className={classes.selectionButton}
+      className={selected && classes.selectedSelectionButton || classes.selectionButton}
       // color="sec"
       size={size}
       variant="contained"
