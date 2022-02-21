@@ -202,8 +202,6 @@ const Layout = React.memo((props) => {
         <PageTransitionOverlay />
         {children}
 
-        {/* <TableOfContents /> */}
-        {/* <EndOfPage /> */}
         <Footer />
         <Zoom in={trigger} role="presentation">
           <Fab
@@ -228,22 +226,22 @@ const Layout = React.memo((props) => {
           {(type === 'light' && <Brightness5 />) || <Brightness2 />}
         </Fab>
         <Consolelogs />
-        {/* <Fab
-        className={classes.fab}
-        onClick={() => { toggleAudio(); }}
-        size="small"
-        color="primary"
-        style={{ bottom: '117px', right: '13px', position: 'fixed' }}
-        aria-label="scroll back to top"
-      >
-        {(ambianceState && <AudiotrackRounded />) || <AudiotrackOutlined />}
-      </Fab> */}
 
       </MaterialUI>
     </div>
   );
 }, (pre, post) => pre !== post);
 
+// {/* <Fab
+// className={classes.fab}
+// onClick={() => { toggleAudio(); }}
+// size="small"
+// color="primary"
+// style={{ bottom: '117px', right: '13px', position: 'fixed' }}
+// aria-label="scroll back to top"
+// >
+// {(ambianceState && <AudiotrackRounded />) || <AudiotrackOutlined />}
+// </Fab> */}
 const Consolelogs = () => {
   // prettier-ignore
   // eslint-ignore
@@ -404,9 +402,6 @@ const PageTransitionOverlay = (props) => {
 
   return (
     <>
-      {/* page enter fade */}
-      {/* <a.div className={classes.pageEnter} style={animatedStyles} /> */}
-      {/* page change */}
       <a.div
         className={classes.pageChange}
         style={{

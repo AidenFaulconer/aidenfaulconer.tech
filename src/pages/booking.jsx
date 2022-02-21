@@ -84,9 +84,7 @@ const BookingPage = React.memo(
     return (
       <>
         <Container maxWidth="xl">
-          {/* <Contact id="contact"/> */}
           <h1>Hello world</h1>
-          {/* write a form for me materialui */}
           <FormControl>
             <FormLabel>Gender</FormLabel>
             <RadioGroup
@@ -117,7 +115,6 @@ const BookingPage = React.memo(
           </FormControl>
         </Container>
 
-        {/* <Contact id="contact" /> */}
       </>
     );
   },

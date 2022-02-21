@@ -122,16 +122,14 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   //   {...bind()}
   //   ref={ref}
   // >
+  // {/* section 1 */}
+  // {/* <a.div style={{
+  //     position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
+  //   }}
+  //   > */}
   return (
-  // <Container maxWidth={false} style={{ border: theme.custom.brandBorder }}>
-
     <Grid container xs={12}>
 
-      {/* section 1 */}
-      {/* <a.div style={{
-          position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
-        }}
-        > */}
       <SectionWrapper>
         <SectionHeader headline="Services" />
       </SectionWrapper>
@@ -140,13 +138,6 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
         <Services id="contact" /* ref={addNode} */ />
       </SectionWrapper>
 
-      {/* </a.div> */}
-
-      {/* section 2 */}
-      {/* <a.div style={{
-          position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
-        }}
-        > */}
       <SectionWrapper>
         <SectionHeader headline="Experience" illustrationType="confidence" />
       </SectionWrapper>
@@ -159,13 +150,6 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
         <Experience id="skills" />
       </SectionWrapper>
 
-      {/* </a.div> */}
-
-      {/* section 3 */}
-      {/* <a.div style={{
-          position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
-        }}
-        > */}
       <SectionWrapper>
         <SectionHeader headline="Skills" illustrationType="moustache" />
       </SectionWrapper>
@@ -174,14 +158,6 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
         <Languages id="languages" />
       </SectionWrapper>
 
-      {/* <SectionWrapper>
-        <SectionHeader headline="Blog" illustrationType="moustache" />
-      </SectionWrapper>
-
-      <SectionWrapper>
-        <SectionHeader headline="Contact me" illustrationType="genie" />
-      </SectionWrapper> */}
-      {/* </a.div> */}
     </Grid>
 
   // </Container>
@@ -239,27 +215,6 @@ const IndexPage = ({
   return (
     <>
       <ScrollContainer ref={addNode} />
-      {/* <Grid item md={1} xs={false} /> */}
-      {/* <Grid item md={1} xs={false} /> */}
-      {/* <Grid container className={classes.contentContainer}> */}
-
-      {/* section 1 */}
-
-      {/* <Grid item xs={12} md={5} style={{ paddingBottom: 20, margin: 'auto' }}>
-        <Typography
-          align="left"
-          gutterBottom
-          style={{ marginBottom: 25, marginTop: 80 }}
-          variant="h2"
-        >
-          Read on!
-        </Typography>
-        <Typography gutterBottom align="left">
-          Its an exciting time to be a software developer. Read some of the
-          latest news and articles below about design, business, and the
-          future of software development.
-        </Typography>
-      </Grid> */}
     </>
   );
 };

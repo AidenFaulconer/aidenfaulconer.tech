@@ -1,5 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
-import { Link, graphql, StaticQuery } from 'gatsby';
+import {
+  Link, graphql, StaticQuery, useStaticQuery,
+} from 'gatsby';
 import Image from 'gatsby-image';
 import parse from 'html-react-parser';
 import stickybits from 'stickybits';
@@ -16,7 +18,7 @@ import {
 // import Bio from "../components/bio"
 // import Seo from "../components/seo"
 import Layout from '../layout/layout';
-import { RegularButton, SecondaryButton } from '../components/custom/buttons';
+import { RegularButton, SecondaryButton } from '../custom/buttons';
 
 // ========================================================================== //
 // Blog post styles
@@ -164,9 +166,11 @@ const useStyles = makeStyles((theme) => {
 // ========================================================================== //
 // Blog post template
 // ========================================================================== //
-const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => {
+export default ({ data: { post = {}, next = {}, previous = {} } }) => {
   const classes = useStyles();
   const theme = useTheme();
+  console.log(data);
+
 
   useEffect(() => {
     stickybits('#stickySideBar', { usePlaceholder: true });
@@ -207,38 +211,21 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
           <SecondaryButton size="large">
             {parse(title)}
           </SecondaryButton>
-          {/* ← */}
-          {/* {' '} */}
         </Link>
       </Grid>
     );
   }, []);
+  // {/* ← */}
+  // {/* table of contents if one exists */}
+  // {/* {(tableOfContents && tableOfContents.items.length > 1) && (
+  //   <Grid item xs={2} id="#stickySideBar" className={classes.blogSideBar}>
+  //     <TableOfContent toc={tableOfContents} />
+  //   </Grid>
+  // ) } */}
 
   return (
     <>
-      {/* <div className={classes.blogHeroUnderlay}>
-        <img src={template} alt="welcome to the blog graphic" />
-        <svg
-          height="140"
-          viewBox="0 0 1920 140"
-          className={classes.heroCutout}
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0 139.993C0 139.993 584.204 139.979 959.548 139.994C1335.24 140.008 1920 139.993 1920 139.993V47.3841C1920 47.3841 1335.51 -0.0173798 959.548 0C583.938 0.0173645 0 47.3841 0 47.3841V139.993Z"
-            fill="#E1F2D4"
-          />
-        </svg>
-      </div> */}
-
       <Grid container className={classes.blogContainer} spacing={12} alignContent="center" justifyContent="flex-start" alignItems="center">
-
-        {/* table of contents if one exists */}
-        {/* {(tableOfContents && tableOfContents.items.length > 1) && (
-          <Grid item xs={2} id="#stickySideBar" className={classes.blogSideBar}>
-            <TableOfContent toc={tableOfContents} />
-          </Grid>
-        ) } */}
 
         <Grid item md={1} xs={false} />
         <Grid item className={classes.blogPost} md={10} xs={12}>
@@ -252,7 +239,6 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
 
               <p>{post.date}</p>
 
-              {/* if we have a featured image for this post let's display it */}
               {thumbnail && (
                 <div className={classes.blogPostFeaturedImage} id="#top">
                   <Image
@@ -270,17 +256,11 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
 
             <hr />
 
-            <footer>
-              {/* <Bio /> */}
-            </footer>
+            <footer />
           </article>
         </Grid>
         <Grid item md={1} xs={false} />
 
-        {/* will include comments, likes, subscribe to newsletter, etc */}
-        {/* <Grid item xs={1} id="#stickySideBar" className={classes.blogSideBar}>
-          Social Media
-        </Grid> */}
       </Grid>
 
       <Grid container xs={12} spacing={0} tyles={{ marginBottom: '100px' }} className={classes.otherBlogPosts} alignContent="flex-end" justifyContent="flex-start" alignItems="baseline">
@@ -288,12 +268,80 @@ const BlogPostTemplate = ({ data: { previous = {}, next = {}, post = {} } }) => 
         {next && blogSuggestionLink(next, 'next')}
       </Grid>
 
-      {/* <div className={classes.blogHeroUnderlay}>
-        <img src={blogHeroImage} />
-      </div> */}
     </>
   );
 };
+
+  // ========================================================================== //
+  // graphql blog query
+  // ========================================================================== //
+  const { previous, next, post } = await graphql`
+    query _ProjectPost(
+      # these variables are passed in via createPage.pageContext in gatsby-node.js
+      $id: String!
+      $previousPostId: String
+      $nextPostId: String
+    ) {
+      # selecting the current post by id
+      post: allMarkdownRemark(filter: {id: { eq: $id }}) {
+          edges {
+            node {
+            excerpt
+            fileAbsolutePath
+            html
+            tableOfContents
+            timeToRead
+            id
+
+            frontmatter {
+                title
+                metaDescription
+                date(formatString: "MMMM DD, YYYY")
+                thumbnail
+              }
+            }
+          }
+        }
+
+      # this gets us the previous post by id (if it exists)
+      previous: allMarkdownRemark(filter: {id: { eq: $previousPostId }}) {
+      edges {
+        node {
+        excerpt
+        fileAbsolutePath
+        tableOfContents
+        timeToRead
+        id
+
+        frontmatter {
+            title
+            metaDescription
+            date(formatString: "MMMM DD, YYYY")
+            thumbnail
+            }
+        }
+    }
+    }
+
+    # this gets us the next post by id (if it exists)
+    next: allMarkdownRemark(filter: {id: { eq: $nextPostId }}) {
+      edges {
+      node {
+      excerpt
+      fileAbsolutePath
+      tableOfContents
+      timeToRead
+      id
+
+      frontmatter {
+          title
+          metaDescription
+          date(formatString: "MMMM DD, YYYY")
+          thumbnail
+          }
+      }
+    }
+  }}`;
 
 // ========================================================================== //
 // Table of contents
@@ -319,77 +367,3 @@ const TableOfContent = ({ toc, className }) => (
     {renderTableOfContentItems(toc.items)}
   </aside>
 );
-
-// ========================================================================== //
-// graphql blog query
-// ========================================================================== //
-export const pageQuery = graphql`
-query ProjectPost(
-  # these variables are passed in via createPage.pageContext in gatsby-node.js
-  $id: String!
-  $previousPostId: String
-  $nextPostId: String
-) {
-  # selecting the current post by id
-  post: allMarkdownRemark(filter: {id: { eq: $id }}) {
-      edges {
-        node {
-        excerpt
-        fileAbsolutePath
-        html
-        tableOfContents
-        timeToRead
-        id
-
-        frontmatter {
-            title
-            metaDescription
-            date(formatString: "MMMM DD, YYYY")
-            thumbnail
-          }
-        }
-      }
-    }
-
-  # this gets us the previous post by id (if it exists)
-  previous: allMarkdownRemark(filter: {id: { eq: $previousPostId }}) {
-   edges {
-    node {
-    excerpt
-    fileAbsolutePath
-    tableOfContents
-    timeToRead
-    id
-
-    frontmatter {
-        title
-        metaDescription
-        date(formatString: "MMMM DD, YYYY")
-        thumbnail
-        }
-    }
-}
-}
-
-  # this gets us the next post by id (if it exists)
-  next: allMarkdownRemark(filter: {id: { eq: $nextPostId }}) {
-    edges {
-    node {
-    excerpt
-    fileAbsolutePath
-    tableOfContents
-    timeToRead
-    id
-
-    frontmatter {
-        title
-        metaDescription
-        date(formatString: "MMMM DD, YYYY")
-        thumbnail
-        }
-    }
-}
-}
-}`;
-
-export default BlogPostTemplate;

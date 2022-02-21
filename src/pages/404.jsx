@@ -5,7 +5,7 @@ import Layout from '../layout/layout';
 
 // import { four0four } from '../../static/assets/svg/hardcoded-svgs';
 
-export default React.memo(({ }) => (
+export default React.memo(() => (
   <Layout>
     <Helmet>
       <title>Page not found</title>
@@ -14,7 +14,6 @@ export default React.memo(({ }) => (
       textAlign: 'center', padding: '5vh 0', lineHeight: '1.5', display: 'flex', alignItems: 'center', verticalAlign: 'middle',
     }}
     >
-      {/* <div dangerouslySetInnerHTML={{ __html: four0four }} /> */}
       <svg width="466" height="466" viewBox="0 0 466 466" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="233.297" cy="232.738" r="232" fill="#5BDFF1" />
         <circle cx="233.297" cy="232.738" r="232" fill="#6EE7F7" />

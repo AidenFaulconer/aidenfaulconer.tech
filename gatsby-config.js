@@ -21,9 +21,9 @@ const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE;
 module.exports = {
   flags: {
     // PRESERVE_WEBPACK_CACHE: true,
-    // GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
+    GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
     // FAST_DEV: true,
-    // DEV_SSR: true,
+    DEV_SSR: true,
     // PARALLEL_SOURCING: true,
   },
   /* Your site config here */

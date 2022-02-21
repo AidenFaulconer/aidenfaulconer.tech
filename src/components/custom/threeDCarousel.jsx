@@ -367,7 +367,6 @@ export const ThreeDCarousel = ({
           width: '100%', height: 50, display: 'flex', justifyContent: 'center', alignItems: 'center',
         }}
         >
-          {/* carousel nav */}
           <ThirdButton
             style={{ transform: 'rotate(180deg)' }}
             onClick={(e) => {
@@ -405,10 +404,8 @@ const ItemDisplay = ({
       className={classes.itemDisplay}
     >
 
-      {/* carousel */}
       {children}
 
-      {/* row 1 title */}
       <Grid item xs={6} style={{ maxHeight: 150, borderRight: theme.custom.borders.brandBorder }}>
         <Typography
           color="inherit"
@@ -442,7 +439,6 @@ const ItemDisplay = ({
         {` ${category}`}
       </Grid>
 
-      {/* row 2 details / carousel nav */}
       <Grid
         item
         xs={12}
@@ -451,7 +447,6 @@ const ItemDisplay = ({
         }}
       >
 
-        {/* description */}
         <Grid
           item
           xs={12}

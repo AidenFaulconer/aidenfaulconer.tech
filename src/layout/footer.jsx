@@ -114,8 +114,6 @@ export default React.memo(({ children }) => {
     [],
   );
 
-  
-
   const makeCall = useCallback(
     () => typeof window !== 'undefined' && window.open('tel:+61-475-565-709'),
     [],
@@ -182,7 +180,6 @@ export default React.memo(({ children }) => {
               >
                 Copyright © 2020 @ Aiden Faulconer
               </Typography>
-              {/* <SecondaryButton size="small">Call me</SecondaryButton> */}
             </Grid>
           </Grid>
 
@@ -191,3 +188,4 @@ export default React.memo(({ children }) => {
     </footer>
   );
 });
+// {/* <SecondaryButton size="small">Call me</SecondaryButton> */}

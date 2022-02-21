@@ -506,7 +506,6 @@ const Navigation = React.memo(
               </Toolbar>
             </Grid>
 
-            {/* <NavigationBlob /> */}
           </AppBar>
         </Slide>
       </>

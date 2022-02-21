@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-throw-literal */
 /* eslint-disable no-plusplus */
-const path = require('path');
+const pth = require('path');
 const chunk = require('lodash/chunk');
 
 const { graphql, Reporter } = require('gatsby');
@@ -60,7 +60,7 @@ async function createBlogPostArchive({ edges, gatsbyUtilities }) {
         path: getPagePath(pageNumber),
 
         // use the blog post archive template as the page component
-        component: path.resolve('./src/templates/blog-post-archive.jsx'),
+        component: pth.resolve('./src/templates/blog-post-archive.jsx'),
 
         // `context` is available in the template as a prop and
         // as a variable in GraphQL.
@@ -141,7 +141,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     query blogBuilderQuery {
       allMarkdownRemark(
         filter: {frontmatter: {catagory: {regex: "/${regex}/"}}}
-        limit: 1000
+        limit: 5000
       ) {
         edges {
           node {
@@ -177,26 +177,27 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     // ========================================================================== //
     //     Build all the pages
     // ========================================================================== //
-    reporter.warn(JSON.stringify(result, null, 2));
 
-    result.data.allMarkdownRemark.edges.forEach((edge, i) => {
+    reporter.warn(JSON.stringify(result, null, 2));
+    reporter.warn(pth.normalize(pth.resolve(__dirname, `./templates/${template}`)));
+
+    if (result !== null) {
+      result.data.allMarkdownRemark.edges.forEach((edge, i) => {
       // reporter.warn(JSON.stringify(edge, null, 2));
-      const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
-      try {
-        return;
+        const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
         createPage({
           path,
-          component: template,
+          component: pth.resolve(pth.normalize(__dirname, `./templates/${template}`)),
           context: {
             id,
             nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
             previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
           },
         });
-      } catch (e) {
-        return reporter.warn(`Error creating page for ${path}`, e);
-      }
-    });
+      });
+    } else {
+      reporter.warn(`queried data is null! for a ${regex}page${JSON.stringify(result, null, 2)}`);
+    }
   }
 
   // ========================================================================== //
@@ -204,12 +205,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   // ========================================================================== //
   await buildPageFromQuery(
     'b|Blog',
-    path.resolve(__dirname, 'src/templates/blog-post.jsx'),
+    'project-post.jsx',
   ); // build blog pages
 
   await buildPageFromQuery(
     'P|project',
-    path.resolve(__dirname, 'src/templates/project-post.jsx'),
+    'project-post.jsx',
   ); // build project pages
 };
 
@@ -234,7 +235,7 @@ exports.onCreateWebpackConfig = ({
         {
           test: /\.(pdf|gif|svg)$/,
           use: 'file-loader?name=[path][name].[ext]',
-          include: path.resolve(__dirname, 'static/assets'),
+          include: pth.resolve(__dirname, 'static/assets'),
         },
         // { test: /\.(woff|woff2|eot|ttf|otf|png|jp(e*)g|svg|gif|glb|gltf)$/i, use: 'file-loader' },
         // { test: /\.(bin)$/, use: 'file-loader' },
