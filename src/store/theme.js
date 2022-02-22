@@ -2,14 +2,7 @@
 /* eslint-disable no-multi-assign */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-bitwise */
-// This is where I define elements of my theme.
-import {
-  createMuiTheme,
-  createStyles,
-  createTheme,
-  responsiveFontSizes,
-  withStyles,
-} from '@material-ui/core';
+// This is where I define elements of my theme. 
 
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import createSpacing from '@material-ui/core/styles/createSpacing';

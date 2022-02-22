@@ -3,7 +3,7 @@ import {
   createMuiTheme, CssBaseline, StylesProvider, MuiThemeProvider, NoSsr,
 } from '@material-ui/core';
 import {
-  dt, lt, useStore, LIGHT_THEME, createTheme,
+  dt, lt, useStore, LIGHT_THEME, afCreateTheme,
 } from '../store/store';
 
 // import { dt, lt, valtioState } from "../store/store-wrapper"
