@@ -131,7 +131,8 @@ const useStore = create((set) =>
           // alert(newSelectedData.pageLink);
           // navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
           // navigate to another page with @react/router
-          navigate(newSelectedData.pageLink, { replace: true });
+          navigate(newSelectedData.pageLink, { replace: true, state: 'forceUpdate' });
+           
         },
         // overritten by page transition overlay
         triggerPageChange: () => { },

@@ -447,7 +447,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
           //   background: theme.palette.text.secondary,
           color: theme.palette.text.primary,
           padding: theme.spacing(4),
-          borderLeft: theme.custom.borders.brandBorder,
+          // borderLeft: theme.custom.borders.brandBorder,
         }}
       >
         {/* {JSON.stringify(selected, null, 2)} */}

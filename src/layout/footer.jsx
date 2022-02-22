@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default React.memo(({ children }) => {
+export default ({ children }) => {
   // const theme = useTheme();
   const classes = useStyles();
   const pages = [
@@ -187,5 +187,5 @@ export default React.memo(({ children }) => {
       </Grid>
     </footer>
   );
-});
+};
 // {/* <SecondaryButton size="small">Call me</SecondaryButton> */}

@@ -89,44 +89,44 @@ export const objectTokenizer = (object, parameter) => JSON.stringify(object, nul
   (match, p1) => `"${parameter[p1]}`,
 );
 
-function generateNoisePng(
-  width,
-  height,
-  seed,
-  octaves,
-  persistence,
-  lacunarity,
-  scale,
-) {
-  const noise = new SimplexNoise(seed);
-  const size = width * height * 4;
-  const data = new Uint8Array(size);
-  for (let i = 0; i < size; i += 4) {
-    const x = (i / 4) % width;
-    const y = ~~(i / 4 / width);
-    let value = 0;
-    for (let j = 0; j < octaves; j++) {
-      const frequency = Math.pow(2, j);
-      const amplitude = Math.pow(persistence, j);
-      value
-        += noise.noise2D(x * scale * frequency, y * scale * frequency) * amplitude;
-    }
-    value = value * 128 + 128;
-    data[i] = data[i + 1] = data[i + 2] = value;
-    data[i + 3] = 255;
-  }
-  // color the noise
-  // const canvas = document.createElement('canvas');
-  // canvas.width = width;
-  // canvas.height = height;
-  // const context = canvas.getContext('2d');
-  // const imageData = context.createImageData(width, height);
-  // imageData.data.set(data);
-  // context.putImageData(imageData, 0, 0);
-  // return canvas.toDataURL();
+// function generateNoisePng(
+//   width,
+//   height,
+//   seed,
+//   octaves,
+//   persistence,
+//   lacunarity,
+//   scale,
+// ) {
+//   const noise = new SimplexNoise(seed);
+//   const size = width * height * 4;
+//   const data = new Uint8Array(size);
+//   for (let i = 0; i < size; i += 4) {
+//     const x = (i / 4) % width;
+//     const y = ~~(i / 4 / width);
+//     let value = 0;
+//     for (let j = 0; j < octaves; j++) {
+//       const frequency = Math.pow(2, j);
+//       const amplitude = Math.pow(persistence, j);
+//       value
+//         += noise.noise2D(x * scale * frequency, y * scale * frequency) * amplitude;
+//     }
+//     value = value * 128 + 128;
+//     data[i] = data[i + 1] = data[i + 2] = value;
+//     data[i + 3] = 255;
+//   }
+//   // color the noise
+//   // const canvas = document.createElement('canvas');
+//   // canvas.width = width;
+//   // canvas.height = height;
+//   // const context = canvas.getContext('2d');
+//   // const imageData = context.createImageData(width, height);
+//   // imageData.data.set(data);
+//   // context.putImageData(imageData, 0, 0);
+//   // return canvas.toDataURL();
 
-  return `url(data:image/png;base64,${typeof window !== 'undefined' && btoa(data)})`;
-}
+//   return `url(data:image/png;base64,${typeof window !== 'undefined' && btoa(data)})`;
+// }
 
 // ========================================================================== //
 // Font scaling

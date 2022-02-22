@@ -49,8 +49,7 @@ import { Tween } from 'gsap/gsap-core';
 import { useBreakpoints } from 'react-use-breakpoints';
 import { clamp, degToRad } from 'three/src/math/MathUtils';
 import { EffectComposer, SSAO, Bloom } from '@react-three/postprocessing';
-import { KernelSize, BlendFunction } from 'postprocessing';
-import { navigate } from 'gatsby-link';
+import { KernelSize, BlendFunction } from 'postprocessing'; 
 // import { SVGLoader } from 'three/jsm/loaders/SVGLoader.js';
 import cube_import from '../../../static/assets/gameModels/cube.glb';
 

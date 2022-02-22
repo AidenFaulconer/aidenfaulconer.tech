@@ -8,8 +8,10 @@ const chunk = require('lodash/chunk');
 const { graphql, Reporter } = require('gatsby');
 
 const cheerio = require('cheerio');
-//  dd() will prettily dump to the terminal and kill the process
+// const projectTemplate = require('./src/components/template-components/project-template').default;
+
 // const { dd } = require('dumper.js');
+//  dd() will prettily dump to the terminal and kill the process
 
 /**
  * This function creates all the individual blog pages in this site
@@ -60,7 +62,8 @@ async function createBlogPostArchive({ edges, gatsbyUtilities }) {
         path: getPagePath(pageNumber),
 
         // use the blog post archive template as the page component
-        component: pth.resolve('./src/templates/blog-post-archive.jsx'),
+        // component: pth.resolve('./src/templates/blog-post-archive.jsx'),
+        component: pth.resolve('./src/components/templatecomponents/projecttemplate'),
 
         // `context` is available in the template as a prop and
         // as a variable in GraphQL.
@@ -168,31 +171,33 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     }
   `);
 
+    // ========================================================================== //
     // Handle errors
+    // ========================================================================== //
     if (result.errors) {
-      reporter.panicOnBuild('Error while running GraphQL query.');
-      return;
+      // reporter.panicOnBuild('Error while running GraphQL query.');
+      result.errors.forEach((e) => reporter.error(e.toString()));
+      // return Promise.reject(result.errors);//causes errors in node.js
     }
 
     // ========================================================================== //
     //     Build all the pages
     // ========================================================================== //
-
-    reporter.warn(JSON.stringify(result, null, 2));
-    reporter.warn(pth.normalize(pth.resolve(__dirname, `./templates/${template}`)));
-
+    // reporter.warn(JSON.stringify(result, null, 2));
+    return;
+    reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
     if (result !== null) {
       result.data.allMarkdownRemark.edges.forEach((edge, i) => {
-      // reporter.warn(JSON.stringify(edge, null, 2));
         const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
+
         createPage({
-          path,
-          component: pth.resolve(pth.normalize(__dirname, `./templates/${template}`)),
           context: {
             id,
             nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
             previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
           },
+          component: pth.resolve('src/components/template-components/project-template.jsx'),
+          path,
         });
       });
     } else {
@@ -200,17 +205,18 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     }
   }
 
+  // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
   // ========================================================================== //
   //   Build pages
   // ========================================================================== //
   await buildPageFromQuery(
     'b|Blog',
-    'project-post.jsx',
+    pth.resolve(__dirname, 'project-post.jsx'),
   ); // build blog pages
 
   await buildPageFromQuery(
     'P|project',
-    'project-post.jsx',
+    pth.resolve(__dirname, 'project-post.jsx'),
   ); // build project pages
 };
 
@@ -237,12 +243,26 @@ exports.onCreateWebpackConfig = ({
           use: 'file-loader?name=[path][name].[ext]',
           include: pth.resolve(__dirname, 'static/assets'),
         },
+        // material-ui is faulty on server side, which f**s up the build so, dont bother with it, alternatively use npm install @loadable/component, import loadable from '@loadable/component' => loadable(()=> import(problematicComponent)) **layout in this case/materialui**
+        // { causes react error 130, so this wont work on server side, which defeats the point of debugging it altogether **ugh**
+        //   test: /materialUI.jsx/,
+        //   use: loaders.null(),
+        // },
         // { test: /\.(woff|woff2|eot|ttf|otf|png|jp(e*)g|svg|gif|glb|gltf)$/i, use: 'file-loader' },
         // { test: /\.(bin)$/, use: 'file-loader' },
         // { test: /\.(png|jpg|gif|svg)$/, type: 'asset/resource' },
         // {test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/, type: 'asset/resource' },
+        // modules: [path.resolve(__dirname, "src"), "node_modules"],//instead of ../../components => components/whatever.jsx
       ],
     },
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // __DEVELOPMENT__: stage === `develop` || stage === `develop-html`,
+    plugins: [
+      // plugins.define({
+      //   '@babel/plugin-syntax-top-level-await'// https://babeljs.io/docs/en/babel-plugin-syntax-top-level-await
+      // }),
+      // '@babel/plugin-syntax-top-level-await', // https://babeljs.io/docs/en/babel-plugin-syntax-top-level-await
+    ],
     // externals: [ nodeExternals() ],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],

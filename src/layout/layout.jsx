@@ -1,5 +1,5 @@
 import React, {
-  Component, useEffect, useState, useCallback, useMemo, Suspense,
+  Component, useEffect, useState, useCallback, useMemo, Suspense, lazy,
 } from 'react';
 
 import { useCookies } from 'react-cookie';
@@ -20,6 +20,7 @@ import {
   Zoom,
   Backdrop,
   makeStyles,
+  Box,
 } from '@material-ui/core';
 // import { logo } from '../../../static/svgs/hardcoded-svgs';
 import PropTypes from 'prop-types';
@@ -38,7 +39,9 @@ import { HeroHeader } from './heroHeader';
 import { useStore } from '../store/store';
 import { hexToAlpha } from '../store/theme';
 import ambianceSound from '../../static/assets/portfolio/ambiance.mp3';
+
 import MaterialUI from './materialUI';
+// const MaterialUI = lazy(() => import('./materialUI'));// fix's problems with material-ui at build time **creates react error 294**
 
 // Platform knowledge is in here ...
 
@@ -188,6 +191,10 @@ const Layout = React.memo((props) => {
 
   //   setPageChanged(false);
   // }, [selectedIndex]);
+
+  // we cant ssr the entire app because gatsby-plugin-material-ui does not deal with window undefined, really stupid on the plugin creators behalf, it is a problem with gatsby-plugin-material-ui
+  // use
+  // if (typeof window === 'undefined') return null;
 
   return (
     <div style={{
@@ -398,12 +405,26 @@ const PageTransitionOverlay = (props) => {
       },
     },
   }));
-  // console.log(useStore((state) => state));
-
+  // console.log(useStore((state) => state)); 
   return (
     <>
-      <a.div
-        className={classes.pageChange}
+      <a.Box
+        // className={classes.pageChange}
+        sx={{
+          position: 'absolute',
+    display: 'initial',
+    background: theme.palette.text.secondary,
+    width: '100vw',
+    height: '100vh',
+    transform: 'skew(10deg)',
+    overflow: 'hidden',
+    top: '0px',
+    left: '-115vw',
+    opacity: 1,
+    zIndex: 30,
+    visibility: 'visible',
+    pointerEvents: 'all',
+        }}
         style={{
           background,
           left,

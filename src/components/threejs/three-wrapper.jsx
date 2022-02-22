@@ -26,10 +26,11 @@ import {
   Backdrop, Box, LinearProgress, makeStyles, Typography, useTheme,
 } from '@material-ui/core';
 import { Html, useProgress } from '@react-three/drei';
-import Canvas from './three-portfolio';
 import { forceUpdate, useStaticMethods, reRenderOnVariables } from '../util/customHooks';
 import { useStore } from '../../store/store';
 import { DesignWorld } from '../custom/illustrations';
+
+const Canvas = lazy(() => import('./three-portfolio'));// prevents request is not defined in build-time/ssr rendering from loading gltf models, three.js simply isnt buddies with server-side-rendering it seems
 
 // reference for the data passed into this 3d experience
 export const textureRefs = [
@@ -146,7 +147,7 @@ const ThreeWrapper = React.memo(
         <a.div className={classes.threeWrapper}>
           {loadingScreen()}
           <Suspense fallback={<></>}>
-            <Canvas x={x} setColor={set} />
+            {/* <Canvas x={x} setColor={set} /> */}
           </Suspense>
         </a.div>
       </>

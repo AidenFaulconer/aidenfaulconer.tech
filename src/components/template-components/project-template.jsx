@@ -6,7 +6,7 @@ import Image from 'gatsby-image';
 import parse from 'html-react-parser';
 import stickybits from 'stickybits';
 import {
-  makeStyles, Box, Grid, useTheme,
+  makeStyles, Grid, useTheme,
 } from '@material-ui/core';
 
 // We're using Gutenberg so we need the block styles
@@ -17,7 +17,6 @@ import {
 
 // import Bio from "../components/bio"
 // import Seo from "../components/seo"
-import Layout from '../layout/layout';
 import { RegularButton, SecondaryButton } from '../custom/buttons';
 
 // ========================================================================== //
@@ -169,8 +168,6 @@ const useStyles = makeStyles((theme) => {
 export default ({ data: { post = {}, next = {}, previous = {} } }) => {
   const classes = useStyles();
   const theme = useTheme();
-  console.log(data);
-
 
   useEffect(() => {
     stickybits('#stickySideBar', { usePlaceholder: true });
@@ -179,10 +176,10 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
   //   alert(JSON.stringify(previous, null, 2));
   const {
     path, title, metaDescription, thumbnail, template, date, catagory,
-  } = post.edges[0].node.frontmatter;
+  } = post?.edges[0]?.node?.frontmatter;
   const {
     html, excerpt, tableOfContents, timeToRead,
-  } = post.edges[0].node;
+  } = post?.edges[0]?.node;
 
   // ========================================================================== //
   //   Blog suggestions
@@ -215,6 +212,7 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
       </Grid>
     );
   }, []);
+
   // {/* ← */}
   // {/* table of contents if one exists */}
   // {/* {(tableOfContents && tableOfContents.items.length > 1) && (
@@ -237,7 +235,7 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
             <header>
               <h1 itemProp="headline">{parse(title || '')}</h1>
 
-              <p>{post.date}</p>
+              <p>{post?.date}</p>
 
               {thumbnail && (
                 <div className={classes.blogPostFeaturedImage} id="#top">
@@ -250,7 +248,7 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
               )}
             </header>
 
-            {!!post.content && (
+            {!!post?.content && (
               <section itemProp="articleBody">{parse(html || '')}</section>
             )}
 
@@ -272,10 +270,31 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
   );
 };
 
-  // ========================================================================== //
-  // graphql blog query
-  // ========================================================================== //
-  const { previous, next, post } = await graphql`
+// ========================================================================== //
+// graphql blog query
+// ========================================================================== //
+
+// export const pageQuery = graphql`
+//   query WordPressPostArchive($offset: Int!, $postsPerPage: Int!) {
+//     posts: allWpPost(
+//       sort: { fields: [date], order: DESC }
+//       limit: $postsPerPage
+//       skip: $offset
+//     ) {
+//       nodes {
+//         excerpt
+//         uri
+//         date(formatString: "MMMM DD, YYYY")
+//         title
+//         excerpt
+//       }
+//     }
+//   }
+// `;
+
+
+// this page query is not run 
+export const pageQuery = graphql`
     query _ProjectPost(
       # these variables are passed in via createPage.pageContext in gatsby-node.js
       $id: String!
