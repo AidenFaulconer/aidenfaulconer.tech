@@ -20,7 +20,6 @@ import {
   Zoom,
   Backdrop,
   makeStyles,
-  Box,
 } from '@material-ui/core';
 // import { logo } from '../../../static/svgs/hardcoded-svgs';
 import PropTypes from 'prop-types';
@@ -405,26 +404,12 @@ const PageTransitionOverlay = (props) => {
       },
     },
   }));
-  // console.log(useStore((state) => state)); 
+  // console.log(useStore((state) => state));
+
   return (
     <>
-      <a.Box
-        // className={classes.pageChange}
-        sx={{
-          position: 'absolute',
-    display: 'initial',
-    background: theme.palette.text.secondary,
-    width: '100vw',
-    height: '100vh',
-    transform: 'skew(10deg)',
-    overflow: 'hidden',
-    top: '0px',
-    left: '-115vw',
-    opacity: 1,
-    zIndex: 30,
-    visibility: 'visible',
-    pointerEvents: 'all',
-        }}
+      <a.div
+        className={classes.pageChange}
         style={{
           background,
           left,

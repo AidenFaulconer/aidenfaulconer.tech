@@ -151,6 +151,7 @@
     "dev": "cross-env NODE_ENV=development pnpm run develop --host 0.0.0.0",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
+    "muiV5": "npx @mui/codemod v5.0.0/jss-to-styled /src/* && npx @mui/codemod v5.0.0/preset-safe /src/*",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --fix src/**/*.{js,jsx,ts,tsx}",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
