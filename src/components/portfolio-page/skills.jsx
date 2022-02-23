@@ -1,4 +1,5 @@
 import {
+  Box,
   Grid, Typography, useTheme,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
@@ -20,7 +21,7 @@ import lgImage from '../../../static/assets/blog/uc.png';
 import xprtImage from '../../../static/assets/blog/xperthubb.png';
 import ajImage from '../../../static/assets/blog/aj.png';
 
-import { ThreeDCarousel } from '../custom/threeDCarousel';
+import ThreeDCarousel from '../custom/threeDCarousel';
 
 // ========================================================================== //
 // SVGS
@@ -48,279 +49,59 @@ export const anyLanguageAnyFrameworkSpinText = `
 // ========================================================================== //
 // Shifting type
 // ========================================================================== //
-const TypePREFIX = 'Type';
 
-const typeClasses = {
-  root: `${TypePREFIX}-root`,
-  regularButton: `${TypePREFIX}-regularButton`,
-  secondaryButton: `${TypePREFIX}-secondaryButton`,
-  thirdButton: `${TypePREFIX}-thirdButton`,
-  selectionButton: `${TypePREFIX}-selectionButton`,
-  selectedSelectionButton: `${TypePREFIX}-selectedSelectionButton`,
-  dropDownButton: `${TypePREFIX}-dropDownButton`,
-  inputButton: `${TypePREFIX}-inputButton`,
-  socialMediaPopup: `${TypePREFIX}-socialMediaPopup`,
-};
-const useSlidingText = styled('div')((theme) => ({
-  '@keyframes animatedType': {
-    from: {
-      backgroundPosition: '0 0',
-    },
-    to: {
-      backgroundPosition: '100% 0',
-    },
-  },
-  [`& .${typeClasses.movingType}`]: {
-    position: 'absolute',
-    display: 'flex',
-    // justifyContent: 'space-evenly',
-    // flexDirection: 'column',
-    // minHeight: '90vh',
-    margin: 'auto',
-    // opacity: 0.3,
-    minWidth: '200vw',
-    width: '200%',
-    left: '-50%',
-    opacity: 0.5,
-    height: '70%',
-    zIndex: '10 !important',
-  },
-  [`& .${typeClasses.type}`]: {
-    display: 'inline-block',
-    height: '100%',
-    fill: theme.palette.text.primary,
-    // backgroundColor: theme.palette.text.primary,
-    // height: '100%',
-    width: '100%',
-    animation: '$animatedType 24s linear infinite alternate',
-    // tilt look
-    margin: 'auto',
-    // transform: 'rotate3d(116, -17, 28, 58deg)',
-    transform: 'rotate3d(31, -17, 28, 58deg)',
-    backgroundImage: ({ svg }) => svgEncodeBaseSixtyFour(`${svg}`),
-  },
-}));
+// const useSlidingText = styled('div')((theme) => ({
+//   '@keyframes animatedType': {
+//     from: {
+//       backgroundPosition: '0 0',
+//     },
+//     to: {
+//       backgroundPosition: '100% 0',
+//     },
+//   },
+//   [`& .${typeClasses.movingType}`]: {
+//     position: 'absolute',
+//     display: 'flex',
+//     // justifyContent: 'space-evenly',
+//     // flexDirection: 'column',
+//     // minHeight: '90vh',
+//     margin: 'auto',
+//     // opacity: 0.3,
+//     minWidth: '200vw',
+//     width: '200%',
+//     left: '-50%',
+//     opacity: 0.5,
+//     height: '70%',
+//     zIndex: '10 !important',
+//   },
+//   [`& .${typeClasses.type}`]: {
+//     display: 'inline-block',
+//     height: '100%',
+//     fill: theme.palette.text.primary,
+//     // backgroundColor: theme.palette.text.primary,
+//     // height: '100%',
+//     width: '100%',
+//     animation: '$animatedType 24s linear infinite alternate',
+//     // tilt look
+//     margin: 'auto',
+//     // transform: 'rotate3d(116, -17, 28, 58deg)',
+//     transform: 'rotate3d(31, -17, 28, 58deg)',
+//     backgroundImage: ({ svg }) => svgEncodeBaseSixtyFour(`${svg}`),
+//   },
+// }));
 
-export const MovingType = ({ svg }) => {
-  const classes = useSlidingText({ svg });
-  return (
-    <div className={classes.movingType}>
-      <span className={classes.type} />
-    </div>
-  );
-};
+// export const MovingType = ({ svg }) => {
+//   const classes = useSlidingText({ svg });
+//   return (
+//     <div className={classes.movingType}>
+//       <span className={classes.type} />
+//     </div>
+//   );
+// };
 
 // ========================================================================== //
 //  Index page styles
 // ========================================================================== //
-const PREFIX = 'Skills';
-
-const classes = {
-  section: `${PREFIX}-section`,
-  carouselSection: `${PREFIX}-carouselSection`,
-  selectionMenu: `${PREFIX}-selectionMenu`,
-  selectionOptions: `${PREFIX}-selectionOptions`,
-  container: `${PREFIX}-container`,
-  graphic: `${PREFIX}-graphic`,
-  typography: `${PREFIX}-typography`,
-  blogContainer: `${PREFIX}-blogContainer`,
-  whatDoYouNeed: `${PREFIX}-whatDoYouNeed`,
-  offerContainer: `${PREFIX}-offerContainer`,
-  serviceCard: `${PREFIX}-serviceCard`,
-  whatDoYouNeedPoints: `${PREFIX}-whatDoYouNeedPoints`,
-  descriptorDescription: `${PREFIX}-descriptorDescription`,
-  introContainer: `${PREFIX}-introContainer`,
-};
-
-const Root = styled('div')((theme) => {
-  const common = {
-    background: ({ bgAlt }) => (bgAlt ? theme.palette.text.primary : theme.palette.text.secondary),
-    borderRadius: theme.custom.borders.brandBorderRadius,
-  };
-  const sectionDimensions = {
-    minHeight: '90vh',
-    maxHeight: '90vh',
-    height: '90vh',
-    position: 'relative',
-    // scrollSnapAlign: 'start',
-  };
-  return {
-    [`& .${classes.section}`]: {
-      overflow: 'hidden',
-      // may want bg later
-      ...sectionDimensions,
-      // borderTop: 0,
-      borderLeft: theme.custom.borders.brandBorder,
-      borderRight: theme.custom.borders.brandBorder,
-      borderTop: theme.custom.borders.brandBorder,
-    },
-    [`& .${classes.carouselSection}`]: {
-      // overflow: 'hidden',
-      // border: theme.custom.borders.brandBorder,
-      borderRight: theme.custom.borders.brandBorder,
-      height: '100%',
-      color: theme.palette.text.primary,
-      ...sectionDimensions,
-      '& .carousel-container': {
-        position: 'relative',
-        height: '100%',
-        overflowY: 'hidden',
-        // background: `linear-gradient(45deg, ${hexToAlpha(theme.palette.text.secondary, 0.3)}, ${hexToAlpha(theme.palette.text.primary, 1)})`,
-        // background: theme.palette.text.primary,
-      },
-    },
-    [`& .${classes.selectionMenu}`]: {
-      position: 'relative',
-      border: theme.custom.borders.brandBorder,
-      padding: theme.spacing(4, 0),
-
-      flexDirection: 'row',
-      overflowY: 'scroll',
-      [theme.breakpoints.down('md')]: {
-        padding: theme.spacing(0, 4, 4, 4),
-      },
-    },
-    [`& .${classes.selectionOptions}`]: {
-      display: 'inline-flex',
-      gap: theme.spacing(4),
-      width: '100%',
-      overflowX: 'scroll',
-      padding: theme.spacing(0, 4, 4, 4),
-      flexDirection: 'column',
-
-      flexWrap: 'nowrap',
-      [theme.breakpoints.down('lg')]: {
-        flexDirection: 'row !important',
-        padding: theme.spacing(4, 4, 4, 0),
-      },
-      [theme.breakpoints.down('sm')]: {
-        flexDirection: 'row !important',
-        padding: theme.spacing(4),
-      },
-    },
-    [`& .${classes.container}`]: {
-      // padding: theme.spacing(3, 0),
-    },
-    [`& .${classes.graphic}`]: {
-      // border: theme.custom.borders.brandBorder,
-      // [theme.breakpoints.down('sm')]: {
-      //   display: 'none',
-      //   visibility: 'none',
-      //   borderLeft: 0,
-      // },
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      // borderLeft: 'none',
-      zIndex: 20,
-      width: '100%',
-      transform: 'scale(.8)',
-      marginBottom: theme.spacing(12),
-      position: ({ absolute }) => (absolute ? 'absolute' : 'relative'),
-      display: 'inline',
-    },
-    [`& .${classes.typography}`]: {
-      color: ({ bgAlt }) => (bgAlt === 2
-        ? theme.palette.background.button
-        : bgAlt === 1
-          ? theme.palette.text.primary
-          : theme.palette.text.secondary),
-    },
-    [`& .${classes.blogContainer}`]: {
-      // background: theme.palette.primary.main,
-      // color: theme.palette.secondary.main,
-      overflow: 'hidden',
-      paddingBottom: theme.spacing(12),
-    },
-    [`& .${classes.whatDoYouNeed}`]: {
-      // marginTop: theme.spacing(6),
-      // marginLeft: `${-23}px !important`,
-      // marginRight: `${-23}px !important`,
-      background: theme.palette.text.primary,
-    },
-    [`& .${classes.offerContainer}`]: {
-      overflow: 'hidden',
-    },
-    [`& .${classes.serviceCard}`]: {
-      // width: 300,
-      // height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      alignContent: 'stretch',
-      maxHeight: 850,
-      margin: theme.spacing(3),
-      transform: `scale(${0.85})`,
-      padding: theme.spacing(3),
-      position: 'relative',
-      border: theme.custom.borders.brandBorderSecondary,
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      background: ({ bgColor }) => `linear-gradient(180deg, ${bgColor} 100%, rgba(17, 159, 116, 0) 100%)`,
-      '& ul': {
-        borderBottom: theme.custom.borders.brandBorderSecondary,
-        borderTop: theme.custom.borders.brandBorderSecondary,
-        '& li': {
-          borderBottom: theme.custom.borders.brandBorderSecondary,
-          borderTop: theme.custom.borders.brandBorderSecondary,
-          paddingLeft: 10,
-          paddingBottom: 10,
-          paddingTop: 10,
-          listStyle: 'upper-roman',
-          listStylePosition: 'outside',
-          '&::marker': {
-            fontWeight: 'bolder',
-            fontFamily: 'cursive',
-          },
-        },
-      },
-      '& .media': {
-        position: 'relative',
-        maxWidth: '100%',
-        height: '100%',
-        maxHeight: '25%',
-        display: 'block',
-        minWidth: 0,
-        objectFit: 'cover',
-        boxShadow: theme.custom.shadows.brandBig,
-        border: theme.custom.borders.brandBorder,
-        minHeight: 200,
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(6),
-        transform: 'rotate3d(0, 0, 0, 0)',
-        transition: 'transform 0.5s ease-in-out',
-        '&:hover': {
-          transition: 'transform 0.5s ease-in-out',
-          transform: 'rotate3d(30, -7, 18, 62.58deg) scale(.85)',
-        },
-      },
-    },
-    [`& .${classes.whatDoYouNeedPoints}`]: {
-      marginTop: theme.spacing(5),
-      paddingLeft: 0,
-      textAlign: 'left',
-      // listSyle: "none",
-      listStyle: 'circle',
-      '& li': {
-        margin: theme.spacing(1, 0),
-        // listStyleImage: `url(${listStyleImage})`,
-      },
-    },
-    [`& .${classes.descriptorDescription}`]: {
-      paddingRight: theme.spacing(3),
-      height: '100%',
-    },
-    [`& .${classes.introContainer}`]: {
-      color: theme.palette.text.primary,
-      overflow: 'hidden',
-      maxHeight: 400,
-      padding: theme.spacing(4),
-      // border: theme.custom.borders.brandBorderSecondary,
-      backgroundRepeat: '160%',
-      display: 'flex',
-      gap: theme.spacing(2),
-      flexDirection: 'row',
-      flexWrap: 'no-wrap',
-      overflowX: 'scroll',
-    },
-  };
-});
 
 const contentColSpacing = 12;
 
@@ -667,44 +448,57 @@ const SpinText = (props) => {
     </>
   );
 };
+const sectionDimensions = {
+  minHeight: '90vh',
+  maxHeight: '90vh',
+  height: '90vh',
+  position: 'relative',
+};
 
+const carouselSectionStyles = {
+  borderRight: (theme) => theme.custom.borders.brandBorder,
+  height: '100%',
+  color: (theme) => theme.palette.text.primary,
+  ...sectionDimensions,
+  // border: theme.custom.borders.brandBorder,
+  '& .carousel-container': {
+    // background: `linear-gradient(45deg, ${hexToAlpha(theme.palette.text.secondary, 0.3)}, ${hexToAlpha(theme.palette.text.primary, 1)})`,
+    // background: theme.palette.text.primary,
+    position: 'relative',
+    height: '100%',
+    overflowY: 'hidden',
+  },
+};
 export const Languages = (props) => (
-  <>
-    <article className={classes.carouselSection}>
-      {/* title */}
-      {/* <Typography
-              color="inherit"
-              align="center"
-              // {...SCROLL_PROPS}
-              variant="h1"
-            >
-              Skills
-            </Typography> */}
-      <Grid
-        item
-        container
-        className="carousel-container"
-        xs={contentColSpacing}
-      >
-        <ThreeDCarousel
-          title="Languages"
-          key="languages"
-          carouselData={languageData}
-          cardHeight={150}
-          cardWidth={600}
-          alt
-          special
-        />
-      </Grid>
-    </article>
-  </>
+  <Box sx={{
+    ...carouselSectionStyles,
+  }}
+  >
+    <Grid
+      item
+      container
+      xs={contentColSpacing}
+    >
+      <ThreeDCarousel
+        title="Languages"
+        key="languages"
+        carouselData={languageData}
+        cardHeight={150}
+        cardWidth={600}
+        alt
+        special
+      />
+    </Grid>
+  </Box>
 );
 
 export const Experience = (props) => (
-  <>
-    <article className={classes.carouselSection}>
-      {/* title */}
-      {/* <Typography
+  <Box sx={{
+    ...carouselSectionStyles,
+  }}
+  >
+    {/* title */}
+    {/* <Typography
               color="inherit"
               align="center"
               // {...SCROLL_PROPS}
@@ -712,22 +506,20 @@ export const Experience = (props) => (
             >
               Experience
             </Typography> */}
-      <Grid
-        item
-        container
-        className="carousel-container"
-        xs={contentColSpacing}
-      >
-        <ThreeDCarousel
-          alt
-          id="skills"
-          title="Languages"
-          key="languages"
-          carouselData={experienceData}
-          cardHeight={300}
-          cardWidth={600}
-        />
-      </Grid>
-    </article>
-  </>
+    <Grid
+      item
+      container
+      xs={contentColSpacing}
+    >
+      <ThreeDCarousel
+        alt
+        id="skills"
+        title="Languages"
+        key="languages"
+        carouselData={experienceData}
+        cardHeight={300}
+        cardWidth={600}
+      />
+    </Grid>
+  </Box>
 );

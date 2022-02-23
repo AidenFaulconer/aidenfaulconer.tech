@@ -1,13 +1,23 @@
 import {
-  Box, Card, CardContent, CardMedia, Typography, CardActions, useTheme, Grid,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  CardActions,
+  useTheme,
+  Grid,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useSpring, a, config } from '@react-spring/web';
 import React, { useEffect, useMemo } from 'react';
 import CircleType from 'circletype';
 import GraphemeSplitter from 'grapheme-splitter';
+import { keyframes } from '@emotion/react';
 import {
-  hexToAlpha, pxToRem, SCROLL_PROPS, threeDHoverKeyframes,
+  hexToAlpha,
+  pxToRem,
+  SCROLL_PROPS,
+  threeDHoverKeyframes,
 } from '../../store/theme';
 import { usePrevious, useDimensions } from '../util/customHooks';
 import { RegularButton } from './buttons';
@@ -43,9 +53,14 @@ Math things: https://cl.ly/image/1t0j1V2Y2l2Z
 
 So, `r` is (about) 412px long! This means we need to TRANSLATE the slides in the Z 3-dimensional plane by 412px. This should be done AFTER the rotateY transformation.
 */
-export const useStyles = makeStyles((theme) => ({
-  ...{
-    '@keyframes rotate360': {
+// export const useStyles = makeStyles((theme) => ({
+
+// wrapper size, and hardcoded translateZ all correlate to a ratio to be z aligned
+// root container, this is tilted to tilt the entire carousel, rotate to position to selected card
+
+// ...threeDHoverKeyframes,
+const carouselKeyframes = keyframes`
+'@keyframes rotate360': {
       from: {
         transform: 'rotateY(0deg)',
       },
@@ -54,152 +69,14 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  // wrapper size, and hardcoded translateZ all correlate to a ratio to be z aligned
-  wrapper: {
-    // width: ({ cardDimension, carouselLength }) => cardDimension + 20 || 420,
-    width: '100%',
-    // margin: '100 auto 0 auto',
-    height: 500,
-    // minHeight: ({ cardDimension, carouselLength }) => cardDimension /* 1.5 */ || 450,
-    position: 'relative',
-    // minHeight: 300,
-    display: 'grid',
-    justifyContent: 'center',
-    alignContent: 'center',
-    // top: '50%',
-    // left: '50%',
-
-    perspective: ({ cardDimension, carouselLength }) => cardDimension + 1250 + carouselLength ** 4 || 1000, // This is the perspective of the 3D circle.
-    [theme.breakpoints.down('xl')]: {
-      transform: `scale(${0.35}) rotate(45deg)`,
-    },
-    [theme.breakpoints.down('xl')]: {
-      transform: `scale(${0.15}) rotate(45deg)`,
-    },
-    [theme.breakpoints.down('lg')]: {
-      transform: `scale(${0.3}) rotate(45deg)`,
-    },
-    [theme.breakpoints.down('md')]: {
-      transform: `scale(${0.25}) rotate(45deg)`,
-    },
-  },
-  // root container, this is tilted to tilt the entire carousel, rotate to position to selected card
-  carousel: {
-    position: 'absolute',
-    width: '100%',
-    // overflow: 'hidden',
-    height: '100%',
-    transformStyle: 'preserve-3d',
-    transformOrigin: ({ transformOrigin }) => `center center ${transformOrigin}px}`,
-    // animation: '$rotate360 60s linear infinite',
-    // [theme.breakpoints.down('xl')]: {
-    //   transformOrigin: 'center center 30px',
-    // },
-    // [theme.breakpoints.down('lg')]: {
-    //   transformOrigin: 'center center 30px',
-    // },
-    // [theme.breakpoints.down('md')]: {
-    //   transformOrigin: 'center center 50px',
-    // },
-    // [theme.breakpoints.down('sm')]: {
-    //   transformOrigin: 'center center 30px',
-    // },
-  },
-  slide: {
-    // background: hexToAlpha(theme.palette.text.primary, 1),
-    padding: 0,
-    border: theme.custom.borders.brandBorder,
-    // backdropFilter: 'blur(10px)',
-    boxShadow: 'none !important',
-    position: 'absolute',
-    height: ({ cardDimension, carouselLength }) => cardDimension || 400,
-    width: ({ cardDimension, carouselLength }) => cardDimension || 400, // + 50,
-    // height: 187,
-    // top: 20,
-    // left: 10,
-    // right: 10,
-    display: 'flex',
-    // top: '25%',
-    // left: '25%',
-    // width: '300px',
-    // height: '187px',
-  },
-  media: {
-    height: '100%',
-    width: '100%',
-    transform: 'rotate(-45deg)',
-  },
-  itemDisplay: {
-    position: 'relative',
-    alignContent: 'space-between',
-    borderBottom: 0,
-    width: '100%',
-    color: theme.palette.text.primary,
-    '& > .MuiGrid-root': {
-      transition: 'all .3s ease-in-out',
-      border: theme.custom.borders.brandBorder,
-      borderLeft: 0,
-      borderRight: 0,
-      textAlign: 'center',
-      display: 'grid',
-      alignContent: 'center',
-      padding: theme.spacing(3),
-      // padding: theme.spacing(2),
-    },
-  },
-  ...threeDHoverKeyframes,
-  graphic: {
-    borderRadius: theme.custom.borders.brandBorderRadius,
-    zIndex: 0,
-    width: '100%',
-    // transform: 'scale(.8)',
-    marginBottom: theme.spacing(12),
-    position: 'absolute',
-    display: 'inline',
-    [theme.breakpoints.down('xl')]: {
-      transform: `scale:  ${0.8}`,
-    },
-    [theme.breakpoints.down('xl')]: {
-      transform: `scale:  ${0.8}`,
-    },
-    [theme.breakpoints.down('lg')]: {
-      transform: `scale:  ${0.7}`,
-    },
-    [theme.breakpoints.down('md')]: {
-      transform: `scale:  ${0.7}`,
-    },
-
-    '& .spin-container': {
-      transform: 'translate(-50%,-50%) scale(1)',
-      left: '50%',
-      top: '50%',
-      fontWeight: 1000,
-      position: 'absolute',
-    },
-    '& #spinText': {
-      animation: '$rotateAngle 6s linear infinite',
-      zIndex: 'inherit',
-      fontWeight: 100,
-      // copied from theme for H1
-      // [theme.breakpoints.down('xl')]: {
-      //   fontSize: pxToRem(65 + 5),
-      // },
-      // [theme.breakpoints.down('lg')]: {
-      //   fontSize: pxToRem(60 + 15),
-      // },
-      // [theme.breakpoints.down('md')]: {
-      //   fontSize: pxToRem(50 + 20),
-      // },
-      // [theme.breakpoints.down('sm')]: {
-      //   fontSize: pxToRem(25 + 15),
-      // },
-    },
-  },
-}));
-
+`;
 const splitter = new GraphemeSplitter();
-export const ThreeDCarousel = ({
-  slidingText, carouselData, cardHeight, cardWidth = 600,
+
+export default ({
+  slidingText,
+  carouselData,
+  cardHeight,
+  cardWidth = 600,
 }) => {
   const theme = useTheme();
   // ========================================================================== //
@@ -217,9 +94,10 @@ export const ThreeDCarousel = ({
     [...Array(carouselData.length).keys()].map((i) => (i === index ? !expanded[i] : false)),
   );
 
-  const anyExpanded = React.useCallback((index) => expanded.some((e) => e), [
-    expanded,
-  ]);
+  const anyExpanded = React.useCallback(
+    (index) => expanded.some((e) => e),
+    [expanded],
+  );
 
   const [current, setCurrent] = React.useState(0);
 
@@ -227,7 +105,7 @@ export const ThreeDCarousel = ({
   const tiltRadians = tiltAngle * (Math.PI / 180);
   // const gutter = cardWidth + 100;
   const gutter = 0.152;
-  const slideAngle = 360 / carouselData.length;// rotation increment for each slide
+  const slideAngle = 360 / carouselData.length; // rotation increment for each slide
   //   const slideRadius = Math.round(Math.tan(slideAngle * Math.PI / 180) * slide.width / 2);
 
   // const [current,setCurrent] = React.useState(0)
@@ -243,8 +121,6 @@ export const ThreeDCarousel = ({
   // }, [current])
   // const ref = React.useRef(null);
   // const { width } = useDimensions(ref);
-
-  const classes = useStyles({ cardDimension: cardWidth, carouselLength: carouselData.length, transformOrigin: (cardWidth * (carouselData.length * gutter)) * 2 });
 
   // ========================================================================== //
   //   Initial react-spring
@@ -282,49 +158,133 @@ export const ThreeDCarousel = ({
     }
   }, [current]);
 
-  const computeTransform = React.useCallback((index) => { // translateZ(412px);
+  const computeTransform = React.useCallback((index) => {
+    // translateZ(412px);
     // transform: rotateY(320deg)
     const y = 0;
-    return ({ transform: `rotateY(${slideAngle * index}deg) translateZ(${cardWidth * (carouselData.length * gutter) || 430}px)`, zIndex: (5 * index) + 1 });
+    return {
+      transform: `rotateY(${slideAngle * index}deg) translateZ(${
+        cardWidth * (carouselData.length * gutter) || 430
+      }px)`,
+      zIndex: 5 * index + 1,
+    };
   }, []);
 
   // ========================================================================== //
   // SPIN TEXT
   // ========================================================================== //
   const spinText = React.useCallback((spinText, scale = 1) => {
-  // curve text
+    // curve text
     const ref = React.useRef(null);
     let circleType = null;
     React.useEffect(() => {
-      circleType = new CircleType(ref?.current,
+      circleType = new CircleType(
+        ref?.current,
         splitter.splitGraphemes.bind(splitter), // bind to this circletype method to automatically split the elements content text
       );
     }, [ref.current]);
     return (
-      <>
-        <div item className={classes.graphic} style={{ transform: `scale(${scale})` }}>
-
-          <h1 ref={ref} id="spinText">
-            {spinText}
-          </h1>
-        </div>
-      </>
+      <Box
+        item
+        sx={{ ...graphicStyles }}
+        style={{ transform: `scale(${scale})` }}
+      >
+        <h1 ref={ref} id="spinText">
+          {spinText}
+        </h1>
+      </Box>
     );
   }, []);
+
+  const graphicStyles = {
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    zIndex: 0,
+    width: '100%',
+    // transform: 'scale(.8)',
+    mb: 12,
+    position: 'absolute',
+    display: 'inline',
+    transform: {
+      xl: { scale: 0.8 },
+      lg: { scale: 0.8 },
+      md: { scale: 0.8 },
+      sm: { scale: 0.8 },
+      xs: { scale: 0.8 },
+    },
+    '& .spin-container': {
+      transform: 'translate(-50%,-50%) scale(1)',
+      left: '50%',
+      top: '50%',
+      fontWeight: 1000,
+      position: 'absolute',
+    },
+    '& #spinText': {
+      animation: '$rotateAngle 6s linear infinite',
+      zIndex: 'inherit',
+      fontWeight: 100,
+    },
+  };
 
   // ========================================================================== //
   //   carousel
   // ========================================================================== //
   return (
-    <ItemDisplay setCurrent={setCurrent} current={current} carouselData={carouselData}>
-      <div
-        className={classes.wrapper}
+    <ItemDisplay
+      setCurrent={setCurrent}
+      current={current}
+      carouselData={carouselData}
+    >
+      <Box
+        sx={{
+          // width: ({ cardDimension, carouselLength }) => cardDimension + 20 || 420,
+          width: '100%',
+          // margin: '100 auto 0 auto',
+          height: 500,
+          // minHeight: ({ cardDimension, carouselLength }) => cardDimension /* 1.5 */ || 450,
+          position: 'relative',
+          // minHeight: 300,
+          display: 'grid',
+          justifyContent: 'center',
+          alignContent: 'center',
+          // top: '50%',
+          // left: '50%',
+
+          perspective: ({ cardDimension, carouselLength }) => cardDimension + 1250 + carouselLength ** 4 || 1000, // This is the perspective of the 3D circle.
+          transform: {
+            sm: `scale(${0.3}) rotate(45deg)`,
+            lg: `scale(${0.35}) rotate(45deg)`,
+            md: `scale(${0.25}) rotate(45deg)`,
+            xs: `scale(${0.25}) rotate(45deg)`,
+            xl: `scale(${0.15}) rotate(45deg)`,
+          },
+        }}
       >
         {/* {spinText('CREATE OUTSIDE THE BOX ✍', 6)} */}
         {computeCarousel()}
         <a.div
-          className={classes.carousel}
-          style={transitionProps}
+          style={{
+            ...transitionProps,
+            position: 'absolute',
+            width: '100%',
+            // overflow: 'hidden',
+            height: '100%',
+            transformStyle: 'preserve-3d',
+            // transformOrigin: `center center ${transformOrigin}px}`,
+            transformOrigin: 'center center 400px}',
+            // animation: '$rotate360 60s linear infinite',
+            // [theme.breakpoints.down('xl')]: {
+            //   transformOrigin: 'center center 30px',
+            // },
+            // [theme.breakpoints.down('lg')]: {
+            //   transformOrigin: 'center center 30px',
+            // },
+            // [theme.breakpoints.down('md')]: {
+            //   transformOrigin: 'center center 50px',
+            // },
+            // [theme.breakpoints.down('sm')]: {
+            //   transformOrigin: 'center center 30px',
+            // },
+          }}
         >
           {carouselData.map((data, index) => {
             const {
@@ -335,8 +295,37 @@ export const ThreeDCarousel = ({
             return (
               <Card
                 key={title + index}
-                className={classes.slide}
-                style={{ ...computeTransform(index), ...(current === index ? ({ opacity: 1, background: theme.palette.text.secondary }) : ({ opacity: 0.6, background: hexToAlpha(theme.palette.text.secondary, 0.6) })) }}
+                sx={{
+                  // background: hexToAlpha(theme.palette.text.primary, 1),
+                  padding: 0,
+                  border: theme.custom.borders.brandBorder,
+                  // backdropFilter: 'blur(10px)',
+                  boxShadow: 'none !important',
+                  position: 'absolute',
+                  height: ({ cardDimension, carouselLength }) => cardDimension || 400,
+                  width: ({ cardDimension, carouselLength }) => cardDimension || 400, // + 50,
+                  // height: 187,
+                  // top: 20,
+                  // left: 10,
+                  // right: 10,
+                  display: 'flex',
+                  // top: '25%',
+                  // left: '25%',
+                  // width: '300px',
+                  // height: '187px',
+                }}
+                style={{
+                  ...computeTransform(index),
+                  ...(current === index
+                    ? { opacity: 1, background: theme.palette.text.secondary }
+                    : {
+                      opacity: 0.6,
+                      background: hexToAlpha(
+                        theme.palette.text.secondary,
+                        0.6,
+                      ),
+                    }),
+                }}
                 onClick={() => {
                   setCurrent(index);
                   ping.play();
@@ -345,7 +334,11 @@ export const ThreeDCarousel = ({
                 }}
               >
                 <CardMedia
-                  className={classes.media}
+                  sx={{
+                    height: '100%',
+                    width: '100%',
+                    transform: 'rotate(-45deg)',
+                  }}
                   image={image}
                   title={title}
                   component="img"
@@ -356,9 +349,14 @@ export const ThreeDCarousel = ({
           })}
         </a.div>
 
-        <div style={{
-          width: '100%', height: 50, display: 'flex', justifyContent: 'center', alignItems: 'center',
-        }}
+        <div
+          style={{
+            width: '100%',
+            height: 50,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <RegularButton
             type="special"
@@ -382,8 +380,7 @@ export const ThreeDCarousel = ({
             {'<'}
           </RegularButton>
         </div>
-
-      </div>
+      </Box>
     </ItemDisplay>
   );
 };
@@ -392,33 +389,59 @@ const ItemDisplay = ({
   children, current, carouselData, setCurrent,
 }) => {
   const {
-    title, description, icon, image, cta, category = '',
+    title,
+    description,
+    icon,
+    image,
+    cta,
+    category = '',
   } = carouselData[current];
-  const classes = useStyles();
   const theme = useTheme();
   return (
     <Grid
       container
-      className={classes.itemDisplay}
+      sx={{
+        position: 'relative',
+        alignContent: 'space-between',
+        borderBottom: 0,
+        width: '100%',
+        color: (theme) => theme.palette.text.primary,
+        '& > .MuiGrid-root': {
+          transition: 'all .3s ease-in-out',
+          border: (theme) => theme.custom.borders.brandBorder,
+          borderLeft: 0,
+          borderRight: 0,
+          textAlign: 'center',
+          display: 'grid',
+          alignContent: 'center',
+          padding: 3,
+        },
+      // padding: theme.spacing(2),
+      }}
     >
-
       {children}
 
-      <Grid item xs={6} style={{ maxHeight: 150, borderRight: theme.custom.borders.brandBorder }}>
-        <Typography
-          color="inherit"
-          align="left"
-          variant="h2"
-          component="h2"
-        >
+      <Grid
+        item
+        xs={6}
+        style={{
+          maxHeight: 150,
+          borderRight: theme.custom.borders.brandBorder,
+        }}
+      >
+        <Typography color="inherit" align="left" variant="h2" component="h2">
           {title}
         </Typography>
       </Grid>
-      <Grid item xs={6} style={{ maxHeight: 150, display: 'inline-flex', alignItems: 'center' }}>
+
+      <Grid
+        item
+        xs={6}
+        style={{ maxHeight: 150, display: 'inline-flex', alignItems: 'center' }}
+      >
         <div
           dangerouslySetInnerHTML={{
-            __html:
-            `<svg width="36" height="36" viewBox="0 0 36 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            __html: `<svg width="36" height="36" viewBox="0 0 36 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M33.5296 18.7598L26.5996 15.5698V6.42978C26.5964 6.23802 26.5382 6.05123 26.4318 5.89166C26.3254 5.73208 26.1754 5.60647 25.9996 5.52978L18.4996 2.07978C18.368 2.01886 18.2247 1.9873 18.0796 1.9873C17.9346 1.9873 17.7912 2.01886 17.6596 2.07978L10.1596 5.52978C9.98603 5.61011 9.83913 5.73854 9.73633 5.89983C9.63353 6.06112 9.57914 6.24851 9.57961 6.43978V15.5798L2.67961 18.7598C2.50603 18.8401 2.35913 18.9685 2.25633 19.1298C2.15353 19.2911 2.09914 19.4785 2.09961 19.6698V29.4498C2.09914 29.641 2.15353 29.8284 2.25633 29.9897C2.35913 30.151 2.50603 30.2794 2.67961 30.3598L10.1796 33.8098C10.3112 33.8707 10.4546 33.9023 10.5996 33.9023C10.7447 33.9023 10.888 33.8707 11.0196 33.8098L18.0996 30.5498L25.1796 33.8098C25.3112 33.8707 25.4546 33.9023 25.5996 33.9023C25.7447 33.9023 25.888 33.8707 26.0196 33.8098L33.5196 30.3598C33.6932 30.2794 33.8401 30.151 33.9429 29.9897C34.0457 29.8284 34.1001 29.641 34.0996 29.4498V19.6698C34.101 19.4796 34.0481 19.293 33.9471 19.1318C33.8462 18.9706 33.7013 18.8416 33.5296 18.7598V18.7598ZM25.6096 21.9998L20.4996 19.6698L25.6096 17.3198L30.7196 19.6698L25.6096 21.9998ZM24.6096 15.5598L18.1696 18.5598V10.8698C18.2902 10.8644 18.4087 10.8373 18.5196 10.7898L24.5996 7.99978V15.5798L24.6096 15.5598ZM18.0996 4.07978L23.2096 6.42978L18.0996 8.77978L12.9996 6.42978L18.0996 4.07978ZM10.5996 17.3098L15.7096 19.6598L10.5996 21.9998L5.48961 19.6698L10.5996 17.3098ZM17.0996 28.7998L10.5996 31.7998V24.1098C10.7392 24.1015 10.8754 24.064 10.9996 23.9998L17.0796 21.1998L17.0996 28.7998ZM32.0996 28.7998L25.6396 31.7998V24.1098C25.7655 24.0962 25.8877 24.0589 25.9996 23.9998L32.0796 21.1998L32.0996 28.7998Z" />
             </svg>`,
           }}
@@ -441,15 +464,21 @@ const ItemDisplay = ({
         item
         xs={12}
         style={{
-          borderBottom: 'none', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+          borderBottom: 'none',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
-
         <Grid
           item
           xs={12}
           style={{
-            alignContent: 'flex-start', display: 'flex', height: 210, maxHeight: 310,
+            alignContent: 'flex-start',
+            display: 'flex',
+            height: 210,
+            maxHeight: 310,
           }}
         >
           <Typography
@@ -461,9 +490,7 @@ const ItemDisplay = ({
             {description}
           </Typography>
         </Grid>
-
       </Grid>
-
     </Grid>
   );
 };

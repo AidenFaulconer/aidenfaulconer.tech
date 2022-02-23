@@ -187,6 +187,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     // return;
     // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
     if (result !== null) {
+      return; // i want a build NOW, i don't want to wait for the build to finish on this side, get it out NOW
       result.data.allMarkdownRemark.edges.forEach((edge, i) => {
         const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
 
@@ -200,9 +201,8 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           path,
         });
       });
-    } else {
-      reporter.warn(`queried data is null! for a ${regex}page${JSON.stringify(result, null, 2)}`);
     }
+    reporter.warn(`queried data is null! for a ${regex}page${JSON.stringify(result, null, 2)}`);
   }
 
   // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
