@@ -1,13 +1,13 @@
 import React, { useEffect, useCallback } from 'react';
+import { styled } from '@mui/material/styles';
 import {
   Link, graphql, StaticQuery, useStaticQuery,
+  navigate,
 } from 'gatsby';
 import Image from 'gatsby-image';
 import parse from 'html-react-parser';
 import stickybits from 'stickybits';
-import {
-  makeStyles, Grid, useTheme,
-} from '@material-ui/core';
+import { Grid, useTheme } from '@mui/material';
 
 // We're using Gutenberg so we need the block styles
 // these are copied into this project due to a conflict in the postCSS
@@ -17,12 +17,26 @@ import {
 
 // import Bio from "../components/bio"
 // import Seo from "../components/seo"
-import { RegularButton, SecondaryButton } from '../custom/buttons';
+import { RegularButton } from '../custom/buttons';
 
-// ========================================================================== //
-// Blog post styles
-// ========================================================================== //
-const useStyles = makeStyles((theme) => {
+const PREFIX = 'project-template';
+
+const classes = {
+  blogContainer: `${PREFIX}-blogContainer`,
+  blogPost: `${PREFIX}-blogPost`,
+  tableOfContents: `${PREFIX}-tableOfContents`,
+  blogSideBar: `${PREFIX}-blogSideBar`,
+  blogPostFeaturedImage: `${PREFIX}-blogPostFeaturedImage`,
+  suggestedBlogPost: `${PREFIX}-suggestedBlogPost`,
+  otherBlogPosts: `${PREFIX}-otherBlogPosts`,
+  blogHeroUnderlay: `${PREFIX}-blogHeroUnderlay`,
+};
+
+const Root = styled('aside')((
+  {
+    theme,
+  },
+) => {
   const containerStyles = {
     // maxWidth: 1450,
     maxWidth: 1850,
@@ -32,16 +46,16 @@ const useStyles = makeStyles((theme) => {
     padding: theme.spacing(3),
     paddingBottom: theme.spacing(0),
   };
-  return ({
-    blogContainer: {
+  return {
+    [`& .${classes.blogContainer}`]: {
       ...containerStyles,
     },
-    blogPost: {
+    [`& .${classes.blogPost}`]: {
       background: 'white',
       position: 'relative',
       padding: theme.spacing(6),
       paddingTop: theme.spacing(12),
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         padding: theme.spacing(3),
       },
       maxWidth: 1250,
@@ -51,14 +65,14 @@ const useStyles = makeStyles((theme) => {
       boxShadow: theme.custom.shadows.brand,
       borderRadius: theme.custom.borders.brandBorderRadius,
     },
-    tableOfContents: {
+    [`& .${classes.tableOfContents}`]: {
       '& li': {
         '& a': {
           textDecoration: 'none',
         },
       },
     },
-    blogSideBar: {
+    [`& .${classes.blogSideBar}`]: {
       background: 'white',
       position: 'sticky',
       boxShadow: theme.custom.shadows.brand,
@@ -72,21 +86,21 @@ const useStyles = makeStyles((theme) => {
       display: 'block',
       marginLeft: 'auto',
       marginRight: theme.spacing(0),
-      [theme.breakpoints.down('lg')]: {
+      [theme.breakpoints.down('xl')]: {
         position: 'fixed',
         display: 'none',
       // marginRight: 'auto',
       // marginLeft: 'auto',
       },
     },
-    blogPostFeaturedImage: {
+    [`& .${classes.blogPostFeaturedImage}`]: {
       width: '100%',
       height: '100%',
       maxHeight: '600px',
       minHeight: '525px',
       objectFit: 'cover',
     },
-    suggestedBlogPost: {
+    [`& .${classes.suggestedBlogPost}`]: {
     //   maxWidth: 350,
       margin: 'auto',
       marginBottom: theme.spacing(6),
@@ -102,10 +116,10 @@ const useStyles = makeStyles((theme) => {
         border: theme.custom.borders.brandBorder,
       },
     },
-    otherBlogPosts: {
+    [`& .${classes.otherBlogPosts}`]: {
       ...containerStyles,
     },
-    blogHeroUnderlay: {
+    [`& .${classes.blogHeroUnderlay}`]: {
       marginTop: '-80px',
       marginBottom: '20px',
       paddingTop: '50px',
@@ -143,7 +157,7 @@ const useStyles = makeStyles((theme) => {
         marginBottom: -theme.spacing(12),
         marginLeft: 'auto',
         marginRight: 'auto',
-        padding: `${theme.spacing(6)}px ${theme.spacing(6)}px`,
+        padding: `${theme.spacing(6)} ${theme.spacing(6)}`,
         background: theme.palette.background.main,
 
       },
@@ -159,14 +173,13 @@ const useStyles = makeStyles((theme) => {
         color: theme.palette.background.default,
       },
     },
-  });
+  };
 });
 
 // ========================================================================== //
 // Blog post template
 // ========================================================================== //
 export default ({ data: { post = {}, next = {}, previous = {} } }) => {
-  const classes = useStyles();
   const theme = useTheme();
 
   useEffect(() => {
@@ -190,8 +203,9 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
     } = post.edges[0].node.frontmatter;
     // console.log(postLink, blogPostData);
     return (
-      <Grid item container justify="center" xs={4} className={classes.suggestedBlogPost}>
+      <Grid item container justifyContent="center" xs={4} className={classes.suggestedBlogPost}>
         <img
+          alt="thumbnail"
           src={thumbnail}
           style={{
             position: 'relative',
@@ -204,11 +218,9 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
             marginBottom: theme.spacing(2),
           }}
         />
-        <Link to={path || '/'} rel="prev">
-          <SecondaryButton size="large">
-            {parse(title)}
-          </SecondaryButton>
-        </Link>
+        <RegularButton onClick={() => navigate(path || '/')} type="secondary" size="large">
+          {parse(title)}
+        </RegularButton>
       </Grid>
     );
   }, []);
@@ -292,10 +304,9 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
 //   }
 // `;
 
-
-// this page query is not run 
-export const pageQuery = graphql`
-    query _ProjectPost(
+// this page query is not run
+export const templatePageQuery = graphql`
+    query templateProjectPostQuery(
       # these variables are passed in via createPage.pageContext in gatsby-node.js
       $id: String!
       $previousPostId: String
@@ -365,24 +376,20 @@ export const pageQuery = graphql`
 // ========================================================================== //
 // Table of contents
 // ========================================================================== //
-const renderTableOfContentItems = (items/** array */) => {
-  const classes = useStyles();
-
-  return (
-    <ol className={classes.tableOfContents}>
-      {items.map(({ url, title, items }) => (
-        <li key={url}>
-          <a href={url}>{title}</a>
-          {items && items.length && renderTableOfContentItems(items)}
-        </li>
-      ))}
-    </ol>
-  );
-};
+const renderTableOfContentItems = (items/** array */) => (
+  <ol className={classes.tableOfContents}>
+    {items.map(({ url, title, items }) => (
+      <li key={url}>
+        <a href={url}>{title}</a>
+        {items && items.length && renderTableOfContentItems(items)}
+      </li>
+    ))}
+  </ol>
+);
 
 const TableOfContent = ({ toc, className }) => (
-  <aside className={className}>
+  <Root className={className}>
     <h2>Table of contents</h2>
     {renderTableOfContentItems(toc.items)}
-  </aside>
+  </Root>
 );

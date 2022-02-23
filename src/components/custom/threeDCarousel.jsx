@@ -1,23 +1,16 @@
 import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  makeStyles,
-  Typography,
-  CardActions,
-  useTheme,
-  Grid,
-} from '@material-ui/core';
+  Box, Card, CardContent, CardMedia, Typography, CardActions, useTheme, Grid,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSpring, a, config } from '@react-spring/web';
 import React, { useEffect, useMemo } from 'react';
 import CircleType from 'circletype';
 import GraphemeSplitter from 'grapheme-splitter';
 import {
   hexToAlpha, pxToRem, SCROLL_PROPS, threeDHoverKeyframes,
-} from '../../store/theme.js';
+} from '../../store/theme';
 import { usePrevious, useDimensions } from '../util/customHooks';
-import { RegularButton, SecondaryButton, ThirdButton } from './buttons';
+import { RegularButton } from './buttons';
 
 import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
 
@@ -80,13 +73,13 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xl')]: {
       transform: `scale(${0.35}) rotate(45deg)`,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       transform: `scale(${0.15}) rotate(45deg)`,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       transform: `scale(${0.3}) rotate(45deg)`,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       transform: `scale(${0.25}) rotate(45deg)`,
     },
   },
@@ -166,13 +159,13 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xl')]: {
       transform: `scale:  ${0.8}`,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       transform: `scale:  ${0.8}`,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       transform: `scale:  ${0.7}`,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       transform: `scale:  ${0.7}`,
     },
 
@@ -367,7 +360,9 @@ export const ThreeDCarousel = ({
           width: '100%', height: 50, display: 'flex', justifyContent: 'center', alignItems: 'center',
         }}
         >
-          <ThirdButton
+          <RegularButton
+            type="special"
+            icon={{ enabled: true, type: 'arrow' }}
             style={{ transform: 'rotate(180deg)' }}
             onClick={(e) => {
               if (current !== carouselData.length) setCurrent(current + 1);
@@ -375,14 +370,17 @@ export const ThreeDCarousel = ({
             }}
           >
             {'>'}
-          </ThirdButton>
-          <ThirdButton onClick={(e) => {
-            if (current !== carouselData.length) setCurrent(current - 1);
-            else e.preventDefault();
-          }}
+          </RegularButton>
+          <RegularButton
+            type="special"
+            icon={{ enabled: true, type: 'arrow' }}
+            onClick={(e) => {
+              if (current !== carouselData.length) setCurrent(current - 1);
+              else e.preventDefault();
+            }}
           >
             {'<'}
-          </ThirdButton>
+          </RegularButton>
         </div>
 
       </div>

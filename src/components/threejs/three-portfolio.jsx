@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {
-  MeshBasicMaterial, Vector3, Vector2, Quaternion,
+  Vector3, Vector2,
 } from 'three';
 import React, {
   Suspense,
@@ -8,59 +8,43 @@ import React, {
   useState,
   useCallback,
   useRef,
-  useEffect,
   createRef,
 } from 'react';
 import { ResizeObserver } from '@juggle/resize-observer';
 
 // animation and post processing
-import { useSpring, interpolate } from '@react-spring/core';
 import { a } from '@react-spring/three';
 
 // three.js in react
 import {
-  extend,
   Canvas,
   useFrame,
   useThree,
   useLoader,
 } from '@react-three/fiber';
 import {
-  meshBounds,
   Environment,
-  softShadows,
   useDetectGPU,
-  Sky,
   useGLTF,
   AdaptiveDpr,
   // useAspect
   Billboard,
-  useTexture,
 } from '@react-three/drei';
 import {
-  Physics, usePlane, useSphere, useBox,
+  Physics, usePlane, useBox,
 } from '@react-three/cannon'; // not compatible with @react-three/fiber, needs redundant install of react-three-fiber
 
 // import CurveModifier from "drei/CurveModifier";
-import { Tween } from 'gsap/gsap-core';
 
 // asset imports
 // import Post from './post-processing';
-import { useBreakpoints } from 'react-use-breakpoints';
 import { clamp, degToRad } from 'three/src/math/MathUtils';
-import { EffectComposer, SSAO, Bloom } from '@react-three/postprocessing';
-import { KernelSize, BlendFunction } from 'postprocessing'; 
+import { EffectComposer } from '@react-three/postprocessing';
 // import { SVGLoader } from 'three/jsm/loaders/SVGLoader.js';
 import cube_import from '../../../static/assets/gameModels/cube.glb';
 
 // eslint-disable-next-line import/no-unresolved
-import one from '../../../static/assets/portfolio/dibbles.png';
-import two from '../../../static/assets/portfolio/ajgardencare.png';
-import three from '../../../static/assets/portfolio/hakn.png';
-import four from '../../../static/assets/portfolio/railgun.png';
-import five from '../../../static/assets/portfolio/clouds.png';
 
-import envMap from './design.png';
 import cloudImg from '../../../static/assets/cloud.png';
 // import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
 import pingSound from '../../../static/assets/portfolio/transition.mp3';

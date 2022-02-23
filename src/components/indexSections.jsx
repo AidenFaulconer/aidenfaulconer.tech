@@ -5,14 +5,14 @@
 //   Box,
 //   Card,
 //   useTheme,
-// } from '@material-ui/core';
+// } from '@mui/material';
 // import * as React from 'react';
 // import { useBreakpoints } from 'react-use-breakpoints';
 // import { navigate, useStaticQuery } from 'gatsby';
 // import CircleType from 'circletype';
 // import GraphemeSplitter from 'grapheme-splitter';
 // import LinesEllipsis from 'react-lines-ellipsis';
-// import { AccessibilityNewRounded } from '@material-ui/icons';
+// import { AccessibilityNewRounded } from '@mui/icons-material';
 // import {
 //   RegularButton,
 //   SecondaryButton,

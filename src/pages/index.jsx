@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
-  Container, Grid, makeStyles, Typography, useTheme,
-} from '@material-ui/core';
+  Box,
+  Container, Grid, Typography, useTheme,
+} from '@mui/material';
 import ScrollSnap from 'scroll-snap';
 import { useGesture, useScroll } from '@use-gesture/react';
 import { a } from '@react-spring/web';
@@ -15,47 +17,7 @@ import { Languages, Experience } from '../components/portfolio-page/skills';
 import { SecondaryButton } from '../components/custom/buttons';
 
 import cubesOffset from '../../static/assets/portfolio/clouds.png';
-import SectionHeader from '../components/section-header';
-
-const useStyles = makeStyles((theme) => ({
-  underlay: {
-    position: 'relative',
-    // top: '-400px',
-    content: '',
-    margin: theme.spacing(3),
-    padding: theme.spacing(12),
-    paddingTop: 'unset',
-    pointerEvents: 'all',
-    overflow: 'hidden',
-    // boxShadow: theme.custom.shadows.brandBig,
-    background:
-      'linear-gradient(180deg, #324308 15.49%, #8BAD6B 68.98%, #AAC882 103.74%)',
-    borderRadius: theme.custom.borders.brandBorderRadius3,
-  },
-  contentContainer: {
-    // padding: theme.spacing(12, 0),
-    height: '100vh',
-    width: '100vw',
-    margin: 0,
-    padding: -1,
-    display: 'flex',
-    overflowY: 'scroll',
-    scrollSnapType: 'y mandatory',
-  },
-  sectionCurve: {
-    borderRadius: '100%',
-    margin: 'auto',
-    width: '100%',
-    left: '0px',
-    fill: '#324308',
-    // marginTop: '-43px',
-    // fill: theme.palette.background.default,
-  },
-  outline: {
-    // border: theme.custom.borders.brandBorder,
-    border: '1px solid rgba(255,255,255,.3)',
-  },
-}));
+import { SectionHeader } from '../components/section-header';
 
 const handler = (entries = [], observer = null) => {
   for (const entry of entries) {
@@ -114,7 +76,6 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   // }, []);
   // React.useEffect(() => {
   // }, [bind]);
-  const theme = useTheme();
   // <section
   //   style={{
   //     width: '100vw', /* height: '90vh', */ display: 'block', scrollSnapAlign: 'x y proximity', overflowX: 'scroll',
@@ -133,7 +94,6 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       <SectionWrapper>
         <SectionHeader headline="Services" />
       </SectionWrapper>
-
       <SectionWrapper>
         <Services id="contact" /* ref={addNode} */ />
       </SectionWrapper>
@@ -141,40 +101,45 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       <SectionWrapper>
         <SectionHeader headline="Experience" illustrationType="confidence" />
       </SectionWrapper>
-
       <SectionWrapper>
         <Qualifications />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <SectionHeader headline="Skills" type="inverted" illustrationType="moustache" />
       </SectionWrapper>
 
       <SectionWrapper>
         <Experience id="skills" />
       </SectionWrapper>
 
-      <SectionWrapper>
-        <SectionHeader headline="Skills" illustrationType="moustache" />
-      </SectionWrapper>
-
-      <SectionWrapper>
-        <Languages id="languages" />
-      </SectionWrapper>
-
     </Grid>
-
-  // </Container>
   );
-  // </section>
 });
+
+// <SectionWrapper>
+// </SectionWrapper>
+
+// <SectionWrapper>
+// <SectionHeader headline="Skills" illustrationType="moustache" />
+// </SectionWrapper>
+
+// <SectionWrapper>
+// <Languages id="languages" />
+// </SectionWrapper>
 
 const SectionWrapper = ({ children, colorType = 'primary' }) => {
   const theme = useTheme();
   return (
-    <>
-      <Grid item md={1} xs={false} style={{ background: theme.palette.text[colorType] }} />
-      <Grid item container md={10} xs={12} style={{ maxHeight: '90vh', overflow: 'hidden' }}>
-        {children}
-      </Grid>
-      <Grid item md={1} xs={false} style={{ background: theme.palette.text[colorType] }} />
-    </>
+    (
+      <>
+        <Grid item md={1} xs={false} style={{ background: theme.palette.text[colorType] }} />
+        <Grid item container md={10} xs={12} style={{ maxHeight: '90vh', overflow: 'hidden' }}>
+          {children}
+        </Grid>
+        <Grid item md={1} xs={false} style={{ background: theme.palette.text[colorType] }} />
+      </>
+    )
   );
 };
 
@@ -209,7 +174,6 @@ const IndexPage = ({
     return () => newObserver.disconnect();
   }, []);
 
-  const classes = useStyles();
   const theme = useTheme();
 
   return (

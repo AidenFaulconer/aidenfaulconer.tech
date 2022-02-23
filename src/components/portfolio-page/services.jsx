@@ -1,17 +1,14 @@
 import {
-  makeStyles,
-  Grid,
-  Typography,
-  useTheme,
-} from '@material-ui/core';
+  Box, Grid, Typography, useTheme,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import * as React from 'react';
 import { navigate, useStaticQuery } from 'gatsby';
 import { NoToneMapping } from 'three';
+import { styled } from '@mui/material/styles';
 import {
   RegularButton,
-  SecondaryButton,
   SelectionButton,
-  ThirdButton,
 } from '../custom/buttons';
 
 import {
@@ -28,106 +25,52 @@ import designImage from '../../../static/assets/portfolio/lots.png';
 import appsImage from '../../../static/assets/portfolio/clouds.png';
 import uiuxImage from '../../../static/assets/portfolio/uiux.png';
 import brandingImage from '../../../static/assets/portfolio/branding.jpg';
-import services_image from '../../../static/assets/portfolio/delivery.png';
+import servicesImage from '../../../static/assets/portfolio/delivery.png';
 import ThreeWrapper from '../threejs/three-wrapper';
 import { useStore } from '../../store/store';
 
 // ========================================================================== //
 // Shifting type
 // ========================================================================== //
-const useSlidingText = makeStyles((theme) => ({
-  '@keyframes animatedType': {
-    from: {
-      backgroundPosition: '0 0',
-    },
-    to: {
-      backgroundPosition: '100% 0',
-    },
-  },
-  movingType: {
-    position: 'absolute',
-    display: 'flex',
-    // justifyContent: 'space-evenly',
-    // flexDirection: 'column',
-    // minHeight: '90vh',
-    margin: 'auto',
-    // opacity: 0.3,
-    minWidth: '200vw',
-    width: '200%',
-    left: '-50%',
-    opacity: 0.5,
-    height: '70%',
-    zIndex: '10 !important',
-  },
-  type: {
-    display: 'inline-block',
-    height: '100%',
-    fill: theme.palette.text.primary,
-    // backgroundColor: theme.palette.text.primary,
-    // height: '100%',
-    width: '100%',
-    animation: '$animatedType 24s linear infinite alternate',
-    // tilt look
-    margin: 'auto',
-    // transform: 'rotate3d(116, -17, 28, 58deg)',
-    transform: 'rotate3d(31, -17, 28, 58deg)',
-    backgroundImage: ({ svg }) => svgEncodeBaseSixtyFour(`${svg}`),
-  },
-}));
+// const useSlidingText = styled('div')((theme) => ({
+//   '@keyframes animatedType': {
+//     from: {
+//       backgroundPosition: '0 0',
+//     },
+//     to: {
+//       backgroundPosition: '100% 0',
+//     },
+//   },
+//   movingType: {
+//     position: 'absolute',
+//     display: 'flex',
+//     margin: 'auto',
+//     minWidth: '200vw',
+//     width: '200%',
+//     left: '-50%',
+//     opacity: 0.5,
+//     height: '70%',
+//     zIndex: '10 !important',
+//   },
+//   type: {
+//     display: 'inline-block',
+//     height: '100%',
+//     fill: theme.palette.text.primary,
+//     width: '100%',
+//     animation: '$animatedType 24s linear infinite alternate',
+//     margin: 'auto',
+//     // tilt look
+//     // transform: 'rotate3d(116, -17, 28, 58deg)',
+//     transform: 'rotate3d(31, -17, 28, 58deg)',
+//     backgroundImage: ({ svg }) => svgEncodeBaseSixtyFour(`${svg}`),
+//   },
+// }));
 
-export const MovingType = ({ svg }) => {
-  const classes = useSlidingText({ svg });
-  return (
-    <div className={classes.movingType}>
-      <span className={classes.type} />
-    </div>
-  );
-};
-
-// ========================================================================== //
-//  Index page styles
-// ========================================================================== //
-const useStyles = makeStyles((theme) => ({
-
-  selectionMenu: {
-    position: 'relative',
-    border: theme.custom.borders.brandBorder,
-
-    flexDirection: 'row',
-    overflowX: 'scroll',
-    overflowY: 'hidden',
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(0, 4, 4, 4),
-    },
-  },
-  services3d: {
-    height: 500,
-    // border: theme.custom.borders.brandBorder,
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'row !important',
-      display: 'none',
-      visible: 'hidden',
-    },
-  },
-  selectionOptions: {
-    display: 'inline-flex',
-    gap: theme.spacing(4),
-    width: '100%',
-    overflowX: 'scroll',
-    padding: theme.spacing(4),
-    flexDirection: 'column',
-
-    flexWrap: 'nowrap',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'row !important',
-      padding: theme.spacing(4, 4, 4, 0),
-    },
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'row !important',
-      padding: theme.spacing(4),
-    },
-  },
-}));
+// export const MovingType = ({ svg }) => (
+//   <div className={classes.movingType}>
+//     <span className={classes.type} />
+//   </div>
+// );
 
 // ========================================================================== //
 // services
@@ -302,13 +245,12 @@ const servicesData = [
 export default React.forwardRef((props, ref) => {
   const bgAlt = 0;
   const { id } = props;
-  const classes = useStyles({ bgAlt });
 
   return (
     <section
       id={id}
       ref={ref}
-      className={(classes.section)}
+      // className={(classes.section)}
     >
       <SelectionMenu />
     </section>
@@ -325,7 +267,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
       costRange: '400$-5000$',
       description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
-      image: services_image,
+      image: servicesImage,
       name: 'Websites',
       threejs: {
         // animationsPlaying: ['hold'],
@@ -338,7 +280,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
       costRange: '',
       description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
-      image: services_image,
+      image: servicesImage,
       name: 'Design',
       threejs: {
         // animationsPlaying: ['write'],
@@ -351,7 +293,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
       costRange: '',
       description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
-      image: services_image,
+      image: servicesImage,
       name: 'Virtual Reality',
       threejs: {
         // animationsPlaying: ['hold'],
@@ -364,7 +306,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
       costRange: '',
       description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
-      image: services_image,
+      image: servicesImage,
       name: 'Branding',
       threejs: {
         // animationsPlaying: ['write'],
@@ -377,7 +319,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
       costRange: '',
       description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
-      image: services_image,
+      image: servicesImage,
       name: 'Other',
       threejs: {
         // animationsPlaying: ['build'],
@@ -390,7 +332,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
       costRange: '',
       description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
-      image: services_image,
+      image: servicesImage,
       name: 'My Projects',
       threejs: {
         // animationsPlaying: ['build'],
@@ -400,7 +342,6 @@ const SelectionMenu = React.forwardRef((props, red) => {
     },
   });
   const [selected, setSelected] = React.useState(selections.websites);
-  const classes = useStyles();
   const theme = useTheme();
 
   const changeHand = useStore((state) => state.threejsContext.methods.changeHand);
@@ -412,9 +353,39 @@ const SelectionMenu = React.forwardRef((props, red) => {
   //   });
   return (
   // container
-    <Grid container xs={12} wrap className={classes.selectionMenu}>
+    <Grid
+      container
+      xs={12}
+      wrap
+      sx={{
+        position: 'relative',
+        border: (theme) => theme.custom.borders.brandBorderSecondary,
+        flexDirection: { md: 'row', xs: 'column' },
+        overflowX: 'scroll',
+        overflowY: 'hidden',
+      }}
+    >
+
       {/* menu of services to scroll and select through */}
-      <Grid item lg={2} xs={12} md={3} className={classes.selectionOptions}>
+      <Grid
+        item
+        lg={2}
+        md={3}
+        xs={12}
+        sm={12}
+        wrap={false}
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'flex-start',
+          gap: 2,
+          flexDirection: { md: 'column', xs: 'row' },
+          overflowX: { md: 'clip', xs: 'scroll' },
+          height: { md: '100%', xs: 50 },
+          width: { xs: '100vw', lg: '100%' },
+          p: 4,
+
+        }}
+      >
         {Object.keys(selections).map((key) => {
           const item = selections[key];
           return (
@@ -438,97 +409,100 @@ const SelectionMenu = React.forwardRef((props, red) => {
       {/* description of service */}
       <Grid
         item
-        xs={6}
-        md={5}
-        style={{
-          height: 500,
+        xs={12}
+        md={9}
+        lg={10}
+        sx={{
           display: 'inline-flex',
-          flexDirection: 'column',
-          //   background: theme.palette.text.secondary,
           color: theme.palette.text.primary,
-          padding: theme.spacing(4),
-          // borderLeft: theme.custom.borders.brandBorder,
+          padding: 4,
+          maxWidth: '100vw',
+          flexDirection: { md: 'row', xs: 'column' },
         }}
       >
-        {/* {JSON.stringify(selected, null, 2)} */}
-        <Typography align="left" variant="h2" component="h2" color="primary">
-          {selected.title}
-        </Typography>
-
-        <Typography
-          align="left"
-          variant="caption"
-          gutterBottom
-          component="h3"
-          color="primary"
-          style={{ marginBottom: 30, fontWeight: 'regular !important' }}
-        >
-          {selected.costRange}
-        </Typography>
-
-        <Typography
-          align="left"
-          variant="body1"
-          component="body1"
-          color="primary"
-          style={{ marginBottom: 30 }}
-        >
-          {selected.description}
-        </Typography>
-
-        <div
-          style={{
-            display: 'inline-flex',
-            gap: theme.spacing(3),
-            row: theme.spacing(3),
-            flexDirection: 'row',
-            width: '100%',
-            height: '100%',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-end',
-            alignSelf: 'flex-end',
-            flexWrap: 'wrap',
-          }}
-        >
-          <RegularButton onClick={() => navigate('./booking')}>
-            Start
-            {' '}
-            {selected.name}
-            {' '}
-            project
-          </RegularButton>
-
-          <SecondaryButton onClick={() => navigate('#contact')}>
-            Contact me
-          </SecondaryButton>
-        </div>
-      </Grid>
-
-      {/* Image representing service */}
-      <Grid
-        item
-        lg={5}
-        xs={6}
-        md={4}
-        className={classes.services3d}
-      >
-        {/* <img
-          src={selected.image}
-          style={{
-            objectFit: 'cover',
-            height: '100%',
-            width: '100%',
-            position: 'relative',
-          }}
-        /> */}
-        <div style={{
-          height: 500,
+        <Box sx={{
           position: 'relative',
+          display: 'inline-flex',
+          flexDirection: 'column',
+          maxWidth: '100vw',
+          width: { md: '50%', xs: '100%' },
+          zIndex: 20,
+          // minHeight: 400,
+          height: { md: '100%', xs: 350 },
+        }}
+        >
+
+          {/* {JSON.stringify(selected, null, 2)} */}
+          <Typography align="left" variant="h2" component="h2" color="primary">
+            {selected.title}
+          </Typography>
+
+          <Typography
+            align="left"
+            variant="caption"
+            gutterBottom
+            component="h3"
+            color="primary"
+            style={{ marginBottom: 30, fontWeight: 'regular !important' }}
+          >
+            {selected.costRange}
+          </Typography>
+
+          <Typography
+            align="left"
+            variant="body1"
+            component="body1"
+            color="primary"
+            style={{ marginBottom: 30 }}
+          >
+            {selected.description}
+          </Typography>
+
+          <Box
+            sx={{
+              display: 'inline-flex',
+              gap: 3,
+              row: 3,
+              flexDirection: 'row',
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-end',
+              alignSelf: 'flex-end',
+              flexWrap: 'no-wrap',
+            }}
+          >
+            <RegularButton onClick={() => navigate('./booking')}>
+              Start
+              {' '}
+              {selected.name}
+              {' '}
+              project
+            </RegularButton>
+
+            <RegularButton type="secondary" onClick={() => navigate('/#contact')}>
+              Contact me
+            </RegularButton>
+          </Box>
+        </Box>
+        {/* Image representing service */}
+        <Box sx={{
+          // display: 'inline-block',
+          position: { md: 'relative', xs: 'absolute' },
+          width: { lg: '50%', xs: '100%' },
+          height: { lg: '100%', xs: '40%' },
+          margin: 'auto',
+          left: 0,
+          top: 0,
+          flex: 2,
+          display: { md: 'block', xs: 'none' },
         }}
         >
           <ThreeWrapper />
-        </div>
+        </Box>
       </Grid>
+
     </Grid>
   );
 });

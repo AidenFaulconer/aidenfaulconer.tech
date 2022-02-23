@@ -1,9 +1,21 @@
-import { Grid, makeStyles, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React from 'react';
 import { SecondaryButton } from './custom/buttons';
 
-const useStyles = makeStyles((theme) => ({
-  endOfPage: {
+const PREFIX = 'EndOfPage';
+
+const classes = {
+  endOfPage: `${PREFIX}-endOfPage`,
+  letsStartSomething: `${PREFIX}-letsStartSomething`
+};
+
+const Root = styled('section')((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.endOfPage}`]: {
     background: theme.palette.text.primary,
     // minHeight: '70vh',
     color: theme.palette.text.secondary,
@@ -11,17 +23,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(18),
   },
 
-  letsStartSomething: {
+  [`& .${classes.letsStartSomething}`]: {
     width: '100%',
     objectFit: 'contain',
-  },
+  }
 }));
 
 const EndOfPage = () => {
-  const classes = useStyles();
+
   return (
-    <section className={classes.endOfPage}>
-      <Grid container justify="center" alignItems="center">
+    <Root className={classes.endOfPage}>
+      <Grid container justifyContent="center" alignItems="center">
         {/* Typography */}
         <Grid item xs={6}>
           <Grid item xs={12}>
@@ -50,7 +62,7 @@ const EndOfPage = () => {
             <Grid
               item
               container
-              justify="flex-start"
+              justifyContent="flex-start"
               style={{ paddingBottom: 5, marginTop: 20 }}
             >
               <Grid item style={{ marginRight: 10, paddingBottom: 5 }}>
@@ -71,7 +83,7 @@ const EndOfPage = () => {
           />
         </Grid>
       </Grid>
-    </section>
+    </Root>
   );
 };
 

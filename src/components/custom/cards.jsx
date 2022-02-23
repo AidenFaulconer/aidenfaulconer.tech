@@ -1,55 +1,48 @@
 import * as React from 'react';
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+
 import {
   Card,
-  CardHeader,
   CardMedia,
   CardContent,
   CardActions,
   Collapse,
-  Avatar,
   Typography,
   Grid,
   Icon,
-} from '@material-ui/core';
+} from '@mui/material';
 import Carousel from 'react-multi-carousel';
-import { Star } from '@material-ui/icons';
+import { Star } from '@mui/icons-material';
 import { navigate } from 'gatsby';
 
-import shadows from '@material-ui/core/styles/shadows';
 import PropTypes from 'prop-types';
 import SimplexNoise from 'simplex-noise';
 import { config, useSpring } from '@react-spring/core';
-import TiltPhaseSix from './reactTilt';
-import { RegularButton, SecondaryButton, ThirdButton } from './buttons';
+import { RegularButton, ThirdButton } from './buttons';
 
-import quoteGraphic from '../../../static/assets/exploration.png';
-import { transition } from '../../store/theme';
+const PREFIX = 'Gridify';
 
-// ========================================================================== //
-// React can be a pain if you dont define prop types for certain cases, such as complex data or passing components
-// ========================================================================== //
-
-// ========================================================================== //
-// default card dimensions
-// ========================================================================== //
-
-// default dimensions
-const cardDimensions = {
-  width: 200,
-  height: 200,
-};
-const blogCardDimensions = {
-  width: 200,
-  height: 200,
+const classes = {
+  card: `${PREFIX}-card`,
+  expandedCard: `${PREFIX}-expandedCard`,
+  expand: `${PREFIX}-expand`,
+  expandOpen: `${PREFIX}-expandOpen`,
+  cardHeader: `${PREFIX}-cardHeader`,
+  perspectiveModifier: `${PREFIX}-perspectiveModifier`,
+  perspectiveModifierInner: `${PREFIX}-perspectiveModifierInner`,
+  cardContent: `${PREFIX}-cardContent`,
+  cardActions: `${PREFIX}-cardActions`,
+  collapse: `${PREFIX}-collapse`,
+  cardTypography: `${PREFIX}-cardTypography`,
 };
 
-// ========================================================================== //
-// card styles
-// ========================================================================== //
-const customCardStyles = makeStyles((theme) => ({
+const Root = styled('div')((
+  {
+    theme,
+  },
+) => ({
   // custom card styling
-  card: {
+  [`& .${classes.card}`]: {
     // minHeight: ({ cardHeight }) => cardHeight || cardDimensions.height,
     // minWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
     // maxWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
@@ -74,8 +67,9 @@ const customCardStyles = makeStyles((theme) => ({
       margin: 0,
     },
   },
+
   // same as service card except on mobile it takes full width
-  expandedCard: {
+  [`& .${classes.expandedCard}`]: {
     order: 0,
     position: 'relative',
     margin: 'auto',
@@ -92,17 +86,20 @@ const customCardStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.complex,
     }),
   },
-  expand: {
+
+  [`& .${classes.expand}`]: {
     transform: 'rotate(0deg)',
     width: '100%',
     margin: 'auto',
     color: 'inherit',
   },
-  expandOpen: {
+
+  [`& .${classes.expandOpen}`]: {
     color: 'inherit',
     transform: 'rotate(180deg)',
   },
-  cardHeader: {
+
+  [`& .${classes.cardHeader}`]: {
     fontWeight: 1000,
     textTransform: 'uppercase',
 
@@ -112,7 +109,8 @@ const customCardStyles = makeStyles((theme) => ({
     width: '100%',
     minHeight: 50,
   },
-  perspectiveModifier: {
+
+  [`& .${classes.perspectiveModifier}`]: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -121,7 +119,8 @@ const customCardStyles = makeStyles((theme) => ({
     marginBottom: '10px',
     alignItems: 'center',
   },
-  perspectiveModifierInner: {
+
+  [`& .${classes.perspectiveModifierInner}`]: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -131,7 +130,8 @@ const customCardStyles = makeStyles((theme) => ({
     marginBottom: '10px',
     alignItems: 'center',
   },
-  cardContent: {
+
+  [`& .${classes.cardContent}`]: {
     marginTop: theme.spacing(3),
     color: 'inherit',
     position: 'relative',
@@ -139,16 +139,18 @@ const customCardStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.complex,
     }),
   },
-  cardActions: {
-    marginTop: `${theme.spacing(1)}px`,
+
+  [`& .${classes.cardActions}`]: {
+    marginTop: theme.spacing(1),
     zIndex: 25,
     padding: 0,
     display: 'inline-flex',
   },
+
   // ========================================================================== //
   //   buggy
   // ========================================================================== //
-  collapse: {
+  [`& .${classes.collapse}`]: {
     transition: theme.transitions.create(['all'], {
       duration: theme.transitions.duration.complex,
     }),
@@ -156,7 +158,159 @@ const customCardStyles = makeStyles((theme) => ({
     background: theme.palette.text.primary,
     zIndex: 25,
   },
-  cardTypography: {
+
+  [`& .${classes.cardTypography}`]: {
+    color: 'inherit',
+    position: 'relative',
+    height: '100%',
+  },
+}));
+
+// ========================================================================== //
+// React can be a pain if you dont define prop types for certain cases, such as complex data or passing components
+// ========================================================================== //
+
+// ========================================================================== //
+// default card dimensions
+// ========================================================================== //
+
+// default dimensions
+const cardDimensions = {
+  width: 200,
+  height: 200,
+};
+const blogCardDimensions = {
+  width: 200,
+  height: 200,
+};
+
+// ========================================================================== //
+// card styles
+// ========================================================================== //
+const customCardStyles = styled('div')((
+  {
+    theme,
+  },
+) => ({
+  // custom card styling
+  [`& .${classes.card}`]: {
+    // minHeight: ({ cardHeight }) => cardHeight || cardDimensions.height,
+    // minWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
+    // maxWidth: ({ cardWidth }) => cardWidth || cardDimensions.width,
+    // maxHeight: ({ cardHeight }) => (cardHeight || '100%'),
+    // minHeight: ({ cardHeight }) => (cardHeight || '100%'),
+    // height: "100%",
+
+    background: ({ alt }) => (alt ? theme.palette.primary.main : theme.palette.secondary),
+
+    // all text inherit this
+    color: ({ alt }) => (alt && theme.palette.secondary.main) || theme.palette.primary.main, // rating stars inherit this
+
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    textAlign: 'left',
+    padding: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    display: 'grid',
+    transition: theme.transitions.create('all', {
+      duration: theme.transitions.duration.complex,
+    }),
+    '& .MuiGrid-item': {
+      margin: 0,
+    },
+  },
+
+  // same as service card except on mobile it takes full width
+  [`& .${classes.expandedCard}`]: {
+    order: 0,
+    position: 'relative',
+    margin: 'auto',
+    height: '100%',
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    boxShadow: 'none',
+    background: theme.palette.background.primary,
+    padding: theme.spacing(3),
+    border: theme.custom.borders.brandBorder,
+    '&:hover': {
+      boxShadow: theme.custom.shadows.brand,
+    },
+    transition: theme.transitions.create(['all'], {
+      duration: theme.transitions.duration.complex,
+    }),
+  },
+
+  [`& .${classes.expand}`]: {
+    transform: 'rotate(0deg)',
+    width: '100%',
+    margin: 'auto',
+    color: 'inherit',
+  },
+
+  [`& .${classes.expandOpen}`]: {
+    color: 'inherit',
+    transform: 'rotate(180deg)',
+  },
+
+  [`& .${classes.cardHeader}`]: {
+    fontWeight: 1000,
+    textTransform: 'uppercase',
+
+    // color: theme.palette.text.primary,
+    color: ({ alt }) => (alt && theme.palette.secondary.main) || theme.palette.primary.main, // rating stars inherit this
+
+    width: '100%',
+    minHeight: 50,
+  },
+
+  [`& .${classes.perspectiveModifier}`]: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minHeight: '200px',
+    position: 'relative',
+    marginBottom: '10px',
+    alignItems: 'center',
+  },
+
+  [`& .${classes.perspectiveModifierInner}`]: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+    position: 'relative',
+    marginBottom: '10px',
+    alignItems: 'center',
+  },
+
+  [`& .${classes.cardContent}`]: {
+    marginTop: theme.spacing(3),
+    color: 'inherit',
+    position: 'relative',
+    transition: theme.transitions.create(['all'], {
+      duration: theme.transitions.duration.complex,
+    }),
+  },
+
+  [`& .${classes.cardActions}`]: {
+    marginTop: theme.spacing(1),
+    zIndex: 25,
+    padding: 0,
+    display: 'inline-flex',
+  },
+
+  // ========================================================================== //
+  //   buggy
+  // ========================================================================== //
+  [`& .${classes.collapse}`]: {
+    transition: theme.transitions.create(['all'], {
+      duration: theme.transitions.duration.complex,
+    }),
+    marginTop: '-150%',
+    background: theme.palette.text.primary,
+    zIndex: 25,
+  },
+
+  [`& .${classes.cardTypography}`]: {
     color: 'inherit',
     position: 'relative',
     height: '100%',
@@ -167,8 +321,7 @@ const customCardStyles = makeStyles((theme) => ({
 // parent card components styles
 // ========================================================================== //
 
-// create jss styles to be used in the following component via const classes=useStyles(), used in top level components for card griding, ie carousel and blog grid for instance
-const genericStyles = makeStyles((theme) => ({
+const genericStyles = styled('div')((theme) => ({
   // carousel styling
   carouselHeading: {
     fontWeight: 'bolder',
@@ -211,7 +364,6 @@ const genericStyles = makeStyles((theme) => ({
       minHeight: 200,
       minWidth: 200,
       transformStyle: 'preserve-3d',
-      transition,
     },
     '& #cube > div:first-child': {
       transform: 'rotateX(90deg) translateZ(200px)',
@@ -297,7 +449,7 @@ const genericStyles = makeStyles((theme) => ({
           background: theme.palette.background.default,
         },
         border: theme.custom.borders.brandBorderSecondary,
-        marginTop: `-${theme.spacing(6) * 9.3}px`,
+        marginTop: `-calc(${theme.spacing(6)} * 9.3)`,
         '&:hover': {
           boxShadow: '0px 0px 0px transparent',
         },
@@ -662,12 +814,12 @@ export const CustomCard = React.memo(
         style={animatedStyles}
         elevation={0}
       >
-        <Grid container justify="center">
+        <Grid container justifyContent="center">
           {rating && (
             <Grid item xs={12} sx={{ mt: 5 }}>
-              <div className="d-flex position-relative">
+              <Root className="d-flex position-relative">
                 {ratingStars(rating, index)}
-              </div>
+              </Root>
             </Grid>
           )}
 
@@ -710,34 +862,6 @@ export const CustomCard = React.memo(
   },
   (pre, post) => pre !== post,
 );
-
-// define custom cards prop types
-CustomCard.propTypes = {
-  cardContent: PropTypes.node,
-  cardHeader: PropTypes.node,
-  cardActions: PropTypes.node,
-  cardMedia: PropTypes.node,
-  expanded: PropTypes.bool,
-
-  title: PropTypes.string,
-  id: PropTypes.string,
-  cardWidth: PropTypes.number,
-  cardHeight: PropTypes.number,
-  color: PropTypes.string,
-  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  alt: PropTypes.bool,
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      description: PropTypes.string,
-      image: PropTypes.string,
-      icon: PropTypes.string,
-      project: PropTypes.string,
-      rating: PropTypes.number,
-    }),
-  ),
-};
-
 const ThreeDCarousel = React.memo(
   ({
     carouselData = [],

@@ -2,6 +2,8 @@ import React, {
   Component, useEffect, useState, useCallback, useMemo, Suspense, lazy,
 } from 'react';
 
+import { styled } from '@mui/material/styles';
+
 import { useCookies } from 'react-cookie';
 
 import {
@@ -10,22 +12,23 @@ import {
 
 import { Helmet } from 'react-helmet';
 
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { StylesProvider } from '@material-ui/core/styles';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import StylesProvider from '@mui/styles/StylesProvider';
 import {
   ThemeProvider,
+  StyledEngineProvider,
   Container,
   Fab,
   useScrollTrigger,
   Zoom,
   Backdrop,
-  makeStyles,
-} from '@material-ui/core';
+  useTheme,
+} from '@mui/material';
 // import { logo } from '../../../static/svgs/hardcoded-svgs';
 import PropTypes from 'prop-types';
 import {
   AudiotrackOutlined, AudiotrackRounded, Brightness2, Brightness5,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import {
   a, Transition, useSpring, config,
 } from '@react-spring/web';
@@ -40,12 +43,24 @@ import { hexToAlpha } from '../store/theme';
 import ambianceSound from '../../static/assets/portfolio/ambiance.mp3';
 
 import MaterialUI from './materialUI';
-// const MaterialUI = lazy(() => import('./materialUI'));// fix's problems with material-ui at build time **creates react error 294**
 
-// Platform knowledge is in here ...
+const PREFIX = 'Layout';
 
-const useStyles = makeStyles((theme) => ({
-  threeWrapper: {
+const classes = {
+  threeWrapper: `${PREFIX}-threeWrapper`,
+  fab: `${PREFIX}-fab`,
+  post: `${PREFIX}-post`,
+  pageEnter: `${PREFIX}-pageEnter`,
+  pageChange: `${PREFIX}-pageChange`,
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme,
+  },
+) => ({
+  [`& .${classes.threeWrapper}`]: {
     position: 'absolute',
     height: '100%',
     width: '100%',
@@ -53,14 +68,17 @@ const useStyles = makeStyles((theme) => ({
     top: '0px',
     zIndex: 1,
   },
-  fab: {
+
+  [`& .${classes.fab}`]: {
     borderRadius: '100%',
     background: `${hexToAlpha(theme.palette.text.primary, 0.6)} !important`,
     backdropFilter: 'blur(35px)',
     transform: 'scale(.75)',
   },
-  post: {},
-  pageEnter: {
+
+  [`& .${classes.post}`]: {},
+
+  [`& .${classes.pageEnter}`]: {
     position: 'absolute',
     zIndex: 20,
     background: theme.palette.text.primary,
@@ -73,7 +91,8 @@ const useStyles = makeStyles((theme) => ({
     visibility: 'visible',
     pointerEvents: 'all',
   },
-  pageChange: {
+
+  [`& .${classes.pageChange}`]: {
     position: 'absolute',
     display: 'initial',
     background: theme.palette.text.secondary,
@@ -104,6 +123,7 @@ const Layout = React.memo((props) => {
     }
   `,
   );
+  const theme = useTheme();
 
   const { children, window } = props;
   // if (typeof window === "undefined") return
@@ -167,7 +187,6 @@ const Layout = React.memo((props) => {
 
   const mySans = '"Merriweather", "Source Sans Pro", "sans-serif"';
 
-  const classes = useStyles();
   const toggleTheme = useStore((state) => state.appContext.toggleTheme);
   const type = useStore((state) => state.appContext.type);
   const selectedIndex = useStore((state) => state.threejsContext.context.selectedIndex);
@@ -196,16 +215,25 @@ const Layout = React.memo((props) => {
   // if (typeof window === 'undefined') return null;
 
   return (
-    <div style={{
-      overflowX: 'hidden', width: '100vw', display: 'flex', flexDirection: 'column',
-    }}
+    <div
+      style={{
+        overflowX: 'hidden',
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        backgroundColor: '#E6EBFA',
+        color: 'rgba(1,1,100,.1)',
+      }}
+      id="#root"
+      className="pattern-horizontal-lines-md"
     >
       <MaterialUI>
         <Navigation />
 
         <HeroHeader id="projects" />
 
-        <PageTransitionOverlay />
+        {/* <PageTransitionOverlay /> */}
         {children}
 
         <Footer />
@@ -231,6 +259,7 @@ const Layout = React.memo((props) => {
         >
           {(type === 'light' && <Brightness5 />) || <Brightness2 />}
         </Fab>
+
         <Consolelogs />
 
       </MaterialUI>
@@ -322,12 +351,10 @@ const Consolelogs = () => {
     // `);
     // }
   }, []);
-  return (<></>);
+  return (<Root />);
 };
 
 const PageTransitionOverlay = (props) => {
-  const classes = useStyles();
-
   // ========================================================================== //
   //         Trigger and animate page transitions
   // ========================================================================== //

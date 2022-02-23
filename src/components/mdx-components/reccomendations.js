@@ -1,10 +1,21 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import { graphql, Link } from 'gatsby';
-import { makeStyles } from '@material-ui/core';
 import Layout from '../../layout/layout';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
+const PREFIX = 'reccomendations';
+
+const classes = {
+  container: `${PREFIX}-container`,
+  post: `${PREFIX}-post`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.container}`]: {
     margin: '50px 0px',
     marginBottom: '200px',
     display: 'flex',
@@ -37,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  post: {
+
+  [`& .${classes.post}`]: {
     marginTop: '7vw',
     padding: '100px 0vw',
     display: 'flex',
@@ -78,13 +90,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
     },
-  },
+  }
 }));
 
 export default ({ otherBlogs }) => {
-  const classes = useStyles();
+
   return (
-    <div className={classes.container}>
+    <Root className={classes.container}>
       Read more
       {otherBlogs.map((post, i) => {
         //  alert(JSON.stringify(post, null, 2))
@@ -103,6 +115,6 @@ export default ({ otherBlogs }) => {
           </Link>
         );
       })}
-    </div>
+    </Root>
   );
 };

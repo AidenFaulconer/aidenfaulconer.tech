@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {
-  createMuiTheme, CssBaseline, StylesProvider, MuiThemeProvider, NoSsr,
-} from '@material-ui/core';
+  createTheme, CssBaseline, ThemeProvider, StyledEngineProvider, NoSsr,
+} from '@mui/material';
+import StylesProvider from '@mui/styles/StylesProvider';
 import {
   dt, lt, useStore, LIGHT_THEME, afCreateTheme,
 } from '../store/store';
 
 // import { dt, lt, valtioState } from "../store/store-wrapper"
-// import { ServerStyleSheets } from "@material-ui/core/styles"
+// import { ServerStyleSheets } from "@mui/material/styles"
 // // ========================================================================== //
 // //   SSR compatibility
 // // ========================================================================== //
@@ -44,27 +45,30 @@ export default ({ children }) => {
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0,
-        maximum-scale=1.0, user-scalable=no"
+      maximum-scale=1.0, user-scalable=no"
         />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
+        <link href="https://unpkg.com/pattern.css" rel="stylesheet" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
 
         {/* <NoSsr> */}
-        <MuiThemeProvider
-          theme={type === 'light' && lt || dt}
-          key="ThemeProvider"
-          sheetsManager={new Map()}
-        >
-          <StylesProvider injectFirst>
-            <CssBaseline />
-            {children}
-          </StylesProvider>
-        </MuiThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider
+            theme={type === 'light' && lt || dt}
+            key="ThemeProvider"
+            sheetsManager={new Map()}
+          >
+            <StylesProvider injectFirst>
+              <CssBaseline />
+              {children}
+            </StylesProvider>
+          </ThemeProvider>
+        </StyledEngineProvider>
         {/* </NoSsr> */}
       </React.StrictMode>
     </>

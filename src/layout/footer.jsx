@@ -2,6 +2,8 @@ import React, {
   Component, useEffect, useState, useCallback,
 } from 'react';
 
+import { styled } from '@mui/material/styles';
+
 import { Link, useStaticQuery, graphql } from 'gatsby';
 import { navigate } from 'gatsby-link';
 
@@ -11,8 +13,8 @@ import { InlineIcon } from '@iconify/react';
 // import linkedinLogo from "@iconify/icons-ion/logo-linkedin";
 // import instagramLogo from "@iconify/icons-ri/instagram-fill";
 import {
-  Box, Container, Typography, Grid, makeStyles,
-} from '@material-ui/core';
+  Box, Container, Typography, Grid,
+} from '@mui/material';
 import footerGraphic from '../../static/assets/footer.png';
 import {
   logoCircular,
@@ -21,12 +23,22 @@ import {
 
 } from '../../static/assets/svg/hardcoded-svgs';
 import {
-  RegularButton,
-  SecondaryButton,
+  RegularButton, 
 } from '../components/custom/buttons';
 
-const useStyles = makeStyles((theme) => ({
-  footer: {
+const PREFIX = 'footer';
+
+const classes = {
+  footer: `${PREFIX}-footer`,
+  menuIcon: `${PREFIX}-menuIcon`,
+};
+
+const StyledSecondaryButton = styled('div')((
+  {
+    theme,
+  },
+) => ({
+  [`& .${classes.footer}`]: {
     position: 'relative',
     minHeight: 200,
     padding: theme.spacing(3, 6),
@@ -41,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
       // padding: theme.spacing(2),
     },
   },
-  menuIcon: {
+
+  [`& .${classes.menuIcon}`]: {
     color: 'inherit',
     border: 'none !important',
     // maxHeight: 50,
@@ -63,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ children }) => {
   // const theme = useTheme();
-  const classes = useStyles();
+
   const pages = [
     { name: 'portfolio', url: './' },
     { name: 'services', url: './services' },
@@ -135,25 +148,25 @@ export default ({ children }) => {
 
         <Grid item xs={4}>
 
-          <Grid item container justify="space-between">
+          <Grid item container justifyContent="space-between">
             <Grid item xs={12}>
               <Typography gutterBottom color="inherit">
                 Want to collaborate?
               </Typography>
-              <SecondaryButton
+              <StyledSecondaryButton
                 size="small"
                 onClick={() => navigate('/booking')}
               >
                 Make a booking
-              </SecondaryButton>
+              </StyledSecondaryButton>
             </Grid>
             <Grid item xs={12}>
               <Typography gutterBottom color="inherit">
                 Send me an email
               </Typography>
-              <SecondaryButton size="small" onClick={() => sendEmail()}>
+              <RegularButton type="secondary" icon={{enabled:true,type:'arrow'}} size="small" onClick={() => sendEmail()}>
                 aidenf09@yahoo.com
-              </SecondaryButton>
+              </RegularButton>
             </Grid>
           </Grid>
 
@@ -161,14 +174,14 @@ export default ({ children }) => {
 
         <Grid item xs={4}>
 
-          <Grid item container justify="space-between">
+          <Grid item container justifyContent="space-between">
             <Grid item xs={12}>
               <Typography gutterBottom color="inherit">
                 Lets Talk
               </Typography>
-              <SecondaryButton size="small" onClick={() => makeCall()}>
+              <RegularButton  type="secondary" icon={{enabled:true,type:'arrow'}} size="small" onClick={() => makeCall()}>
                 0475565709
-              </SecondaryButton>
+              </RegularButton>
 
             </Grid>
             <Grid item xs={12}>
@@ -188,4 +201,4 @@ export default ({ children }) => {
     </footer>
   );
 };
-// {/* <SecondaryButton size="small">Call me</SecondaryButton> */}
+// {/* <RegularButton size="small">Call me</RegularButton> */}

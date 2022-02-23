@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { StaticQuery, graphql, Link } from 'gatsby';
-import { makeStyles } from '@material-ui/core';
+const PREFIX = 'typewriter';
 
-const useStyles = makeStyles((theme) => ({
-  typewriter: {
+const classes = {
+  typewriter: `${PREFIX}-typewriter`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.typewriter}`]: {
     width: '100%',
     margin: 'auto',
     textAlign: 'center',
@@ -19,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
         borderColor: 'transparent',
       },
     },
-  },
+  }
 }));
 
 export default ({ text }) => {
-  const classes = useStyles();
+
   // type one text in the typwriter
   const [showText, setShowText] = useState('Ello mate');
 
@@ -68,8 +77,8 @@ export default ({ text }) => {
   }, []); // stop when text isnt changed
 
   return (
-    <div className={classes.typewriter}>
+    <Root className={classes.typewriter}>
       <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: showText }} />
-    </div>
+    </Root>
   ); // text modified in funciton
 };

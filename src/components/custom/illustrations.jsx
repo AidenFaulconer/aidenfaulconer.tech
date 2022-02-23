@@ -2,8 +2,11 @@
 // Svgs
 // ========================================================================== //
 
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { useState } from 'react';
+import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
+import { keyframes } from '@emotion/react';
 import { transition } from '../../store/theme';
 
 export const coffee = `
@@ -264,132 +267,123 @@ export const illustrations = {
   coffee, confidence, computer, moustache, genie, vr, abstract,
 };
 
-// usestyles
-const useStyles = makeStyles((theme) => ({
-  illustration: {
-    position: 'absolute',
-    bottom: -10,
-  },
-  colorFocus: {
-    margin: '-50% auto',
-    width: 500,
-    height: 1395,
-    zIndex: 2,
-    backgroundImage: theme.palette.background.pipes,
-    '&::hover': {
-      width: 1700,
-      height: 300,
-      transform: 'rotate(165deg)',
-      backgroundImage: theme.palette.background.pipesTwo,
-    },
-  },
+const DivColorFocus = styled('div')(({ theme }) => ({
+  margin: '-50% auto',
+  width: 500,
+  height: 1395,
+  zIndex: 2,
+  backgroundImage: theme.palette.background.pipes,
 
-  // ========================================================================== //
-  //   hero animation
-  // ========================================================================== //
-  '@keyframes animWorld': {
-    from: {
-      transform: 'rotate(0deg)',
-    },
-    to: {
-      transform: 'rotate(360deg)',
-    },
+  '&::hover': {
+    width: 1700,
+    height: 300,
+    transform: 'rotate(165deg)',
+    backgroundImage: theme.palette.background.pipesTwo,
   },
-  '@keyframes animStroke': {
-    '0%': {
-      strokeDashoffset: 0,
-      color: theme.palette.background.special,
-    },
-    '25%': {
-      strokeDashoffset: 450,
-      color: theme.palette.background.specialTwo,
-    },
-    '50%': {
-      strokeDashoffset: 900,
-      color: theme.palette.background.specialTwo,
-    },
-    '75%': {
-      strokeDashoffset: 450,
-      color: theme.palette.background.specialTwo,
-    },
-    '100%': {
-      strokeDashoffset: 0,
-      color: theme.palette.background.special,
-    },
-  },
-  designWorld: {
-    position: 'relative',
-    opacity: 0.9,
-    margin: 'auto',
-    transform: 'scale(.75)',
-    '& svg': {
-      // animation: '$animWorld 40s linear infinite',
-      margin: 'auto',
-      display: 'block',
-      height: '100%',
-      width: '100%',
-      maxHeight: 500,
-      color: 'white',
-      '& path': {
-        strokeWidth: '1px',
-        strokeLinecap: 'butt',
-        strokeDasharray: 675,
-        animation: '$animStroke 8s cubic-bezier(0.52, 0.01, 0.54, 0.98) infinite',
-      },
-    },
-  },
-
 }));
 
 // ========================================================================== //
 // Illustration component **parent should generally be realtively positioned**
 // ========================================================================== //
-export const Illustration = React.memo((props) => {
-  const [graphic, setGraphic] = useState(illustrations[props.type || 'computer']);
-  const classes = useStyles();
+export const Illustration = React.memo(
+  (props) => {
+    const [graphic, setGraphic] = useState(
+      illustrations[props.type || 'computer'],
+    );
+    const { maxWidth, flipped, margin } = props;
 
-  const _styles = {
-    transform: props.flip && 'scaleX(-1)',
-  };
+    const illustrationStyles = {
+      transform: flipped && 'scaleX(-1)',
+      maxWidth: maxWidth || 240,
+      margin,
+      textAlign: 'center',
+      alignSelf: 'center',
+    };
 
-  return (
-    <div
-      {...props}
-      className={classes.illustration}
-      id="illustration"
-    >
-      <div dangerouslySetInnerHTML={{ __html: graphic }} style={{ height: '100%', width: '100%', zIndex: 10 }} />
-    </div>
-  );
-}, (prev, next) => prev !== next);
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          marginLeft: 30,
+          bottom: -10,
+          // ...illustrationStyles,
+          width: 240,
+          height: 240,
+        }}
+        id="illustration"
+      >
+        <div
+          style={{ height: '100%', width: '100%', zIndex: 10 }}
+          dangerouslySetInnerHTML={{ __html: graphic }}
+        />
+      </Box>
+    );
+  },
+  (prev, next) => prev !== next,
+);
 
 // ========================================================================== //
 // Hover Animation
 // ========================================================================== //
-export const ColorFocus = React.memo(() => {
-  const classes = useStyles();
-  return (
-    <div style={{
+export const ColorFocus = React.memo(() => (
+  <div
+    style={{
       height: 785,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'column',
     }}
-    >
-      <div className={classes.colorFocus} />
-    </div>
-  );
-});
+  >
+    <DivColorFocus />
+  </div>
+));
 
+const getKeyframes = keyframes`
+    from: {transform: 'rotate(0deg)';},
+    to: {transform: 'rotate(360deg)';},`;
+
+const getStrokeAnimation = keyframes`
+        0%: {strokeDashoffset: 0; color: ${(theme) => theme.palette.background.special};},
+        25%: {strokeDashoffset: 450; color: ${(theme) => theme.palette.background.specialTwo};},
+        50%: {strokeDashoffset: 900; color: ${(theme) => theme.palette.background.specialTwo};},
+        75%: {strokeDashoffset: 450; color: ${(theme) => theme.palette.background.specialTwo};},
+        100%: {strokeDashoffset: 0; color: ${(theme) => theme.palette.background.special};},
+    `;
 // ========================================================================== //
 // world animation
 // ========================================================================== //
-export const DesignWorld = React.memo(() => {
-  const classes = useStyles();
-  return (
+export const DesignWorld = React.memo(
+  () => (
     <>
-      <div className={classes.designWorld} dangerouslySetInnerHTML={{ __html: world }} />
+      <Box
+        sx={
+          {
+            position: 'relative',
+            opacity: 0.9,
+            margin: 'auto',
+            transform: 'scale(.75)',
+
+            '& svg': {
+              // animation: '$animWorld 40s linear infinite',
+              margin: 'auto',
+              display: 'block',
+              height: '100%',
+              width: '100%',
+              maxHeight: 500,
+              color: 'white',
+              '& path': {
+                strokeWidth: '1px',
+                strokeLinecap: 'butt',
+                strokeDasharray: 675,
+                animation: `${getStrokeAnimation} 8s cubic-bezier(0.52, 0.01, 0.54, 0.98) infinite`,
+              },
+            },
+          }
+      }
+        dangerouslySetInnerHTML={{ __html: world }}
+      />
     </>
-  );
-}, (prev, next) => prev !== next);
+  ),
+  (prev, next) => prev !== next,
+);

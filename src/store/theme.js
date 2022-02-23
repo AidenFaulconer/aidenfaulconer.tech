@@ -1,13 +1,6 @@
-/* eslint-disable no-restricted-properties */
-/* eslint-disable no-multi-assign */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-bitwise */
-// This is where I define elements of my theme. 
-
-import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
-import createSpacing from '@material-ui/core/styles/createSpacing';
-import createTypography from '@material-ui/core/styles/createTypography';
-import transitions from '@material-ui/core/styles/transitions';
+import { createTypography } from '@mui/material/styles';
+import { createTheme } from '@mui/system';
+import { adaptV4Theme } from '@mui/material';
 
 import * as React from 'react';
 
@@ -60,8 +53,24 @@ const layoutGrid = {
 // Create default values
 // ========================================================================== //
 
-const spacing = createSpacing(4);
-const breakpoints = createBreakpoints({});
+// const spacing = createSpacing(4);
+
+// const breakpoints = createBreakpoints({});
+
+const { spacing, breakpoints, transitions } = createTheme({
+  shape: {},
+  breakpoints: {},
+  direction: {},
+  palette: {},
+  shadows: {},
+  spacing: [],
+  transitions: {},
+  components: {},
+  mixins: {},
+  typography: {},
+  zIndex: {},
+});
+
 // createTypography()
 
 // ========================================================================== //
@@ -193,8 +202,8 @@ const TYPOGRAPHY = {
     body1: {
       lineHeight: '150%',
       fontStyle: 'normal',
-      fontWeight: 200,
-      fontSize: pxToRem(17),
+      fontWeight: 400,
+      fontSize: pxToRem(15),
       background: 'inherit',
       [breakpoints.down('sm')]: {
         fontSize: pxToRem(12),
@@ -250,7 +259,7 @@ const CUSTOM_THEME_PROPS = {
       black: '#00004D',
     },
     borders: {
-      brandBorderRadius: '3px',
+      brandBorderRadius: '4px',
       brandBorderRadius2: '13px',
       brandBorderRadius3: '22px',
       // brandBorder: '1px solid rgba(255,255,255,.2)',
@@ -274,7 +283,7 @@ const LIGHT_THEME = {
   ...TYPOGRAPHY,
   ...CUSTOM_THEME_PROPS,
   palette: {
-    type: 'light',
+    mode: 'light',
     primary: {
       main: '#000064',
     },
@@ -303,7 +312,7 @@ const DARK_THEME = {
   ...TYPOGRAPHY,
   ...CUSTOM_THEME_PROPS,
   palette: {
-    type: 'light',
+    mode: 'light',
     secondary: {
       main: '#000064',
     },
@@ -352,10 +361,6 @@ const DARK_THEME = {
 // ========================================================================== //
 const _theme = LIGHT_THEME;
 
-export const transition = transitions.create(
-  ['color', 'box-shadow', 'background', 'margin', 'border'],
-  { duration: '0.3s', easing: 'ease-in-out' },
-);
 // ========================================================================== //
 //     css style functions and special effects
 // ========================================================================== //
@@ -387,88 +392,6 @@ export const svgEncodeBaseSixtyFour = (svg) => `url(data:image/svg+xml;base64,${
 // ========================================================================== //
 //    Social media popup https://codepen.io/Mahmood_bagheri/pen/YzqNqEb
 // ========================================================================== //
-
-export const socialMediaPopupKeyframes = {};
-
-export const socialMediaPopup = {
-  // button {
-  // all: unset;
-  // background: var(--white);
-  // border: 2px solid var(--gray);
-  // color: var(--gray);
-  // padding: 15px 30px;
-  // border-radius: var(--max);
-  // cursor: pointer;
-  // transition: 500ms all ease-in-out;
-  // height: 40px;
-  // position: relative;
-  // overflow: hidden;
-  // text-align: center;
-  // width: 200px;
-  //   &:hover {
-  //     background: var(--blue);
-  //     border-color: var(--blue);
-  //     color: var(--blue);
-  //   }
-  //   &:hover .icons {
-  //     &__icon {
-  //       transform: translateY(-75%);
-  //       transition: all 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55); /* easeInOutBack */
-  //       &:nth-child(1) {
-  //         transition-delay: 30ms;
-  //       }
-  //       &:nth-child(2) {
-  //         transition-delay: 60ms;
-  //       }
-  //       &:nth-child(3) {
-  //         transition-delay: 90ms;
-  //       }
-  //       &:nth-child(4) {
-  //         transition-delay: 120ms;
-  //       }
-  //       &:nth-child(5) {
-  //         transition-delay: 150ms;
-  //       }
-  //     }
-  //   }
-  // }
-  // .icons {
-  //   position: absolute;
-  //   left: 0;
-  //   right: 0;
-  //   display: flex;
-  //   width: 100%;
-  //   justify-content: space-around;
-  //   &__icon {
-  //     background: var(--white);
-  //     height: 25px;
-  //     width: 25px;
-  //     border-radius: var(--max);
-  //     background: var(--white);
-  //     padding: 6px;
-  //     transform: translateY(60%);
-  //     transition: all 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55); /* easeInOutBack */
-  //     &:nth-child(1) {
-  //       transition-delay: 20ms;
-  //     }
-  //     &:nth-child(2) {
-  //       transition-delay: 40ms;
-  //     }
-  //     &:nth-child(3) {
-  //       transition-delay: 60ms;
-  //     }
-  //     &:nth-child(4) {
-  //       transition-delay: 80ms;
-  //     }
-  //     &:nth-child(5) {
-  //       transition-delay: 100ms;
-  //     }
-  //     svg {
-  //       stroke: var(--blue);
-  //     }
-  //   }
-  // }
-};
 
 // ========================================================================== //
 //    3d hover
@@ -583,7 +506,6 @@ export const patternHover = {
 // };
 const commonButton = {
   root: {
-    transition,
     // boxShadow: `${_theme.custom.shadows.brand} !important`,
     color: _theme.palette.background.default,
     borderRadius: `${_theme.custom.borders.brandBorderRadius} !important`,
@@ -637,7 +559,9 @@ const OVERRIDES = {
           margin: 0,
           overflowX: 'hidden',
           // background: generateNoisePng(1000, 1000, 12343412, 4, 3, 2, 29),
-          background: `url(${require('./noise.js').noise})`,
+          // background: `url(${require('./noise.js').noise})`,
+          // background: '#E6EBFA',
+          // backgroundColor: '#E6EBFA',
           // ========================================================================== //
           //           Customize scrollbar
           // ========================================================================== //
@@ -834,15 +758,3 @@ export {
 // //     filter: 'blur(5px)',
 // //     zIndex: 2,
 // //   },
-// transition: theme.transitions.create(
-//   ['transform', 'box-shadow', 'background', 'margin', 'border'],
-//   { duration: '0.3s', easing: 'ease-in-out' },
-// ),
-// '&:hover': {
-//   transform: 'skew(-5deg, 2deg) !important',
-//   transition: theme.transitions.create(
-//     ['transform', 'box-shadow', 'background', 'margin', 'border'],
-//     { duration: '0.3s', easing: 'ease-in-out' },
-//   ),
-// },
-// },

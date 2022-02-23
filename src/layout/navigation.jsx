@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
+import { styled } from '@mui/material/styles';
+import { navigate } from 'gatsby-link';
 // ui
 import {
   List,
@@ -16,20 +18,17 @@ import {
   Grid,
   Typography,
   useTheme,
-} from '@material-ui/core';
+  Box,
+} from '@mui/material';
 import {
   Brightness2, Brightness5, Close, ClosedCaptionOutlined, Menu,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 // import { navigate } from "gatsby-link"
 // ========================================================================== //
 // Page transitions
 // ========================================================================== //
 import { Link } from 'gatsby';
 
-// ========================================================================== //
-// Styles
-// ========================================================================== //
-import { makeStyles } from '@material-ui/core/styles';
 // import {
 //   customMenuIcon,
 //   logoFull,
@@ -41,40 +40,34 @@ import { makeStyles } from '@material-ui/core/styles';
 import logoPng from '../../static/svgs/logo.png';
 import {
   RegularButton,
-  SecondaryButton,
 } from '../components/custom/buttons';
 import { NavigationBlob } from '../components/custom/navigationBlob';
 import { useStore } from '../store/store';
 import { SCROLL_PROPS } from '../store/theme';
 import { Illustration } from '../components/custom/illustrations';
 
-const useStyles = makeStyles((theme) => ({
-  drawer: {},
-  drawerList: {
+const PREFIX = 'Navigation';
+
+const classes = {
+  drawer: `${PREFIX}-drawer`,
+  drawerList: `${PREFIX}-drawerList`,
+  pageNav: `${PREFIX}-pageNav`,
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme,
+  },
+) => ({
+  [`& .${classes.drawer}`]: {},
+
+  [`& .${classes.drawerList}`]: {
     width: '100vw',
     height: '100vh',
   },
-  pageNav: {
-    display: 'flex',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    [theme.breakpoints.down('xs')]: {
-      display: 'none',
-    },
-  },
-  pageLinks: {
-    fontSize: '.65rem',
-    marginLeft: '15px',
-    marginRight: '15px',
-    fontFamily: 'Poppins',
-    textDecoration: 'none',
-    fontWeight: 500,
-    color: 'inherit',
-    textAlign: 'center',
-    textTransform: 'capitalize',
-  },
-  appBar: {
+
+  [`& .${classes.appBar}`]: {
     // background: `linear-gradient(-90deg, ${theme.custom.contrast.black} 23.52%, ${theme.palette.text.primary} 23.52%, ${theme.palette.text.primary}) 61.89%`,
     // background: `rgba(80, 105, 54, 1),rgba(145, 146, 175, 1)`,
     // theme.palette.background.secondary,//change to "rgba(80,105,54,.6)" when app bar scrolled past initial place
@@ -84,62 +77,26 @@ const useStyles = makeStyles((theme) => ({
     height: '7vh',
     display: 'flex',
     flexDirection: 'row',
-    // padding: `${theme.spacing(0)}px calc(8.33333% + ${theme.spacing(0)}px)`,
+    // padding: `${theme.spacing(0)} calc(8.33333% + ${theme.spacing(0)})`,
     justifyContent: 'space-evenly',
     color: theme.palette.text.secondary,
     borderBottom: theme.custom.borders.brandBorder,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: theme.spacing(0, 4),
     },
   },
-  logo: {
-    color: 'inherit',
-    cursor: 'pointer',
-    maxWidth: '90px',
-  },
-  menuIcon: {
-    color: 'inherit',
-    border: 'none !important',
-    width: 54,
-    height: 64,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    '& svg': {
-      // transform: 'scale(.5)',
-      left: 0,
-      top: '-12mm',
-      display: 'inline-block',
-      transition: theme.transitions.create(
-        ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
-        { duration: '0.3s', easing: 'ease-in-out' },
-      ),
-    },
-    '&:hover': {
-      '& svg': {
-        top: '0mm',
-        transform: 'rotate(340deg) scale(1.5) !important',
-        fill: theme.palette.primary.main,
-        transition: theme.transitions.create(
-          ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
-          { duration: '0.3s', easing: 'ease-in-out' },
-        ),
-      },
-    },
-  },
+
 }));
 
 const Navigation = React.memo(
-  ({ children, window }) => {
-    const classes = useStyles();
+  ({ window }) => {
     const [drawerState, setDrawerState] = React.useState(false);
     const iOS = (typeof window !== 'undefined'
         && /iPad|iPhone|iPod/.test(navigator?.userAgent))
       || false;
 
     const toggleDrawer = React.useCallback(
-      (event) => setDrawerState((drawerState) => !drawerState),
+      () => setDrawerState((drawerState) => !drawerState),
       [],
     );
 
@@ -150,17 +107,67 @@ const Navigation = React.memo(
       { name: 'Blog', url: '#blog' },
     ];
 
-    const contactEmbedded = [
-      { name: 'phone', url: '#phone', icon: 'phone' },
-      { name: 'mail', url: '#mail', icon: 'mail' },
-    ];
-
-    const search = [{ name: 'search', url: '#search', icon: 'search' }];
+    // ========================================================================== //
+    //   Navigation styles
+    // ========================================================================== //
+    const menuIconStyles = {
+      color: 'inherit',
+      border: 'none !important',
+      width: 54,
+      height: 64,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      cursor: 'pointer',
+      '& svg': {
+        // transform: 'scale(.5)',
+        left: 0,
+        top: '-12mm',
+        display: 'inline-block',
+        transition: (theme) => theme.transitions.create(
+          ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
+          { duration: '0.3s', easing: 'ease-in-out' },
+        ),
+      },
+      '&:hover': {
+        '& svg': {
+          top: '0mm',
+          transform: 'rotate(340deg) scale(1.5) !important',
+          fill: 'text.primary.main',
+          transition: (theme) => theme.transitions.create(
+            ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
+            { duration: '0.3s', easing: 'ease-in-out' },
+          ),
+        },
+      },
+    };
+    const pageLinkStyles = {
+      fontSize: '.75rem',
+      pl: { xs: 1, md: 3 },
+      pr: { xs: 1, md: 3 },
+      textDecoration: 'none',
+      fontWeight: 500,
+      color: 'text.secondary',
+      textAlign: 'center',
+      textTransform: 'capitalize',
+      fontFamily: 'Poppins',
+      display: { sm: 'inline', xs: 'none' },
+    };
+    const pageNavigationStyles = {
+      alignContent: 'center',
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
+      flexDirection: 'row',
+      display: {
+        sm: 'inline-flex',
+        // xs: 'none',
+      },
+    };
 
     const menuIcon = React.useCallback(
-      (color) => (
+      () => (
         <div
-          className={classes.menuIcon}
+          sx={{ ...menuIconStyles }}
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: `
@@ -186,7 +193,7 @@ const Navigation = React.memo(
 
     const boldCurrentPage = React.useCallback((name, i) => {
       if (typeof window !== 'undefined') { if (pages[i].url === document.location.hash) return <b>{name}</b>; }
-      return <>{name}</>;
+      return <Root>{name}</Root>;
     }, []);
 
     const scrollToSmoothly = (pos, time) => {
@@ -232,18 +239,16 @@ const Navigation = React.memo(
       // window.location.hash = page.url
     }, []);
 
-    // ========================================================================== //
-    //   Logo
-    // ========================================================================== //
-
     const logo = React.useCallback(
-      (color) => (
+      () => (
         <Link to="/">
-          <div
-            className={(classes.menuIcon)}
+          <Box
+            sx={{
+              ...menuIconStyles,
+            }}
             // {...SCROLL_PROPS}
             style={{
-              fill: 'white',
+              fill: 'currentColor',
             }}
             dangerouslySetInnerHTML={{
               __html: `
@@ -266,28 +271,28 @@ const Navigation = React.memo(
     );
 
     const processPages = React.useCallback(
-      (name, url) => pages.map((page, i) => {
+      () => pages.map((page, i) => {
         switch (page.url[0]) {
           case '/':
             return (
-              <Link key={page.name} to={page.url}>
+              <Box key={page.name} onClick={() => navigate(page.url)}>
                 <RegularButton
                   size="small"
                   style={{ fontSize: '.5rem !important' }}
                 >
                   {boldCurrentPage(page.name.toUpperCase(), i)}
                 </RegularButton>
-              </Link>
+              </Box>
             );
           case '#':
             return (
-              <Link
+              <Box
                 key={page.name}
-                to={page.url}
-                className={classes.pageLinks}
+                onClick={() => navigate(page.url)}
+                sx={{ ...pageLinkStyles }}
               >
                 {boldCurrentPage(page.name.toUpperCase(), i)}
-              </Link>
+              </Box>
             );
           default:
             return null;
@@ -295,18 +300,16 @@ const Navigation = React.memo(
       }),
       [],
     );
+
     // ========================================================================== //
     //       Pages
     // ========================================================================== //
-    const pageNavigation = React.useCallback(() => {
-      const classes = useStyles();
-      return (
-        <div className={classes.pageNav} style={{ zIndex: 30 }}>
-          {processPages(pages)}
-          <RegularButton style={{ marginLeft: 30 }} onClick={() => navigateTo('./booking')}>Start Project</RegularButton>
-        </div>
-      );
-    }, []);
+    const pageNavigation = React.useCallback(() => (
+      <Box sx={{ ...pageNavigationStyles }} style={{ zIndex: 30 }}>
+        {processPages(pages)}
+        <RegularButton style={{ marginLeft: 30 }} onClick={() => navigateTo('./booking')}>Start Project</RegularButton>
+      </Box>
+    ), []);
 
     const trigger = useScrollTrigger({
       target: window ? window() : undefined,
@@ -318,41 +321,53 @@ const Navigation = React.memo(
     // ========================================================================== //
     // Popup drawer Menu
     // ========================================================================== //
-    const toggleTheme = useStore((state) => state.appContext.toggleTheme);
     const theme = useTheme();
     const type = useStore((state) => state.appContext.type);
 
     const drawerMenu = React.useCallback(() => (
-      <div role="presentation" onClick={(e) => toggleDrawer(e)} onKeyDown={(e) => toggleDrawer(e)} className={classes.drawerList}>
+      <Box
+        role="presentation"
+        onClick={(e) => toggleDrawer(e)}
+        onKeyDown={(e) => toggleDrawer(e)}
+        sx={{
+          height: '100%',
+          width: { sm: '100vw', xs: '100vw' },
+          display: 'inline-flex',
+          flexDirection: 'column',
+        }}
+      >
 
         <div
           id="menu-header"
           style={{
-            display: 'inline-flex', padding: 30, justifyContent: 'center', width: '100%', maxHeight: '23.5%',
+            display: 'inline-flex', padding: 30, justifyContent: 'center', width: '100%', height: '23.5%',
           }}
         >
-          <button
-            type="button"
-            className={classes.fab}
+          <RegularButton
+            type="icon"
+            icon={{ type: 'close', enabled: true }}
             onClick={() => setDrawerState(true)}
-            style={{
-              width: 50, height: 50, color: 'white', borderRadius: '100%', background: theme.palette.text.primary/** themeprimary */ }}
-            aria-label="change theme"
-          >
-            <Close />
-          </button>
+          />
         </div>
 
-        <List style={{
-          height: '61.72%', width: '100%', background: theme.palette.text.primary, alignItems: 'center', display: 'inline-flex',
-        }}
+        <List
+          sx={{
+            flexDirection: { sm: 'row', xs: 'column' },
+            overflowX: 'scroll',
+            height: '61.72%',
+            width: '100%',
+            background: theme.palette.text.primary,
+            alignItems: 'center',
+            display: 'inline-flex',
+          }}
+
         >
           {pages.map((page, index) => (
             <ListItem
               button
-              style={{ justifyContent: 'center', maxWidth: 300 }}
+              style={{ justifyContent: 'center', maxWidth: '300' }}
               key={page.name}
-              onClick={(e) => {
+              onClick={() => {
                 navigateTo(page.url);
                 toggleDrawer();
               }}
@@ -361,16 +376,19 @@ const Navigation = React.memo(
                 style={{
                   color: 'white', fontSize: '2rem', textTransform: 'capitalize', display: 'inline-flex', justifyContent: 'center',
                 }}
-                className={classes.pageLinks}
+                sx={{ ...pageLinkStyles }}
                 key={page.name}
                 to={page.url}
-                onClick={(event) => navigateTo(page.url)}
+                onClick={() => navigateTo(page.url)}
               >
                 {boldCurrentPage(page.name, index)}
               </Link>
             </ListItem>
           ))}
-          <Illustration flip maxWidth={240} type="moustache" margin="60px,0px,0px,0px" />
+          <Illustration
+            maxWidth={50}
+            type="moustache"
+          />
         </List>
 
         <div
@@ -420,33 +438,25 @@ const Navigation = React.memo(
                 display: 'inline-flex', width: '100%', flexDirection: 'row', alignItems: 'center', gap: 10,
               }}
             >
-              <button
-                type="button"
+              <RegularButton
+                type="icon"
+                icon={{ enabled: true, type: 'instagram' }}
                 onClick={navigateTo('./instagram')}
-                style={{
-                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
-                }}
               />
-              <button
-                type="button"
+              <RegularButton
+                type="icon"
+                icon={{ enabled: true, type: 'linkedin' }}
                 onClick={navigateTo('./linkedin')}
-                style={{
-                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
-                }}
               />
-              <button
-                type="button"
+              <RegularButton
+                type="icon"
+                icon={{ enabled: true, type: 'github' }}
                 onClick={navigateTo('./github')}
-                style={{
-                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
-                }}
               />
-              <button
-                type="button"
+              <RegularButton
+                type="icon"
+                icon={{ enabled: true, type: 'facebook' }}
                 onClick={navigateTo('./facebook')}
-                style={{
-                  background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
-                }}
               />
               <div />
             </div>
@@ -454,7 +464,7 @@ const Navigation = React.memo(
           </div>
 
         </div>
-      </div>
+      </Box>
     ), [drawerState]);
     // ========================================================================== //
     //     Drawer
@@ -462,10 +472,8 @@ const Navigation = React.memo(
     const drawerSwitch = React.useCallback(() => (
       <React.Fragment key="drawer">
         <Button
-          onClick={(e) => {
-            toggleDrawer(e);
-          }}
-          style={{ border: 'none', padding: 0 }}
+          sx={{ ...menuIconStyles }}
+          onClick={(e) => { toggleDrawer(e); }}
         >
           {menuIcon()}
         </Button>
@@ -476,7 +484,7 @@ const Navigation = React.memo(
           disableDiscovery={iOS}
           anchor="right"
           open={drawerState}
-          className={classes.drawer}
+          sx={{}}
         >
           {drawerMenu()}
         </SwipeableDrawer>
@@ -493,7 +501,23 @@ const Navigation = React.memo(
           <AppBar
             elevation={!trigger ? 6 : 0}
             position="sticky"
-            className={classes.appBar}
+            sx={{
+              boxShadow: (theme) => theme.custom.shadows.brand,
+              zIndex: 30, // hidhest
+              minHeight: 85,
+              height: 100,
+              display: 'flex',
+              // position: 'fixed',
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              color: 'text.secondary',
+              borderBottom: (theme) => theme.custom.borders.brandBorder,
+              padding: {
+                xs: 2,
+                sm: 2,
+                md: [2, 0],
+              },
+            }}
           >
 
             <Grid item sm={false} md={10} style={{ width: '100%' }}>

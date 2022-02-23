@@ -184,8 +184,8 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     //     Build all the pages
     // ========================================================================== //
     // reporter.warn(JSON.stringify(result, null, 2));
-    return;
-    reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
+    // return;
+    // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
     if (result !== null) {
       result.data.allMarkdownRemark.edges.forEach((edge, i) => {
         const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;

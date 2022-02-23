@@ -22,15 +22,15 @@
 //   CircularProgress,
 //   Fab,
 //   Modal,
-// } from '@material-ui/core';
-// import { makeStyles } from '@material-ui/core/styles';
+// } from '@mui/material';
+// import { makeStyles } from '@mui/material/styles';
 // // eslint-disable-next-line import/extensions
 // import Confetti from 'react-confetti';
 
 // // custom inputs
 // import { geolocated } from 'react-geolocated';
 // import axios from 'axios';
-// import { CheckCircleOutline } from '@material-ui/icons';
+// import { CheckCircleOutline } from '@mui/icons-material';
 // import { useAsync, useToggle } from '../utils/customHooks';
 // import {
 //   sendSms,

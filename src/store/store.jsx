@@ -1,6 +1,6 @@
-import React from 'react';
-import { createTheme } from '@material-ui/core';
+import { createTheme } from '@mui/material';
 import create from 'zustand';
+import { deepmerge } from '@mui/utils';
 // ========================================================================== //
 // Handle theming
 // ========================================================================== //
@@ -10,14 +10,12 @@ import {
   LIGHT_THEME,
   OVERRIDES,
   CUSTOM_THEME_PROPS,
-  TYPOGRAPHY,
-  pxToRem,
 } from './theme';
 
 // create themes to be used in valtio
 const afCreateTheme = (theme) => {
   const muiTheme = createTheme({ ...theme });
-  const newTheme = Object.assign(
+  const newTheme = deepmerge(
     muiTheme,
     CUSTOM_THEME_PROPS,
     OVERRIDES,
@@ -132,7 +130,6 @@ const useStore = create((set) =>
           // navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
           // navigate to another page with @react/router
           navigate(newSelectedData.pageLink, { replace: true, state: 'forceUpdate' });
-           
         },
         // overritten by page transition overlay
         triggerPageChange: () => { },

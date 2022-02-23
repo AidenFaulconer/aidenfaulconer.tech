@@ -2,7 +2,7 @@ import React, {
   useState, useEffect, useContext, useCallback,
 } from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Button,
   FormControl,
@@ -13,21 +13,36 @@ import {
   TextareaAutosize,
   TextField,
   Typography,
-} from '@material-ui/core';
-import { ArrowDropDown } from '@material-ui/icons';
+} from '@mui/material';
+import { ArrowDropDown } from '@mui/icons-material';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   KeyboardDatePicker,
   KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import { common } from '@material-ui/core/colors';
+import { common } from '@mui/material/colors';
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 
-// ========================================================================== //
-// styles
-// ========================================================================== //
-const useStyles = makeStyles((theme) => {
+const PREFIX = 'DropDownButton';
+
+const classes = {
+  sliderLabel: `${PREFIX}-sliderLabel`,
+  dropDownButton: `${PREFIX}-dropDownButton`,
+  sliderInput: `${PREFIX}-sliderInput`,
+  locationInput: `${PREFIX}-locationInput`,
+  inputButton: `${PREFIX}-inputButton`,
+  textInput: `${PREFIX}-textInput`,
+  calenderInput: `${PREFIX}-calenderInput`,
+  formControl: `${PREFIX}-formControl`,
+  inputArea: `${PREFIX}-inputArea`
+};
+
+const StyledMap = styled(Map)((
+  {
+    theme
+  }
+) => {
   const common = {
     '&:hover': {
       boxShadow: `0px 0px 0px ${theme.palette.background.default}`,
@@ -76,7 +91,7 @@ const useStyles = makeStyles((theme) => {
   };
 
   return {
-    sliderLabel: {
+    [`& .${classes.sliderLabel}`]: {
       borderRadius: theme.custom.borders.brandBorderRadius,
       padding: theme.spacing(1) * 0.5,
       paddingBottom: theme.spacing(3),
@@ -89,7 +104,7 @@ const useStyles = makeStyles((theme) => {
       fontSize: '.75rem',
     },
 
-    dropDownButton: {
+    [`& .${classes.dropDownButton}`]: {
       ...common,
       // style is inlined with form control which is the actual button
       // padding: theme.spacing(1 / 2),
@@ -104,7 +119,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
 
-    sliderInput: {
+    [`& .${classes.sliderInput}`]: {
       ...common,
       ...inputLabel,
       marginTop: theme.spacing(2),
@@ -127,7 +142,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
 
-    locationInput: {
+    [`& .${classes.locationInput}`]: {
       ...common,
       maxWidth: 500,
       minHeight: 500,
@@ -136,15 +151,15 @@ const useStyles = makeStyles((theme) => {
       position: 'relative !important',
     },
 
-    inputButton: {
+    [`& .${classes.inputButton}`]: {
       ...common,
     },
-    textInput: {
+    [`& .${classes.textInput}`]: {
       ...common,
       ...inputLabel,
     },
 
-    calenderInput: {
+    [`& .${classes.calenderInput}`]: {
       ...common,
       '& .MuiFormControl-root': {
         display: 'flex',
@@ -154,7 +169,7 @@ const useStyles = makeStyles((theme) => {
         backgroundColor: `${theme.palette.background.button} !important`,
       },
     },
-    formControl: {
+    [`& .${classes.formControl}`]: {
       margin: theme.spacing(1),
       width: '100%',
       borderRadius: theme.custom.borders.brandBorderRadius,
@@ -162,11 +177,11 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.text.primary,
     },
 
-    inputArea: {
+    [`& .${classes.inputArea}`]: {
       border: theme.custom.borders.brandBorder,
       boxShadow: theme.custom.shadows.brand,
-      marginTop: `${theme.spacing(1)}px !important`,
-      marginBottom: `${theme.spacing(1)}px !important`,
+      marginTop: `${theme.spacing(1)} !important`,
+      marginBottom: `${theme.spacing(1)} !important`,
       borderRadius: theme.custom.borders.brandBorderRadius,
       padding: theme.spacing(2),
     },
@@ -187,7 +202,7 @@ export const DropDownButton = (props) => {
     selectStateLabel = 'default default',
     options = ['default', 'default'],
   } = props;
-  const classes = useStyles({ color });
+
 
   // we input the name of the state we change **selectState**, then pass it back out to the desired form control
   // we then have a second prop for the inputted options also derived from the original form control we are referencing out to
@@ -246,7 +261,7 @@ export const InputButton = (props) => {
   const {
     Icon, shadow, children, action, color = {},
   } = props;
-  const classes = useStyles({ color });
+
   return (
     <Button
       {...props}
@@ -270,7 +285,7 @@ export const SliderInput = (props) => {
     label = 'default',
     defaultValue = 2,
   } = props;
-  const classes = useStyles({ color });
+
   const [value, setValue] = React.useState(defaultValue);
 
   const handleChange = (event, newValue) => {
@@ -300,7 +315,7 @@ export const CalenderInput = (props) => {
   const {
     Icon, shadow, children, action, color = 'primary',
   } = props;
-  const classes = useStyles({ color });
+
   return (
     <div className={classes.calenderInput}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -331,7 +346,7 @@ export const TextInput = (props) => {
     color = 'primary',
     autosize = false,
   } = props;
-  const classes = useStyles({ color });
+
 
   return (
     (autosize && (
@@ -375,7 +390,7 @@ export const LocationInput = GoogleApiWrapper({
     autosize = false,
     google,
   } = props;
-  const classes = useStyles({ color });
+
   // const onMarkerCLick = useCallback((event) => {}, []);
 
   // const ajGardenCareMarker = new google.maps.Marker({})
@@ -400,12 +415,12 @@ export const LocationInput = GoogleApiWrapper({
   // }}
 
   return (
-    <Map {...mapOptions} {...props}>
+    <StyledMap {...mapOptions} {...props}>
       <Marker
         // onClick={(e) => onMarkerClick(e)}
         // {...props}
         name="This is test name"
       />
-    </Map>
+    </StyledMap>
   );
 });

@@ -21,21 +21,15 @@ const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE;
 module.exports = {
   flags: {
     // PRESERVE_WEBPACK_CACHE: true,
-    // GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
-    // PARALLEL_SOURCING: true,
+    GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
+    PARALLEL_SOURCING: true,
     FAST_DEV: true,
-    // DEV_SSR: true,
+    DEV_SSR: true,
   },
   /* Your site config here */
   // eslint-disable-next-line global-require
   siteMetadata: require('./site-meta-data.json'),
   plugins: [
-    {
-      resolve: 'gatsby-plugin-top-layout',
-      options: {
-        path: 'src/layouts/layout.jsx',
-      }
-    }
     // ========================================================================== //
     //     Scroll animations
     // ========================================================================== //
@@ -255,16 +249,8 @@ module.exports = {
     // Netlify CMS
     // ========================================================================== //
     'gatsby-plugin-netlify-cms',
-    // 'gatsby-plugin-jss', // fix ssr issues inherit to material-ui
-    // 'gatsby-theme-material-ui',
-    // 'gatsby-plugin-force-trailing-slashes',
-    {
-      resolve: 'gatsby-plugin-material-ui', // wraps root element in emotion cache provider to handle SSR @wrapRootElement, by wrapping a <StylesProvider /> around the root element
-      options: {
-        stylesProvider: { injectFirst: true },
-        // pathToEmotionCacheProps: `src/emotion-cache-props`//for mui 5
-      },
-    },
+    'gatsby-theme-material-ui',
+    // 'gatsby-plugin-mui-emtionon'
 
     // ========================================================================== //
     //     Debugging Webpack bundles

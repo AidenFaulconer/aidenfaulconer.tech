@@ -1,23 +1,16 @@
 import {
-  makeStyles,
-  Grid,
-  Typography,
-  Box,
-  Card,
-  useTheme,
-} from '@material-ui/core';
+  Grid, Typography, Box, Card, useTheme,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { useBreakpoints } from 'react-use-breakpoints';
 import { navigate, useStaticQuery } from 'gatsby';
 import CircleType from 'circletype';
 import GraphemeSplitter from 'grapheme-splitter';
 import LinesEllipsis from 'react-lines-ellipsis';
-import { AccessibilityNewRounded } from '@material-ui/icons';
+import { AccessibilityNewRounded } from '@mui/icons-material';
 import {
   RegularButton,
-  SecondaryButton,
-  SelectionButton,
-  ThirdButton,
 } from '../custom/buttons';
 import { CardCarousel } from '../custom/cards';
 
@@ -27,54 +20,66 @@ import { CardCarousel } from '../custom/cards';
 import _cv_ from '../../../static/assets/portfolio/Aiden Faulconer CV.pdf';
 import resume_image from '../../../static/assets/portfolio/resume.png';
 
-// ========================================================================== //
-//  Index page styles
-// ========================================================================== //
-const useStyles = makeStyles((theme) => {
-  const common = {
-    background: ({ bgAlt }) => (bgAlt ? theme.palette.text.primary : theme.palette.text.secondary),
-    borderRadius: theme.custom.borders.brandBorderRadius,
-  };
-  return {
-    introContainer: {
-      color: theme.palette.text.primary,
-      overflow: 'hidden',
-      maxHeight: 400,
-      padding: theme.spacing(4),
-      // border: theme.custom.borders.brandBorderSecondary,
-      backgroundRepeat: '160%',
-      display: 'flex',
-      gap: theme.spacing(2),
-      flexDirection: 'row',
-      flexWrap: 'no-wrap',
-      overflowX: 'scroll',
-    },
-  };
-});
+// const StyledGrid = styled(Grid)((
+//   {
+//     theme,
+//   },
+// ) => {
+//   const common = {
+//     background: ({ bgAlt }) => (bgAlt ? theme.palette.text.primary : theme.palette.text.secondary),
+//     borderRadius: theme.custom.borders.brandBorderRadius,
+//   };
+//   return {
+//     [`& .${classes.introContainer}`]: {
+
+//     },
+//   };
+// });
 
 // ========================================================================== //
 // qualification cards / content
 // ========================================================================== //
 const ItemTag = ({ props, children }) => {
   const theme = useTheme();
-  const _styles = {
-    borderRadius: 30,
-    padding: theme.spacing(1),
-    background: theme.palette.text.primary,
-    color: theme.palette.text.secondary,
-    display: 'inline-flex',
-    alignItems: 'center',
-    border: theme.custom.borders.brandBorder,
-    height: 25,
-    fontSize: 12,
-  };
-  return <div style={_styles}>{children}</div>;
+  return (
+    <Box sx={{
+      borderRadius: 30,
+      padding: 1,
+      background: (theme) => theme.palette.text.primary,
+      color: (theme) => theme.palette.text.secondary,
+      display: 'inline-flex',
+      alignItems: 'center',
+      border: (theme) => theme.custom.borders.brandBorder,
+      height: 25,
+      fontSize: 12,
+      '&:hover': {
+        background: (theme) => theme.palette.text.secondary,
+        color: (theme) => theme.palette.text.primary,
+      },
+    }}
+    >
+      {children}
+    </Box>
+  );
 };
 
 const Ability = (props) => {
   const abilities = [
     'Design',
     'Develop',
+    'Javascript',
+    'C#',
+    'C++',
+    '.NET',
+    'React',
+    'Devops',
+    'AWS',
+    'SQL',
+    'MongoDB',
+    'Graphql',
+    'REST',
+    'Nodejs',
+    'Vue',
     'Graphic Design',
     'Management',
     'Illustration',
@@ -94,19 +99,19 @@ const Ability = (props) => {
     width: '100%',
   };
   return (
-    <div style={_styles}>
+    <Box sx={_styles}>
       {abilities.map((ability, index) => (
         <ItemTag key={index}>{ability}</ItemTag>
       ))}
-    </div>
+    </Box>
   );
 };
 
 export const CertCard = ({ title, subtitle, logo }) => {
   const theme = useTheme();
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: 'inline-flex',
         flexDirection: 'row',
         height: 72,
@@ -114,8 +119,8 @@ export const CertCard = ({ title, subtitle, logo }) => {
         borderRadius: theme.custom.borders.brandBorderRadius,
       }}
     >
-      <div
-        style={{
+      <Box
+        sx={{
           display: 'inline-flex',
           alignItems: 'center',
           height: '100%',
@@ -124,44 +129,18 @@ export const CertCard = ({ title, subtitle, logo }) => {
           padding: theme.spacing(1),
           border: theme.custom.borders.brandBorder,
         }}
-      >
-        <div dangerouslySetInnerHTML={{ __html: logo }} />
-      </div>
+        dangerouslySetInnerHTML={{ __html: logo }}
+      />
 
-      <div style={{ padding: theme.spacing(1) }}>
+      <Box sx={{ padding: theme.spacing(1) }}>
         <Typography color="secondary" variant="h4" align="left" gutterBottom>
           {title}
         </Typography>
         <Typography color="secondary" variant="caption" align="left">
           {subtitle}
         </Typography>
-      </div>
-    </div>
-  );
-};
-
-export const QualificationCard = ({ props, children }) => {
-  const theme = useTheme();
-  return (
-    <Grid
-      xs={4}
-      item
-      style={{
-        height: 300,
-        display: 'inline-flex',
-        gap: theme.spacing(2),
-        padding: theme.spacing(2),
-        flexDirection: 'column',
-        borderRadius: theme.custom.borders.brandBorderRadius,
-        border: theme.custom.borders.brandBorder,
-        background: theme.palette.text.primary,
-      }}
-    >
-      <Typography color="secondary" variant="h3" align="left" gutterBottom>
-        {props?.title || 'Title'}
-      </Typography>
-      {children}
-    </Grid>
+      </Box>
+    </Box>
   );
 };
 
@@ -169,37 +148,65 @@ export const CV = (props) => {
   const theme = useTheme();
 
   return (
-    <div
-      style={{
-        background: `url(${resume_image})`,
-        objectFit: 'cover',
-        height: 180,
+    <Box
+      sx={{
         // width: 330,
+        background: `url(${resume_image})`,
+        // objectFit: 'fill',
+        backgroundRepeat: 'no-repeat',
+        height: 180,
         width: '100%',
         display: 'inline-flex',
         alignitems: 'flex-start',
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        border: theme.custom.borders.brandBorder,
+        border: (theme) => theme.custom.borders.brandBorder,
       }}
     >
-      <ThirdButton
-          // when clicked downloads resume.pdf from static folder onto user's computer
+      <RegularButton
+        // when clicked downloads resume.pdf from static folder onto user's computer
         onClick={() => {
           const file = new Blob([_cv_], { type: 'application/pdf' });
-          const fileURL = URL.createObjectURL(file); http:// localhost:8000/./static/assets/portfolio/Aiden Faulconer CV.pdf
+          const fileURL = URL.createObjectURL(file);
           window.open(fileURL);
+          // http:// localhost:8000/./static/assets/portfolio/Aiden Faulconer CV.pdf
         }}
       >
         {' '}
         Download CV
-      </ThirdButton>
-    </div>
+      </RegularButton>
+    </Box>
   );
 };
-
+// ========================================================================== //
+// card
+// ========================================================================== //
+export const QualificationCard = ({ props, children }) => (
+  <Box
+    item
+    sx={{
+      height: 300,
+      minWidth: 350,
+      width: '100%',
+      display: 'inline-flex',
+      gap: 2,
+      padding: 3,
+      flexDirection: 'column',
+      borderRadius: (theme) => theme.custom.borders.brandBorderRadius,
+      border: (theme) => theme.custom.borders.brandBorder,
+      background: (theme) => theme.palette.text.primary,
+    }}
+  >
+    <Typography color="secondary" variant="h3" align="left" gutterBottom>
+      {props?.title || 'Title'}
+    </Typography>
+    {children}
+  </Box>
+);
+// ========================================================================== //
+// qualifications
+// ========================================================================== //
 export default React.forwardRef((props, ref) => {
-  const styles = useStyles();
   const theme = useTheme();
   return (
     <Grid
@@ -209,7 +216,21 @@ export default React.forwardRef((props, ref) => {
       alignContent="stretch"
       xs={12}
       md={12}
-      className={styles.introContainer}
+      sx={{
+        // border: theme.custom.borders.brandBorderSecondary,
+        color: (theme) => theme.palette.text.primary,
+        maxHeight: 400,
+        padding: 4,
+        backgroundRepeat: '160%',
+        display: 'flex',
+        gap: 4,
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        flexWrap: 'no-wrap',
+        flexGrow: 2,
+        width: { md: '100%', xs: '1000px' },
+        overflowX: 'scroll',
+      }}
     >
       <QualificationCard title="QUALIFICATIONS">
         <CertCard

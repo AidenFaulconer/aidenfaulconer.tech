@@ -1,33 +1,12 @@
 import {
-  makeStyles,
-  Grid,
-  Typography,
-  Box,
-  Card,
-  useTheme,
-} from '@material-ui/core';
+  Grid, Typography, useTheme,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import * as React from 'react';
-import { useBreakpoints } from 'react-use-breakpoints';
-import { navigate, useStaticQuery } from 'gatsby';
-import CircleType from 'circletype';
-import GraphemeSplitter from 'grapheme-splitter';
-import LinesEllipsis from 'react-lines-ellipsis';
-import { AccessibilityNewRounded } from '@material-ui/icons';
-import {
-  RegularButton,
-  SecondaryButton,
-  SelectionButton,
-  ThirdButton,
-} from '../custom/buttons';
-import { CardCarousel } from '../custom/cards';
 
+import { styled } from '@mui/material/styles';
 import {
-  hexToAlpha,
-  pxToRem,
-  SCROLL_PROPS,
   svgEncodeBaseSixtyFour,
-  threeDHoverKeyframes,
-  transition,
 } from '../../store/theme';
 
 // ========================================================================== //
@@ -42,6 +21,7 @@ import xprtImage from '../../../static/assets/blog/xperthubb.png';
 import ajImage from '../../../static/assets/blog/aj.png';
 
 import { ThreeDCarousel } from '../custom/threeDCarousel';
+
 // ========================================================================== //
 // SVGS
 // ========================================================================== //
@@ -68,7 +48,20 @@ export const anyLanguageAnyFrameworkSpinText = `
 // ========================================================================== //
 // Shifting type
 // ========================================================================== //
-const useSlidingText = makeStyles((theme) => ({
+const TypePREFIX = 'Type';
+
+const typeClasses = {
+  root: `${TypePREFIX}-root`,
+  regularButton: `${TypePREFIX}-regularButton`,
+  secondaryButton: `${TypePREFIX}-secondaryButton`,
+  thirdButton: `${TypePREFIX}-thirdButton`,
+  selectionButton: `${TypePREFIX}-selectionButton`,
+  selectedSelectionButton: `${TypePREFIX}-selectedSelectionButton`,
+  dropDownButton: `${TypePREFIX}-dropDownButton`,
+  inputButton: `${TypePREFIX}-inputButton`,
+  socialMediaPopup: `${TypePREFIX}-socialMediaPopup`,
+};
+const useSlidingText = styled('div')((theme) => ({
   '@keyframes animatedType': {
     from: {
       backgroundPosition: '0 0',
@@ -77,7 +70,7 @@ const useSlidingText = makeStyles((theme) => ({
       backgroundPosition: '100% 0',
     },
   },
-  movingType: {
+  [`& .${typeClasses.movingType}`]: {
     position: 'absolute',
     display: 'flex',
     // justifyContent: 'space-evenly',
@@ -92,7 +85,7 @@ const useSlidingText = makeStyles((theme) => ({
     height: '70%',
     zIndex: '10 !important',
   },
-  type: {
+  [`& .${typeClasses.type}`]: {
     display: 'inline-block',
     height: '100%',
     fill: theme.palette.text.primary,
@@ -120,7 +113,26 @@ export const MovingType = ({ svg }) => {
 // ========================================================================== //
 //  Index page styles
 // ========================================================================== //
-const useStyles = makeStyles((theme) => {
+const PREFIX = 'Skills';
+
+const classes = {
+  section: `${PREFIX}-section`,
+  carouselSection: `${PREFIX}-carouselSection`,
+  selectionMenu: `${PREFIX}-selectionMenu`,
+  selectionOptions: `${PREFIX}-selectionOptions`,
+  container: `${PREFIX}-container`,
+  graphic: `${PREFIX}-graphic`,
+  typography: `${PREFIX}-typography`,
+  blogContainer: `${PREFIX}-blogContainer`,
+  whatDoYouNeed: `${PREFIX}-whatDoYouNeed`,
+  offerContainer: `${PREFIX}-offerContainer`,
+  serviceCard: `${PREFIX}-serviceCard`,
+  whatDoYouNeedPoints: `${PREFIX}-whatDoYouNeedPoints`,
+  descriptorDescription: `${PREFIX}-descriptorDescription`,
+  introContainer: `${PREFIX}-introContainer`,
+};
+
+const Root = styled('div')((theme) => {
   const common = {
     background: ({ bgAlt }) => (bgAlt ? theme.palette.text.primary : theme.palette.text.secondary),
     borderRadius: theme.custom.borders.brandBorderRadius,
@@ -133,7 +145,7 @@ const useStyles = makeStyles((theme) => {
     // scrollSnapAlign: 'start',
   };
   return {
-    section: {
+    [`& .${classes.section}`]: {
       overflow: 'hidden',
       // may want bg later
       ...sectionDimensions,
@@ -142,7 +154,7 @@ const useStyles = makeStyles((theme) => {
       borderRight: theme.custom.borders.brandBorder,
       borderTop: theme.custom.borders.brandBorder,
     },
-    carouselSection: {
+    [`& .${classes.carouselSection}`]: {
       // overflow: 'hidden',
       // border: theme.custom.borders.brandBorder,
       borderRight: theme.custom.borders.brandBorder,
@@ -157,18 +169,18 @@ const useStyles = makeStyles((theme) => {
         // background: theme.palette.text.primary,
       },
     },
-    selectionMenu: {
+    [`& .${classes.selectionMenu}`]: {
       position: 'relative',
       border: theme.custom.borders.brandBorder,
       padding: theme.spacing(4, 0),
 
       flexDirection: 'row',
       overflowY: 'scroll',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         padding: theme.spacing(0, 4, 4, 4),
       },
     },
-    selectionOptions: {
+    [`& .${classes.selectionOptions}`]: {
       display: 'inline-flex',
       gap: theme.spacing(4),
       width: '100%',
@@ -177,19 +189,19 @@ const useStyles = makeStyles((theme) => {
       flexDirection: 'column',
 
       flexWrap: 'nowrap',
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down('lg')]: {
         flexDirection: 'row !important',
         padding: theme.spacing(4, 4, 4, 0),
       },
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         flexDirection: 'row !important',
         padding: theme.spacing(4),
       },
     },
-    container: {
+    [`& .${classes.container}`]: {
       // padding: theme.spacing(3, 0),
     },
-    graphic: {
+    [`& .${classes.graphic}`]: {
       // border: theme.custom.borders.brandBorder,
       // [theme.breakpoints.down('sm')]: {
       //   display: 'none',
@@ -205,29 +217,29 @@ const useStyles = makeStyles((theme) => {
       position: ({ absolute }) => (absolute ? 'absolute' : 'relative'),
       display: 'inline',
     },
-    typography: {
+    [`& .${classes.typography}`]: {
       color: ({ bgAlt }) => (bgAlt === 2
         ? theme.palette.background.button
         : bgAlt === 1
           ? theme.palette.text.primary
           : theme.palette.text.secondary),
     },
-    blogContainer: {
+    [`& .${classes.blogContainer}`]: {
       // background: theme.palette.primary.main,
       // color: theme.palette.secondary.main,
       overflow: 'hidden',
       paddingBottom: theme.spacing(12),
     },
-    whatDoYouNeed: {
+    [`& .${classes.whatDoYouNeed}`]: {
       // marginTop: theme.spacing(6),
       // marginLeft: `${-23}px !important`,
       // marginRight: `${-23}px !important`,
       background: theme.palette.text.primary,
     },
-    offerContainer: {
+    [`& .${classes.offerContainer}`]: {
       overflow: 'hidden',
     },
-    serviceCard: {
+    [`& .${classes.serviceCard}`]: {
       // width: 300,
       // height: '100%',
       display: 'flex',
@@ -279,7 +291,7 @@ const useStyles = makeStyles((theme) => {
         },
       },
     },
-    whatDoYouNeedPoints: {
+    [`& .${classes.whatDoYouNeedPoints}`]: {
       marginTop: theme.spacing(5),
       paddingLeft: 0,
       textAlign: 'left',
@@ -290,12 +302,11 @@ const useStyles = makeStyles((theme) => {
         // listStyleImage: `url(${listStyleImage})`,
       },
     },
-
-    descriptorDescription: {
+    [`& .${classes.descriptorDescription}`]: {
       paddingRight: theme.spacing(3),
       height: '100%',
     },
-    introContainer: {
+    [`& .${classes.introContainer}`]: {
       color: theme.palette.text.primary,
       overflow: 'hidden',
       maxHeight: 400,
@@ -603,7 +614,6 @@ const SpinText = (props) => {
     scale = 1,
     absolute = false,
   } = props;
-  const classes = useStyles({ bgAlt, border, absolute });
   const theme = useTheme();
 
   // curve text
@@ -635,13 +645,13 @@ const SpinText = (props) => {
             [theme.breakpoints.down('xl')]: {
               transform: 'scale(1)',
             },
-            [theme.breakpoints.down('lg')]: {
+            [theme.breakpoints.down('xl')]: {
               transform: 'scale(.75)',
             },
-            [theme.breakpoints.down('md')]: {
+            [theme.breakpoints.down('lg')]: {
               transform: 'scale(.25)',
             },
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
               transform: 'scale(.25)',
             },
           }}
@@ -649,22 +659,20 @@ const SpinText = (props) => {
           {title || ''}
         </Typography>
         {/* <div className="spin-container">
-            <h1 ref={ref} id="spinText">
-              {spinText}
-            </h1>
-          </div> */}
+          <h1 ref={ref} id="spinText">
+            {spinText}
+          </h1>
+        </div> */}
       </div>
     </>
   );
 };
 
-export const Languages = (props) => {
-  const classes = useStyles();
-  return (
-    <>
-      <article className={classes.carouselSection}>
-        {/* title */}
-        {/* <Typography
+export const Languages = (props) => (
+  <>
+    <article className={classes.carouselSection}>
+      {/* title */}
+      {/* <Typography
               color="inherit"
               align="center"
               // {...SCROLL_PROPS}
@@ -672,34 +680,31 @@ export const Languages = (props) => {
             >
               Skills
             </Typography> */}
-        <Grid
-          item
-          container
-          className="carousel-container"
-          xs={contentColSpacing}
-        >
-          <ThreeDCarousel
-            title="Languages"
-            key="languages"
-            carouselData={languageData}
-            cardHeight={150}
-            cardWidth={600}
-            alt
-            special
-          />
-        </Grid>
-      </article>
-    </>
-  );
-};
+      <Grid
+        item
+        container
+        className="carousel-container"
+        xs={contentColSpacing}
+      >
+        <ThreeDCarousel
+          title="Languages"
+          key="languages"
+          carouselData={languageData}
+          cardHeight={150}
+          cardWidth={600}
+          alt
+          special
+        />
+      </Grid>
+    </article>
+  </>
+);
 
-export const Experience = (props) => {
-  const classes = useStyles();
-  return (
-    <>
-      <article className={classes.carouselSection}>
-        {/* title */}
-        {/* <Typography
+export const Experience = (props) => (
+  <>
+    <article className={classes.carouselSection}>
+      {/* title */}
+      {/* <Typography
               color="inherit"
               align="center"
               // {...SCROLL_PROPS}
@@ -707,23 +712,22 @@ export const Experience = (props) => {
             >
               Experience
             </Typography> */}
-        <Grid
-          item
-          container
-          className="carousel-container"
-          xs={contentColSpacing}
-        >
-          <ThreeDCarousel
-            alt
-            id="skills"
-            title="Languages"
-            key="languages"
-            carouselData={experienceData}
-            cardHeight={300}
-            cardWidth={600}
-          />
-        </Grid>
-      </article>
-    </>
-  );
-};
+      <Grid
+        item
+        container
+        className="carousel-container"
+        xs={contentColSpacing}
+      >
+        <ThreeDCarousel
+          alt
+          id="skills"
+          title="Languages"
+          key="languages"
+          carouselData={experienceData}
+          cardHeight={300}
+          cardWidth={600}
+        />
+      </Grid>
+    </article>
+  </>
+);

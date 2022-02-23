@@ -1,12 +1,35 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
-  Container, FormControl, FormControlLabel, FormLabel, Grid, makeStyles, Radio, RadioGroup, Typography,
-} from '@material-ui/core';
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  Typography,
+} from '@mui/material';
 import Layout from '../layout/layout';
 import { SecondaryButton } from '../components/custom/buttons';
 
-const useStyles = makeStyles((theme) => ({
-  underlay: {
+const PREFIX = 'BookingPage';
+
+const classes = {
+  underlay: `${PREFIX}-underlay`,
+  endOfPage: `${PREFIX}-endOfPage`,
+  sectionCurve: `${PREFIX}-sectionCurve`,
+  cubesOffset: `${PREFIX}-cubesOffset`,
+  letsStartSomething: `${PREFIX}-letsStartSomething`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.underlay}`]: {
     position: 'relative',
     // top: '-400px',
     content: '',
@@ -20,14 +43,16 @@ const useStyles = makeStyles((theme) => ({
       'linear-gradient(180deg, #324308 15.49%, #8BAD6B 68.98%, #AAC882 103.74%)',
     borderRadius: theme.custom.borders.brandBorderRadius3,
   },
-  endOfPage: {
+
+  [`& .${classes.endOfPage}`]: {
     background: theme.palette.text.primary,
     minHeight: '70vh',
     color: theme.palette.text.secondary,
     padding: theme.spacing(18, 6),
     marginTop: theme.spacing(18),
   },
-  sectionCurve: {
+
+  [`& .${classes.sectionCurve}`]: {
     borderRadius: '100%',
     margin: 'auto',
     width: '100%',
@@ -36,7 +61,8 @@ const useStyles = makeStyles((theme) => ({
     // marginTop: '-43px',
     // fill: theme.palette.background.default,
   },
-  cubesOffset: {
+
+  [`& .${classes.cubesOffset}`]: {
     top: '-7%',
     left: '37%',
     top: '-6%',
@@ -46,10 +72,11 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     maxWidth: 860,
   },
-  letsStartSomething: {
+
+  [`& .${classes.letsStartSomething}`]: {
     width: '100%',
     objectFit: 'contain',
-  },
+  }
 }));
 
 // <video preload="true" controls loop autoPlay="true">
@@ -65,7 +92,7 @@ const BookingPage = React.memo(
     location,
   }) => {
     const marginAmount = '175px';
-    const classes = useStyles();
+
     const defaultValues = {
       name: '',
       age: 0,
@@ -82,7 +109,7 @@ const BookingPage = React.memo(
       });
     };
     return (
-      <>
+      (<Root>
         <Container maxWidth="xl">
           <h1>Hello world</h1>
           <FormControl>
@@ -114,8 +141,7 @@ const BookingPage = React.memo(
             </RadioGroup>
           </FormControl>
         </Container>
-
-      </>
+      </Root>)
     );
   },
 );
