@@ -14,8 +14,6 @@ import Qualifications from '../components/portfolio-page/qualifications';
 import Services from '../components/portfolio-page/services';
 import { Languages, Experience } from '../components/portfolio-page/skills';
 
-import { SecondaryButton } from '../components/custom/buttons';
-
 import cubesOffset from '../../static/assets/portfolio/clouds.png';
 import { SectionHeader } from '../components/section-header';
 
@@ -101,8 +99,13 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       <SectionWrapper>
         <SectionHeader headline="Experience" illustrationType="confidence" />
       </SectionWrapper>
+
       <SectionWrapper>
         <Qualifications />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <Experience id="skills" />
       </SectionWrapper>
 
       <SectionWrapper>
@@ -110,7 +113,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       </SectionWrapper>
 
       <SectionWrapper>
-        <Experience id="skills" />
+        <Languages id="skills" />
       </SectionWrapper>
 
     </Grid>

@@ -11,73 +11,6 @@ import {
   Typography,
 } from '@mui/material';
 import Layout from '../layout/layout';
-import { SecondaryButton } from '../components/custom/buttons';
-
-const PREFIX = 'BookingPage';
-
-const classes = {
-  underlay: `${PREFIX}-underlay`,
-  endOfPage: `${PREFIX}-endOfPage`,
-  sectionCurve: `${PREFIX}-sectionCurve`,
-  cubesOffset: `${PREFIX}-cubesOffset`,
-  letsStartSomething: `${PREFIX}-letsStartSomething`
-};
-
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')((
-  {
-    theme
-  }
-) => ({
-  [`& .${classes.underlay}`]: {
-    position: 'relative',
-    // top: '-400px',
-    content: '',
-    margin: theme.spacing(3),
-    padding: theme.spacing(12),
-    paddingTop: 'unset',
-    pointerEvents: 'all',
-    overflow: 'hidden',
-    // boxShadow: theme.custom.shadows.brandBig,
-    background:
-      'linear-gradient(180deg, #324308 15.49%, #8BAD6B 68.98%, #AAC882 103.74%)',
-    borderRadius: theme.custom.borders.brandBorderRadius3,
-  },
-
-  [`& .${classes.endOfPage}`]: {
-    background: theme.palette.text.primary,
-    minHeight: '70vh',
-    color: theme.palette.text.secondary,
-    padding: theme.spacing(18, 6),
-    marginTop: theme.spacing(18),
-  },
-
-  [`& .${classes.sectionCurve}`]: {
-    borderRadius: '100%',
-    margin: 'auto',
-    width: '100%',
-    left: '0px',
-    fill: '#324308',
-    // marginTop: '-43px',
-    // fill: theme.palette.background.default,
-  },
-
-  [`& .${classes.cubesOffset}`]: {
-    top: '-7%',
-    left: '37%',
-    top: '-6%',
-    left: '38%',
-    opacity: 0.6,
-    zIndex: -1,
-    position: 'absolute',
-    maxWidth: 860,
-  },
-
-  [`& .${classes.letsStartSomething}`]: {
-    width: '100%',
-    objectFit: 'contain',
-  }
-}));
 
 // <video preload="true" controls loop autoPlay="true">
 //                       <source src="https://imgur.com/5QFU0PB.mp4" />
@@ -109,7 +42,7 @@ const BookingPage = React.memo(
       });
     };
     return (
-      (<Root>
+      (
         <Container maxWidth="xl">
           <h1>Hello world</h1>
           <FormControl>
@@ -141,7 +74,7 @@ const BookingPage = React.memo(
             </RadioGroup>
           </FormControl>
         </Container>
-      </Root>)
+      )
     );
   },
 );

@@ -237,6 +237,11 @@ exports.onCreateWebpackConfig = ({
       rules: [
         { test: /\.(glb|gltf)$/i, use: 'file-loader' }, // or gltf-webpack-loader
         { test: /react-hot-loader/, use: [loaders.js()] },
+        // fix react-three-fiber and react-spring use during buildtime
+        {
+          test: /react-spring/,
+          sideEffects: true,
+        },
         // expose, svgs, pdfs, and gifs publicly from the website https://stackoverflow.com/questions/36643649/serving-static-pdf-with-react-webpack-file-loader
         {
           test: /\.(pdf|gif|svg)$/,

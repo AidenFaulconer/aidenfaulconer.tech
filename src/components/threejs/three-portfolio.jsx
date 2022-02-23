@@ -21,7 +21,7 @@ import {
   useFrame,
   useThree,
   useLoader,
-} from '@react-three/fiber';
+} from 'react-three-fiber';// or @react-three-fiber
 import {
   Environment,
   useDetectGPU,
@@ -126,7 +126,6 @@ export const Plane = React.memo(({
           depthWrite={false}
           // depthTest={false}
           // visible={visible}
-
           side={THREE.BackSide}
           alphaTest={0.5}
           transparent
@@ -461,64 +460,63 @@ export const Model = React.memo(
       normalMap.blending = THREE.NormalBlending;
       return normalMap;
     }, [texture]);
+    // make a.mesh an instanced mesh
+    // {/* (selectedIndex === -1 || selectedIndex === position) && ( */}
+    // {
     return (
-      // make a.mesh an instanced mesh
       <>
-        {/* (selectedIndex === -1 || selectedIndex === position) && ( */}
-        {
-          <a.mesh
-            scale={mobile ? [0.5, 0.5, 0.5] : [scale, scale, scale]}
-            onPointerOver={onPointerOver}
-            onPointerOut={onPointerOut}
-            geometry={model.geometry}
+        <a.mesh
+          scale={mobile ? [0.5, 0.5, 0.5] : [scale, scale, scale]}
+          onPointerOver={onPointerOver}
+          onPointerOut={onPointerOut}
+          geometry={model.geometry}
             // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
-            dispose={null} // dont dispose objects once spawned for performance
-            onClick={onClick}
-            position={position + viewport.height}
-            receiveShadow
-            castShadow
-            ref={ref}
-          >
-            {/* repalce with animatedMaterial(drei) where the props are the props from this material in a js object */}
+          dispose={null} // dont dispose objects once spawned for performance
+          onClick={onClick}
+          position={position + viewport.height}
+          receiveShadow
+          castShadow
+          ref={ref}
+        >
+          {/* repalce with animatedMaterial(drei) where the props are the props from this material in a js object */}
 
-            {/*
+          {/*
           // ========================================================================== //
           //       Cube material
           // ========================================================================== //
        */}
-            <a.meshPhysicalMaterial
-              map={texture}
-              map-flipY={false}
-              map-wrapS={THREE.RepeatWrapping}
-              map-wrapT={THREE.RepeatWrapping}
-              map-repeat={[1, 1]}
-              map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
-              map-anisotropy={tier == 1 ? 3 : 10}
+          <a.meshPhysicalMaterial
+            map={texture}
+            map-flipY={false}
+            map-wrapS={THREE.RepeatWrapping}
+            map-wrapT={THREE.RepeatWrapping}
+            map-repeat={[1, 1]}
+            map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
+            map-anisotropy={tier == 1 ? 3 : 10}
               // flatShading
-              toneMapped
-              transparent
-              opacity={(isSelectedProject() && 1) || animatedOpacity}
+            toneMapped
+            transparent
+            opacity={(isSelectedProject() && 1) || animatedOpacity}
               // visible={selectedIndex === -1 || selectedIndex === position}// disable ghost cubes
-              attach="material"
-              receiveShadow
-              castShadow
-              color={determineColor}
-              roughness={0.5}
+            attach="material"
+            receiveShadow
+            castShadow
+            color={determineColor}
+            roughness={0.5}
               // alphaMap={checkTier(texture)}
               // aoMap={checkTier(texture)}
-              roughnessMap={texture} // sexy
+            roughnessMap={texture} // sexy
               // lightMap={checkTier(texture)}// sexy
               // clearcoat={determineClearcoat}
               // envMap={[texture, texture, texture]}
               // opacity={0.7}
-              envMapIntensity={0.6}
+            envMapIntensity={0.6}
               // dispose={null}
-              normalMap={normalMap}
-              normalMap-repeat={[35, 35]}
-              normalScale={[0.15, 0.15]}
-            />
-          </a.mesh>
-        }
+            normalMap={normalMap}
+            normalMap-repeat={[35, 35]}
+            normalScale={[0.15, 0.15]}
+          />
+        </a.mesh>
         {/* ) */}
       </>
     );
@@ -905,37 +903,38 @@ export default React.memo(
     [propsUsing]);
 
     return (
-      <Canvas
-        colorManagement
-        resize={{ polyfill: ResizeObserver }} // dont update canvas on user scroll
-        concurrent
-        shadowMap
-        shadows
-        dpr={[1, 2]}
-        performance={{ min: 0.5 }}
+      <Suspense fallback={<></>}>
+        <Canvas
+          colorManagement
+          resize={{ polyfill: ResizeObserver }} // dont update canvas on user scroll
+          concurrent
+          shadowMap
+          shadows
+          dpr={[1, 2]}
+          performance={{ min: 0.5 }}
         // raycaster={{ computeOffsets: ({ clientX, clientY }) => ({ offsetX: clientX, offsetY: clientY }) }}>
         // onCreated={(state) => state.events.connect(overlay.current)}
         // sRGB
         // orthographic
-        id={id}
-        pixelRatio={typeof window !== 'undefined' && window.devicePixelRatioo}
-        gl={{
-          alpha: true,
-          powerPreference: tier !== 1 ? 'high-performance' : 'default',
-          stencil: false,
-          depth: tier !== 1,
-          antialias: tier !== 1,
-        }}
-        camera={{
-          position: cameraCoords,
-          fov: 50,
-          near: 1,
-          far: 50,
-          rotation: [Math.PI * 0.25, 0, 0],
-        }}
-      >
-        <ambientLight color={x} intensity={0.6} />
-        {/* <directionalLight
+          id={id}
+          pixelRatio={typeof window !== 'undefined' && window.devicePixelRatioo}
+          gl={{
+            alpha: true,
+            powerPreference: tier !== 1 ? 'high-performance' : 'default',
+            stencil: false,
+            depth: tier !== 1,
+            antialias: tier !== 1,
+          }}
+          camera={{
+            position: cameraCoords,
+            fov: 50,
+            near: 1,
+            far: 50,
+            rotation: [Math.PI * 0.25, 0, 0],
+          }}
+        >
+          <ambientLight color={x} intensity={0.6} />
+          {/* <directionalLight
         castShadow
         position={[3.5, 5, -10]}
         intensity={1.5}
@@ -953,35 +952,36 @@ export default React.memo(
         // shadow-camera-top={10}
         // shadow-camera-bottom={-10}
         /> */}
-        <Camera />
-        {/* <Mouse /> */}
-        <Suspense fallback={null}>
-          {/* not dependant on physics */}
-          {/* <SkyScene3> */}
-          {/* <Clouds /> */}
+          <Camera />
+          {/* <Mouse /> */}
+          <Suspense fallback={null}>
+            {/* not dependant on physics */}
+            {/* <SkyScene3> */}
+            {/* <Clouds /> */}
 
-          <Environment preset="studio" scene={undefined} />
-          <HandModel />
+            <Environment preset="studio" scene={undefined} />
+            <HandModel />
 
-          <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
-            {/* <BrandRing x={x} /> */}
-            {/* all dependendant on physics */}
-            <Physics {...physicsProps}>
-              {determineScene()}
+            <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
+              {/* <BrandRing x={x} /> */}
+              {/* all dependendant on physics */}
+              <Physics {...physicsProps}>
+                {determineScene()}
 
-              {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
-              {/* <PreviewPlane /> */}
-              {/* <Scene set={set} x={x} mobile={false}/> */}
-            </Physics>
-          </group>
+                {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
+                {/* <PreviewPlane /> */}
+                {/* <Scene set={set} x={x} mobile={false}/> */}
+              </Physics>
+            </group>
 
-          {/* </SkyScene3> */}
-        </Suspense>
+            {/* </SkyScene3> */}
+          </Suspense>
 
-        {/* <Post theme={theme} /> */}
-        <Effects />
-        <AdaptiveDpr />
-      </Canvas>
+          {/* <Post theme={theme} /> */}
+          <Effects />
+          <AdaptiveDpr />
+        </Canvas>
+      </Suspense>
     );
   },
   (pre, post) => pre?.x !== post?.x,

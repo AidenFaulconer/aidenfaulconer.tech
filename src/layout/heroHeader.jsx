@@ -1,35 +1,20 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {
-  Card,
-  CardHeader,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Collapse,
-  Avatar,
   Typography,
   Grid,
-  Icon,
   Box,
 } from '@mui/material';
 
 import { navigate, graphql, useStaticQuery } from 'gatsby';
-import { useTheme } from '@mui/material/styles';
 
-import makeStyles from '@mui/styles/makeStyles';
-
-import { PhoneEnabled } from '@mui/icons-material';
+import { keyframes } from '@emotion/react';
 import ThreeWrapper from '../components/threejs/three-wrapper';
 import {
   RegularButton,
 } from '../components/custom/buttons';
 
-import { SCROLL_PROPS, svgEncodeBaseSixtyFour } from '../store/theme';
 import { useStore } from '../store/store';
-import { ColorFocus, DesignWorld, Illustration } from '../components/custom/illustrations';
 
-import cloudsFg from '../../static/assets/portfolio/clouds.png';
 // // draw circle underneath text
 // context.arc(centerX, centerY, radius - 10, 0, 2 * Math.PI, false);
 // context.stroke();
@@ -71,22 +56,18 @@ import cloudsFg from '../../static/assets/portfolio/clouds.png';
 // ========================================================================== //
 // hero styles
 // ========================================================================== //
-
-const useStyles = makeStyles((theme) => ({
-  '@keyframes animatedClouds': {
+const animatedClouds = keyframes`
+  keyframes: {
     from: {
       backgroundPosition: '0 0',
     },
     to: {
       backgroundPosition: '100% 10%',
     },
-  },
-
-}));
+  }`;
 
 // headline dynamic on threejs interaction, button to go back plug action in threejs, go to blog in the headline project selection?
 export const HeroHeader = React.memo((props) => {
-  if (typeof window === 'undefined') return;
   // ========================================================================== //
   //   Handle project posts
   // ========================================================================== //

@@ -1,15 +1,7 @@
 /*  */ import React, {
   Suspense,
-  lazy,
-  useState,
   useEffect,
-  useMemo,
-  useCallback,
-  createContext,
 } from 'react';
-import { styled } from '@mui/material/styles';
-import ReactDOM from 'react-dom';
-import { Color } from 'three';
 // All hooks are cross platform now
 
 // ========================================================================== //
@@ -18,21 +10,27 @@ import { Color } from 'three';
 
 // Platform knowledge is in here ...
 import {
-  a, Transition, useSpring, config,
+  a, useSpring,
 } from '@react-spring/web';
 // Canvas contents are loaded through an async split bundle
 // const Canvas = lazy(() => import("./Canvas"));
 // import { Html, useProgress } from "drei";
 import {
-  Backdrop, Box, LinearProgress, Typography, useTheme,
+  Box, LinearProgress, Typography, useTheme,
 } from '@mui/material';
-import { Html, useProgress } from '@react-three/drei';
-import { forceUpdate, useStaticMethods, reRenderOnVariables } from '../util/customHooks';
+import { useProgress } from '@react-three/drei';
+import Loadable from 'react-loadable';
 import { useStore } from '../../store/store';
 import { DesignWorld } from '../custom/illustrations';
 
 // const Canvas = lazy(() => import('./three-portfolio'));// prevents request is not defined in build-time/ssr rendering from loading gltf models, three.js simply isnt buddies with server-side-rendering it seems
-import Canvas from './three-portfolio';
+// import Canvas from './three-portfolio';
+
+// really? cant use suspense in gatsby? such a crap framework... heres a hack
+const LoadableCanvas = Loadable({
+  loader: () => import('./three-portfolio'),
+  loading: <></>,
+});
 
 export const textureRefs = [
   './assets/graphic.png',
@@ -55,7 +53,6 @@ const ThreeWrapper = React.memo(
       // from: { x: theme.palette.text.primary, y: 1 },
       // tell spring how the transition should be smoothed between values
       // delay: '100',
-
       config: {
         mass: 15,
         duration: 550,
@@ -64,9 +61,6 @@ const ThreeWrapper = React.memo(
         precision: 0.01,
       },
     }));
-    // useEffect(() => {
-      // }, [x])
-    const threeContext = useStore((state) => state.threeContext);
     // ========================================================================== //
     //     Add color change spring to global state
     // ========================================================================== //
@@ -94,6 +88,13 @@ const ThreeWrapper = React.memo(
       console.log(progress);
     }, [progress]);
 
+    // yet another gatsby fix, my god gatsby, your the worst framework ever
+    const ref = React.useRef();
+    useEffect(() => {
+      ref.current = LoadableCanvas;
+      ref.current = new LoadableCanvas({ x: { x }, setColor: { set } });
+    }, [ref]);
+
     const loadingScreen = React.useCallback(() => (progress < 99 && (
       <Box sx={{
         width: '100%', height: '100%', zIndex: 10000, top: 0, margin: 'auto',
@@ -108,43 +109,39 @@ const ThreeWrapper = React.memo(
           </Typography>
           <LinearProgressWithLabel value={progress} />
         </div>
-        <DesignWorld />
+        {/* <DesignWorld /> */}
       </Box>
     )
     ), [progress]);
 
     return (
-      <>
-        <a.div styles={{
+      <a.div styles={{
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        zIndex: 31,
+      }}
+      >
+        {loadingScreen()}
+        <Box sx={{
           height: '100%',
           width: '100%',
           position: 'absolute',
           zIndex: 31,
+          '& canvas': {
+            zIndex: 31,
+            minHeight: '100%',
+            minWidth: '100%',
+            maxHeight: 200,
+            height: ' 100% !important',
+            display: 'block',
+            position: 'relative',
+          },
         }}
         >
-          {loadingScreen()}
-          <Box sx={{
-            height: '100%',
-            width: '100%',
-            position: 'absolute',
-            zIndex: 31,
-            '& canvas': {
-              zIndex: 31,
-              minHeight: '100%',
-              minWidth: '100%',
-              maxHeight: 200,
-              height: ' 100% !important',
-              display: 'block',
-              position: 'relative',
-            },
-          }}
-          >
-            <Suspense fallback={<></>}>
-              <Canvas x={x} setColor={set} />
-            </Suspense>
-          </Box>
-        </a.div>
-      </>
+          <div ref={ref} />
+        </Box>
+      </a.div>
     );
   },
   // (pre, post) => {

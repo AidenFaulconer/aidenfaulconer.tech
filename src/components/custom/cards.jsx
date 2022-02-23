@@ -18,7 +18,7 @@ import { navigate } from 'gatsby';
 import PropTypes from 'prop-types';
 import SimplexNoise from 'simplex-noise';
 import { config, useSpring } from '@react-spring/core';
-import { RegularButton, ThirdButton } from './buttons';
+import { RegularButton } from './buttons';
 
 const PREFIX = 'Gridify';
 
@@ -659,13 +659,13 @@ export const CardCarousel = React.memo(
                         Read more
                       </RegularButton>
                       )) || (
-                      <ThirdButton
+                      <RegularButton
                         size="small"
                         fullWidth
                         onClick={() => handleExpandClick(index)}
                       >
                         Read more
-                      </ThirdButton>
+                      </RegularButton>
                       )}
                       {project && (
                       <RegularButton
