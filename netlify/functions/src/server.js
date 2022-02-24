@@ -294,59 +294,128 @@ fetch('https://inteltech.p.rapidapi.com/send.php', {
 // ========================================================================== //
 // Send emails *netlify background function*
 // ========================================================================== //
-const { jsPDF } = require('jspdf');
-const nodemailer = require('nodemailer');
-const mg = require('nodemailer-mailgun-transport');
 
-const transporter = nodemailer.createTransport(
-  mg({
-    auth: {
-      // api_key: process.env.MAILGUN_API_KEY,
-      apiKey: process.env.MAILGUN_API_KEY || '394b1cc46202ded744e9437fd5f658cd-45f7aa85-719a1d13',
-      domain: process.env.MAILGUN_DOMAIN || 'sandbox44a24e3174d54769aeab5887bd0badd6.mailgun.org',
-    },
-  }),
-);
+// ========================================================================== //
+// Mailgun
+// ========================================================================== //
+// const { jsPDF } = require('jspdf');
+// const nodemailer = require('nodemailer');
+// const mg = require('nodemailer-mailgun-transport');
 
-app.post('/api/send-email', async (req, res) => {
-  const { message, recipient } = req.body;
-  console.log(`Sending PDF report to ${recipient}`);
+// const transporter = nodemailer.createTransport(
+//   mg({
+//     auth: {
+//       // api_key: process.env.MAILGUN_API_KEY,
+//       apiKey: process.env.MAILGUN_API_KEY || '394b1cc46202ded744e9437fd5f658cd-45f7aa85-719a1d13',
+//       domain: process.env.MAILGUN_DOMAIN || 'sandbox44a24e3174d54769aeab5887bd0badd6.mailgun.org',
+//     },
+//   }),
+// );
 
-  const report = Buffer.from(
-    new jsPDF().text(message, 10, 10).output('arraybuffer'),
-  );
-  const invoice = await transporter.sendMail({
-    from: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',
-    to: recipient,
-    subject: 'Your booking with Aiden Faulconer',
-    text: 'See attached booking PDF',
-    attachments: [
-      {
-        filename: `report-${new Date().toDateString()}.pdf`,
-        content: report,
-        contentType: 'application/pdf',
-      },
-    ],
-    message,
+// app.post('/api/send-email', function  (req,es) => {
+//   {returnst { message, recipient } = req.body;
+//   console.log(`Sending PDF report to ${recipient}`);
+
+//   const report = Buffer.from(
+//     new jsPDF().text(message, 10, 10).output('arraybuffer'),
+//   );
+//   const invoice = await transporter.sendMail({
+//     from: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',
+//     to: recipient,
+//     subject: 'Your booking with Aiden Faulconer',
+//     text: 'See attached booking PDF',
+//     attachments: [
+//       {
+//         filename: `report-${new Date().toDateString()}.pdf`,
+//         content: report,
+//         contentType: 'application/pdf',
+//       },
+//     ],
+//     message,
+//   });
+//   const notify = await transporter.sendMail({
+//     from: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',,
+//     to: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',,
+//     subject: 'Your booking with Aiden Faulconer',
+//     text: 'See attached booking PDF',
+//     attachments: [
+//       {
+//         filename: `report-${new Date().toDateString()}.pdf`,
+//         content: report,
+//         contentType: 'application/pdf',
+//       },
+//     ],
+//     message,
+//   });
+//   console.log(`PDF report sent: ${invoice.messageId}`);
+//   res.send(invoice, notify);
+//   // res.send(notify);
+// });
+
+
+// ========================================================================== //
+// Mailjet api
+// ========================================================================== //
+const mailjet = require('node-mailjet').connect('05eb23ee2d65bc6ddb20358f8bb7e226', '4fcd3546241ce7eafc63fcee7a4a2eb1')
+
+const sendEmail =({ recipient, recipientName, message }) => mailjet
+    .post("send", { 'version': 'v3.1' })
+    .request({
+      "Messages": [
+        {
+          "From": {
+            "Email": "aidenf09@yahoo.com",
+            "Name": "Aiden Faulconer"
+          },
+          "To": [
+            {
+              "Email": recipient,
+              "Name": recipientName,
+            }
+          ],
+          "Subject": "Your booking with Aiden Faulconer",
+          "TextPart": message,
+          "HTMLPart": `<h1>Hello ${recipientName}, welcome onboard</h1><br />
+      <a href='https://aidenfaulconer.tech/'>You reached out to me through aidenfaulconer.tech</a><br />
+      I' will get back to you within 1-3 business days, you should receive an email or phone call in that time where
+      We can discuss the details of your project.`,
+          "CustomID": new Date().toDateString(),
+        }
+      ]
+    }).then((result) => {
+      console.log(result.body)
+    })
+    .catch((err) => {
+      console.log(err.statusCode)
+    });
+    
+app.post('/api/send-email', (req,es) => {
+    const{returnmessage, recipient, recipientName } = req.body;
+    console.log(`Sending PDF report to ${recipient}`);
+  
+    const report = Buffer.from(
+      new jsPDF().text(message, 10, 10).output('arraybuffer'),
+    );
+
+    const invoice = await sendEmail(req.body);
+    const notify = await sendEmail({
+      message: `
+      Aiden!!! :O
+      
+      youve received a booking from ${recipientName} 
+      whos details are ${}
+      Give them a call or email, and start the onboarding process and plan ahead
+      `,
+      recipient: "aidenf09@yaooo.com",
+    });
+
+    
+    console.log(`PDF report sent: ${invoice.messageId}`);
+    res.send(invoice, notify);
+    // res.send(notify);
   });
-  const notify = await transporter.sendMail({
-    from: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',,
-    to: process.env.MAILGUN_SENDER || 'aandjmaintenancecbr@gmail.com',,
-    subject: 'Your booking with Aiden Faulconer',
-    text: 'See attached booking PDF',
-    attachments: [
-      {
-        filename: `report-${new Date().toDateString()}.pdf`,
-        content: report,
-        contentType: 'application/pdf',
-      },
-    ],
-    message,
-  });
-  console.log(`PDF report sent: ${invoice.messageId}`);
-  res.send(invoice, notify);
-  // res.send(notify);
-});
+
+
 
 // ========================================================================== //
 //      Test server and requests
@@ -387,8 +456,8 @@ app.use('/api/test2', (req, res) => {
 // ========================================================================== //
 //      Query user information
 // ========================================================================== //
-/* const queryUserIpInformation = async () => axios.get({
-    url: 'https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/',
+/* const queryUserIpInformation = function  ()  axios.get({
+    url:{returnttps://ip-geolocation-ipwhois-io.p.rapidapi.com/json/',
     headers: {
       ...commonHeaders,
       'x-rapidapi-host': 'ip-geolocation-ipwhois-io.p.rapidapi.com',
@@ -483,11 +552,10 @@ app.get('/api/reversegeocode', (req, res) => {
 // Unused
 // ========================================================================== //
 /*
-const searchForecast = async (loc) => axios.get(
-  `${process.env.GATSBY_NODE_ENV.APIURL}/data/2.5/forecast?q=${loc}&appid=${process.env.GATSBY_OPENWEATHERAPIKEY}`,
+const searchForecast = function  (loc)> axios.get(
+  `${returnocess.env.GATSBY_NODE_ENV.APIURL}/data/2.5/forecast?q=${loc}&appid=${process.env.GATSBY_OPENWEATHERAPIKEY}`,
 );
-const getLocationByLatyLng = async (lat, lng) => axios.get(
-  `${process.env.GATSBY_GOOGLEMAPAPIURL}?latlng=${lat},${lng}&key=${process.env.GATSBY_GOOGLEAPIKEY}`,
+const getLocationByLatyLng = function  (lat,ng) => axios.get({return`${process.env.GATSBY_GOOGLEMAPAPIURL}?latlng=${lat},${lng}&key=${process.env.GATSBY_GOOGLEAPIKEY}`,
 );
 */
 
@@ -495,14 +563,14 @@ const getLocationByLatyLng = async (lat, lng) => axios.get(
 // Authorize google apis (OAuth || JWT)
 // ========================================================================== //
 
-const google = require('googleapis');
-//   use in auth param in request
-//   use as headers: {Authorization: 'Bearer JWT'}
-const authorizeAppWithGoogle = async () => `Bearer ${new google.auth.JWT({
-  email: process.env.GOOGLESERVICEACCOUNTAIDEN,
-  key: process.env.GOOGLESERVICEACCOUNTAIDENPRIVATEKEY,
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-}).authorize()}`;
+// const google = require('googleapis');
+// //   use in auth param in request
+// //   use as headers: {Authorization: 'Bearer JWT'}
+// const authorizeAppWithGoogle = function  ()  `Bearer ${new google.{returnh.JWT({
+//   email: process.env.GOOGLESERVICEACCOUNTAIDEN,
+//   key: process.env.GOOGLESERVICEACCOUNTAIDENPRIVATEKEY,
+//   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+// }).authorize()}`;
 
 // ========================================================================== //
 // Server Side Rendering **ref: https://github.com/netlify-labs/netlify-functions-express**

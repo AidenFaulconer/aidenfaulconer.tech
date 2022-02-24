@@ -1,113 +1,41 @@
 import React, {
-  Component, useEffect, useState, useCallback, useMemo, Suspense, lazy,
+  useEffect,
 } from 'react';
 
 import { styled } from '@mui/material/styles';
 
-import { useCookies } from 'react-cookie';
-
 import {
-  Link, useStaticQuery, graphql, StaticQuery,
+  useStaticQuery, graphql,
 } from 'gatsby';
 
 import { Helmet } from 'react-helmet';
 
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import StylesProvider from '@mui/styles/StylesProvider';
 import {
-  ThemeProvider,
-  StyledEngineProvider,
-  Container,
   Fab,
   useScrollTrigger,
   Zoom,
-  Backdrop,
   useTheme,
 } from '@mui/material';
 // import { logo } from '../../../static/svgs/hardcoded-svgs';
-import PropTypes from 'prop-types';
 import {
-  AudiotrackOutlined, AudiotrackRounded, Brightness2, Brightness5,
+  Brightness2, Brightness5,
 } from '@mui/icons-material';
 import {
-  a, Transition, useSpring, config,
+  a, useSpring, config,
 } from '@react-spring/web';
 import { useProgress } from '@react-three/drei';
 import Navigation from './navigation';
 import Footer from './footer';
-import { useGyro, useToggle } from '../components/util/customHooks';
-import EndOfPage from '../components/endOfPage';
 import { HeroHeader } from './heroHeader';
 import { useStore } from '../store/store';
 import { hexToAlpha } from '../store/theme';
-import ambianceSound from '../../static/assets/portfolio/ambiance.mp3';
 
 import MaterialUI from './materialUI';
 
 const PREFIX = 'Layout';
 
-const classes = {
-  threeWrapper: `${PREFIX}-threeWrapper`,
-  fab: `${PREFIX}-fab`,
-  post: `${PREFIX}-post`,
-  pageEnter: `${PREFIX}-pageEnter`,
-  pageChange: `${PREFIX}-pageChange`,
-};
-
 // TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')((
-  {
-    theme,
-  },
-) => ({
-  [`& .${classes.threeWrapper}`]: {
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    overflow: 'hidden',
-    top: '0px',
-    zIndex: 1,
-  },
-
-  [`& .${classes.fab}`]: {
-    borderRadius: '100%',
-    background: `${hexToAlpha(theme.palette.text.primary, 0.6)} !important`,
-    backdropFilter: 'blur(35px)',
-    transform: 'scale(.75)',
-  },
-
-  [`& .${classes.post}`]: {},
-
-  [`& .${classes.pageEnter}`]: {
-    position: 'absolute',
-    zIndex: 20,
-    background: theme.palette.text.primary,
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
-    top: '0px',
-    left: '0px',
-    opacity: 1,
-    visibility: 'visible',
-    pointerEvents: 'all',
-  },
-
-  [`& .${classes.pageChange}`]: {
-    position: 'absolute',
-    display: 'initial',
-    background: theme.palette.text.secondary,
-    width: '100vw',
-    height: '100vh',
-    transform: 'skew(10deg)',
-    overflow: 'hidden',
-    top: '0px',
-    left: '-115vw',
-    opacity: 1,
-    zIndex: 30,
-    visibility: 'visible',
-    pointerEvents: 'all',
-  },
-}));
 
 const Layout = React.memo((props) => {
   //   //prettier-ignore
@@ -213,7 +141,12 @@ const Layout = React.memo((props) => {
   // we cant ssr the entire app because gatsby-plugin-material-ui does not deal with window undefined, really stupid on the plugin creators behalf, it is a problem with gatsby-plugin-material-ui
   // use
   // if (typeof window === 'undefined') return null;
-
+  const fabStyles = {
+    borderRadius: '100%',
+    background: (theme) => `${hexToAlpha(theme.palette.text.primary, 0.6)} !important`,
+    backdropFilter: 'blur(35px)',
+    transform: 'scale(.75)',
+  };
   return (
     <div
       style={{
@@ -239,7 +172,9 @@ const Layout = React.memo((props) => {
         <Footer />
         <Zoom in={trigger} role="presentation">
           <Fab
-            className={classes.fab}
+            sx={{
+              ...fabStyles,
+            }}
             color="primary"
             onClick={scrollToTop}
             size="small"
@@ -250,7 +185,9 @@ const Layout = React.memo((props) => {
           </Fab>
         </Zoom>
         <Fab
-          className={classes.fab}
+          sx={{
+            ...fabStyles,
+          }}
           onClick={() => toggleTheme()}
           size="small"
           color="primary"
@@ -351,7 +288,7 @@ const Consolelogs = () => {
     // `);
     // }
   }, []);
-  return (<Root />);
+  return (<div />);
 };
 
 const PageTransitionOverlay = (props) => {
@@ -432,15 +369,30 @@ const PageTransitionOverlay = (props) => {
     },
   }));
   // console.log(useStore((state) => state));
-
+  const theme = useTheme();
+  const pageChangeStyles = {
+    position: 'absolute',
+    display: 'initial',
+    background: theme.palette.text.secondary,
+    width: '100vw',
+    height: '100vh',
+    transform: 'skew(10deg)',
+    overflow: 'hidden',
+    top: '0px',
+    left: '-115vw',
+    opacity: 1,
+    zIndex: 30,
+    visibility: 'visible',
+    pointerEvents: 'all',
+  };
   return (
     <>
       <a.div
-        className={classes.pageChange}
         style={{
           background,
           left,
           transform,
+          ...pageChangeStyles,
         }}
       />
     </>

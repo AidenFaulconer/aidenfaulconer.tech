@@ -219,7 +219,7 @@ module.exports = {
         crossOrigin: 'use-credentials',
       },
     },
-    'gatsby-plugin-sass',
+    // 'gatsby-plugin-sass',
     'gatsby-plugin-react-helmet',
     // siteURL is a must for sitemap generation
     // `gatsby-plugin-sitemap`,
@@ -245,13 +245,27 @@ module.exports = {
     //     head: true,
     //   },
     // },
+    // 'gatsby-plugin-mui-emtionon'
+    'gatsby-theme-material-ui',
+    // 'gatsby-plugin-material-ui',
     // ========================================================================== //
     // Netlify CMS
     // ========================================================================== //
-    'gatsby-plugin-netlify-cms',
-    'gatsby-theme-material-ui',
-    // 'gatsby-plugin-material-ui',
-    // 'gatsby-plugin-mui-emtionon'
+    {
+      resolve: 'gatsby-plugin-netlify-cms',
+      options: {
+        modulePath: `${__dirname}/src/cms/cms.js`,
+      },
+    },
+    // {
+    //   resolve: 'gatsby-plugin-purgecss', // purges all unused/unreferenced css rules
+    //   options: {
+    //     develop: true, // Activates purging in npm run develop
+    //     purgeOnly: ['/all.sass'], // applies purging only on the bulma css file
+    //   },
+    // }, // must be after other CSS plugins
+
+    'gatsby-plugin-netlify',
 
     // ========================================================================== //
     //     Debugging Webpack bundles

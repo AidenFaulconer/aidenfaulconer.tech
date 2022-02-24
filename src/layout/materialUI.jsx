@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
-  createTheme, CssBaseline, ThemeProvider, StyledEngineProvider, NoSsr,
+  CssBaseline, ThemeProvider, StyledEngineProvider,
 } from '@mui/material';
 import StylesProvider from '@mui/styles/StylesProvider';
 import {
-  dt, lt, useStore, LIGHT_THEME, afCreateTheme,
+  dt, lt, useStore,
 } from '../store/store';
 
 // import { dt, lt, valtioState } from "../store/store-wrapper"
