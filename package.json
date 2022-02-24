@@ -151,7 +151,6 @@
     "gatsby-transformer-sharp": "4.3.0"
   },
   "scripts": {
-    "install": "yarn install --ignore-engines",
     "update": "pnpm i gatsby@latest --legacy--peer-deps && pnpm outdated",
     "reinstall": "rm -r ./node_modules && rm package-lock.json && rm pnpm-lock.yaml && pnpm i && pnpm run clean",
     "preload-fonts": "set LOG_LEVEL=info & gatsby-preload-fonts",
