@@ -60,6 +60,7 @@
     "gatsby-plugin-jss": "^4.7.0",
     "gatsby-plugin-layout": "^3.7.0",
     "gatsby-plugin-manifest": "^4.7.0",
+    "gatsby-plugin-material-ui": "^4.1.0",
     "gatsby-plugin-minify-html": "^1.0.4",
     "gatsby-plugin-netlify-cms": "^6.3.0",
     "gatsby-plugin-offline": "^5.7.0",
@@ -108,7 +109,6 @@
     "react-loadable": "^5.5.0",
     "react-multi-carousel": "^2.6.3",
     "react-phone-number-input": "^3.1.27",
-    "react-three-fiber": "^6.0.13",
     "react-use-breakpoints": "0.0.15",
     "redux-persist": "^6.0.0",
     "scroll-snap": "^4.0.2",
@@ -151,6 +151,7 @@
     "gatsby-transformer-sharp": "4.3.0"
   },
   "scripts": {
+    "install": "yarn install --ignore-engines",
     "update": "pnpm i gatsby@latest --legacy--peer-deps && pnpm outdated",
     "reinstall": "rm -r ./node_modules && rm package-lock.json && rm pnpm-lock.yaml && pnpm i && pnpm run clean",
     "preload-fonts": "set LOG_LEVEL=info & gatsby-preload-fonts",

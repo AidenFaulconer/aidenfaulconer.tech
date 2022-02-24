@@ -1,5 +1,9 @@
 # Settings in the [build] context are global and are applied to all contexts
 # unless otherwise overridden by more specific contexts.
+[install]
+# The install prefix where the package will be installed.
+command = "npm run install"
+
 [build]
   # Directory to change to before starting a build.
   # This is where we will look for package.json/.nvmrc/etc.
@@ -15,7 +19,7 @@
   # Default build command.
   # command = "echo 'default context'"
   functions = "netlify/functions"
-  command = "npm build"
+  command = "npm run build"
 
 [[plugins]]
   # Installs the Lighthouse Build Plugin for all deploy contexts

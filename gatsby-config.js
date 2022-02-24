@@ -250,6 +250,7 @@ module.exports = {
     // ========================================================================== //
     'gatsby-plugin-netlify-cms',
     'gatsby-theme-material-ui',
+    // 'gatsby-plugin-material-ui',
     // 'gatsby-plugin-mui-emtionon'
 
     // ========================================================================== //
