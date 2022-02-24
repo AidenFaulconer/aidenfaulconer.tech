@@ -1,5 +1,6 @@
 /*  */ import React, {
   Suspense,
+  lazy,
   useEffect,
 } from 'react';
 // All hooks are cross platform now
@@ -29,8 +30,9 @@ import { DesignWorld } from '../custom/illustrations';
 // really? cant use suspense in gatsby? such a crap framework... heres a hack
 const LoadableCanvas = Loadable({
   loader: () => import('./three-portfolio'),
-  loading: <></>,
+  loading: () => <p>Loading</p>,
 });
+// LoadableCanvas.preload();
 
 export const textureRefs = [
   './assets/graphic.png',
@@ -89,11 +91,17 @@ const ThreeWrapper = React.memo(
     }, [progress]);
 
     // yet another gatsby fix, my god gatsby, your the worst framework ever
-    const ref = React.useRef();
+    const ref = React.useRef(null);
     useEffect(() => {
-      ref.current = LoadableCanvas;
-      ref.current = new LoadableCanvas({ x: { x }, setColor: { set } });
-    }, [ref]);
+      // swap div instance for the canvas, this prevents ssr from trying to compile this **threejs uses window internally** or some shit that breaks it
+
+      // if (ref.current.innerHTML === undefined) {
+      //   ref.current.appendChild(
+      //     new LoadableCanvas({ x: { x }, setColor: { set } }),
+      //   );
+      // }
+      // console.log(ref.current);
+    }, []);
 
     const loadingScreen = React.useCallback(() => (progress < 99 && (
       <Box sx={{
@@ -114,6 +122,7 @@ const ThreeWrapper = React.memo(
     )
     ), [progress]);
 
+    const isSSR = typeof window === 'undefined';// threejs canvas is CLIENT-SIDE only
     return (
       <a.div styles={{
         height: '100%',
@@ -123,23 +132,25 @@ const ThreeWrapper = React.memo(
       }}
       >
         {loadingScreen()}
-        <Box sx={{
-          height: '100%',
-          width: '100%',
-          position: 'absolute',
-          zIndex: 31,
-          '& canvas': {
+        <Box
+          sx={{
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
             zIndex: 31,
-            minHeight: '100%',
-            minWidth: '100%',
-            maxHeight: 200,
-            height: ' 100% !important',
-            display: 'block',
-            position: 'relative',
-          },
-        }}
+            '& canvas': {
+              zIndex: 31,
+              minHeight: '100%',
+              minWidth: '100%',
+              maxHeight: 200,
+              height: ' 100% !important',
+              display: 'block',
+              position: 'relative',
+            },
+          }}
         >
-          <div ref={ref} />
+          {!isSSR && (<LoadableCanvas x={x} setColor={set} />)}
+          {/* <div ref={ref} /> */}
         </Box>
       </a.div>
     );

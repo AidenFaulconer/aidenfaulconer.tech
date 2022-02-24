@@ -59,17 +59,6 @@ So, `r` is (about) 412px long! This means we need to TRANSLATE the slides in the
 // root container, this is tilted to tilt the entire carousel, rotate to position to selected card
 
 // ...threeDHoverKeyframes,
-const carouselKeyframes = keyframes`
-'@keyframes rotate360': {
-      from: {
-        transform: 'rotateY(0deg)',
-      },
-      to: {
-        transform: 'rotateY(-360deg)',
-      },
-    },
-  },
-`;
 const splitter = new GraphemeSplitter();
 
 export default ({
@@ -149,7 +138,6 @@ export default ({
     // const distanceFromCenter =  4 5 6 0 1 2 3 ;
     const _current = slideAngle * current;
     const amnt = _current > prevCurrent ? -_current : _current;
-
     // alert(`pre: ${prevCurrent}  post: ${current}  rotate: ${amnt}`);
     if (prevCurrent !== _current) {
       setTransition({
@@ -159,8 +147,6 @@ export default ({
   }, [current]);
 
   const computeTransform = React.useCallback((index) => {
-    // translateZ(412px);
-    // transform: rotateY(320deg)
     const y = 0;
     return {
       transform: `rotateY(${slideAngle * index}deg) translateZ(${
@@ -173,6 +159,34 @@ export default ({
   // ========================================================================== //
   // SPIN TEXT
   // ========================================================================== //
+  const graphicStyles = {
+    borderRadius: theme.custom.borders.brandBorderRadius,
+    zIndex: 0,
+    width: '100%',
+    // transform: 'scale(.8)',
+    mb: 12,
+    position: 'absolute',
+    display: 'inline',
+    transform: {
+      xl: { scale: 0.5 },
+      lg: { scale: 0.5 },
+      md: { scale: 0.5 },
+      sm: { scale: 0.5 },
+      xs: { scale: 0.5 },
+    },
+    '& .spin-container': {
+      transform: 'translate(-50%,-50%) scale(1)',
+      left: '50%',
+      top: '50%',
+      fontWeight: 1000,
+      position: 'absolute',
+    },
+    '& #spinText': {
+      animation: '$rotateAngle 6s linear infinite',
+      zIndex: 'inherit',
+      fontWeight: 100,
+    },
+  };
   const spinText = React.useCallback((spinText, scale = 1) => {
     // curve text
     const ref = React.useRef(null);
@@ -195,35 +209,6 @@ export default ({
       </Box>
     );
   }, []);
-
-  const graphicStyles = {
-    borderRadius: theme.custom.borders.brandBorderRadius,
-    zIndex: 0,
-    width: '100%',
-    // transform: 'scale(.8)',
-    mb: 12,
-    position: 'absolute',
-    display: 'inline',
-    transform: {
-      xl: { scale: 0.8 },
-      lg: { scale: 0.8 },
-      md: { scale: 0.8 },
-      sm: { scale: 0.8 },
-      xs: { scale: 0.8 },
-    },
-    '& .spin-container': {
-      transform: 'translate(-50%,-50%) scale(1)',
-      left: '50%',
-      top: '50%',
-      fontWeight: 1000,
-      position: 'absolute',
-    },
-    '& #spinText': {
-      animation: '$rotateAngle 6s linear infinite',
-      zIndex: 'inherit',
-      fontWeight: 100,
-    },
-  };
 
   // ========================================================================== //
   //   carousel
@@ -290,7 +275,7 @@ export default ({
             const {
               title, image, alt, description, icon,
             } = data;
-            const ping = useMemo(() => new Audio(pingSound), []);
+            const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
 
             return (
               <Card

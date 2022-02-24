@@ -21,7 +21,7 @@ import {
   useFrame,
   useThree,
   useLoader,
-} from 'react-three-fiber';// or @react-three-fiber
+} from '@react-three/fiber';// or @react-three-fiber or react-three-fiber
 import {
   Environment,
   useDetectGPU,
@@ -862,7 +862,12 @@ function Clouds() {
 // Canvas
 // ========================================================================== //
 // the canvas and scene graph are here or derive from it
-export default React.memo(
+export default (props) => (
+  <Suspense fallback={null}>
+    <AFCanvas {...props} />
+  </Suspense>
+);
+export const AFCanvas = React.memo(
   ({
     x, setColor, theme, id, themeTools, setTheme,
   }) => {
@@ -903,38 +908,37 @@ export default React.memo(
     [propsUsing]);
 
     return (
-      <Suspense fallback={<></>}>
-        <Canvas
-          colorManagement
-          resize={{ polyfill: ResizeObserver }} // dont update canvas on user scroll
-          concurrent
-          shadowMap
-          shadows
-          dpr={[1, 2]}
-          performance={{ min: 0.5 }}
+      <Canvas
+        colorManagement
+        resize={{ polyfill: ResizeObserver }} // dont update canvas on user scroll
+        concurrent
+        shadowMap
+        shadows
+        dpr={[1, 2]}
+        performance={{ min: 0.5 }}
         // raycaster={{ computeOffsets: ({ clientX, clientY }) => ({ offsetX: clientX, offsetY: clientY }) }}>
         // onCreated={(state) => state.events.connect(overlay.current)}
         // sRGB
         // orthographic
-          id={id}
-          pixelRatio={typeof window !== 'undefined' && window.devicePixelRatioo}
-          gl={{
-            alpha: true,
-            powerPreference: tier !== 1 ? 'high-performance' : 'default',
-            stencil: false,
-            depth: tier !== 1,
-            antialias: tier !== 1,
-          }}
-          camera={{
-            position: cameraCoords,
-            fov: 50,
-            near: 1,
-            far: 50,
-            rotation: [Math.PI * 0.25, 0, 0],
-          }}
-        >
-          <ambientLight color={x} intensity={0.6} />
-          {/* <directionalLight
+        id={id}
+        pixelRatio={typeof window !== 'undefined' && window.devicePixelRatioo}
+        gl={{
+          alpha: true,
+          powerPreference: tier !== 1 ? 'high-performance' : 'default',
+          stencil: false,
+          depth: tier !== 1,
+          antialias: tier !== 1,
+        }}
+        camera={{
+          position: cameraCoords,
+          fov: 50,
+          near: 1,
+          far: 50,
+          rotation: [Math.PI * 0.25, 0, 0],
+        }}
+      >
+        <ambientLight color={x} intensity={0.6} />
+        {/* <directionalLight
         castShadow
         position={[3.5, 5, -10]}
         intensity={1.5}
@@ -952,36 +956,35 @@ export default React.memo(
         // shadow-camera-top={10}
         // shadow-camera-bottom={-10}
         /> */}
-          <Camera />
-          {/* <Mouse /> */}
-          <Suspense fallback={null}>
-            {/* not dependant on physics */}
-            {/* <SkyScene3> */}
-            {/* <Clouds /> */}
+        <Camera />
+        {/* <Mouse /> */}
+        <Suspense fallback={null}>
+          {/* not dependant on physics */}
+          {/* <SkyScene3> */}
+          {/* <Clouds /> */}
 
-            <Environment preset="studio" scene={undefined} />
-            <HandModel />
+          <Environment preset="studio" scene={undefined} />
+          <HandModel />
 
-            <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
-              {/* <BrandRing x={x} /> */}
-              {/* all dependendant on physics */}
-              <Physics {...physicsProps}>
-                {determineScene()}
+          <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
+            {/* <BrandRing x={x} /> */}
+            {/* all dependendant on physics */}
+            <Physics {...physicsProps}>
+              {determineScene()}
 
-                {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
-                {/* <PreviewPlane /> */}
-                {/* <Scene set={set} x={x} mobile={false}/> */}
-              </Physics>
-            </group>
+              {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
+              {/* <PreviewPlane /> */}
+              {/* <Scene set={set} x={x} mobile={false}/> */}
+            </Physics>
+          </group>
 
-            {/* </SkyScene3> */}
-          </Suspense>
+          {/* </SkyScene3> */}
+        </Suspense>
 
-          {/* <Post theme={theme} /> */}
-          <Effects />
-          <AdaptiveDpr />
-        </Canvas>
-      </Suspense>
+        {/* <Post theme={theme} /> */}
+        <Effects />
+        <AdaptiveDpr />
+      </Canvas>
     );
   },
   (pre, post) => pre?.x !== post?.x,

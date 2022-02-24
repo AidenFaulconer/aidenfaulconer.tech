@@ -104,6 +104,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
         <Qualifications />
       </SectionWrapper>
 
+      {/* build fails == audio is not defined == */}
       <SectionWrapper>
         <Experience id="skills" />
       </SectionWrapper>

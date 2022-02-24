@@ -61,7 +61,7 @@ export default ({ children }) => {
           <ThemeProvider
             theme={type === 'light' && lt || dt}
             key="ThemeProvider"
-            sheetsManager={new Map()}
+            // sheetsManager={new Map()}
           >
             <StylesProvider injectFirst>
               <CssBaseline />
