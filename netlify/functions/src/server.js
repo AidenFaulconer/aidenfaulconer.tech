@@ -397,8 +397,8 @@ app.post('/api/send-email', (req,es) => {
       new jsPDF().text(message, 10, 10).output('arraybuffer'),
     );
 
-    const invoice = await sendEmail(req.body);
-    const notify = await sendEmail({
+    const invoice = sendEmail(req.body);
+    const notify = sendEmail({
       message: `
       Aiden!!! :O
       
