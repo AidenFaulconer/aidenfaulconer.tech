@@ -17,13 +17,7 @@ import {
 } from '@mui/material';
 import footerGraphic from '../../static/assets/footer.png';
 import {
-  logoCircular,
-  boxAndPyrimid,
-  dataBoxAndCodeBox,
-
-} from '../../static/assets/svg/hardcoded-svgs';
-import {
-  RegularButton, 
+  RegularButton,
 } from '../components/custom/buttons';
 
 const PREFIX = 'footer';
@@ -164,7 +158,7 @@ export default ({ children }) => {
               <Typography gutterBottom color="inherit">
                 Send me an email
               </Typography>
-              <RegularButton type="secondary" icon={{enabled:true,type:'arrow'}} size="small" onClick={() => sendEmail()}>
+              <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} size="small" onClick={() => sendEmail()}>
                 aidenf09@yahoo.com
               </RegularButton>
             </Grid>
@@ -179,7 +173,7 @@ export default ({ children }) => {
               <Typography gutterBottom color="inherit">
                 Lets Talk
               </Typography>
-              <RegularButton  type="secondary" icon={{enabled:true,type:'arrow'}} size="small" onClick={() => makeCall()}>
+              <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} size="small" onClick={() => makeCall()}>
                 0475565709
               </RegularButton>
 

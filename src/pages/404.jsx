@@ -3,7 +3,6 @@ import Helmet from 'react-helmet';
 import { Link } from 'gatsby';
 import Layout from '../layout/layout';
 
-// import { four0four } from '../../static/assets/svg/hardcoded-svgs';
 
 export default React.memo(() => (
   <Layout>

@@ -355,8 +355,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
   // container
     <Grid
       container
-      xs={12}
-      wrap
+      wrap="wrap"
       sx={{
         position: 'relative',
         border: (theme) => theme.custom.borders.brandBorderSecondary,
@@ -373,7 +372,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
         md={3}
         xs={12}
         sm={12}
-        wrap={false}
+        // wrap="nowrap"
         sx={{
           display: 'inline-flex',
           alignItems: 'flex-start',
@@ -390,6 +389,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
           const item = selections[key];
           return (
             <SelectionButton
+              key={`${item.name}-sb`}
               selected={item.name === selected.name}
               onClick={() => {
                 const _currentSelection = selections[key];
@@ -451,7 +451,6 @@ const SelectionMenu = React.forwardRef((props, red) => {
           <Typography
             align="left"
             variant="body1"
-            component="body1"
             color="primary"
             style={{ marginBottom: 30 }}
           >
@@ -496,7 +495,7 @@ const SelectionMenu = React.forwardRef((props, red) => {
           left: 0,
           top: 0,
           flex: 2,
-          display: { md: 'block', xs: 'none' },
+          display: { lg: 'block', md: 'none', xs: 'none' },
         }}
         >
           <ThreeWrapper />

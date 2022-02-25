@@ -1,6 +1,7 @@
 require('prismjs/themes/prism-okaidia.css');
 require('./src/styles/bootstrap.scss');
 require('@fontsource/poppins'); // https://github.com/fontsource/fontsource/blob/main/packages/roboto/README.md
+require('pattern.css/dist/pattern.min.css'); // https://github.com/fontsource/fontsource/blob/main/packages/roboto/README.md
 
 // // wrap entire app in custom element, this is done by hooking into gatsbys wrapRootElement
 

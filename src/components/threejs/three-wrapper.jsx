@@ -27,7 +27,7 @@ import { DesignWorld } from '../custom/illustrations';
 // const Canvas = lazy(() => import('./three-portfolio'));// prevents request is not defined in build-time/ssr rendering from loading gltf models, three.js simply isnt buddies with server-side-rendering it seems
 // import Canvas from './three-portfolio';
 
-// really? cant use suspense in gatsby? such a crap framework... heres a hack
+// The heftiest boy of the codebase, deffinitely also should be code-split
 const LoadableCanvas = Loadable({
   loader: () => import('./three-portfolio'),
   loading: () => <p>Loading</p>,
@@ -42,6 +42,7 @@ export const textureRefs = [
 ];
 export const colors = ['#823B3B', '#76EFA6', '#F4D1A4', '#666666'];
 
+// must be code-split, as its a hefty component to load
 const ThreeWrapper = React.memo(
   (props) => {
     const theme = useTheme();
@@ -63,9 +64,9 @@ const ThreeWrapper = React.memo(
         precision: 0.01,
       },
     }));
-    // ========================================================================== //
-    //     Add color change spring to global state
-    // ========================================================================== //
+      // ========================================================================== //
+      //     Add color change spring to global state
+      // ========================================================================== //
     useStore.setState((state) => ({
       ...state,
       threejsContext: {
@@ -149,7 +150,7 @@ const ThreeWrapper = React.memo(
             },
           }}
         >
-          {!isSSR && (<LoadableCanvas x={x} setColor={set} />)}
+          {/* {!isSSR && (<LoadableCanvas x={x} setColor={set} />)} */}
         </Box>
       </a.div>
     );

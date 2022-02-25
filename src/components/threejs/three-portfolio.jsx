@@ -9,6 +9,7 @@ import React, {
   useCallback,
   useRef,
   createRef,
+  useEffect,
 } from 'react';
 import { ResizeObserver } from '@juggle/resize-observer';
 
@@ -29,6 +30,7 @@ import {
   AdaptiveDpr,
   // useAspect
   Billboard,
+  Reflector,
 } from '@react-three/drei';
 import {
   Physics, usePlane, useBox,
@@ -39,7 +41,7 @@ import {
 // asset imports
 // import Post from './post-processing';
 import { clamp, degToRad } from 'three/src/math/MathUtils';
-import { EffectComposer } from '@react-three/postprocessing';
+// import { EffectComposer } from '@react-three/postprocessing';
 // import { SVGLoader } from 'three/jsm/loaders/SVGLoader.js';
 import cube_import from '../../../static/assets/gameModels/cube.glb';
 
@@ -56,6 +58,10 @@ import ring_import from '../../../static/assets/gameModels/ring.gltf';
 
 import HandModel from './hand';
 
+// ========================================================================== //
+// Canvas
+// ========================================================================== //
+import env_map from '../../../static/assets/portfolio/envmap.png';
 // ========================================================================== //
 // Clouds
 // ========================================================================== //
@@ -533,6 +539,7 @@ export const Scene = ({
 // ========================================================================== //
 // Camera
 // ========================================================================== //
+// export const cameraCoords = [0, 6, -4.5];
 export const cameraCoords = [0, 6, -4.5];
 
 const X_SPACING = 2;
@@ -545,7 +552,7 @@ export const getPositionExternalGrid = (index, columnWidth = 3) => {
 
 export const Camera = React.memo(
   () => {
-    const { viewport } = useThree();
+    const { viewport, camera } = useThree();
 
     const radius = Math.min(viewport.width, viewport.height) / 2;
     const center = new Vector2(viewport.width / 2, viewport.height / 2);
@@ -553,6 +560,10 @@ export const Camera = React.memo(
       x: 0,
       y: 0,
     };
+
+    useEffect(() => {
+      moveRelativeToMouse(4, 3, { camera }, 6.6);
+    }, []);
 
     const moveRelativeToMouse = (px, py, state, zoom) => {
       const upwards = 2;
@@ -571,6 +582,7 @@ export const Camera = React.memo(
       state.camera.updateProjectionMatrix();
     };
     const mouseMultiplier = 20;
+
     return useFrame((state) => {
       // move camera to selected cube
       if (state.zoomCamera) {
@@ -609,7 +621,7 @@ export const Camera = React.memo(
 // ========================================================================== //
 // Brand ring
 // ========================================================================== //
-useGLTF.preload(ring_import);
+// useGLTF.preload(ring_import);//slows down first contentful paint
 
 export const BrandRing = ({ x, rotation }) => {
   const ref = useRef();
@@ -767,18 +779,18 @@ export const Orb = ({ x }) => {
   );
 };
 
+// too large for bundle, re-use in some other project
 function Effects() {
   const ref = useRef();
   useFrame((state) => {
     // Disable SSAO on regress
     // ref.current.blendMode.setBlendFunction(state.performance.current < 1 ? BlendFunction.SKIP : BlendFunction.MULTIPLY);
   }, []);
-  return (
-    <EffectComposer multisampling={8}>
-      {/* <SSAO ref={ref} intensity={15} radius={10} luminanceInfluence={0} bias={0.035} /> */}
-      {/* <Bloom kernelSize={KernelSize.LARGE} luminanceThreshold={0.55} luminanceSmoothing={0.2} /> */}
-    </EffectComposer>
-  );
+  //   // <EffectComposer multisampling={8}>
+  //     {/* <SSAO ref={ref} intensity={15} radius={10} luminanceInfluence={0} bias={0.035} /> */}
+  //     {/* <Bloom kernelSize={KernelSize.LARGE} luminanceThreshold={0.55} luminanceSmoothing={0.2} /> */}
+  // {/* </EffectComposer> */ }
+  return (null);
 }
 
 function Cloud({
@@ -846,21 +858,47 @@ function Cloud({
   );
 }
 
-function Clouds() {
-  return (
-    <Cloud
-      segments={2}
-      size={1.2}
-      rotation={[0, Math.PI / 2, 0]}
-      position={[0, 0, -10]}
-      scale={[1, 1, 1]}
-    />
-  );
-}
+const Clouds = () => (
+  <Cloud
+    segments={2}
+    size={1.2}
+    rotation={[0, Math.PI / 2, 0]}
+    position={[0, 0, -10]}
+    scale={[1, 1, 1]}
+  />
+);
 
-// ========================================================================== //
-// Canvas
-// ========================================================================== //
+// const SkyBox = () => {
+//   const { scene } = useThree();
+//   const loader = new THREE.CubeTextureLoader();
+//   const { scene, gl } = useThree();
+//   // The cubeRenderTarget is used to generate a texture for the reflective sphere.
+//   // It must be updated on each frame in order to track camera movement and other changes.
+//   const cubeRenderTarget = new WebGLCubeRenderTarget(256, {
+//     format: THREE.RGBFormat,
+//     generateMipmaps: true,
+//     minFilter: THREE.LinearMipmapLinearFilter,
+//   });
+//   const cubeCamera = new CubeCamera(1, 1000, cubeRenderTarget);
+//   cubeCamera.position.set(0, 100, 0);
+//   scene.add(cubeCamera);
+//   // Update the cubeCamera with current renderer and scene.
+//   useFrame(() => cubeCamera.update(gl, scene));
+//   // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
+//   const texture = loader.load([
+//     Array(4).fill(env_map),
+//   ]);
+//   // Set the scene background property to the resulting texture.
+//   scene.background = texture;
+//   return null;
+// };
+
+// consider adding controls next time
+// import { useControl, Controls } from 'react-three-gui'
+
+// consider react a11y for handling state and events in react three fiber with accessibility
+// import { A11y, useA11y, A11yAnnouncer, useUserPreferences, A11ySection, A11yUserPreferencesContext } from "@react-three/a11y"
+
 // the canvas and scene graph are here or derive from it
 export default (props) => (
   <Suspense fallback={null}>
@@ -907,6 +945,7 @@ export const AFCanvas = React.memo(
     ),
     [propsUsing]);
 
+    if (process.env.NODE_ENV === 'development') console.log('threejs: time elapsed now ', performance.now());
     return (
       <Canvas
         colorManagement
@@ -938,32 +977,18 @@ export const AFCanvas = React.memo(
         }}
       >
         <ambientLight color={x} intensity={0.6} />
-        {/* <directionalLight
-        castShadow
-        position={[3.5, 5, -10]}
-        intensity={1.5}
-        color={x}
-        // enabling shadows
-        // // 2k texture
-        // shadow-mapSize-width={2048}
-        // shadow-mapSize-height={2048}
-        // // 1k texture
-        // // shadow-mapSize-width={1024}
-        // // shadow-mapSize-height={1024}
-        // shadow-camera-far={50}
-        // shadow-camera-left={-10}
-        // shadow-camera-right={10}
-        // shadow-camera-top={10}
-        // shadow-camera-bottom={-10}
-        /> */}
+        <rectAreaLight
+          intensity={20.5}
+          args={[x, 8, 8, 8]}
+          position={[0, -0.99, 0]}
+          rotation-x={Math.PI / 2}
+        />
         <Camera />
-        {/* <Mouse /> */}
-        <Suspense fallback={null}>
-          {/* not dependant on physics */}
-          {/* <SkyScene3> */}
-          {/* <Clouds /> */}
 
-          <Environment preset="studio" scene={undefined} />
+        {/* dont use presets, they are requested over network and block reasources, pass your own */}
+        <Environment preset="studio" scene={undefined} />
+
+        <Suspense fallback={null}>
           <HandModel />
 
           <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
@@ -979,11 +1004,11 @@ export const AFCanvas = React.memo(
           </group>
 
           {/* </SkyScene3> */}
-        </Suspense>
 
-        {/* <Post theme={theme} /> */}
-        <Effects />
-        <AdaptiveDpr />
+          {/* <Post theme={theme} /> */}
+          {/* <Effects /> */}
+        </Suspense>
+        <AdaptiveDpr pixelated />
       </Canvas>
     );
   },

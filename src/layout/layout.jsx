@@ -17,7 +17,6 @@ import {
   Zoom,
   useTheme,
 } from '@mui/material';
-// import { logo } from '../../../static/svgs/hardcoded-svgs';
 import {
   Brightness2, Brightness5,
 } from '@mui/icons-material';
@@ -147,6 +146,8 @@ const Layout = React.memo((props) => {
     backdropFilter: 'blur(35px)',
     transform: 'scale(.75)',
   };
+
+  if (process.env.NODE_ENV === 'development') console.log('layout: time elapsed now', performance.now());
   return (
     <div
       style={{

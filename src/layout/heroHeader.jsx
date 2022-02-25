@@ -166,6 +166,7 @@ export const HeroHeader = React.memo((props) => {
     id,
   } = props;
   // eslint-disable-next-line consistent-return
+  if (process.env.NODE_ENV === 'development') console.log('hero: time elapsed now ', performance.now());
   return (
     <section id={id}>
       <Grid
@@ -188,6 +189,7 @@ export const HeroHeader = React.memo((props) => {
       >
         {/* ThreeJS */}
         <Grid
+          item
           md={10}
           sx={{
             position: 'relative',
@@ -209,6 +211,7 @@ export const HeroHeader = React.memo((props) => {
 
         {/* Headline */}
         <Grid
+          item
           md={12}
           sx={{
             alignSelf: 'end',
@@ -217,6 +220,7 @@ export const HeroHeader = React.memo((props) => {
           }}
         >
           <Grid
+            item
             md={10}
             sx={{
               alignSelf: 'center',
@@ -288,9 +292,7 @@ export const HeroHeader = React.memo((props) => {
               </RegularButton>
             </Box>
           </Grid>
-
         </Grid>
-
       </Grid>
       {/* // create a svg circle in html */}
     </section>

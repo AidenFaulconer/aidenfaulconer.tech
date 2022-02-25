@@ -1,0 +1,41 @@
+{
+    "presets": [//https://www.gatsbyjs.com/docs/how-to/custom-configuration/babel/
+    //   "@babel/preset-react",
+    //   "babel-preset-gatsby",
+    //   {
+    //     "targets": {
+    //       "browsers": [">0.25%", "not dead"]
+    //     }
+    //   },
+    // ],
+    // "plugins": [
+    //     // ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    //   [
+    //     "babel-plugin-import",
+    //     {
+    //       "libraryName": "@mui/material",
+    //       "libraryDirectory": "/",
+    //       "camel2DashComponentName": false
+    //     },
+    //     "material"
+    //   ],
+    //   [
+    //     "babel-plugin-import",
+    //     {
+    //       "libraryName": "@mui/icons",
+    //       "libraryDirectory": "/",
+    //       "camel2DashComponentName": false
+    //     },
+    //     "mui-icons"
+    //   ],
+    //   [
+    //     "babel-plugin-import",
+    //     {
+    //       "libraryName": "@mui/system",
+    //       "libraryDirectory": "/",
+    //       "camel2DashComponentName": false
+    //     },
+    //     "mui-system"
+    //   ]
+    ]
+  }

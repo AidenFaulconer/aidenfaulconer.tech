@@ -1,23 +1,14 @@
 import {
   Box,
-  Card,
-  CardContent,
   CardMedia,
   Typography,
-  CardActions,
   useTheme,
   Grid,
 } from '@mui/material';
 import { useSpring, a, config } from '@react-spring/web';
 import React, { useEffect, useMemo } from 'react';
-import CircleType from 'circletype';
-import GraphemeSplitter from 'grapheme-splitter';
-import { keyframes } from '@emotion/react';
 import {
   hexToAlpha,
-  pxToRem,
-  SCROLL_PROPS,
-  threeDHoverKeyframes,
 } from '../../store/theme';
 import { usePrevious, useDimensions } from '../util/customHooks';
 import { RegularButton } from './buttons';
@@ -59,19 +50,80 @@ So, `r` is (about) 412px long! This means we need to TRANSLATE the slides in the
 // root container, this is tilted to tilt the entire carousel, rotate to position to selected card
 
 // ...threeDHoverKeyframes,
-const splitter = new GraphemeSplitter();
+
+// ========================================================================== //
+// SPIN TEXT
+// ========================================================================== //
+// const splitter = new GraphemeSplitter();
+// const graphicStyles = {
+//   borderRadius: theme.custom.borders.brandBorderRadius,
+//   zIndex: 0,
+//   width: '100%',
+//   // transform: 'scale(.8)',
+//   mb: 12,
+//   position: 'absolute',
+//   display: 'inline',
+//   transform: {
+//     xl: { scale: 0.5 },
+//     lg: { scale: 0.5 },
+//     md: { scale: 0.5 },
+//     sm: { scale: 0.5 },
+//     xs: { scale: 0.5 },
+//   },
+//   '& .spin-container': {
+//     transform: 'translate(-50%,-50%) scale(1)',
+//     left: '50%',
+//     top: '50%',
+//     fontWeight: 1000,
+//     position: 'absolute',
+//   },
+//   '& #spinText': {
+//     animation: '$rotateAngle 6s linear infinite',
+//     zIndex: 'inherit',
+//     fontWeight: 100,
+//   },
+// };
+// const spinText = React.useCallback((spinText, scale = 1) => {
+//   // curve text
+//   const ref = React.useRef(null);
+//   let circleType = null;
+//   React.useEffect(() => {
+//     circleType = new CircleType(
+//       ref?.current,
+//       splitter.splitGraphemes.bind(splitter), // bind to this circletype method to automatically split the elements content text
+//     );
+//   }, [ref.current]);
+//   return (
+//     <Box
+//       item
+//       sx={{ ...graphicStyles }}
+//       style={{ transform: `scale(${scale})` }}
+//     >
+//       <h1 ref={ref} id="spinText">
+//         {spinText}
+//       </h1>
+//     </Box>
+//   );
+// }, []);
 
 export default ({
   slidingText,
   carouselData,
   cardHeight,
-  cardWidth = 600,
+  cardWidth = 350,
 }) => {
   const theme = useTheme();
+  const [current, setCurrent] = React.useState(0);
+  const tiltAngle = 20;
+  const tiltRadians = tiltAngle * (Math.PI / 180);
+  // const gutter = cardWidth + 100;
+  const gutter = 0.04;
+  const slideAngle = 360 / carouselData.length; // rotation increment for each slide
+  const zOrigin = 859 / carouselData.length - 1;
+
   // ========================================================================== //
   //     Carousel interaction
   // ========================================================================== //
-
   const [expanded, setExpanded] = React.useState(
     Array.from(Array(carouselData.length).keys()).map(
       (i) => /* i==0 ? true: */ false,
@@ -87,29 +139,6 @@ export default ({
     (index) => expanded.some((e) => e),
     [expanded],
   );
-
-  const [current, setCurrent] = React.useState(0);
-
-  const tiltAngle = 20;
-  const tiltRadians = tiltAngle * (Math.PI / 180);
-  // const gutter = cardWidth + 100;
-  const gutter = 0.152;
-  const slideAngle = 360 / carouselData.length; // rotation increment for each slide
-  //   const slideRadius = Math.round(Math.tan(slideAngle * Math.PI / 180) * slide.width / 2);
-
-  // const [current,setCurrent] = React.useState(0)
-  // const shiftSlides = React.useCallback(() => {
-  //     setCurrent(current => {
-  //         if (current === carouselData.length - 1) {
-  //             return 0
-  //         } else {
-  //             return current + 1
-  //         }
-  //     })
-
-  // }, [current])
-  // const ref = React.useRef(null);
-  // const { width } = useDimensions(ref);
 
   // ========================================================================== //
   //   Initial react-spring
@@ -157,60 +186,6 @@ export default ({
   }, []);
 
   // ========================================================================== //
-  // SPIN TEXT
-  // ========================================================================== //
-  const graphicStyles = {
-    borderRadius: theme.custom.borders.brandBorderRadius,
-    zIndex: 0,
-    width: '100%',
-    // transform: 'scale(.8)',
-    mb: 12,
-    position: 'absolute',
-    display: 'inline',
-    transform: {
-      xl: { scale: 0.5 },
-      lg: { scale: 0.5 },
-      md: { scale: 0.5 },
-      sm: { scale: 0.5 },
-      xs: { scale: 0.5 },
-    },
-    '& .spin-container': {
-      transform: 'translate(-50%,-50%) scale(1)',
-      left: '50%',
-      top: '50%',
-      fontWeight: 1000,
-      position: 'absolute',
-    },
-    '& #spinText': {
-      animation: '$rotateAngle 6s linear infinite',
-      zIndex: 'inherit',
-      fontWeight: 100,
-    },
-  };
-  const spinText = React.useCallback((spinText, scale = 1) => {
-    // curve text
-    const ref = React.useRef(null);
-    let circleType = null;
-    React.useEffect(() => {
-      circleType = new CircleType(
-        ref?.current,
-        splitter.splitGraphemes.bind(splitter), // bind to this circletype method to automatically split the elements content text
-      );
-    }, [ref.current]);
-    return (
-      <Box
-        item
-        sx={{ ...graphicStyles }}
-        style={{ transform: `scale(${scale})` }}
-      >
-        <h1 ref={ref} id="spinText">
-          {spinText}
-        </h1>
-      </Box>
-    );
-  }, []);
-
-  // ========================================================================== //
   //   carousel
   // ========================================================================== //
   return (
@@ -221,41 +196,57 @@ export default ({
     >
       <Box
         sx={{
-          // width: ({ cardDimension, carouselLength }) => cardDimension + 20 || 420,
-          width: '100%',
-          // margin: '100 auto 0 auto',
-          height: 500,
-          // minHeight: ({ cardDimension, carouselLength }) => cardDimension /* 1.5 */ || 450,
+          p: 3,
           position: 'relative',
-          // minHeight: 300,
-          display: 'grid',
+          display: 'inline-flex',
           justifyContent: 'center',
           alignContent: 'center',
-          // top: '50%',
-          // left: '50%',
-
-          perspective: ({ cardDimension, carouselLength }) => cardDimension + 1250 + carouselLength ** 4 || 1000, // This is the perspective of the 3D circle.
+          // background: 'yellow',
+          // background: (theme) => theme.palette.text.primary,
+          // 3d carousel dimensions
+          width: '100%',
+          minHeight: '60vh',
           transform: {
-            sm: `scale(${0.3}) rotate(45deg)`,
-            lg: `scale(${0.35}) rotate(45deg)`,
-            md: `scale(${0.25}) rotate(45deg)`,
-            xs: `scale(${0.25}) rotate(45deg)`,
-            xl: `scale(${0.15}) rotate(45deg)`,
+            xs: `scale(${1}) rotate(0deg)`,
+            sm: `scale(${1}) rotate(0deg)`,
+            md: `scale(${1.5}) rotate(0deg)`,
+            lg: `scale(${1.75}) rotate(0deg)`,
+            xl: `scale(${1.75}) rotate(0deg)`,
           },
         }}
       >
-        {/* {spinText('CREATE OUTSIDE THE BOX ✍', 6)} */}
-        {computeCarousel()}
-        <a.div
-          style={{
-            ...transitionProps,
-            position: 'absolute',
+
+        <Box
+          sx={{
+            position: 'relative',
+            display: 'inline-flex',
+            justifyContent: 'center',
+            alignContent: 'center',
             width: '100%',
-            // overflow: 'hidden',
-            height: '100%',
-            transformStyle: 'preserve-3d',
-            // transformOrigin: `center center ${transformOrigin}px}`,
-            transformOrigin: 'center center 400px}',
+            height: '100%', // centers the carousel, carousel is spawned at baseline of this element
+            // background: 'red',
+            perspective: 1250,
+            // ({ cardDimension, carouselLength }) => cardDimension + 1250 + carouselLength ** 4 || 1000, // This is the perspective of the 3D circle.
+
+          }}
+        >
+          {/* {spinText('CREATE OUTSIDE THE BOX ✍', 6)} */}
+          {computeCarousel()}
+
+          {/* the carousel origin */}
+          <a.div
+            style={{
+              ...transitionProps,
+              position: 'absolute',
+              // background: 'blue',
+              display: 'inline-block',
+              transformStyle: 'preserve-3d',
+              // background: 'blue',
+              // transformOrigin: `center center ${transformOrigin}px}`,
+              alignSelf: 'center',
+              height: cardWidth / 6,
+              width: cardWidth / 6,
+              transformOrigin: `center 50% ${zOrigin}`,
             // animation: '$rotate360 60s linear infinite',
             // [theme.breakpoints.down('xl')]: {
             //   transformOrigin: 'center center 30px',
@@ -269,103 +260,106 @@ export default ({
             // [theme.breakpoints.down('sm')]: {
             //   transformOrigin: 'center center 30px',
             // },
-          }}
-        >
-          {carouselData.map((data, index) => {
-            const {
-              title, image, alt, description, icon,
-            } = data;
-            const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
+            }}
+          >
+            {carouselData.map((data, index) => {
+              const {
+                title, image, alt, description, icon,
+              } = data;
+              const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
 
-            return (
-              <Card
-                key={title + index}
-                sx={{
+              return (
+                <Box
+                  key={title + index}
+                  sx={{
                   // background: hexToAlpha(theme.palette.text.primary, 1),
-                  padding: 0,
-                  border: theme.custom.borders.brandBorder,
-                  // backdropFilter: 'blur(10px)',
-                  boxShadow: 'none !important',
-                  position: 'absolute',
-                  height: ({ cardDimension, carouselLength }) => cardDimension || 400,
-                  width: ({ cardDimension, carouselLength }) => cardDimension || 400, // + 50,
-                  // height: 187,
-                  // top: 20,
-                  // left: 10,
-                  // right: 10,
-                  display: 'flex',
+                    padding: 0,
+                    border: theme.custom.borders.brandBorder,
+                    // backdropFilter: 'blur(10px)',
+                    boxShadow: 'none !important',
+                    position: 'absolute',
+                    height: {
+                      xs: cardWidth / 6, md: cardWidth / 6, lg: cardWidth / 6, xl: cardWidth / 6,
+                    },
+                    width: {
+                      xs: cardWidth / 6, md: cardWidth / 6, lg: cardWidth / 6, xl: cardWidth / 6,
+                    }, // + 50,
+                    // height: 187,
+                    // top: 20,
+                    // left: 10,
+                    // right: 10,
+                    display: 'flex',
+                    alignItems: 'center',
                   // top: '25%',
                   // left: '25%',
                   // width: '300px',
                   // height: '187px',
-                }}
-                style={{
-                  ...computeTransform(index),
-                  ...(current === index
-                    ? { opacity: 1, background: theme.palette.text.secondary }
-                    : {
-                      opacity: 0.6,
-                      background: hexToAlpha(
-                        theme.palette.text.secondary,
-                        0.6,
-                      ),
-                    }),
-                }}
-                onClick={() => {
-                  setCurrent(index);
-                  ping.play();
+                  }}
+                  style={{
+                    ...computeTransform(index),
+                    ...(current === index
+                      ? { opacity: 1, background: theme.palette.text.primary }
+                      : {
+                        opacity: 0.5,
+                        background: hexToAlpha(
+                          theme.palette.text.primary,
+                          0.6,
+                        ),
+                      }),
+                  }}
+                  onClick={() => {
+                    setCurrent(index);
+                    ping.play();
                   //   + `rotateZ(${400 * current}deg)`
                   //   + `rotateX(-5deg) translateZ(${420}px)`
-                }}
-              >
-                <CardMedia
-                  sx={{
-                    height: '100%',
-                    width: '100%',
-                    transform: 'rotate(-45deg)',
                   }}
-                  image={image}
-                  title={title}
-                  component="img"
-                  height={cardHeight}
-                />
-              </Card>
-            );
-          })}
-        </a.div>
+                >
+                  <CardMedia
+                    sx={{
+                      height: '100%',
+                      width: '100%',
+                      transform: 'rotate(-45deg)',
+                    }}
+                    image={image}
+                    title={title}
+                    component="img"
+                    height={cardHeight}
+                  />
+                </Box>
+              );
+            })}
+          </a.div>
 
-        <div
-          style={{
-            width: '100%',
-            height: 50,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <RegularButton
-            type="special"
-            icon={{ enabled: true, type: 'arrow' }}
-            style={{ transform: 'rotate(180deg)' }}
-            onClick={(e) => {
-              if (current !== carouselData.length) setCurrent(current + 1);
-              else e.preventDefault();
+          <div
+            style={{
+              width: '100%',
+              height: 50,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            {'>'}
-          </RegularButton>
-          <RegularButton
-            type="special"
-            icon={{ enabled: true, type: 'arrow' }}
-            onClick={(e) => {
-              if (current !== carouselData.length) setCurrent(current - 1);
-              else e.preventDefault();
-            }}
-          >
-            {'<'}
-          </RegularButton>
-        </div>
+            <RegularButton
+              type="primary"
+              icon={{ enabled: true, type: 'arrow' }}
+              style={{ transform: 'rotate(180deg)' }}
+              onClick={(e) => {
+                if (current !== carouselData.length) setCurrent(current + 1);
+                else e.preventDefault();
+              }}
+            />
+            <RegularButton
+              type="primary"
+              icon={{ enabled: true, type: 'arrow' }}
+              onClick={(e) => {
+                if (current !== carouselData.length) setCurrent(current - 1);
+                else e.preventDefault();
+              }}
+            />
+          </div>
+        </Box>
       </Box>
+
     </ItemDisplay>
   );
 };
@@ -390,39 +384,38 @@ const ItemDisplay = ({
         alignContent: 'space-between',
         borderBottom: 0,
         width: '100%',
+        height: '100%',
         color: (theme) => theme.palette.text.primary,
-        '& > .MuiGrid-root': {
-          transition: 'all .3s ease-in-out',
-          border: (theme) => theme.custom.borders.brandBorder,
-          borderLeft: 0,
-          borderRight: 0,
-          textAlign: 'center',
-          display: 'grid',
-          alignContent: 'center',
-          padding: 3,
-        },
       // padding: theme.spacing(2),
       }}
     >
+      {/* carousel is placed here */}
       {children}
 
       <Grid
         item
         xs={6}
-        style={{
+        sx={{
           maxHeight: 150,
-          borderRight: theme.custom.borders.brandBorder,
+          p: 3,
+          border: (theme) => theme.custom.borders.brandBorder,
         }}
       >
         <Typography color="inherit" align="left" variant="h2" component="h2">
-          {title}
+          {title || 'title'}
         </Typography>
       </Grid>
 
       <Grid
         item
         xs={6}
-        style={{ maxHeight: 150, display: 'inline-flex', alignItems: 'center' }}
+        sx={{
+          p: 3,
+          maxHeight: 100,
+          display: 'inline-flex',
+          alignItems: 'center',
+          border: (theme) => theme.custom.borders.brandBorder,
+        }}
       >
         <div
           dangerouslySetInnerHTML={{
@@ -459,17 +452,17 @@ const ItemDisplay = ({
         <Grid
           item
           xs={12}
-          style={{
+          sx={{
             alignContent: 'flex-start',
             display: 'flex',
-            height: 210,
-            maxHeight: 310,
+            minHeight: '40vh',
+            // maxHeight: 310,
+            p: 3,
           }}
         >
           <Typography
             variant="body1"
             color="inherit"
-            component="body1"
             align="left"
           >
             {description}

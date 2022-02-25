@@ -87,7 +87,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   //   }}
   //   > */}
   return (
-    <Grid container xs={12}>
+    <Grid container>
 
       <SectionWrapper>
         <SectionHeader headline="Services" />
@@ -137,11 +137,11 @@ const SectionWrapper = ({ children, colorType = 'primary' }) => {
   return (
     (
       <>
-        <Grid item md={1} xs={false} style={{ background: theme.palette.text[colorType] }} />
-        <Grid item container md={10} xs={12} style={{ maxHeight: '90vh', overflow: 'hidden' }}>
+        <Grid item md={1} style={{ background: theme.palette.text[colorType] }} />
+        <Grid item md={10} xs={12} style={{ maxHeight: '90vh', overflow: 'hidden' }}>
           {children}
         </Grid>
-        <Grid item md={1} xs={false} style={{ background: theme.palette.text[colorType] }} />
+        <Grid item md={1} style={{ background: theme.palette.text[colorType] }} />
       </>
     )
   );

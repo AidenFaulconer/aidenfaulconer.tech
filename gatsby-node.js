@@ -187,7 +187,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     // return;
     // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
     if (result !== null) {
-      return; // i want a build NOW, i don't want to wait for the build to finish on this side, get it out NOW
+      // return; // i want a build NOW, i don't want to wait for the build to finish on this side, get it out NOW
       result.data.allMarkdownRemark.edges.forEach((edge, i) => {
         const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
 
@@ -232,27 +232,58 @@ exports.onCreateWebpackConfig = ({
   actions,
 }) => {
   actions.setWebpackConfig({
-    devtool: 'eval-source-map',
+    devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : process.env.NODE_ENV === 'build' ? 'source-map' : 'hidden-source-map', // for debugging processes, production debug with source-map, source-map for most efficient production buildz
+    resolve: {
+      extensions: ['.mjs', '.js', '.jsx', '.json', '.gltf', 'png', 'jpg', 'jpeg', 'gif', 'svg'],
+    },
     module: {
       rules: [
         { test: /\.(glb|gltf)$/i, use: 'file-loader' }, // or gltf-webpack-loader
         { test: /react-hot-loader/, use: [loaders.js()] },
+        {
+          test: /\.(pdf|gif|svg)$/,
+          use: 'file-loader?name=[path][name].[ext]',
+          include: pth.resolve(__dirname, 'static/assets'),
+        },
+
+        // ========================================================================== //
+        //         Optimizations *dynamic imports *code-splitting
+        // ========================================================================== //
+        // code-split slow modules, for example, 3d scenes and models should be lazy loaded
+        // tree-shake, mark modules as used, and remove unused modules, sideEffects are the modules that are used, they are decalred with filepaths in an array
+        //    imports should be specific, dont {} all of them, explicitly import what you need
+        //    tree-shaking works by decalring sideEffects, marking modules to aggressively tree-shake
+        //    marking sideEffects false, means regardless of if it has any, as long as its not referenced, it will be removed
+        // {
+        //   sideEffects: [
+        //     '**/*.css',
+        //     '**/*.scss',
+        //     '**/*.js',
+        //     '**/*.jsx',
+        //   ],
+        // },
+        // https://www.npmjs.com/package/babel-plugin-transform-imports
+
+        // https://github.com/lin-xi/webpack-css-treeshaking-plugin
+        // new CssTreeShakingPlugin({
+        //   remove: false,
+        //   ignore: ['state-\d']
+        // }),
+        // new ExtractTextPlugin({
+        //   filename: 'build/style.css'
+        // })
+        /// get .mjs files to play nice into tree-shaking
+        {
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: 'javascript/auto',
+        },
         // fix react-three-fiber and react-spring use during buildtime
         // {
         //   test: /react-spring/,
         //   sideEffects: true,
         // },
         // expose, svgs, pdfs, and gifs publicly from the website https://stackoverflow.com/questions/36643649/serving-static-pdf-with-react-webpack-file-loader
-        {
-          test: /\.(pdf|gif|svg)$/,
-          use: 'file-loader?name=[path][name].[ext]',
-          include: pth.resolve(__dirname, 'static/assets'),
-        },
-        // material-ui is faulty on server side, which f**s up the build so, dont bother with it, alternatively use npm install @loadable/component, import loadable from '@loadable/component' => loadable(()=> import(problematicComponent)) **layout in this case/materialui**
-        // { causes react error 130, so this wont work on server side, which defeats the point of debugging it altogether **ugh**
-        //   test: /materialUI.jsx/,
-        //   use: loaders.null(),
-        // },
         // { test: /\.(woff|woff2|eot|ttf|otf|png|jp(e*)g|svg|gif|glb|gltf)$/i, use: 'file-loader' },
         // { test: /\.(bin)$/, use: 'file-loader' },
         // { test: /\.(png|jpg|gif|svg)$/, type: 'asset/resource' },
@@ -263,6 +294,32 @@ exports.onCreateWebpackConfig = ({
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     // __DEVELOPMENT__: stage === `develop` || stage === `develop-html`,
     plugins: [
+      // ========================================================================== //
+      //         Optimizations *code-splitting *use plugins.define to set variables, then declare correspondance
+      // ========================================================================== //
+      // read: https://www.npmjs.com/package/babel-plugin-transform-imports
+      // "my-library\/?(((\\w*)?\/?)*)": {
+      //   "transform": "my-library/${1}/${member}",
+      //   "preventFullImport": true
+      // }
+      // ["transform-imports", {
+      //   "@mui": {
+      //     "transform": "react-bootstrap/lib/${member}",
+      //     "preventFullImport": true
+      //   },
+      //   "threejs": {
+      //     "transform": "react-bootstrap/lib/${member}",
+      //     "preventFullImport": true
+      //   },
+      //   "threejs": {
+      //     "transform": "react-bootstrap/lib/${member}",
+      //     "preventFullImport": true
+      //   },
+      //   "lodash": {
+      //     "transform": "lodash/${member}",
+      //     "preventFullImport": true
+      //   }
+      // }]
       // plugins.define({
       //   '@babel/plugin-syntax-top-level-await'// https://babeljs.io/docs/en/babel-plugin-syntax-top-level-await
       // }),

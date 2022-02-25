@@ -7,10 +7,10 @@ import React, {
 } from 'react';
 import { useGLTF, Merged, useAnimations } from '@react-three/drei';
 
-import hand_import from '../../../static/assets/gameModels/webexperience.gltf';
+import hand_import from '../../../static/assets/gameModels/webexperience.gltf';// massive import, slows down FCP
 import { useStore } from '../../store/store';
 
-useGLTF.preload(hand_import);
+// useGLTF.preload(hand_import);//slows down first contentful paint
 
 export default function Model({ instances, ...props }) {
   const group = useRef();

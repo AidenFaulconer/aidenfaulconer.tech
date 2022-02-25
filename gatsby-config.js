@@ -80,14 +80,22 @@ module.exports = {
     // ========================================================================== //
     //     File system management
     // ========================================================================== //
-    // {
-    //   resolve: 'gatsby-source-filesystem',
-    //   options: {
-    //     name: 'markdown-pages',
-    //     // everything netlify cms outputs is now accessible under markdown-pages
-    //     path: `${__dirname}/_data`,
-    //   },
-    // },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'markdown-pages',
+        path: `${__dirname}/_data`,
+      },
+    },
+    // optimize images for pluign-sharp
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'images',
+        // access images through graphql queries for sharp
+        path: `${__dirname}/static/assets`,
+      },
+    },
     // call on each plugin instance
     {
       resolve: 'gatsby-source-filesystem',
@@ -105,7 +113,17 @@ module.exports = {
         path: `${__dirname}/static`,
       },
     },
-    'gatsby-plugin-sharp',
+    // ========================================================================== //
+    //     Image compression
+    // ========================================================================== //
+    {
+      resolve: 'gatsby-plugin-sharp',
+      options: {
+        useMozJped: false,
+        stripMetadata: true,
+        defaultQuality: 75,
+      },
+    },
     'gatsby-transformer-sharp',
     // ========================================================================== //
     //       Consume markdown from netlify
@@ -129,13 +147,12 @@ module.exports = {
           },
           // use emojis in blog posts
           // 512 //384 //256 //192 //48 /144
+          'gatsby-remark-emojis',
+
           {
-            resolve: 'gatsby-remark-emojis',
-          },
-          // flexible images with embedded image content in blogs
+            // flexible images with embedded image content in blogs
           // use images in blog posts **png and jpg only**
           // reference: https://www.gatsbyjs.com/plugins/@redocly/gatsby-remark-images/?=remark
-          {
             resolve: 'gatsby-remark-images',
             options: {
               // It's important to specify the maxWidth (in pixels) of
@@ -145,7 +162,6 @@ module.exports = {
               // quality
               // withWebP
               // tracedSvgs
-              //
               withWebp: true,
               showCaptions: true,
               quality: 50,
@@ -231,21 +247,31 @@ module.exports = {
     'gatsby-plugin-remove-trailing-slashes', // remove pesky /'s at the end of routes ie: localhost/x/
 
     // {
-    //   resolve: 'gatsby-plugin-root-import',
-    //   options: {
-    //     src: path.join(__dirname, 'src'),
-    //     pages: path.join(__dirname, 'src/pages'),
-    //     // images: path.join(__dirname, 'static'),
-    //   },
-    // },
-    // {
     //   resolve: 'gatsby-plugin-google-analytics',
     //   options: {
     //     trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
     //     head: true,
     //   },
     // },
-    // 'gatsby-plugin-mui-emtionon'
+    {
+      resolve: 'gatsby-plugin-emotion',
+      options: {
+        // // Accepts the following options, all of which are defined by `@emotion/babel-plugin` plugin.
+        // // The values for each key in this example are the defaults the plugin uses.
+        // ...process.env.NODE_ENV === 'production' && ({
+        //   sourceMap: true,
+        //   autoLabel: 'dev-only',
+        //   labelFormat: '[local]',
+        //   cssPropOptimization: true,
+        // })
+        // || ({
+        //   sourceMap: false,
+        //   autoLabel: 'AF-',
+        //   labelFormat: '[local]',
+        //   cssPropOptimization: true,
+        // }),
+      },
+    },
     'gatsby-theme-material-ui',
     // 'gatsby-plugin-material-ui',
     // ========================================================================== //
@@ -268,19 +294,73 @@ module.exports = {
     'gatsby-plugin-netlify',
 
     // ========================================================================== //
+    //     Webpack optimizations
+    // ========================================================================== //
+    // {
+    //   resolve: 'gatsby-plugin-direct-import',
+    //   options: {
+    //     packages: [
+    //       'threejs',
+    //       {
+    //         name: 'three',
+    //         indexFile: 'three/src/Three.js',
+    //       },
+    //     ],
+    //   },
+    // },
+
+    // makes imports come from ./ instead of ../../, by resolving ALIASES and MODULES, so you resolve FROM THE ROOT of the project NOT RELATIVE
+    // https://www.gatsbyjs.com/plugins/gatsby-plugin-root-import/
+    // {
+    //   resolve: 'gatsby-plugin-root-import',
+    //   options: {
+    //     src: path.join(__dirname, 'src'),
+    //     pages: path.join(__dirname, 'src/pages'),
+    //     // images: path.join(__dirname, 'static'),
+    //   },
+    // },
+    process.env.NODE_ENV === 'production' && 'gatsby-plugin-minify-html',
+    // ========================================================================== //
     //     Debugging Webpack bundles
     // ========================================================================== //
+    // 'gatsby-plugin-webpack-speed-measure'
     process.env.NODE_ENV === 'development' && {
       resolve: 'gatsby-plugin-perf-budgets',
       options: {},
     },
-    process.env.NODE_ENV === 'production' && 'gatsby-plugin-minify-html',
+
+    process.env.NODE_ENV === 'development' && {
+
+      resolve: 'gatsby-plugin-webpack-size',
+      options: {
+        development: true,
+      },
+    },
+
     process.env.NODE_ENV === 'development' && {
       resolve: 'gatsby-plugin-webpack-bundle-analyser-v2',
       options: {
         analyzerMode: 'server',
-        analyzerPort: 8000,
+        analyzerPort: 8001,
+        devMode: true,
+        // defaultSizes: 'gzip',
         openAnalyzer: true,
+      },
+    },
+
+    // ========================================================================== //
+    //     Compression
+    // ========================================================================== //
+    {
+      // prefer this to gzip
+      resolve: 'gatsby-plugin-brotli', // was zopfli
+      options: {
+        // verbose: true,
+        extensions: ['css', 'html', 'js', 'svg', 'gltf', 'glb', 'png', 'jpg', 'jpeg'],
+        // level: 4,//default is highest level, dont change it
+        // compression: {
+        //   numiterations: 25,
+        // },
       },
     },
   ].filter(Boolean),

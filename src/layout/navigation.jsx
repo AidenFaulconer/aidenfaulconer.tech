@@ -29,14 +29,6 @@ import {
 // ========================================================================== //
 import { Link } from 'gatsby';
 
-// import {
-//   customMenuIcon,
-//   logoFull,
-//   logoMedium,
-//   logoSmall,
-//   menuIcon,
-// } from '../../static/svgs/hardcoded-svgs';
-
 import logoPng from '../../static/svgs/logo.png';
 import {
   RegularButton,
@@ -275,7 +267,13 @@ const Navigation = React.memo(
         switch (page.url[0]) {
           case '/':
             return (
-              <Box key={page.name} onClick={() => navigate(page.url)}>
+              <Box
+                key={page.name}
+                onClick={() => navigate(page.url)}
+                sx={{
+                  transform: { xs: 'scale(.75)' },
+                }}
+              >
                 <RegularButton
                   size="small"
                   style={{ fontSize: '.5rem !important' }}
