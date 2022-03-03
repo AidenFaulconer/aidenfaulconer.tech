@@ -278,15 +278,17 @@ const Consolelogs = () => {
         `);
     // if (process.env === 'development') {
     // eslint-disable-next-line quotes
-    // alert(`
-    // Hello visitor!
+    if (process.env.NODE_ENV === 'production') {
+      alert(`
+    Hello visitor!
 
-    // You are viewing a preview of my new site,
-    // come back in a few days to see a completed version...
-    // and see everything I have to offer!
+    You are viewing a preview of my new site,
+    come back in a few days to see a completed version...
+    and see everything I have to offer!
 
-    // Best Regards - Aiden Faulconer
-    // `);
+    Best Regards - Aiden Faulconer
+    `);
+    }
     // }
   }, []);
   return (<div />);

@@ -2,8 +2,6 @@ import React, {
   Component, useEffect, useState, useCallback,
 } from 'react';
 
-import { styled } from '@mui/material/styles';
-
 import { Link, useStaticQuery, graphql } from 'gatsby';
 import { navigate } from 'gatsby-link';
 
@@ -15,58 +13,9 @@ import { InlineIcon } from '@iconify/react';
 import {
   Box, Container, Typography, Grid,
 } from '@mui/material';
-import footerGraphic from '../../static/assets/footer.png';
 import {
   RegularButton,
 } from '../components/custom/buttons';
-
-const PREFIX = 'footer';
-
-const classes = {
-  footer: `${PREFIX}-footer`,
-  menuIcon: `${PREFIX}-menuIcon`,
-};
-
-const StyledSecondaryButton = styled('div')((
-  {
-    theme,
-  },
-) => ({
-  [`& .${classes.footer}`]: {
-    position: 'relative',
-    minHeight: 200,
-    padding: theme.spacing(3, 6),
-    color: theme.palette.text.secondary,
-    border: theme.custom.borders.brandBorder,
-    background: theme.palette.text.primary,
-    '& *  > .MuiGrid-root': {
-      transition: 'all .3s ease-in-out',
-      textAlign: 'center',
-      padding: theme.spacing(1),
-      // display: 'grid',
-      // padding: theme.spacing(2),
-    },
-  },
-
-  [`& .${classes.menuIcon}`]: {
-    color: 'inherit',
-    border: 'none !important',
-    // maxHeight: 50,
-    height: '100%',
-    cursor: 'pointer',
-    '& svg': {
-      position: 'relative',
-      // transform: 'scale(.75)',
-      // top: '-12mm',
-      margin: 'auto',
-      display: 'inline-block',
-      transition: theme.transitions.create(
-        ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
-        { duration: '0.3s', easing: 'ease-in-out' },
-      ),
-    },
-  },
-}));
 
 export default ({ children }) => {
   // const theme = useTheme();
@@ -92,8 +41,10 @@ export default ({ children }) => {
   const logo = React.useCallback(
     (color) => (
       <Link to="/">
-        <div
-          className={(classes.menuIcon)}
+        <Box
+          sx={{
+
+          }}
           style={{
             fill: color,
             transform: 'translate(33%, 0%)',
@@ -127,13 +78,26 @@ export default ({ children }) => {
   );
   // table footer?
   return (
-    <footer className={classes.footer}>
+    <footer>
       <Grid
         container
-        spacing={6}
         alignContent="stretch"
         // alignItems="center"
-        style={{ margin: 'auto' }}
+        sx={{
+          position: 'relative',
+          minHeight: 200,
+          mt: 0,
+          py: 4,
+          padding: (theme) => theme.spacing(3, 6),
+          color: (theme) => theme.palette.text.secondary,
+          border: (theme) => theme.custom.borders.brandBorder,
+          background: (theme) => theme.palette.text.primary,
+          '& *  > .MuiGrid-root': {
+            transition: 'all .3s ease-in-out',
+            textAlign: 'center',
+            padding: (theme) => theme.spacing(1),
+          },
+        }}
       >
 
         <Grid item container alignContent="stretch" xs={3}>
@@ -147,12 +111,12 @@ export default ({ children }) => {
               <Typography gutterBottom color="inherit">
                 Want to collaborate?
               </Typography>
-              <StyledSecondaryButton
+              <RegularButton
                 size="small"
                 onClick={() => navigate('/booking')}
               >
                 Make a booking
-              </StyledSecondaryButton>
+              </RegularButton>
             </Grid>
             <Grid item xs={12}>
               <Typography gutterBottom color="inherit">
@@ -182,7 +146,7 @@ export default ({ children }) => {
               <Typography
                 gutterBottom
                 color="inherit"
-                style={{ marginTop: 40, fontWeight: 100 }}
+                sx={{ mt: 4, fontWeight: 100 }}
                 variant="body2"
               >
                 Copyright © 2020 @ Aiden Faulconer

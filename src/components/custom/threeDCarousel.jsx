@@ -1,15 +1,23 @@
 import {
-  Box,
-  CardMedia,
-  Typography,
-  useTheme,
-  Grid,
+  Box, CardMedia, Typography, useTheme, Grid,
 } from '@mui/material';
-import { useSpring, a, config } from '@react-spring/web';
-import React, { useEffect, useMemo } from 'react';
 import {
-  hexToAlpha,
-} from '../../store/theme';
+  useSpring,
+  a,
+  config,
+  interpolate,
+  useSprings,
+} from '@react-spring/web';
+import React, {
+  cloneElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { useDrag, useGesture } from '@use-gesture/react';
+import { hexToAlpha } from '../../store/theme';
 import { usePrevious, useDimensions } from '../util/customHooks';
 import { RegularButton } from './buttons';
 
@@ -106,369 +114,458 @@ So, `r` is (about) 412px long! This means we need to TRANSLATE the slides in the
 //   );
 // }, []);
 
-export default ({
-  slidingText,
-  carouselData,
-  cardHeight,
-  cardWidth = 350,
-}) => {
-  const theme = useTheme();
-  const [current, setCurrent] = React.useState(0);
-  const tiltAngle = 20;
-  const tiltRadians = tiltAngle * (Math.PI / 180);
-  // const gutter = cardWidth + 100;
-  const gutter = 0.04;
-  const slideAngle = 360 / carouselData.length; // rotation increment for each slide
-  const zOrigin = 859 / carouselData.length - 1;
+// ========================================================================== //
+// selection carousel
+// ========================================================================== //
+export default React.memo(
+  ({
+    // this section
+    carouselData,
+    gutter = 0.04,
+    key = 'default',
+    cardWidth = 350,
+    carouselHeight = 350,
+    SelectionComponent, // component used for selection
+    // sub section
+    children,
+    subSectionData,
+    SubSelectionComponent, // component used for content
+    HasContent = false, // tells component we have children to render with THIS instance of the component
+  }) => {
+    // current selection
 
-  // ========================================================================== //
-  //     Carousel interaction
-  // ========================================================================== //
-  const [expanded, setExpanded] = React.useState(
-    Array.from(Array(carouselData.length).keys()).map(
-      (i) => /* i==0 ? true: */ false,
-    ),
-  );
+    const theme = useTheme();
+    const tiltAngle = 20;
+    const tiltRadians = tiltAngle * (Math.PI / 180);
+    const slideAngle = 360 / carouselData.length; // rotation increment for each slide
+    // constrain width of circle to 600,
+    const radius = 225;
+    const zOrigin = 859 / carouselData.length - 1;
 
-  // set index in array to true and allow it to be toggled, while all other items remain false
-  const handleExpandClick = (index) => setExpanded(
-    [...Array(carouselData.length).keys()].map((i) => (i === index ? !expanded[i] : false)),
-  );
+    const slideWidth = ((gutter - radius) * Math.cos(slideAngle));
+    console.log(slideWidth);
+    // ========================================================================== //
+    //   handling state change
+    // ========================================================================== //
+    const [current, setCurrent] = React.useState(0);
+    const [curRot, setCurRot] = React.useState(0);
+    const prevCurrent = usePrevious(current);
+    // ========================================================================== //
+    //   handle animation **consider the current SELECTION**
+    const to = (i) => ({
+      x: 0,
+      rot: slideAngle * i,
+      y: i * -4,
+      scale: 1,
+      delay: i * 100,
+      // config: { ...config.gentle },
+    });
+    const from = (i) => ({
+      x: 0,
+      rot: slideAngle * i,
+      scale: 1.5,
+      y: -1000,
+      // config: { ...config.gentle },
+    });
 
-  const anyExpanded = React.useCallback(
-    (index) => expanded.some((e) => e),
-    [expanded],
-  );
+    // we need two springs, one wraps all the carousel cards, another wraps the ORIGIN of the carousel
+    const [wrappedCards, setCard] = useSprings(carouselData.length, (i) => ({
+      ...to(i),
+      from: from(i),
+    })); // Create a bunch of springs using the helpers above
+    const [wrappedOrigin, setOrigin] = useSpring((i) => ({
+      ...to(i),
+      from: from(0),
+    })); // Create a spring using the helpers above for the ORIGIN
 
-  // ========================================================================== //
-  //   Initial react-spring
-  // ========================================================================== //
-  const fixed = '';
-  // `rotateZ(${4}deg) rotateX(-5deg) `;
-  const [transitionProps, setTransition] = useSpring(() => ({
-    // when we pass an object through set, it updates this to property and puts the old property in the from object, for internal interpolation
-    to: {
-      transform: `rotateY(${slideAngle * current}deg) ${fixed}`,
-      // transformOrigin: `center center ${width}`,
-    },
-    // tells spring what the values mean and what they should start with
-    from: {
-      transform: `rotateY(${slideAngle * current}deg) ${fixed}`,
-      // transformOrigin: `center center ${width}`,
-    },
-    // tell spring how the transition should be smoothed between values
-    delay: '0',
-    config: { ...config.gentle },
-  }));
+    // ========================================================================== //
+    //   Handle interactions with the carousel
 
-  const prevCurrent = usePrevious(current);
-  const computeCarousel = React.useCallback(() => {
-    // figure out how far we are from the center of the carousel using previous and current
-    // const distanceFromCenter =  4 5 6 0 1 2 3 ;
-    const _current = slideAngle * current;
-    const amnt = _current > prevCurrent ? -_current : _current;
-    // alert(`pre: ${prevCurrent}  post: ${current}  rotate: ${amnt}`);
-    if (prevCurrent !== _current) {
-      setTransition({
-        transform: `rotateY(${amnt}deg) ${fixed}`,
-      });
-    }
-  }, [current]);
+    const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
+    const gestureHandler = ({
+      args: [index],
+      down,
+      delta: [xDelta],
+      direction: [xDir],
+      velocity: [xVel],
+      tap,
+    }) => {
+      // TODO: hold an accumulative value for rotation, and change it ONLY when current changes
+      // we want this accumulative value inside the gesture handler to save performance
 
-  const computeTransform = React.useCallback((index) => {
-    const y = 0;
-    return {
-      transform: `rotateY(${slideAngle * index}deg) translateZ(${
-        cardWidth * (carouselData.length * gutter) || 430
-      }px)`,
-      zIndex: 5 * index + 1,
+      const trigger = xVel > 0.2; // If you flick hard enough it should trigger the card to fly out
+      const dir = xDir < 0 ? -1 : 1; // Direction should either point left or right
+      // if (!down && trigger) gone.add(index); // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
+
+      // console.log(`arg: ${index} d: ${down} delta: ${xDelta} dist: ${distance} dir: ${xDir} vel: ${xVel}`);
+      // console.log(trigger);
+      // alter card, i comes from the helper function passed into react-spring, which is the index of the animation
+      // it is distinct from index because index is THIS card
+      if (tap) {
+        console.log('tapped');
+      }
+
+      if (down) {
+        const x = 200 + window.innerWidth;
+        const scale = down ? 1.1 : 1; // Active cards lift up a bit
+        xDelta = (Math.abs(xDelta) - window.innerWidth * xVel) / 100; // relative to velocity and viewport size
+
+        // compensate for left and right directions
+        xDelta = xDir > 0 ? -xDelta : xDelta; // left or right
+
+        const rot = curRot + xDelta;
+        // individual card animations
+        setCard((i) => {});
+        // carousel origin animations
+        console.log(
+          `curRot ${curRot} rotOffset ${rot} delta: ${xDelta} dir: ${xDir} vel: ${xVel}`,
+        );
+
+        setOrigin(() => ({
+          x,
+          rot,
+          scale,
+          delay: 0,
+          // config: { friction: 0, tension: down ? 800 : 200 },
+        }));
+        setCurRot(curRot);
+
+        // setOrigin((i) => {
+        //   const _current = slideAngle * current;
+        //   const amnt = _current > prevCurrent ? -_current : _current;
+        //   const rot = amnt;
+        //   const scale = 0;
+        //   const x = 1;
+        //   return {
+        //     x, rot, scale, delay: undefined, config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 },
+        //   };
+        // });
+      }
+      // alter carousel origin
+
+      // reset carousel
+      // if (!down && gone.size === carouselData.length) setTimeout(() => gone.clear() || setCard((i) => to(i)), 600);
     };
-  }, []);
 
-  // ========================================================================== //
-  //   carousel
-  // ========================================================================== //
-  return (
-    <ItemDisplay
-      setCurrent={setCurrent}
-      current={current}
-      carouselData={carouselData}
-    >
+    // because we nest instances of this, we need to make sure implements useCallback to memoize it to the instance
+    const bindGestureHandler = useGesture(
+      {
+        onDrag: (state) => gestureHandler(state), // set angleBounds to 360/-360
+        onWheel: (state) => gestureHandler(state), // swipe.distance capped at 3 pixels of movement
+        // onScroll: (state) => gestureHandler(state),
+        onHover: () => {},
+      },
+      {
+        drag: {
+          threshold: 5,
+          pointer: { capture: false },
+          axis: 'x',
+          filterTaps: true,
+        },
+        useScroll: {
+          threshold: 5,
+          pointer: { capture: false },
+          axis: 'x',
+          filterTaps: true,
+        },
+        wheel: { threshold: 5 },
+      },
+    ); // this function instance comes from the component key
+
+    // ========================================================================== //
+    //   effects
+    const setDirection = useCallback(
+      (_current, direction) => {
+        // const rotAmnt = slideAngle * _current;
+        // if we go left, we increment negatively -360 relative to current, if we go right, we increment positively 360 relative to current
+        const rot = direction === 'left'
+          ? _current == carouselData.length - 1
+            ? slideAngle
+            : slideAngle * Math.abs(_current - carouselData.length)
+          : carouselData.length == 0
+            ? -slideAngle
+            : -slideAngle * _current;
+
+        // setRotAcc(rot);
+
+        console.log(
+          `angle:${slideAngle},length: ${
+            carouselData.length - 1
+          }, slide:${_current}, ${direction}, Rotate: ${rot}`,
+        );
+
+        setOrigin((i) => {
+          const isGone = 0; // gone.has(index);
+          const scale = 1; // Active cards lift up a bit
+          const x = 0;
+          return {
+            x,
+            rot,
+            scale,
+            delay: undefined,
+            config: { friction: 50, tension: 1 ? 800 : isGone ? 200 : 500 },
+          };
+        });
+        setCurRot(rot);
+        ping.play();
+
+        return _current;
+      },
+      [current],
+    );
+
+    // ========================================================================== //
+    //   effects
+
+    const carouselRef = useRef(null);
+    const makeUnselectable = (node) => {
+      if (node.nodeType == 1) {
+        node.setAttribute('unselectable', 'on');
+      }
+      let child = node.firstChild;
+      while (child) {
+        makeUnselectable(child);
+        child = child.nextSibling;
+      }
+    };
+    useEffect(() => {
+      makeUnselectable(carouselRef.current);
+      carouselRef.current.onselectstart = () => false;
+    }, []);
+
+    // ========================================================================== //
+    //   carousel
+    // ========================================================================== //
+    return (
       <Box
         sx={{
-          p: 3,
+          display: 'flex',
           position: 'relative',
-          display: 'inline-flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-          // background: 'yellow',
-          // background: (theme) => theme.palette.text.primary,
-          // 3d carousel dimensions
+          flexDirection: 'column',
+          pointerEvents: 'all',
+          height: '100%',
+          borderBottom: (theme) => theme.custom.borders.brandBorder,
+          borderTop: (theme) => theme.custom.borders.brandBorder,
           width: '100%',
-          minHeight: '60vh',
-          transform: {
-            xs: `scale(${1}) rotate(0deg)`,
-            sm: `scale(${1}) rotate(0deg)`,
-            md: `scale(${1.5}) rotate(0deg)`,
-            lg: `scale(${1.75}) rotate(0deg)`,
-            xl: `scale(${1.75}) rotate(0deg)`,
-          },
         }}
+        {...bindGestureHandler(0)}
       >
-
+        {/* carousel container */}
         <Box
           sx={{
+            // background: 'yellow',
+            // background: (theme) => theme.palette.text.primary,
+            // 3d carousel dimensions
+            py: 6,
             position: 'relative',
             display: 'inline-flex',
             justifyContent: 'center',
+            flexDirection: 'column',
             alignContent: 'center',
             width: '100%',
-            height: '100%', // centers the carousel, carousel is spawned at baseline of this element
-            // background: 'red',
-            perspective: 1250,
-            // ({ cardDimension, carouselLength }) => cardDimension + 1250 + carouselLength ** 4 || 1000, // This is the perspective of the 3D circle.
-
+            pointerEvents: 'all',
+            minHeight: carouselHeight || '60vh',
+            perspective: 2500,
+            perspectiveOrigin: '50% 50%',
+            transformStyle: 'preserve-3d',
+            // configure scale so this fits properly into the users view without having to deal with associated sizing of children
+            transform: {
+              xs: `scale(${1}) rotate(0deg) translateZ(100px)`,
+              sm: `scale(${1}) rotate(0deg) translateZ(100px)`,
+              md: `scale(${1}) rotate(0deg) translateZ(100px)`,
+              lg: `scale(${1.25}) rotate(0deg) translateZ(100px)`,
+              xl: `scale(${1.25}) rotate(0deg) translateZ(100px)`,
+            },
           }}
+          // listen to input events and handle them accordingly, this communicates with the springs, labeled with 'wrapped', which correspond with the data we input, and one is for the origin
         >
-          {/* {spinText('CREATE OUTSIDE THE BOX ✍', 6)} */}
-          {computeCarousel()}
-
-          {/* the carousel origin */}
-          <a.div
-            style={{
-              ...transitionProps,
-              position: 'absolute',
-              // background: 'blue',
-              display: 'inline-block',
-              transformStyle: 'preserve-3d',
-              // background: 'blue',
-              // transformOrigin: `center center ${transformOrigin}px}`,
-              alignSelf: 'center',
-              height: cardWidth / 6,
-              width: cardWidth / 6,
-              transformOrigin: `center 50% ${zOrigin}`,
-            // animation: '$rotate360 60s linear infinite',
-            // [theme.breakpoints.down('xl')]: {
-            //   transformOrigin: 'center center 30px',
-            // },
-            // [theme.breakpoints.down('lg')]: {
-            //   transformOrigin: 'center center 30px',
-            // },
-            // [theme.breakpoints.down('md')]: {
-            //   transformOrigin: 'center center 50px',
-            // },
-            // [theme.breakpoints.down('sm')]: {
-            //   transformOrigin: 'center center 30px',
-            // },
-            }}
-          >
-            {carouselData.map((data, index) => {
-              const {
-                title, image, alt, description, icon,
-              } = data;
-              const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
-
-              return (
-                <Box
-                  key={title + index}
-                  sx={{
-                  // background: hexToAlpha(theme.palette.text.primary, 1),
-                    padding: 0,
-                    border: theme.custom.borders.brandBorder,
-                    // backdropFilter: 'blur(10px)',
-                    boxShadow: 'none !important',
-                    position: 'absolute',
-                    height: {
-                      xs: cardWidth / 6, md: cardWidth / 6, lg: cardWidth / 6, xl: cardWidth / 6,
-                    },
-                    width: {
-                      xs: cardWidth / 6, md: cardWidth / 6, lg: cardWidth / 6, xl: cardWidth / 6,
-                    }, // + 50,
-                    // height: 187,
-                    // top: 20,
-                    // left: 10,
-                    // right: 10,
-                    display: 'flex',
-                    alignItems: 'center',
-                  // top: '25%',
-                  // left: '25%',
-                  // width: '300px',
-                  // height: '187px',
-                  }}
-                  style={{
-                    ...computeTransform(index),
-                    ...(current === index
-                      ? { opacity: 1, background: theme.palette.text.primary }
-                      : {
-                        opacity: 0.5,
-                        background: hexToAlpha(
-                          theme.palette.text.primary,
-                          0.6,
-                        ),
-                      }),
-                  }}
-                  onClick={() => {
-                    setCurrent(index);
-                    ping.play();
-                  //   + `rotateZ(${400 * current}deg)`
-                  //   + `rotateX(-5deg) translateZ(${420}px)`
-                  }}
-                >
-                  <CardMedia
-                    sx={{
-                      height: '100%',
-                      width: '100%',
-                      transform: 'rotate(-45deg)',
-                    }}
-                    image={image}
-                    title={title}
-                    component="img"
-                    height={cardHeight}
-                  />
-                </Box>
-              );
-            })}
-          </a.div>
-
-          <div
-            style={{
+          <Box
+            sx={{
               width: '100%',
-              height: 50,
+              left: '0%',
+              top: '50%',
+              px: '5%',
+              position: 'absolute',
+              height: 0,
+              zIndex: 10,
               display: 'flex',
-              justifyContent: 'center',
+              alignSelf: 'flex-start',
+              justifyContent: 'space-between',
               alignItems: 'center',
             }}
           >
+            {/* go left */}
             <RegularButton
               type="primary"
               icon={{ enabled: true, type: 'arrow' }}
-              style={{ transform: 'rotate(180deg)' }}
+              style={{
+                transform: 'rotate(180deg)',
+              }}
               onClick={(e) => {
-                if (current !== carouselData.length) setCurrent(current + 1);
-                else e.preventDefault();
+                setCurrent(
+                  setDirection(
+                    current == 0 ? carouselData.length - 1 : current - 1,
+                    'left',
+                  ),
+                );
               }}
             />
+
+            {/* go right */}
             <RegularButton
               type="primary"
               icon={{ enabled: true, type: 'arrow' }}
               onClick={(e) => {
-                if (current !== carouselData.length) setCurrent(current - 1);
-                else e.preventDefault();
+                setCurrent(
+                  setDirection(
+                    current == carouselData.length - 1 ? 0 : current + 1,
+                    'right',
+                  ),
+                );
               }}
             />
-          </div>
-        </Box>
-      </Box>
+          </Box>
 
-    </ItemDisplay>
-  );
-};
-
-const ItemDisplay = ({
-  children, current, carouselData, setCurrent,
-}) => {
-  const {
-    title,
-    description,
-    icon,
-    image,
-    cta,
-    category = '',
-  } = carouselData[current];
-  const theme = useTheme();
-  return (
-    <Grid
-      container
-      sx={{
-        position: 'relative',
-        alignContent: 'space-between',
-        borderBottom: 0,
-        width: '100%',
-        height: '100%',
-        color: (theme) => theme.palette.text.primary,
-      // padding: theme.spacing(2),
-      }}
-    >
-      {/* carousel is placed here */}
-      {children}
-
-      <Grid
-        item
-        xs={6}
-        sx={{
-          maxHeight: 150,
-          p: 3,
-          border: (theme) => theme.custom.borders.brandBorder,
-        }}
-      >
-        <Typography color="inherit" align="left" variant="h2" component="h2">
-          {title || 'title'}
-        </Typography>
-      </Grid>
-
-      <Grid
-        item
-        xs={6}
-        sx={{
-          p: 3,
-          maxHeight: 100,
-          display: 'inline-flex',
-          alignItems: 'center',
-          border: (theme) => theme.custom.borders.brandBorder,
-        }}
-      >
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `<svg width="36" height="36" viewBox="0 0 36 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M33.5296 18.7598L26.5996 15.5698V6.42978C26.5964 6.23802 26.5382 6.05123 26.4318 5.89166C26.3254 5.73208 26.1754 5.60647 25.9996 5.52978L18.4996 2.07978C18.368 2.01886 18.2247 1.9873 18.0796 1.9873C17.9346 1.9873 17.7912 2.01886 17.6596 2.07978L10.1596 5.52978C9.98603 5.61011 9.83913 5.73854 9.73633 5.89983C9.63353 6.06112 9.57914 6.24851 9.57961 6.43978V15.5798L2.67961 18.7598C2.50603 18.8401 2.35913 18.9685 2.25633 19.1298C2.15353 19.2911 2.09914 19.4785 2.09961 19.6698V29.4498C2.09914 29.641 2.15353 29.8284 2.25633 29.9897C2.35913 30.151 2.50603 30.2794 2.67961 30.3598L10.1796 33.8098C10.3112 33.8707 10.4546 33.9023 10.5996 33.9023C10.7447 33.9023 10.888 33.8707 11.0196 33.8098L18.0996 30.5498L25.1796 33.8098C25.3112 33.8707 25.4546 33.9023 25.5996 33.9023C25.7447 33.9023 25.888 33.8707 26.0196 33.8098L33.5196 30.3598C33.6932 30.2794 33.8401 30.151 33.9429 29.9897C34.0457 29.8284 34.1001 29.641 34.0996 29.4498V19.6698C34.101 19.4796 34.0481 19.293 33.9471 19.1318C33.8462 18.9706 33.7013 18.8416 33.5296 18.7598V18.7598ZM25.6096 21.9998L20.4996 19.6698L25.6096 17.3198L30.7196 19.6698L25.6096 21.9998ZM24.6096 15.5598L18.1696 18.5598V10.8698C18.2902 10.8644 18.4087 10.8373 18.5196 10.7898L24.5996 7.99978V15.5798L24.6096 15.5598ZM18.0996 4.07978L23.2096 6.42978L18.0996 8.77978L12.9996 6.42978L18.0996 4.07978ZM10.5996 17.3098L15.7096 19.6598L10.5996 21.9998L5.48961 19.6698L10.5996 17.3098ZM17.0996 28.7998L10.5996 31.7998V24.1098C10.7392 24.1015 10.8754 24.064 10.9996 23.9998L17.0796 21.1998L17.0996 28.7998ZM32.0996 28.7998L25.6396 31.7998V24.1098C25.7655 24.0962 25.8877 24.0589 25.9996 23.9998L32.0796 21.1998L32.0996 28.7998Z" />
-            </svg>`,
-          }}
-          style={{
-            borderRadius: '100%',
-            width: 50,
-            height: 50,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginRight: 10,
-            border: '1px solid currentColor',
-          }}
-        />
-        <b>Category:</b>
-        {` ${category}`}
-      </Grid>
-
-      <Grid
-        item
-        xs={12}
-        style={{
-          borderBottom: 'none',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Grid
-          item
-          xs={12}
-          sx={{
-            alignContent: 'flex-start',
-            display: 'flex',
-            minHeight: '40vh',
-            // maxHeight: 310,
-            p: 3,
-          }}
-        >
-          <Typography
-            variant="body1"
-            color="inherit"
-            align="left"
+          <Box
+            sx={{
+              // background: 'red',
+              // ({ cardDimension, carouselLength }) => cardDimension + 1250 + carouselLength ** 4 || 1000, // This is the perspective of the 3D circle.
+              perspective: 'inherit',
+              position: 'relative',
+              display: 'inline-flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+              width: '100%',
+              height: '100%', // centers the carousel, carousel is spawned at baseline of this element
+            }}
           >
-            {description}
-          </Typography>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-};
+            {/* the carousel origin */}
+            <a.div
+              ref={carouselRef}
+              style={{
+                pointerEvents: 'all',
+                transform: interpolate(
+                  [wrappedOrigin.rot],
+                  (rot) => `rotateY(${rot}deg)`,
+                ),
+                zIndex: 5,
+                position: 'absolute',
+                transformStyle: 'preserve-3d',
+                alignSelf: 'center',
+                height: cardWidth / 6,
+                width: cardWidth / 6,
+                transformOrigin: `center 50% ${zOrigin}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {wrappedCards.map(
+                (
+                  {
+                    // get animation values for each card
+                    x,
+                    y,
+                    rot,
+                    scale,
+                  },
+                  i,
+                ) => {
+                  const data = carouselData[i];
+                  return (
+                    <a.div
+
+                      // listener to change state of this card
+                      // {...bindGestureHandler(i)}
+                      key={`selection-${i}-${
+                        data?.key || subSectionData?.title
+                      }-${Math.random()}`}
+                      style={{
+                        minWidth: `${slideWidth}px`,
+                        width: `${slideWidth}px`,
+                        // background: hexToAlpha(theme.palette.text.primary, 1),
+                        // backdropFilter: 'blur(10px)',
+                        padding: 0,
+                        boxShadow: 'none !important',
+                        position: 'absolute',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: theme.spacing(2),
+                        overflow: 'hidden',
+                        // align rotation to fit in a circle
+                        transform: `rotateY(${slideAngle * i}deg) translateZ(${radius - gutter}px)`,
+                        zIndex: 5 * i + 1,
+                        ...(current === i
+                          ? {
+                            opacity: 1,
+                            background: theme.palette.text.primary,
+                          }
+                          : {
+                            opacity: 0.5,
+                            background: hexToAlpha(
+                              theme.palette.text.primary,
+                              0.6,
+                            ),
+                          }),
+                      }}
+                      onClick={() => {
+                        setCurrent(
+                          setDirection(setDirection(i, 'right'), 'left'),
+                        );
+                      }}
+                    >
+                      <SelectionComponent
+                        width={slideWidth}
+                        {...data}
+                        setCurrent={setCurrent}
+                        i={i}
+                      />
+                    </a.div>
+                  );
+                },
+              )}
+            </a.div>
+          </Box>
+        </Box>
+
+        {/* nest carousels from top to bottom via children, they need eachother, this is recursive, ensure a stopping condition */}
+        {/* this carousel is different for every single subsection, current powers this selection */}
+        {(SubSelectionComponent && (
+          <SubSelectionComponent
+            // carousel dimensions
+            gutter={gutter}
+            carouselHeight={300}
+            cardWidth={500}
+            carouselData={subSectionData[current].subSectionData} // this will contain selections, and the root subSectionData for the children to base from
+            key={subSectionData[current].key}
+            title={subSectionData[current].headline}
+            SelectionComponent={subSectionData[current].selectionComponent}
+            // handle further nested carousels
+            // SubSelectionComponent={subSectionData[current].subSectionData?.subSelectionComponent}
+            HasContent={subSectionData[current].subSectionComponent}
+          />
+        ))
+          || null}
+
+        {/* note that carouselData in the childs point of view is of the parents, which is subsectionData[current].subSectionData **since its inheriting the grandfathers subsectionData** */}
+        {/* props to this component are passed down below in children(), since we create it via (), we only pass a reference here */}
+        {/* for a carousel, give an option for content, you see the above nested component places content here */}
+        {/* current and set current, correspond to a parent WITH children, if they dont, they wont have a current/setCurrent to correspond */}
+        {(HasContent && (
+          <HasContent
+            key="content component"
+            current={current} // edit parents selection if needed
+            setCurrent={setCurrent} // this is the NESTED selection carousels setCurrent
+            contentData={carouselData[current]}
+          />
+        )
+        ) || null}
+      </Box>
+    );
+  },
+  (prevProps, nextProps) =>
+    // console.log(prevProps, nextProps);
+    prevProps.carouselData !== nextProps.carouselData
+    || prevProps.subSectionData !== nextProps.subSectionData,
+);

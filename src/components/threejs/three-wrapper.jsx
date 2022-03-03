@@ -150,7 +150,7 @@ const ThreeWrapper = React.memo(
             },
           }}
         >
-          {/* {!isSSR && (<LoadableCanvas x={x} setColor={set} />)} */}
+          {!isSSR && (<LoadableCanvas x={x} setColor={set} />)}
         </Box>
       </a.div>
     );

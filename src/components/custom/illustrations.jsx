@@ -7,7 +7,6 @@ import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import { keyframes } from '@emotion/react';
-import { transition } from '../../store/theme';
 
 export const coffee = `
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 167 234">
@@ -308,7 +307,7 @@ export const Illustration = React.memo(
           bottom: -10,
           // ...illustrationStyles,
           width: 240,
-          height: 240,
+          height: 200,
         }}
         id="illustration"
       >

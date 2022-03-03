@@ -32,9 +32,11 @@ import {
   Billboard,
   Reflector,
 } from '@react-three/drei';
-import {
-  Physics, usePlane, useBox,
-} from '@react-three/cannon'; // not compatible with @react-three/fiber, needs redundant install of react-three-fiber
+
+// removed for performance impact, and its un-importance for this sites needs
+// import {
+//   Physics, usePlane, useBox,
+// } from '@react-three/cannon';
 
 // import CurveModifier from "drei/CurveModifier";
 
@@ -47,12 +49,10 @@ import cube_import from '../../../static/assets/gameModels/cube.glb';
 
 // eslint-disable-next-line import/no-unresolved
 
-import cloudImg from '../../../static/assets/cloud.png';
+import cloudImg from '../../../static/assets/gameModels/cloud.png';
 // import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
 import pingSound from '../../../static/assets/portfolio/transition.mp3';
 import { useStore } from '../../store/store';
-
-import brandImage from '../../../static/assets/brand_ring.png';
 
 import ring_import from '../../../static/assets/gameModels/ring.gltf';
 
@@ -80,7 +80,8 @@ export const Plane = React.memo(({
   x, shadows = false, visible = false, density = 1, ...props
 }) => {
   const { viewport, gl: { render }, camera } = useThree();
-  const [ref, api] = usePlane(() => ({ args: [density, density], ...props }));
+  // const [ref, api] = usePlane(() => ({ args: [density, density], ...props }));
+  const ref = useRef(null);
   // useEffect(() => {
   //   if (ref.current)
   //     //compute a bounding box on the plane
@@ -245,6 +246,21 @@ export const Models = ({
   //  Handle selection state
   // ========================================================================== //
   const colors = ['#000064', '#21bcfe', '#28bd7f', '#21bcfe'];
+
+  const calculatePosition = useCallback((i) => {
+    const angle = (Math.PI * 2) / postData.length;
+    const origin = [0, 0, 0];
+    const radius = 3.5;
+    // return position;
+
+    // return a position from the origin moving in i angles across the x plane
+    return [
+      origin[0] + radius * Math.cos(angle * i),
+      origin[1],
+      origin[2] + radius * Math.sin(angle * i),
+    ];
+  }, []);
+
   const mapObjects = useCallback((showState) => postData.map((post, i) => {
     const {
       node: {
@@ -267,7 +283,7 @@ export const Models = ({
         link={path}
         texture={texture}
         key={i}
-        position={i}
+        position={calculatePosition(i + 1)}
         setColor={set}
         x={x}
         ratio={postData.length - 1}
@@ -339,7 +355,7 @@ export const Model = React.memo(
     const animateCube = useCallback(
       (useForce) => {
         setAnimated(true);
-        if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
+        // if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
         setTimeout(() => {
           setAnimated(false);
         }, 530);
@@ -351,7 +367,7 @@ export const Model = React.memo(
       if (animated) {
         // roate the cube in every angle with a quaternion
         const amnt = Math.sin(state.clock.getElapsedTime()) * 5;
-        api.rotation.set(0, amnt, 0);
+        // api.rotation.set(0, amnt, 0);
       }
     });
 
@@ -372,17 +388,17 @@ export const Model = React.memo(
     const { tier } = useDetectGPU();
 
     // prettier-ignore bounding box is the scale times 2.01
-    const [ref, api] = useBox(() => ({
-      mass: 10,
-      args: [scale * 2.01, scale * 2.01, scale * 2.01],
-      position: [position / (viewport.width / 2), 15, 0], // onCollide: (e) => console.log("hit")
-    }));
+    // const [ref, api] = useBox(() => ({
+    //   mass: 10,
+    //   args: [scale * 2.01, scale * 2.01, scale * 2.01],
+    //   position: [position / (viewport.width / 2), 15, 0], // onCollide: (e) => console.log("hit")
+    // }));
 
     const [hovered, setHovered] = useState(false);
-    React.useEffect(() => {
-      // console.log(scale);
-      cubeRef.current = ref;
-    }, [ref, hovered]);
+    // React.useEffect(() => {
+    //   // console.log(scale);
+    //   cubeRef.current = ref;
+    // }, [ref, hovered]);
 
     // zoom camera to this model
     const zoomCamera = React.useCallback((to) => {}, []);
@@ -392,16 +408,14 @@ export const Model = React.memo(
     // prettier-ignore
     const onClick = useCallback((e) => {
       e.stopPropagation();
-
       if (selectedIndex === position) {
         ping.play();
         animateCube(true);
-
         triggerPageChange({ background: color, transform: 'skew(10deg)', left: '-115vw' });
         setColor({ x: color, y: 1.0 });
         changePage({
           selectedIndex: -1,
-          position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
+          position: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z),
           pageLink: '/',
         });
         // navigate('/', { replace: true });
@@ -409,11 +423,10 @@ export const Model = React.memo(
         ping.play();
         setColor({ x: color, y: 0 });
         animateCube(true);
-
         triggerPageChange({ background: color, transform: 'skew(-10deg)', left: '115vw' });
         changePage({
           selectedIndex: position,
-          position: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z),
+          position: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z),
           pageLink: link,
           // PAGE CHANGE DATA
         });
@@ -423,17 +436,12 @@ export const Model = React.memo(
 
     // prettier-ignore
     const onPointerOver = useCallback((e) => {
-    // when hovering over a cube in react three fiber ensure it only hovers the first raycast hit
-      e.stopPropagation();
-      // get this cubes position relative to usecannon
-      // valtioState.threejsContext.color = x;
-      // triggerPageChange({ background: color, transform: "skew(10deg)", left: '200vw' });
+      e.stopPropagation(); // when hovering over a cube in react three fiber ensure it only hovers the first raycast hit
       setHovered(true);
       setColor({ x: color });
       animateCube(false);
-      set({ moveCameraTo: new Vector3(ref.current.position.x, ref.current.position.y, ref.current.position.z) });
+      set({ moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
       set({ moveCamera: true });
-
       // if (isSelectedProject()) { triggerPageChange({ background: color, transform: "skew(10deg)", left: '-90vw' }); } else { triggerPageChange({ background: color, transform: "skew(10deg)", left: '90vw' }); }
     }, [hovered]);
 
@@ -441,7 +449,6 @@ export const Model = React.memo(
     const onPointerOut = useCallback(() => {
       setHovered(false);/* set({ x: "#FFFFFF" });* */
       set({ moveCamera: false });
-
       // if (isSelectedProject()) { triggerPageChange({ background: color, transform: "skew(10deg)", left: '-115vw' }); } else { triggerPageChange({ background: color, transform: "skew(10deg)", left: '115vw' }); }
     }, [hovered]);
 
@@ -479,10 +486,10 @@ export const Model = React.memo(
             // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
           dispose={null} // dont dispose objects once spawned for performance
           onClick={onClick}
-          position={position + viewport.height}
+          position={position}
           receiveShadow
           castShadow
-          ref={ref}
+          ref={cubeRef}
         >
           {/* repalce with animatedMaterial(drei) where the props are the props from this material in a js object */}
 
@@ -561,10 +568,6 @@ export const Camera = React.memo(
       y: 0,
     };
 
-    useEffect(() => {
-      moveRelativeToMouse(4, 3, { camera }, 6.6);
-    }, []);
-
     const moveRelativeToMouse = (px, py, state, zoom) => {
       const upwards = 2;
       const offsetUp = 3;
@@ -582,6 +585,10 @@ export const Camera = React.memo(
       state.camera.updateProjectionMatrix();
     };
     const mouseMultiplier = 20;
+
+    useEffect(() => {
+      moveRelativeToMouse(4, 3, { camera }, 6.6);
+    }, []);
 
     return useFrame((state) => {
       // move camera to selected cube
@@ -631,8 +638,6 @@ export const BrandRing = ({ x, rotation }) => {
   const {
     nodes: { Cylinder },
   } = useGLTF(ring_import);
-  const texture = (brandImage && useLoader(THREE.TextureLoader, brandImage))
-    || new THREE.Texture();
 
   const degsPerSecond = 0.25;
   useFrame((state) => {
@@ -642,27 +647,27 @@ export const BrandRing = ({ x, rotation }) => {
     // ref.current.rotateX(degToRad(degsPerSecond));
   });
   const vertexShader = `
-uniform vec3 viewVector;
-uniform float c;
-uniform float p;
-varying float intensity;
-void main() 
-{
-    vec3 vNormal = normalize( normalMatrix * normal );
-	vec3 vNormel = normalize( normalMatrix * viewVector );
-	intensity = pow( c - dot(vNormal, vNormel), p );
-	
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-}`;
+    uniform vec3 viewVector;
+    uniform float c;
+    uniform float p;
+    varying float intensity;
+    void main() 
+    {
+        vec3 vNormal = normalize( normalMatrix * normal );
+      vec3 vNormel = normalize( normalMatrix * viewVector );
+      intensity = pow( c - dot(vNormal, vNormel), p );
+      
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+    }`;
 
   const fragmentShader = `
-uniform vec3 glowColor;
-varying float intensity;
-void main() 
-{
-	vec3 glow = glowColor * intensity;
-    gl_FragColor = vec4( glow, 1.0 );
-}
+    uniform vec3 glowColor;
+    varying float intensity;
+    void main() 
+    {
+      vec3 glow = glowColor * intensity;
+        gl_FragColor = vec4( glow, 1.0 );
+    }
   `;
   const createEmissiveMap = React.useCallback((x) => {
     const shader = new THREE.ShaderMaterial({
@@ -994,13 +999,13 @@ export const AFCanvas = React.memo(
           <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
             {/* <BrandRing x={x} /> */}
             {/* all dependendant on physics */}
-            <Physics {...physicsProps}>
-              {determineScene()}
+            {/* <Physics {...physicsProps}> */}
+            {determineScene()}
 
-              {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
-              {/* <PreviewPlane /> */}
-              {/* <Scene set={set} x={x} mobile={false}/> */}
-            </Physics>
+            {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
+            {/* <PreviewPlane /> */}
+            {/* <Scene set={set} x={x} mobile={false}/> */}
+            {/* </Physics> */}
           </group>
 
           {/* </SkyScene3> */}

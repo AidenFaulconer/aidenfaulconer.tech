@@ -16,6 +16,7 @@ import { Languages, Experience } from '../components/portfolio-page/skills';
 
 import cubesOffset from '../../static/assets/portfolio/clouds.png';
 import { SectionHeader } from '../components/section-header';
+import Roullete from '../layout/roullette';
 
 const handler = (entries = [], observer = null) => {
   for (const entry of entries) {
@@ -88,38 +89,37 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   //   > */}
   return (
     <Grid container>
-
       <SectionWrapper>
-        <SectionHeader headline="Services" />
+        <Roullete headline="Services" />
       </SectionWrapper>
-      <SectionWrapper>
-        <Services id="contact" /* ref={addNode} */ />
-      </SectionWrapper>
-
-      <SectionWrapper>
-        <SectionHeader headline="Experience" illustrationType="confidence" />
-      </SectionWrapper>
-
-      <SectionWrapper>
-        <Qualifications />
-      </SectionWrapper>
-
-      {/* build fails == audio is not defined == */}
-      <SectionWrapper>
-        <Experience id="skills" />
-      </SectionWrapper>
-
-      <SectionWrapper>
-        <SectionHeader headline="Skills" type="inverted" illustrationType="moustache" />
-      </SectionWrapper>
-
-      <SectionWrapper>
-        <Languages id="skills" />
-      </SectionWrapper>
-
     </Grid>
   );
 });
+
+// <SectionWrapper>
+//   <Services id="contact" /* ref={addNode} */ />
+// </SectionWrapper>
+
+// <SectionWrapper>
+//   <SectionHeader headline="Experience" illustrationType="confidence" />
+// </SectionWrapper>
+
+// <SectionWrapper>
+//   <Qualifications />
+// </SectionWrapper>
+
+// {/* build fails == audio is not defined == */}
+// <SectionWrapper>
+//   <Experience id="skills" />
+// </SectionWrapper>
+
+// <SectionWrapper>
+//   <SectionHeader headline="Skills" type="inverted" illustrationType="moustache" />
+// </SectionWrapper>
+
+// <SectionWrapper>
+//   <Languages id="skills" />
+// </SectionWrapper>
 
 // <SectionWrapper>
 // </SectionWrapper>
@@ -132,21 +132,19 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
 // <Languages id="languages" />
 // </SectionWrapper>
 
-const SectionWrapper = ({ children, colorType = 'primary' }) => {
-  const theme = useTheme();
-  return (
+const SectionWrapper = ({ children, colorType = 'primary' }) =>
+  // some stuff
+  (
     (
       <>
-        <Grid item md={1} style={{ background: theme.palette.text[colorType] }} />
-        <Grid item md={10} xs={12} style={{ maxHeight: '90vh', overflow: 'hidden' }}>
+        <Grid item md={1} sx={{ background: (theme) => theme.palette.text[colorType] }} />
+        <Grid item md={10} xs={12} sx={{ overflow: 'hidden' }}>
           {children}
         </Grid>
-        <Grid item md={1} style={{ background: theme.palette.text[colorType] }} />
+        <Grid item md={1} sx={{ background: (theme) => theme.palette.text[colorType] }} />
       </>
     )
   );
-};
-
 const IndexPage = ({
   // returned from pageQuery as props
   data: {

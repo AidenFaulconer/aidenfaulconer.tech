@@ -20,12 +20,14 @@ const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE;
 
 module.exports = {
   flags: {
-    // PRESERVE_WEBPACK_CACHE: true,
+    PRESERVE_WEBPACK_CACHE: true,
     GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
     PARALLEL_SOURCING: true,
     FAST_DEV: true,
     DEV_SSR: true,
+    // ENABLE_GATSBY_EXTERNAL_JOBS: true,//for gatsby-parallel-runner, which outsources to google cloud
   },
+  // 'gatsby-parallel-runner',//uses google cloud,
   /* Your site config here */
   // eslint-disable-next-line global-require
   siteMetadata: require('./site-meta-data.json'),
@@ -292,7 +294,13 @@ module.exports = {
     // }, // must be after other CSS plugins
 
     'gatsby-plugin-netlify',
-
+    {
+      resolve: 'gatsby-plugin-netlify-cache',
+      options: {
+        cachePublic: true,
+        extraDirsToCache: ['./static'],
+      },
+    },
     // ========================================================================== //
     //     Webpack optimizations
     // ========================================================================== //

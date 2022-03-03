@@ -232,7 +232,7 @@ exports.onCreateWebpackConfig = ({
   actions,
 }) => {
   actions.setWebpackConfig({
-    devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : process.env.NODE_ENV === 'build' ? 'source-map' : 'hidden-source-map', // for debugging processes, production debug with source-map, source-map for most efficient production buildz
+    devtool: process.env.NODE_ENV === 'development' ? 'eval' /** 'eval-source-map' */ : process.env.NODE_ENV === 'devbuild' ? 'source-map' : 'hidden-source-map', // for debugging processes, production debug with source-map, source-map for most efficient production buildz
     resolve: {
       extensions: ['.mjs', '.js', '.jsx', '.json', '.gltf', 'png', 'jpg', 'jpeg', 'gif', 'svg'],
     },
@@ -247,8 +247,12 @@ exports.onCreateWebpackConfig = ({
         },
 
         // ========================================================================== //
-        //         Optimizations *dynamic imports *code-splitting
+        // Optimizations  *dynamic imports *code-splitting
+        //                *only importing what you need DIRECTLY
+        //                *lazy load pages, if SPA *no extra files
         // ========================================================================== //
+        // https://dev.to/aravindballa/single-page-app-w-gatsby-2f8p
+        // https://www.reddit.com/r/javascript/comments/gyiktg/askjs_why_300kb_of_bundle_size_considered_big_for/
         // code-split slow modules, for example, 3d scenes and models should be lazy loaded
         // tree-shake, mark modules as used, and remove unused modules, sideEffects are the modules that are used, they are decalred with filepaths in an array
         //    imports should be specific, dont {} all of them, explicitly import what you need
@@ -278,6 +282,22 @@ exports.onCreateWebpackConfig = ({
           include: /node_modules/,
           type: 'javascript/auto',
         },
+
+        // plugins: [
+        //   new webpack.DefinePlugin({ // <-- key to reducing React's size
+        //     'process.env': {
+        //       'NODE_ENV': JSON.stringify('production')//tell webpack to not include test helpers
+        //     }
+        //   }),
+        // https://rajaraodv.medium.com/two-quick-ways-to-reduce-react-apps-size-in-production-82226605771a
+        //   new webpack.optimize.DedupePlugin(), //dedupe similar code
+        //   new webpack.optimize.UglifyJsPlugin(), //minify everything
+        //   new webpack.optimize.AggressiveMergingPlugin()//Merge chunks
+        //   new webpack.optimize.DedupePlugin(), //dedupe similar code
+        //   new webpack.optimize.UglifyJsPlugin(), //minify everything
+        //   new webpack.optimize.AggressiveMergingPlugin()//Merge chunks
+        // ],
+
         // fix react-three-fiber and react-spring use during buildtime
         // {
         //   test: /react-spring/,

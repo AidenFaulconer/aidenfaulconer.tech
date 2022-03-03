@@ -15,57 +15,6 @@ import {
 
 import { useStore } from '../store/store';
 
-// // draw circle underneath text
-// context.arc(centerX, centerY, radius - 10, 0, 2 * Math.PI, false);
-// context.stroke();
-// ========================================================================== //
-// Moving type
-// ========================================================================== //
-
-// function drawTextAlongArc(context, str, centerX, centerY, radius, angle) {
-//   var len = str.length,
-//     s;
-//   context.save();
-//   context.translate(centerX, centerY);
-//   context.rotate(-1 * angle / 2);
-//   context.rotate(-1 * (angle / len) / 2);
-//   for (var n = 0; n < len; n++) {
-//     context.rotate(angle / len);
-//     context.save();
-//     context.translate(0, -1 * radius);
-//     s = str[n];
-//     context.fillText(s, 0, 0);
-//     context.restore();
-//   }
-//   context.restore();
-// }
-// var canvas = document.getElementById('myCanvas'),
-//   context = canvas.getContext('2d'),
-//   centerX = canvas.width / 2,
-//   centerY = canvas.height - 30,
-//   angle = Math.PI * 0.8,
-//   radius = 150;
-
-// context.font = '30pt Calibri';
-// context.textAlign = 'center';
-// context.fillStyle = 'blue';
-// context.strokeStyle = 'blue';
-// context.lineWidth = 4;
-// drawTextAlongArc(context, 'Text along arc path', centerX, centerY, radius, angle);
-
-// ========================================================================== //
-// hero styles
-// ========================================================================== //
-const animatedClouds = keyframes`
-  keyframes: {
-    from: {
-      backgroundPosition: '0 0',
-    },
-    to: {
-      backgroundPosition: '100% 10%',
-    },
-  }`;
-
 // headline dynamic on threejs interaction, button to go back plug action in threejs, go to blog in the headline project selection?
 export const HeroHeader = React.memo((props) => {
   // ========================================================================== //
@@ -74,21 +23,21 @@ export const HeroHeader = React.memo((props) => {
   const { allMarkdownRemark: { edges } } = useStaticQuery(graphql`
       query projectQuery {
       allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}, filter: {frontmatter: {catagory: {eq: "project"}}}) {
-        edges {
-          node {
-            id
-            excerpt(pruneLength: 250)
-            frontmatter {
-              date(formatString: "MMMM DD, YYYY")
-              metaDescription
-              thumbnail
-              catagory
-              title
-              path
+          edges {
+            node {
+              id
+              excerpt(pruneLength: 250)
+              frontmatter {
+                date(formatString: "MMMM DD, YYYY")
+                metaDescription
+                thumbnail
+                catagory
+                title
+                path
+              }
             }
           }
-        }
-    }
+        } 
       }
   `);
 

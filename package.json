@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@babel/core": "^7.14.3",
-
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
@@ -39,7 +38,6 @@
     "@react-three/xr": "^3.4.0",
     "@use-gesture/react": "^10.1.6",
     "axios": "^0.26.0",
-   
     "body-parser": "^1.19.2",
     "cheerio": "^1.0.0-rc.10",
     "circletype": "^2.3.0",
@@ -49,6 +47,7 @@
     "gatsby": "^4.7.2",
     "gatsby-image": "^3.3.0",
     "gatsby-link": "^4.7.1",
+    "gatsby-parallel-runner": "^1.3.0",
     "gatsby-plugin-brotli": "^2.1.0",
     "gatsby-plugin-catch-links": "^4.7.0",
     "gatsby-plugin-direct-import": "^1.0.0",
@@ -62,6 +61,7 @@
     "gatsby-plugin-manifest": "^4.7.0",
     "gatsby-plugin-minify-html": "^1.0.4",
     "gatsby-plugin-netlify": "^4.1.0",
+    "gatsby-plugin-netlify-cache": "^2.0.0",
     "gatsby-plugin-netlify-cms": "^6.3.0",
     "gatsby-plugin-offline": "^5.7.0",
     "gatsby-plugin-perf-budgets": "0.0.18",
@@ -85,7 +85,6 @@
     "gatsby-theme-material-ui": "^5.1.0",
     "gatsby-transformer-remark": "^5.7.0",
     "gatsby-transformer-sharp": "^4.7.0",
-
     "grapheme-splitter": "^1.0.4",
     "gsap": "^3.9.1",
     "html-react-parser": "^1.4.8",
@@ -128,7 +127,7 @@
     "yup": "^0.32.9",
     "zustand": "^3.5.13"
   },
-  "devDependencies": { 
+  "devDependencies": {
     "babel-plugin-import": "^1.13.3",
     "babel-preset-gatsby": "^2.8.0",
     "@babel/plugin-syntax-top-level-await": "^7.14.5",
@@ -137,11 +136,12 @@
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.24.0",    
+    "eslint-plugin-react": "^7.24.0",
     "@babel/preset-react": "^7.16.7",
     "eslint-plugin-react-hooks": "^4.2.0",
     "nodemon": "^2.0.7",
-    "pnpm": "latest",    "gltf-webpack-loader": "^1.0.6",
+    "pnpm": "latest",
+    "gltf-webpack-loader": "^1.0.6",
     "prettier": "^2.5.1"
   },
   "homepage": "https://aidenfaulconer.tech",
@@ -166,12 +166,13 @@
     "preload-fonts": "set LOG_LEVEL=info & gatsby-preload-fonts",
     "debug-fonts": "gatsby-preload-fonts -- --no-sandbox",
     "debug": "set DEBUG=* gatsby develop --host 0.0.0.0",
-    "develop": "cross-env NODE_ENV=development GATBY_ENV=development DEBUG=gatsby:query-watcher && gatsby develop --host 0.0.0.0 --verbose",
+    "develop": "cross-env NODE_ENV=development GATBY_ENV=development DEBUG=gatsby:query-watcher && gatsby develop --host 0.0.0.0",
+    "develop-prod": "cross-env NODE_ENV=production GATBY_ENV=production DEBUG=gatsby:query-watcher && gatsby develop --host 0.0.0.0 --verbose",
     "build-server": "cross-env NODE_ENV=development && netlify functions:build --src netlify/functions/functions.js",
     "serve-server": "cross-env NODE_ENV=development && netlify functions:serve",
     "serve-server2": "cross-env NODE_ENV=production && netlify deploy --open",
-    "build": "cross-env NODE_ENV=build && gatsby build --log-pages --verbose",
-    "buildprod": "cross-env NODE_ENV=production && gatsby build --log-pages",
+    "builddev": "cross-env NODE_ENV=devbuild && gatsby build --log-pages --verbose",
+    "build": "cross-env NODE_ENV=production && gatsby build --log-pages",
     "dev": "cross-env NODE_ENV=development pnpm run develop --host 0.0.0.0",
     "serve": "gatsby serve",
     "clean": "gatsby clean",

@@ -7,7 +7,7 @@ import {
 import Image from 'gatsby-image';
 import parse from 'html-react-parser';
 import stickybits from 'stickybits';
-import { Grid, useTheme } from '@mui/material';
+import { Box, Grid, useTheme } from '@mui/material';
 
 // We're using Gutenberg so we need the block styles
 // these are copied into this project due to a conflict in the postCSS
@@ -18,163 +18,6 @@ import { Grid, useTheme } from '@mui/material';
 // import Bio from "../components/bio"
 // import Seo from "../components/seo"
 import { RegularButton } from '../custom/buttons';
-
-const PREFIX = 'project-template';
-
-const classes = {
-  blogContainer: `${PREFIX}-blogContainer`,
-  blogPost: `${PREFIX}-blogPost`,
-  tableOfContents: `${PREFIX}-tableOfContents`,
-  blogSideBar: `${PREFIX}-blogSideBar`,
-  blogPostFeaturedImage: `${PREFIX}-blogPostFeaturedImage`,
-  suggestedBlogPost: `${PREFIX}-suggestedBlogPost`,
-  otherBlogPosts: `${PREFIX}-otherBlogPosts`,
-  blogHeroUnderlay: `${PREFIX}-blogHeroUnderlay`,
-};
-
-const Root = styled('aside')((
-  {
-    theme,
-  },
-) => {
-  const containerStyles = {
-    // maxWidth: 1450,
-    maxWidth: 1850,
-    margin: 'auto',
-    marginTop: theme.spacing(12),
-    marginBottom: theme.spacing(12),
-    padding: theme.spacing(3),
-    paddingBottom: theme.spacing(0),
-  };
-  return {
-    [`& .${classes.blogContainer}`]: {
-      ...containerStyles,
-    },
-    [`& .${classes.blogPost}`]: {
-      background: 'white',
-      position: 'relative',
-      padding: theme.spacing(6),
-      paddingTop: theme.spacing(12),
-      [theme.breakpoints.down('md')]: {
-        padding: theme.spacing(3),
-      },
-      maxWidth: 1250,
-      // margin: '0 auto',
-      // marginLeft: theme.spacing(3),
-      border: theme.custom.borders.brandBorderSecondary,
-      boxShadow: theme.custom.shadows.brand,
-      borderRadius: theme.custom.borders.brandBorderRadius,
-    },
-    [`& .${classes.tableOfContents}`]: {
-      '& li': {
-        '& a': {
-          textDecoration: 'none',
-        },
-      },
-    },
-    [`& .${classes.blogSideBar}`]: {
-      background: 'white',
-      position: 'sticky',
-      boxShadow: theme.custom.shadows.brand,
-      top: theme.spacing(12),
-      padding: theme.spacing(6),
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      border: theme.custom.borders.brandBorderSecondary,
-      width: '100%',
-      marginTop: '0 !important',
-      marginBottom: 'auto',
-      display: 'block',
-      marginLeft: 'auto',
-      marginRight: theme.spacing(0),
-      [theme.breakpoints.down('xl')]: {
-        position: 'fixed',
-        display: 'none',
-      // marginRight: 'auto',
-      // marginLeft: 'auto',
-      },
-    },
-    [`& .${classes.blogPostFeaturedImage}`]: {
-      width: '100%',
-      height: '100%',
-      maxHeight: '600px',
-      minHeight: '525px',
-      objectFit: 'cover',
-    },
-    [`& .${classes.suggestedBlogPost}`]: {
-    //   maxWidth: 350,
-      margin: 'auto',
-      marginBottom: theme.spacing(6),
-      //   maxHeight: 500,
-      border: theme.custom.borders.brandBorderSecondary,
-      boxShadow: theme.custom.shadows.brandBig,
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      padding: theme.spacing(6),
-      color: theme.palette.text.primary,
-      background: theme.palette.text.primary,
-      textDecoration: 'none',
-      '& img': {
-        border: theme.custom.borders.brandBorder,
-      },
-    },
-    [`& .${classes.otherBlogPosts}`]: {
-      ...containerStyles,
-    },
-    [`& .${classes.blogHeroUnderlay}`]: {
-      marginTop: '-80px',
-      marginBottom: '20px',
-      paddingTop: '50px',
-      paddingBottom: '20px',
-      height: '750px',
-      width: '100vw',
-      zIndex: 0,
-      position: 'absolute !important',
-
-      '& img': {
-        height: '100%',
-        objectFit: 'cover',
-        position: 'absolute',
-        top: 0,
-        width: '100%',
-      },
-
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: '0',
-        left: '0',
-        right: '0',
-        bottom: '0',
-        background: '#334409',
-        zIndex: -1,
-        height: '100%',
-        width: '100%',
-      },
-
-      bottomCutout: {
-        zIndex: 1,
-        position: 'relative',
-        marginTop: theme.spacing(12),
-        marginBottom: -theme.spacing(12),
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        padding: `${theme.spacing(6)} ${theme.spacing(6)}`,
-        background: theme.palette.background.main,
-
-      },
-
-      heroCutout: {
-        position: 'absolute',
-        bottom: '-175px',
-        left: '0px',
-        top: 0,
-        margin: 'auto',
-        marginBottom: -theme.spacing(6),
-        width: '100vw',
-        color: theme.palette.background.default,
-      },
-    },
-  };
-});
 
 // ========================================================================== //
 // Blog post template
@@ -203,7 +46,7 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
     } = post.edges[0].node.frontmatter;
     // console.log(postLink, blogPostData);
     return (
-      <Grid item container justifyContent="center" xs={4} className={classes.suggestedBlogPost}>
+      <Grid item container justifyContent="center" xs={4} sx={{}}>
         <img
           alt="thumbnail"
           src={thumbnail}
@@ -235,10 +78,10 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
 
   return (
     <>
-      <Grid container className={classes.blogContainer} spacing={12} alignContent="center" justifyContent="flex-start" alignItems="center">
+      <Grid container sx={{}} spacing={12} alignContent="center" justifyContent="flex-start" alignItems="center">
 
         <Grid item md={1} xs={false} />
-        <Grid item className={classes.blogPost} md={10} xs={12}>
+        <Grid item sx={{}} md={10} xs={12}>
           <article
             className="blog-post"
             itemScope
@@ -250,7 +93,7 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
               <p>{post?.date}</p>
 
               {thumbnail && (
-                <div className={classes.blogPostFeaturedImage} id="#top">
+                <div sx={{}} id="#top">
                   <Image
                     // fluid={featuredImage.fluid}
                     alt="alt"
@@ -273,7 +116,7 @@ export default ({ data: { post = {}, next = {}, previous = {} } }) => {
 
       </Grid>
 
-      <Grid container xs={12} spacing={0} tyles={{ marginBottom: '100px' }} className={classes.otherBlogPosts} alignContent="flex-end" justifyContent="flex-start" alignItems="baseline">
+      <Grid container xs={12} spacing={0} tyles={{ marginBottom: '100px' }} sx={{}} alignContent="flex-end" justifyContent="flex-start" alignItems="baseline">
         {previous && blogSuggestionLink(previous, 'previous')}
         {next && blogSuggestionLink(next, 'next')}
       </Grid>
@@ -377,7 +220,7 @@ export const templatePageQuery = graphql`
 // Table of contents
 // ========================================================================== //
 const renderTableOfContentItems = (items/** array */) => (
-  <ol className={classes.tableOfContents}>
+  <ol styles={{}}>
     {items.map(({ url, title, items }) => (
       <li key={url}>
         <a href={url}>{title}</a>
@@ -388,8 +231,8 @@ const renderTableOfContentItems = (items/** array */) => (
 );
 
 const TableOfContent = ({ toc, className }) => (
-  <Root className={className}>
+  <Box sx={{}}>
     <h2>Table of contents</h2>
     {renderTableOfContentItems(toc.items)}
-  </Root>
+  </Box>
 );
