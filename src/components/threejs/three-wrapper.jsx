@@ -1,6 +1,4 @@
 /*  */ import React, {
-  Suspense,
-  lazy,
   useEffect,
 } from 'react';
 // All hooks are cross platform now

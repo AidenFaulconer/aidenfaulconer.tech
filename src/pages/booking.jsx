@@ -18,6 +18,33 @@ import {
   svgEncodeBaseSixtyFour,
 } from '../store/theme';
 
+const SectionWrapper = ({ children, type = 'primary' }) =>
+  // some stuff
+  (
+    (
+      <>
+        <Grid
+          item
+          md={1}
+          sx={{
+            background: (theme) => theme.palette.text[type],
+            // border: (theme) => theme.custom.borders.brandBorder
+          }}
+        />
+        <Grid item md={10} xs={12} sx={{ overflow: 'hidden' }}>
+          {children}
+        </Grid>
+        <Grid
+          item
+          md={1}
+          sx={{
+            background: (theme) => theme.palette.text[type],
+            // border: (theme) => theme.custom.borders.brandBorder
+          }}
+        />
+      </>
+    )
+  );
 const BookingPage = ({
   // returned from pageQuery as props
   data: {
@@ -28,11 +55,12 @@ const BookingPage = ({
   const theme = useTheme();
 
   return (
-    <>
+    <SectionWrapper type="primary">
       <BookingForm />
-    </>
+    </SectionWrapper>
   );
 };
+
 
 export default BookingPage;
 
