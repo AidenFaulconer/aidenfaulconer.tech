@@ -2,12 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import {
   Box,
-  Button, createSvgIcon, Icon, SvgIcon,
+  Button, createSvgIcon, Icon, InputAdornment, MenuItem, SvgIcon, TextField, Divider,
 } from '@mui/material';
 import { LocationOn } from '@mui/icons-material';
 
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/system';
+import { text } from 'cheerio/lib/api/manipulation';
 import {
   patternHover, patternHoverKeyframes,
 } from '../../store/theme';
@@ -114,7 +115,7 @@ const Root = styled('div')((theme, selected) => {
 const iconLibrary = {
   arrow: () => (
     <svg width="14" height="11" viewBox="0 0 14 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2.72936 1.27355L12.6231 5.26003L2.62792 9.69012L6.02032 5.55524L6.29326 5.22256L6.00496 4.9031L2.72936 1.27355Z" fill="#D4DDF6" />
+      <path d="M2.72936 1.27355L12.6231 5.26003L2.62792 9.69012L6.02032 5.55524L6.29326 5.22256L6.00496 4.9031L2.72936 1.27355Z" fill="currentColor" />
     </svg>
   ),
   item: () => (
@@ -230,6 +231,7 @@ const buttonTypes = {
     maxWidth: 50,
     minWidth: 0,
     height: 50,
+    zIndex: 10,
     position: 'relative',
     background: (theme) => theme.palette.text.primary,
     border: (theme) => theme.custom.borders.brandBorder,
@@ -257,15 +259,23 @@ export const RegularButton = (props) => {
         alignItems: 'center',
         lineHeight: '100%',
         fontSize: 14,
+        zIndex: 10,
         ...buttonTypes[type],
+        '&:MuiEndIcon-root': {
+          margin: 0,
+        },
       }}
       size={size}
       // variant="contained"
       // variant=""
       centerRipple
-      endIcon={icon.enabled && (<AFIcon {...icon} />)}
     >
-      {children}
+      {children && (
+      <div style={{ marginRight: 8 }}>
+        {children}
+      </div>
+      )}
+      {icon.enabled && (<AFIcon {...icon} />)}
     </Button>
   );
 };
@@ -359,6 +369,135 @@ export const SelectionButton = (props) => {
     </Button>
   );
 };
+
+// ========================================================================== //
+// Fancy Text Field https://mui.com/components/text-fields/#select
+// *can be a dropdown button
+// *can be a search input
+// *can have adornments for additional functionality nested inside
+// ========================================================================== //
+export const FancyTextField = React.forwardRef((props, ref) => {
+  const {
+    input = {
+      pattern: '[a-zA-Z0-9]*',
+      mode: 'text',
+    },
+
+    icon,
+    // = {
+    //   start: true,
+    //   handlers: [
+    //     { onClick: () => { } },
+    //     { onHover: () => { } },
+    //     // ... any other kind of listener you want
+    //   ],
+    //   type: 'eye',
+    // },
+
+    size = 'large',
+    margin = 'none',
+    maxRows = 1,
+    fullWidth = false,
+
+    error, label, defaultValue, message, value, type, onChange,
+
+    data, // configure selections for a dropdown
+    children,
+  } = props;
+  // /offer a list of selections if type = selection
+  const TextFieldStyles = {
+    color: (theme) => theme.palette.text.primary,
+    '& .MuiInputLabel-root': {
+      color: 'currentColor',
+    },
+    '& .MuiFormHelperText-root': {
+      color: 'currentColor',
+    },
+    '& .MuiOutlinedInput-root': {
+      background: (theme) => theme.palette.text.secondary,
+    },
+  };
+  const MenuItemStyles = {
+
+  };
+  const [valueState, setValueState] = useState('');
+  const handleOptionChange = (e) => { setValueState(e.target.value.toString()); console.log(valueState); };
+  const handleChange = (e) => setValueState(e.target.value);
+  const createIcon = React.useCallback((icon) => (
+    <>
+      {!icon.start && (<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />)}
+      <InputAdornment {...icon.handlers} position={icon.start ? 'start' : 'end'}>
+        <AFIcon type={icon.type} />
+      </InputAdornment>
+      {icon.start && (<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />)}
+    </>
+  ),
+  [valueState]);
+
+  // TODO: useImperative to override eventListeners
+  return (
+    <TextField
+      // {...props}
+      margin={margin}
+      size={size}
+      type={type && type}
+      error={error && error}
+      maxRows={maxRows}
+      rows={maxRows}
+      fullWidth={fullWidth}
+      onChange={onChange || (data && handleOptionChange || null)}
+      onInput={onChange ? null : handleChange}
+
+      value={value || valueState}
+      label={label && label}
+
+      autoComplete
+      multiline
+      color="primary"
+      select={Boolean(data)}
+      // color="currentColor"
+      defaultValue={defaultValue}
+      helperText={message || ' '}
+      id={`${defaultValue}-textInput`}
+      // variant="outlined"
+      InputProps={{
+        startAdornment: icon ? createIcon(icon) : null,
+        'aria-label': `${label}-defaultValue`,
+        inputMode: input.mode || 'text',
+        pattern: input.pattern || '[a-zA-Z0-9]*',
+      }}
+      InputLabelProps={{ shrink: true }}
+      selectProps={{
+        native: true,
+      }}
+      sx={{
+        ...TextFieldStyles,
+        color: (theme) => theme.palette.text.primary,
+        // border: (theme) => theme.custom.borders.brandBorder,
+      }}
+    >
+      {children && children}
+      {/* if this is a selection type, have a menu to select options from  */}
+      {(data && type == 'select') && data.map((option) => (
+        <MenuItem
+          // onSelect={handleChange}
+          sx={{
+            ...MenuItemStyles,
+          }}
+          dense
+          divider
+          key={option.value}
+          value={option.value}
+          name={option.value}
+          selected={option.value === valueState}
+        >
+          {/* {option.value === valueState && null || option.icon && createIcon(option.icon)} */}
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
+  );
+});
 
 // ========================================================================== //
 // Button Group

@@ -152,11 +152,12 @@ const Layout = React.memo((props) => {
     <div
       style={{
         overflowX: 'hidden',
+        maxWidth: '100vw',
         width: '100vw',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        backgroundColor: '#E6EBFA',
+        backgroundColor: type === 'light' ? '#E6EBFA' : '#000064',
         color: 'rgba(1,1,100,.1)',
       }}
       id="#root"

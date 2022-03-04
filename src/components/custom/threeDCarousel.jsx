@@ -17,6 +17,7 @@ import React, {
   useState,
 } from 'react';
 import { useDrag, useGesture } from '@use-gesture/react';
+import { useBreakpoints } from 'react-use-breakpoints';
 import { hexToAlpha } from '../../store/theme';
 import { usePrevious, useDimensions } from '../util/customHooks';
 import { RegularButton } from './buttons';
@@ -139,10 +140,17 @@ export default React.memo(
     const tiltRadians = tiltAngle * (Math.PI / 180);
     const slideAngle = 360 / carouselData.length; // rotation increment for each slide
     // constrain width of circle to 600,
-    const radius = 225;
+    const { breakpoint, windowSize } = useBreakpoints({
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1600,
+    });
+    const radius = breakpoint === 'xs' ? 225 : breakpoint === 'sm' ? 225 : breakpoint === 'md' ? 250 : breakpoint === 'lg' ? 300 : 450;
     const zOrigin = 859 / carouselData.length - 1;
 
-    const slideWidth = ((gutter - radius) * Math.cos(slideAngle));
+    const slideWidth = (gutter - radius * Math.cos(slideAngle));// was gutter - radius
     console.log(slideWidth);
     // ========================================================================== //
     //   handling state change
@@ -344,9 +352,10 @@ export default React.memo(
           flexDirection: 'column',
           pointerEvents: 'all',
           height: '100%',
-          borderBottom: (theme) => theme.custom.borders.brandBorder,
-          borderTop: (theme) => theme.custom.borders.brandBorder,
           width: '100%',
+          background: (theme) => theme.palette.text.primary,
+          // borderTop: (theme) => theme.custom.borders.brandBorder,
+          // py: 4,
         }}
         {...bindGestureHandler(0)}
       >
@@ -354,49 +363,52 @@ export default React.memo(
         <Box
           sx={{
             // background: 'yellow',
-            // background: (theme) => theme.palette.text.primary,
             // 3d carousel dimensions
             py: 6,
             position: 'relative',
-            display: 'inline-flex',
+            display: 'flex',
             justifyContent: 'center',
             flexDirection: 'column',
             alignContent: 'center',
             width: '100%',
             pointerEvents: 'all',
-            minHeight: carouselHeight || '60vh',
+            minHeight: carouselHeight || '40vh',
             perspective: 2500,
             perspectiveOrigin: '50% 50%',
             transformStyle: 'preserve-3d',
             // configure scale so this fits properly into the users view without having to deal with associated sizing of children
-            transform: {
-              xs: `scale(${1}) rotate(0deg) translateZ(100px)`,
-              sm: `scale(${1}) rotate(0deg) translateZ(100px)`,
-              md: `scale(${1}) rotate(0deg) translateZ(100px)`,
-              lg: `scale(${1.25}) rotate(0deg) translateZ(100px)`,
-              xl: `scale(${1.25}) rotate(0deg) translateZ(100px)`,
-            },
+            // transform: {
+            //   xs: `scale(${1}) rotate(0deg) translateZ(100px)`,
+            //   sm: `scale(${1}) rotate(0deg) translateZ(100px)`,
+            //   md: `scale(${1}) rotate(0deg) translateZ(100px)`,
+            //   lg: `scale(${1}) rotate(0deg) translateZ(100px)`,
+            //   xl: `scale(${1}) rotate(0deg) translateZ(100px)`,
+            // },
+            transform: `scale(${1}) rotate(0deg) translateZ(100px)`,
           }}
           // listen to input events and handle them accordingly, this communicates with the springs, labeled with 'wrapped', which correspond with the data we input, and one is for the origin
         >
+          {/* carousel button container */}
           <Box
             sx={{
               width: '100%',
-              left: '0%',
-              top: '50%',
+              // left: '0%',
               px: '5%',
+              maxWidth: (theme) => radius + theme.spacing(3),
               position: 'absolute',
               height: 0,
+              p: 4,
               zIndex: 10,
-              display: 'flex',
-              alignSelf: 'flex-start',
+              display: 'inline-flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              alignSelf: 'center',
+              // border: (theme) => theme.custom.borders.brandBorder2,
             }}
           >
             {/* go left */}
             <RegularButton
-              type="primary"
+              type="secondary"
               icon={{ enabled: true, type: 'arrow' }}
               style={{
                 transform: 'rotate(180deg)',
@@ -413,7 +425,7 @@ export default React.memo(
 
             {/* go right */}
             <RegularButton
-              type="primary"
+              type="secondary"
               icon={{ enabled: true, type: 'arrow' }}
               onClick={(e) => {
                 setCurrent(
@@ -435,6 +447,7 @@ export default React.memo(
               display: 'inline-flex',
               justifyContent: 'center',
               alignContent: 'center',
+              alignSelf: 'center',
               width: '100%',
               height: '100%', // centers the carousel, carousel is spawned at baseline of this element
             }}
@@ -483,8 +496,8 @@ export default React.memo(
                       style={{
                         minWidth: `${slideWidth}px`,
                         width: `${slideWidth}px`,
-                        // background: hexToAlpha(theme.palette.text.primary, 1),
-                        // backdropFilter: 'blur(10px)',
+                        backdropFilter: 'blur(25px)',
+                        color: (theme) => theme.palette.text.seconary,
                         padding: 0,
                         boxShadow: 'none !important',
                         position: 'absolute',
@@ -494,20 +507,15 @@ export default React.memo(
                         borderRadius: theme.spacing(2),
                         overflow: 'hidden',
                         // align rotation to fit in a circle
-                        transform: `rotateY(${slideAngle * i}deg) translateZ(${radius - gutter}px)`,
+                        transform: `rotateY(${slideAngle * i}deg) translateZ(${gutter + radius}px)`,
                         zIndex: 5 * i + 1,
+                        // handle selection/unselection
+                        background: theme.palette.text.secondary,
                         ...(current === i
-                          ? {
-                            opacity: 1,
-                            background: theme.palette.text.primary,
-                          }
-                          : {
-                            opacity: 0.5,
-                            background: hexToAlpha(
-                              theme.palette.text.primary,
-                              0.6,
-                            ),
-                          }),
+                          ? { opacity: 1 }
+                          : current === i - 1 || current === i + 1 ? { opacity: 0.7 }
+                            : { opacity: 0.3 }
+                        ),
                       }}
                       onClick={() => {
                         setCurrent(

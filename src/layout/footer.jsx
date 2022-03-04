@@ -40,7 +40,7 @@ export default ({ children }) => {
 
   const logo = React.useCallback(
     (color) => (
-      <Link to="/">
+      <Link to="/" style={{ display: 'flex' }}>
         <Box
           sx={{
 
@@ -82,19 +82,18 @@ export default ({ children }) => {
       <Grid
         container
         alignContent="stretch"
-        // alignItems="center"
+        alignItems="flex-start"
         sx={{
           position: 'relative',
           minHeight: 200,
-          mt: 0,
-          py: 4,
-          padding: (theme) => theme.spacing(3, 6),
+          p: 6,
+          // padding: (theme) => theme.spacing(3, 6),
           color: (theme) => theme.palette.text.secondary,
           border: (theme) => theme.custom.borders.brandBorder,
           background: (theme) => theme.palette.text.primary,
           '& *  > .MuiGrid-root': {
             transition: 'all .3s ease-in-out',
-            textAlign: 'center',
+            textAlign: 'left',
             padding: (theme) => theme.spacing(1),
           },
         }}

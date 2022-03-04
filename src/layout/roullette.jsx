@@ -76,7 +76,7 @@ const sections = [
 //     key: 'invisible',
 //   },
 ];
-
+const imgPath = (assetName) => `../../static/assets/portfolio/${assetName}`;
 // ========================================================================== //
 // sub-section routlette data **sub section component shows off content in a
 // sub-selection
@@ -91,8 +91,8 @@ const subSections = [
         costRange: '400$-5000$',
         description:
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
-        // image: servicesImage,
         name: 'Websites',
+        image: imgPath('website-image.png'),
         threejs: {
           // animationsPlaying: ['hold'],
           animationsPlaying: ['hold'],
@@ -106,6 +106,7 @@ const subSections = [
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Design',
+        image: imgPath('website-image.png'),
         threejs: {
           // animationsPlaying: ['write'],
           animationsPlaying: ['hold'],
@@ -119,6 +120,7 @@ const subSections = [
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Virtual Reality',
+        image: imgPath('website-image.png'),
         threejs: {
           // animationsPlaying: ['hold'],
           animationsPlaying: ['hold'],
@@ -132,6 +134,7 @@ const subSections = [
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Branding',
+        image: imgPath('website-image.png'),
         threejs: {
           // animationsPlaying: ['write'],
           animationsPlaying: ['hold'],
@@ -145,6 +148,7 @@ const subSections = [
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Other',
+        image: imgPath('website-image.png'),
         threejs: {
           // animationsPlaying: ['build'],
           animationsPlaying: ['hold'],
@@ -158,6 +162,7 @@ const subSections = [
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'My Projects',
+        image: imgPath('website-image.png'),
         threejs: {
           // animationsPlaying: ['build'],
           animationsPlaying: ['hold'],
@@ -174,9 +179,10 @@ const subSections = [
     subSectionData: [
       {
         title: 'Australian War Memorial',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Full-Stack Developer',
+        image: imgPath('website-image.png'),
         description: `
           • Used C#, JavaScript, JSON, REST, back-end & frontend developed 
           • developed in Drupal, React, React360, Unity, JavaScript, & C# 
@@ -188,9 +194,10 @@ const subSections = [
       },
       {
         title: 'Recovery VR',
-        image: rvrImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Full-Stack Developer',
+        image: imgPath('website-image.png'),
         description: (
           <>
             Use C#, typescript, javascript, with a back-end firebase/graphql and
@@ -228,9 +235,10 @@ const subSections = [
       },
       {
         title: 'Freelance',
-        image: afImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Graphic Design, Full-Stack Development',
+        image: imgPath('website-image.png'),
         description: `
           • Designing and iterating through logos to match the desired image of a given brand 
           • Website design, including interactions prototyped through framer 
@@ -243,9 +251,10 @@ const subSections = [
       },
       {
         title: 'XpertHubb',
-        image: xprtImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Full-Stack Developer',
+        image: imgPath('website-image.png'),
         description: `
           • Working in a very high-paced startup environment, networking and managing through startup school and IACT community engagement 
           • Development through Javascript, React, and back-end development through express and MongoDB 
@@ -257,9 +266,10 @@ const subSections = [
       },
       {
         title: 'Railgun',
-        image: rgImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Full-Stack Developer',
+        image: imgPath('website-image.png'),
         description: `
           • Typescript, vue, quasar, frontend development with blockchain api’s 
           • Design and brand consultation for communicating the wallet and brands purpose 
@@ -270,7 +280,7 @@ const subSections = [
       },
       {
         title: "L'arche Genesaret",
-        image: lgImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Disability support worker',
         description: `
@@ -285,7 +295,7 @@ const subSections = [
       },
       {
         title: 'AJ Gardencare',
-        image: ajImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Full-Stack Developer',
         description: `
@@ -300,7 +310,7 @@ const subSections = [
       },
       {
         title: 'You',
-        image: ajImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Lets find out together',
         description: `
@@ -315,7 +325,7 @@ const subSections = [
       },
       {
         title: 'ICN',
-        image: ajImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         category: 'Consulting',
         description: `
@@ -338,7 +348,7 @@ const subSections = [
     subSectionData: [
       {
         title: 'JavaScript',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'JavaScript',
         // I consider javascript my child, it is where I have spent most of my career developing in, its extremely fast and easy to use especially with modern frameworks such as React, Vue, and more advanced frameworks like Gatsby.js and Quasar.js which can take a codebase and reform it into an ideal web platform, or even compiled down into platform agnostic applications.
         description: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute.',
@@ -346,7 +356,7 @@ const subSections = [
       },
       {
         title: 'C#',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'C#',
         description: `
           In my experience making Virtual Reality appliccations,
@@ -359,7 +369,7 @@ const subSections = [
       },
       {
         title: 'Typescript',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'Typescript',
         description: `
           Typescript has become the happy medium between javascript and C#, where javascript can now be typed enabling transparency and better
@@ -370,7 +380,7 @@ const subSections = [
       },
       {
         title: 'C++',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'C++',
         description: `
           C++ Was my first language, and gave me the foundation to learn any language, because C++ covers virtually every aspect of programming on a low level, building a platform to understand any further abstractions present in modern high level languages or low level languages.
@@ -382,7 +392,7 @@ const subSections = [
       },
       {
         title: 'Back-End',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'Express',
         frameworks: ['Express', 'Node.js', 'IIS', 'ASP.NET', 'ASP.NET Core'],
         description: `
@@ -395,7 +405,7 @@ const subSections = [
       },
       {
         title: 'Python',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'Python',
         description: `
           The grandchild of modern day programming languages, Python is a powerful language that has a beautiful community
@@ -409,7 +419,7 @@ const subSections = [
       },
       {
         title: 'Front-End',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'Front-End',
         // Where I specialise the most, I create full front-end applications using a full process of planning,
         // ideating, iterating, procurement, and deployment of a web applications using the software development life cycle and design thinking process in harmony.
@@ -424,14 +434,14 @@ const subSections = [
       },
       {
         title: 'Office',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'Office',
         description: '',
         icon: '',
       },
       {
         title: 'Business accumen',
-        image: awmImage,
+        image: imgPath('website-image.png'),
         alt: 'Business accumen',
         // The biggest challenges I see in the IT and Design industries are
         // the unpredictible scheduling involved, and lack of business focus, I provide detailed plans with enough contingincy time to
@@ -691,7 +701,7 @@ export default () => (
     // carousel dimensions
     carouselHeight={300}
     cardWidth={400}
-    gutter={2}// in pixels
+    gutter={4}
     // top section
     title="Sections"
     key="Sections-carousel"

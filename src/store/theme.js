@@ -512,7 +512,7 @@ const commonButton = {
     border: _theme.custom.borders.brandBorder,
     whiteSpace: 'nowrap',
     // display: 'inline',
-    minWidth: 'fit-content',
+    // minWidth: 'fit-content',
     textOverflow: 'ellipsis',
     boxShadow: 'none !important',
     textAlign: 'center',

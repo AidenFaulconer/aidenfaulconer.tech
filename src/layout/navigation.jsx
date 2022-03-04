@@ -328,7 +328,7 @@ const Navigation = React.memo(
         onClick={(e) => toggleDrawer(e)}
         onKeyDown={(e) => toggleDrawer(e)}
         sx={{
-          height: '100%',
+          height: '100vh',
           width: { sm: '100vw', xs: '100vw' },
           display: 'inline-flex',
           flexDirection: 'column',
@@ -480,7 +480,7 @@ const Navigation = React.memo(
           onOpen={() => setDrawerState(true)}
           onClose={() => setDrawerState(false)}
           disableDiscovery={iOS}
-          anchor="right"
+          anchor="bottom"
           open={drawerState}
           sx={{}}
         >

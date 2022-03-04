@@ -1,20 +1,20 @@
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React, { PureComponent } from 'react';
-import { svgEncodeBaseSixtyFour } from '../store/theme';
+import { hexToAlpha, svgEncodeBaseSixtyFour } from '../store/theme';
 import { Illustration } from './custom/illustrations';
 
 export const SectionHeader = ({ headline, illustrationType, type = 'default' }) => {
   const sectionHeaderStyles = {
-    default: {
-      background: (theme) => theme.palette.text.primary,
-      color: (theme) => theme.palette.text.secondary,
-      border: (theme) => theme.custom.borders.brandBorderSecondary,
-    },
     inverted: {
-      background: (theme) => theme.palette.text.secondary,
+      // background: (theme) => theme.palette.text.primary,
+      color: (theme) => theme.palette.text.secondary,
+      // border: (theme) => theme.custom.borders.brandBorderSecondary,
+    },
+    default: {
+      // background: (theme) => theme.palette.text.secondary,
       color: (theme) => theme.palette.text.primary,
-      border: (theme) => theme.custom.borders.brandBorder,
+      // border: (theme) => theme.custom.borders.brandBorder,
     },
   };
 
@@ -40,7 +40,8 @@ export const SectionHeader = ({ headline, illustrationType, type = 'default' }) 
           //     </svg>
           //   `),
           // width: '100%',
-          backgroundColor: (theme) => theme.palette.text.secondary,
+          backgroundColor: (theme) => hexToAlpha(theme.palette.text.primary, 0.3),
+          border: (theme) => theme.custom.borders.brandBorder,
           justifyContent: 'center',
           display: 'inline-flex',
           borderRadius: '100%',

@@ -7,6 +7,7 @@ import { graphql, navigate, useStaticQuery } from 'gatsby';
 import { NoToneMapping } from 'three';
 import { styled } from '@mui/material/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { GatsbyImage } from 'gatsby-plugin-image';
 import {
   RegularButton,
   SelectionButton,
@@ -53,7 +54,7 @@ export default React.forwardRef((props, ref) => {
 // ========================================================================== //
 export const SelectionContent = ({
   contentData: {
-    description, costRange, name, title,
+    description, costRange, name, title, image,
   },
   setCurrent,
 }) => {
@@ -65,10 +66,10 @@ export const SelectionContent = ({
       wrap="wrap"
       sx={{
         position: 'relative',
-        border: (theme) => theme.custom.borders.brandBorderSecondary,
-        background: (theme) => theme.palette.text.special,
+        background: (theme) => theme.palette.text.primary,
         flexDirection: { md: 'row', xs: 'column' },
-        overflowX: 'scroll',
+        width: '100%',
+        overflowX: 'hidden',
         overflowY: 'hidden',
       }}
     >
@@ -76,12 +77,12 @@ export const SelectionContent = ({
       {/* description of service */}
       <Grid
         item
-        xs={12}
-        md={9}
-        lg={10}
+        xs={6}
+        md={6}
+        lg={5}
         sx={{
           display: 'inline-flex',
-          color: (theme) => theme.palette.text.primary,
+          color: (theme) => theme.palette.text.secondary,
           padding: 4,
           maxWidth: '100vw',
           flexDirection: { md: 'row', xs: 'column' },
@@ -92,7 +93,7 @@ export const SelectionContent = ({
           display: 'inline-flex',
           flexDirection: 'column',
           maxWidth: '100vw',
-          width: { md: '50%', xs: '100%' },
+          width: { md: '100%', xs: '100%' },
           zIndex: 20,
           // minHeight: 400,
           height: { md: '100%', xs: 350 },
@@ -100,7 +101,7 @@ export const SelectionContent = ({
         >
 
           {/* {JSON.stringify(selected, null, 2)} */}
-          <Typography align="left" variant="h2" component="h2" color="primary">
+          <Typography align="left" variant="h2" component="h2" color="currentColor">
             {title}
           </Typography>
 
@@ -109,7 +110,7 @@ export const SelectionContent = ({
             variant="caption"
             gutterBottom
             component="h3"
-            color="primary"
+            color="currentColor"
             style={{ marginBottom: 30, fontWeight: 'regular !important' }}
           >
             {costRange}
@@ -118,7 +119,7 @@ export const SelectionContent = ({
           <Typography
             align="left"
             variant="body1"
-            color="primary"
+            color="currentColor"
             style={{ marginBottom: 30 }}
           >
             {description || 'description'}
@@ -153,8 +154,28 @@ export const SelectionContent = ({
           </Box>
         </Box>
       </Grid>
-    </Grid>
 
+      {/* media content */}
+      <Grid
+        item
+        xs={7}
+        md={6}
+        lg={6}
+        sx={{
+          display: 'inline-flex',
+          color: (theme) => theme.palette.text.secondary,
+          height: '100%',
+          width: '100%',
+        }}
+      >
+        <GatsbyImage
+          image={image || null}
+          styles={{
+
+          }}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
@@ -169,13 +190,14 @@ export const ServicesSelection = ({
       position: 'relative',
       p: 2,
       height: 200,
-      color: (theme) => theme.palette.text.secondary,
+      color: 'text.primary',
+      background: 'inherit',
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
     }}
   >
-    <Typography variant="h4" align="center" color="currentColor">
+    <Typography sx={{ width: '100%' }} variant="h4" align="center" color="currentColor">
       {title || 'title'}
     </Typography>
   </Box>

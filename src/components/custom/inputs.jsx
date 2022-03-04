@@ -4,6 +4,7 @@ import React, {
 
 import { styled } from '@mui/material/styles';
 import {
+  Box,
   Button,
   FormControl,
   Icon,
@@ -23,171 +24,17 @@ import {
 } from '@material-ui/pickers';
 import { common } from '@mui/material/colors';
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
-
-const PREFIX = 'DropDownButton';
-
-const classes = {
-  sliderLabel: `${PREFIX}-sliderLabel`,
-  dropDownButton: `${PREFIX}-dropDownButton`,
-  sliderInput: `${PREFIX}-sliderInput`,
-  locationInput: `${PREFIX}-locationInput`,
-  inputButton: `${PREFIX}-inputButton`,
-  textInput: `${PREFIX}-textInput`,
-  calenderInput: `${PREFIX}-calenderInput`,
-  formControl: `${PREFIX}-formControl`,
-  inputArea: `${PREFIX}-inputArea`
-};
-
-const StyledMap = styled(Map)((
-  {
-    theme
-  }
-) => {
-  const common = {
-    '&:hover': {
-      boxShadow: `0px 0px 0px ${theme.palette.background.default}`,
-      background: theme.palette.background.main,
-      border: theme.custom.borders.brandBorder,
-      '& > *': {
-        color: `${theme.palette.text.secondary} !important`,
-      },
-    },
-    color: `${theme.palette.text.secondary} !important`,
-    // color: `${theme.palette.text.primary} !important`,
-    backgroundColor: `${theme.palette.background.headline} !important`,
-
+ 
+const common = {
+  '&:hover': {
+    boxShadow: `0px 0px 0px ${theme.palette.background.default}`,
+    background: theme.palette.background.main,
+    border: theme.custom.borders.brandBorder,
     '& > *': {
-      // color: theme.palette.text.primary,
+      color: `${theme.palette.text.secondary} !important`,
     },
-
-    // effect
-    transition: theme.transitions.create(
-      ['color', 'box-shadow', 'background', 'margin', 'border'],
-      { duration: '0.3s', easing: 'ease-in-out' },
-    ),
-    // marginLeft: -theme.spacing(0),
-    // marginBottom: -theme.spacing(0),
-
-    // theme styles
-    whiteSpace: 'nowrap',
-    display: 'inline-block',
-    width: '100%',
-    position: 'relative',
-    background: theme.palette.background.button,
-    boxShadow: theme.custom.shadows.brand,
-    borderRadius: theme.custom.borders.brandBorderRadius,
-    padding: theme.spacing(1) * 0.5,
-  };
-
-  const inputLabel = {
-    '& label': {
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      padding: theme.spacing(1),
-      marginTop: -theme.spacing(6) * 0.5,
-      marginLeft: -theme.spacing(2) * 0.89,
-      border: theme.custom.borders.brandBorderSecondary,
-      color: theme.palette.text.secondary,
-    },
-  };
-
-  return {
-    [`& .${classes.sliderLabel}`]: {
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      padding: theme.spacing(1) * 0.5,
-      paddingBottom: theme.spacing(3),
-      marginTop: -theme.spacing(6) * 0.5,
-      position: 'absolute',
-      right: theme.spacing(0),
-      marginLeft: -theme.spacing(0) * 0.89,
-      color: theme.palette.text.secondary,
-      background: theme.palette.background.button,
-      fontSize: '.75rem',
-    },
-
-    [`& .${classes.dropDownButton}`]: {
-      ...common,
-      // style is inlined with form control which is the actual button
-      // padding: theme.spacing(1 / 2),
-      margin: 0,
-      '&:before': {
-        border: 'none',
-        bottom: 7,
-      },
-      '& .MuiSelect-select.MuiSelect-select': {
-        padding: theme.spacing(0),
-        borderRadius: theme.custom.borders.brandBorderRadius,
-      },
-    },
-
-    [`& .${classes.sliderInput}`]: {
-      ...common,
-      ...inputLabel,
-      marginTop: theme.spacing(2),
-      padding: theme.spacing(3) * 0.75,
-      paddingLeft: 0,
-      paddingRight: 0,
-      margin: 'auto',
-      color: theme.palette.text.primary,
-      width: '100%',
-      '& .MuiSlider-rail': {
-        // position: 'relative',
-        // width: '100%',
-      },
-      '& .MuiSlider-track': {
-        // position: 'relative',
-        // width: '100%',
-      },
-      '& .MuiSlider-thumb': {
-        // top: 25,
-      },
-    },
-
-    [`& .${classes.locationInput}`]: {
-      ...common,
-      maxWidth: 500,
-      minHeight: 500,
-      minWidth: '100%',
-      overflow: 'hidden',
-      position: 'relative !important',
-    },
-
-    [`& .${classes.inputButton}`]: {
-      ...common,
-    },
-    [`& .${classes.textInput}`]: {
-      ...common,
-      ...inputLabel,
-    },
-
-    [`& .${classes.calenderInput}`]: {
-      ...common,
-      '& .MuiFormControl-root': {
-        display: 'flex',
-        color: 'white',
-      },
-      '& > .MuiPickersToolbar-toolbar': {
-        backgroundColor: `${theme.palette.background.button} !important`,
-      },
-    },
-    [`& .${classes.formControl}`]: {
-      margin: theme.spacing(1),
-      width: '100%',
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      background: theme.palette.background.button,
-      color: theme.palette.text.primary,
-    },
-
-    [`& .${classes.inputArea}`]: {
-      border: theme.custom.borders.brandBorder,
-      boxShadow: theme.custom.shadows.brand,
-      marginTop: `${theme.spacing(1)} !important`,
-      marginBottom: `${theme.spacing(1)} !important`,
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      padding: theme.spacing(2),
-    },
-  };
-});
-
+  }, 
+   
 // ========================================================================== //
 // dropdown button
 // ========================================================================== //
@@ -202,7 +49,6 @@ export const DropDownButton = (props) => {
     selectStateLabel = 'default default',
     options = ['default', 'default'],
   } = props;
-
 
   // we input the name of the state we change **selectState**, then pass it back out to the desired form control
   // we then have a second prop for the inputted options also derived from the original form control we are referencing out to
@@ -227,7 +73,7 @@ export const DropDownButton = (props) => {
       </InputLabel> */}
       <Select
         // {...props}
-        className={classes.dropDownButton}
+        sx={{/**classes.dropDownButton*/}}
         color="primary"
         // size="large"
         // variant="contained"
@@ -265,7 +111,7 @@ export const InputButton = (props) => {
   return (
     <Button
       {...props}
-      className={classes.inputButton}
+      sx={{/**classes.inputButton*/}}
       color="primary"
       size="large"
       variant="contained"
@@ -292,19 +138,33 @@ export const SliderInput = (props) => {
     setValue(newValue);
   };
   return (
-    <div style={{ position: 'relative' }}>
-      <div className={classes.sliderLabel}>{label}</div>
+    <Box style={{ position: 'relative' }}>
+      <Box sx={{
+      //   borderRadius: (theme)=>theme.custom.borders.brandBorderRadius,
+      // padding: (theme)=>theme.spacing(1) * 0.5,
+      // paddingBottom: (theme)=>theme.spacing(3),
+      // marginTop: -(theme)=>theme.spacing(6) * 0.5,
+      // position: 'absolute',
+      // right: (theme)=>theme.spacing(0),
+      // marginLeft: -(theme)=>theme.spacing(0) * 0.89,
+      // color: (theme)=>theme.palette.text.secondary,
+      // background: (theme)=>theme.palette.background.button,
+      // fontSize: '.75rem',
+      }}
+      >
+        {label}
+      </Box>
       <Slider
         {...props}
         color="primary"
-        className={classes.sliderInput}
+      sx={{/**classes.sliderInput*/}}
         value={value}
         onChange={(event, value) => {
           handleChange(event, value);
           onChange(value);
         }}
       />
-    </div>
+    </Box>
   );
 };
 
@@ -317,20 +177,18 @@ export const CalenderInput = (props) => {
   } = props;
 
   return (
-    <div className={classes.calenderInput}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          margin="normal"
-          color="primary"
-          id="date-picker-dialog"
-          label="When are you availible next?"
-          format="MM/dd/yyyy"
-          value={new Date()}
-          {...props}
-          KeyboardButtonProps={{ 'aria-label': 'change date' }}
-        />
-      </MuiPickersUtilsProvider>
-    </div>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <KeyboardDatePicker
+        margin="normal"
+        color="primary"
+        id="date-picker-dialog"
+        label="When are you availible next?"
+        format="MM/dd/yyyy"
+        value={new Date()}
+        {...props}
+        KeyboardButtonProps={{ 'aria-label': 'change date' }}
+      />
+    </MuiPickersUtilsProvider>
   );
 };
 
@@ -347,7 +205,6 @@ export const TextInput = (props) => {
     autosize = false,
   } = props;
 
-
   return (
     (autosize && (
       <TextField
@@ -355,7 +212,7 @@ export const TextInput = (props) => {
         fullWidth
         multiline
         margin="normal"
-        className={classes.textInput}
+      sx={{/**classes.textInput*/}}
         // InputLabelProps={{
         //   shrink: true,
         // }}

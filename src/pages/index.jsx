@@ -17,6 +17,7 @@ import { Languages, Experience } from '../components/portfolio-page/skills';
 import cubesOffset from '../../static/assets/portfolio/clouds.png';
 import { SectionHeader } from '../components/section-header';
 import Roullete from '../layout/roullette';
+import Contact from '../components/portfolio-page/contact';
 
 const handler = (entries = [], observer = null) => {
   for (const entry of entries) {
@@ -92,6 +93,9 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       <SectionWrapper>
         <Roullete headline="Services" />
       </SectionWrapper>
+      <SectionWrapper type="secondary">
+        <Contact />
+      </SectionWrapper>
     </Grid>
   );
 });
@@ -132,16 +136,30 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
 // <Languages id="languages" />
 // </SectionWrapper>
 
-const SectionWrapper = ({ children, colorType = 'primary' }) =>
+const SectionWrapper = ({ children, type = 'primary' }) =>
   // some stuff
   (
     (
       <>
-        <Grid item md={1} sx={{ background: (theme) => theme.palette.text[colorType] }} />
+        <Grid
+          item
+          md={1}
+          sx={{
+            background: (theme) => theme.palette.text[type],
+            // border: (theme) => theme.custom.borders.brandBorder
+          }}
+        />
         <Grid item md={10} xs={12} sx={{ overflow: 'hidden' }}>
           {children}
         </Grid>
-        <Grid item md={1} sx={{ background: (theme) => theme.palette.text[colorType] }} />
+        <Grid
+          item
+          md={1}
+          sx={{
+            background: (theme) => theme.palette.text[type],
+            // border: (theme) => theme.custom.borders.brandBorder
+          }}
+        />
       </>
     )
   );
