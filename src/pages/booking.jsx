@@ -18,45 +18,45 @@ import {
   svgEncodeBaseSixtyFour,
 } from '../store/theme';
 
-const IndexPage = ({
+const BookingPage = ({
   // returned from pageQuery as props
   data: {
     allMarkdownRemark: { edges },
   },
   location,
 }) => {
-  const marginAmount = '175px';
-  // alert(JSON.stringify(edges));
-  // ========================================================================== //
-  //     Scroll snapping
-  // ========================================================================== //
-  const [count, setCount] = React.useState(0);
-  const refs = React.useRef([]);
-  const observer = React.useRef(null);
-  const addNode = React.useCallback((node) => refs.current.push(node), []);
-  // ref callback is called twice: once when the DOM
-  // node is created, and once (with null) when the DOM
-  // node is removed.
-  // TRY IT OUT => Comment the other addNode and uncomment this one
-
-  React.useEffect(() => {
-    if (observer.current) observer.current.disconnect();
-    const newObserver = getObserver(observer);
-    for (const node of refs.current) {
-      newObserver.observe(node);
-    }
-    console.log(refs.current);
-    return () => newObserver.disconnect();
-  }, []);
-
   const theme = useTheme();
 
   return (
     <>
-      <BookingForm ref={addNode} />
+      <BookingForm />
     </>
   );
 };
+
+export default BookingPage;
+
+// autorun at gatsby rebuild-cycle
+export const pageQuery = graphql`
+  query bookingPageQuery {
+    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}, filter: {frontmatter: {catagory: {eq: "blog"}}}) {
+      edges {
+        node {
+          id
+          excerpt(pruneLength: 250)
+          frontmatter {
+            date(formatString: "MMMM DD, YYYY")
+            path
+            catagory
+            title
+            thumbnail
+            metaDescription
+          }
+        }
+      }
+    }
+  }
+`;
 
 export const BookingForm = ({ i, title = 'Contact Me', setSelected = () => { } }) => {
   const handleError = () => {

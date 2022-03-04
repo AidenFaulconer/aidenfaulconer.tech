@@ -63,31 +63,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   {
     // domTarget: typeof window !== 'undefined' && window,
     target: ref.current,
-  });
-
-  // const [props, api] = useSprings(pages.length, i => ({
-  //   x: i * width,
-  //   scale: 1,
-  //   display: 'block',
-  // }))
-
-  // React.useEffect(() => {
-  //   console.log(ref.current);
-  // }, []);
-  // React.useEffect(() => {
-  // }, [bind]);
-  // <section
-  //   style={{
-  //     width: '100vw', /* height: '90vh', */ display: 'block', scrollSnapAlign: 'x y proximity', overflowX: 'scroll',
-  //   }}
-  //   {...bind()}
-  //   ref={ref}
-  // >
-  // {/* section 1 */}
-  // {/* <a.div style={{
-  //     position: 'relative', display: 'flex', width: '100vw', scrollSnapAlign: 'x y proximity',
-  //   }}
-  //   > */}
+  }); 
   return (
     <Grid container>
       <SectionWrapper>
@@ -98,43 +74,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       </SectionWrapper>
     </Grid>
   );
-});
-
-// <SectionWrapper>
-//   <Services id="contact" /* ref={addNode} */ />
-// </SectionWrapper>
-
-// <SectionWrapper>
-//   <SectionHeader headline="Experience" illustrationType="confidence" />
-// </SectionWrapper>
-
-// <SectionWrapper>
-//   <Qualifications />
-// </SectionWrapper>
-
-// {/* build fails == audio is not defined == */}
-// <SectionWrapper>
-//   <Experience id="skills" />
-// </SectionWrapper>
-
-// <SectionWrapper>
-//   <SectionHeader headline="Skills" type="inverted" illustrationType="moustache" />
-// </SectionWrapper>
-
-// <SectionWrapper>
-//   <Languages id="skills" />
-// </SectionWrapper>
-
-// <SectionWrapper>
-// </SectionWrapper>
-
-// <SectionWrapper>
-// <SectionHeader headline="Skills" illustrationType="moustache" />
-// </SectionWrapper>
-
-// <SectionWrapper>
-// <Languages id="languages" />
-// </SectionWrapper>
+}); 
 
 const SectionWrapper = ({ children, type = 'primary' }) =>
   // some stuff
