@@ -3,6 +3,8 @@ import {
   Typography,
   Grid,
   Box,
+  CardMedia,
+  useTheme,
 } from '@mui/material';
 
 import { navigate, graphql, useStaticQuery } from 'gatsby';
@@ -108,6 +110,7 @@ export const HeroHeader = React.memo((props) => {
       },
     },
   } = post;
+
   // ========================================================================== //
   // Hero content
   // ========================================================================== //
@@ -168,6 +171,7 @@ export const HeroHeader = React.memo((props) => {
             display: 'inline-flex',
           }}
         >
+
           <Grid
             item
             md={10}
@@ -196,15 +200,14 @@ export const HeroHeader = React.memo((props) => {
           >
 
             {/* Typography */}
-
             <Typography
               align="left"
               color="secondary"
               variant="h1"
               style={{ zIndex: 1, textTransform: 'uppercase' }}
             >
-              {/* {title} */}
               {title}
+
             </Typography>
             <Typography
               style={{ maxWidth: 600, zIndex: 1 }}

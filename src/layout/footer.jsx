@@ -86,6 +86,7 @@ export default ({ children }) => {
         sx={{
           position: 'relative',
           minHeight: 200,
+          height: '100%',
           p: 6,
           // padding: (theme) => theme.spacing(3, 6),
           color: (theme) => theme.palette.text.secondary,
@@ -99,11 +100,11 @@ export default ({ children }) => {
         }}
       >
 
-        <Grid item container alignContent="stretch" xs={3}>
+        <Grid item container alignContent="stretch" xs={12} md={3}>
           {logo('inherit')}
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={6} md={4}>
 
           <Grid item container justifyContent="space-between">
             <Grid item xs={12}>
@@ -121,7 +122,7 @@ export default ({ children }) => {
               <Typography gutterBottom color="inherit">
                 Send me an email
               </Typography>
-              <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} size="small" onClick={() => sendEmail()}>
+              <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} onClick={() => sendEmail()}>
                 aidenf09@yahoo.com
               </RegularButton>
             </Grid>
@@ -129,14 +130,14 @@ export default ({ children }) => {
 
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={6} md={4}>
 
           <Grid item container justifyContent="space-between">
             <Grid item xs={12}>
               <Typography gutterBottom color="inherit">
                 Lets Talk
               </Typography>
-              <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} size="small" onClick={() => makeCall()}>
+              <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} onClick={() => makeCall()}>
                 0475565709
               </RegularButton>
 
@@ -145,7 +146,7 @@ export default ({ children }) => {
               <Typography
                 gutterBottom
                 color="inherit"
-                sx={{ mt: 4, fontWeight: 100 }}
+                sx={{ fontWeight: 100 }}
                 variant="body2"
               >
                 Copyright © 2020 @ Aiden Faulconer

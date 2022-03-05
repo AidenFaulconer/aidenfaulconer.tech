@@ -284,6 +284,7 @@ export const Models = ({
         texture={texture}
         key={i}
         position={calculatePosition(i + 1)}
+        index={i}
         setColor={set}
         x={x}
         ratio={postData.length - 1}
@@ -324,6 +325,7 @@ export const Model = React.memo(
     texture,
     link,
     position,
+    index,
     setCurrent,
     ratio,
   }) => {
@@ -345,7 +347,7 @@ export const Model = React.memo(
     );
     const context = useStore((state) => state.threejsContext.context);
     const isSelectedProject = React.useCallback(
-      () => selectedIndex === position,
+      () => selectedIndex === index,
       [selectedIndex, position],
     );
     // ========================================================================== //
@@ -353,7 +355,7 @@ export const Model = React.memo(
     // ========================================================================== //
     const [animated, setAnimated] = useState(false);
     const animateCube = useCallback(
-      (useForce) => {
+      () => {
         setAnimated(true);
         // if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
         setTimeout(() => {
@@ -384,7 +386,7 @@ export const Model = React.memo(
     // fps?: number;
     // gpu?: string;
     // device?: string;
-    const cubeRef = createRef({});
+    const cubeRef = createRef(new THREE.Mesh());
     const { tier } = useDetectGPU();
 
     // prettier-ignore bounding box is the scale times 2.01
@@ -407,8 +409,9 @@ export const Model = React.memo(
 
     // prettier-ignore
     const onClick = useCallback((e) => {
+      console.log(cubeRef);
       e.stopPropagation();
-      if (selectedIndex === position) {
+      if (selectedIndex === index) {
         ping.play();
         animateCube(true);
         triggerPageChange({ background: color, transform: 'skew(10deg)', left: '-115vw' });
@@ -425,14 +428,14 @@ export const Model = React.memo(
         animateCube(true);
         triggerPageChange({ background: color, transform: 'skew(-10deg)', left: '115vw' });
         changePage({
-          selectedIndex: position,
+          selectedIndex: index,
           position: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z),
           pageLink: link,
           // PAGE CHANGE DATA
         });
         // navigate(link, { replace: true });
       }
-    }, [selectedIndex]);
+    }, [cubeRef, selectedIndex]);
 
     // prettier-ignore
     const onPointerOver = useCallback((e) => {
@@ -443,24 +446,21 @@ export const Model = React.memo(
       set({ moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
       set({ moveCamera: true });
       // if (isSelectedProject()) { triggerPageChange({ background: color, transform: "skew(10deg)", left: '-90vw' }); } else { triggerPageChange({ background: color, transform: "skew(10deg)", left: '90vw' }); }
-    }, [hovered]);
+    }, [cubeRef, hovered]);
 
     // prettier-ignore
     const onPointerOut = useCallback(() => {
       setHovered(false);/* set({ x: "#FFFFFF" });* */
       set({ moveCamera: false });
       // if (isSelectedProject()) { triggerPageChange({ background: color, transform: "skew(10deg)", left: '-115vw' }); } else { triggerPageChange({ background: color, transform: "skew(10deg)", left: '115vw' }); }
-    }, [hovered]);
+    }, [cubeRef, hovered]);
 
     const determineMaterialFactor = useMemo(() => (hovered ? 0.9 : 0.6), [
       hovered,
     ]);
     const determineClearcoat = useMemo(() => (hovered ? 0.7 : 0.6), [hovered]);
     const determineColor = useMemo(() => (hovered ? '#F0F3FC' : x), [hovered]);
-    const checkTier = useCallback(
-      (returnValue) => (tier !== 1 ? returnValue : false),
-      [],
-    );
+    const checkTier = useCallback((returnValue) => (tier !== 1 ? returnValue : false), []);
 
     const normalMap = useMemo(() => {
       // convert texture to a normal map

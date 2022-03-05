@@ -1,11 +1,8 @@
 import {
   Box, Grid, Typography, useTheme,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import * as React from 'react';
 import { graphql, navigate, useStaticQuery } from 'gatsby';
-import { NoToneMapping } from 'three';
-import { styled } from '@mui/material/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
 import {
   RegularButton,
@@ -17,6 +14,8 @@ import {
   SCROLL_PROPS,
   svgEncodeBaseSixtyFour,
 } from '../store/theme';
+
+import headlineImage from '../../static/assets/portfolio/designs.png';
 
 const SectionWrapper = ({ children, type = 'primary' }) =>
   // some stuff
@@ -61,7 +60,6 @@ const BookingPage = ({
   );
 };
 
-
 export default BookingPage;
 
 // autorun at gatsby rebuild-cycle
@@ -90,6 +88,7 @@ export const BookingForm = ({ i, title = 'Contact Me', setSelected = () => { } }
   const handleError = () => {
 
   };
+  const theme = useTheme();
   const inputSources = React.createRef([]);
   React.useEffect(() => {
     console.log(inputSources.current);
@@ -102,7 +101,7 @@ export const BookingForm = ({ i, title = 'Contact Me', setSelected = () => { } }
       justifyContent="flex-start"
       sx={{
         width: '100%',
-        height: 600,
+        height: { xs: 800, md: 600 },
         py: 4,
         color: (theme) => theme.palette.text.primary,
         borderLeft: (theme) => theme.custom.borders.brandBorder,
@@ -143,6 +142,20 @@ export const BookingForm = ({ i, title = 'Contact Me', setSelected = () => { } }
           input={{ mode: 'text', pattern: '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' }}
         />
 
+        <img
+          src={headlineImage}
+          alt="designs"
+          height="100%"
+          style={{
+            position: 'absolute',
+            top: -150,
+            left: theme.spacing(3),
+            zIndex: -1,
+            height: 150,
+            width: 320,
+            borderBottom: theme.custom.borders.brandBorder,
+          }}
+        />
         <FancyTextField
           ref={(ref) => inputSources.current.push(ref)}
           type="select"

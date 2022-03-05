@@ -28,7 +28,6 @@ export const SectionHeader = ({ headline, illustrationType, type = 'default' }) 
         alignItems: 'center', // { md: 'row', sm: 'column', xs: 'column' },
         position: 'realtive',
         width: 250,
-        height: 200,
         gap: 2,
         p: 2, // padding: (theme) => theme.spacing(8, 4),
 
@@ -71,7 +70,7 @@ export const SectionHeader = ({ headline, illustrationType, type = 'default' }) 
         <Illustration type={illustrationType} maxWidth={350} />
       </div>
 
-      <Typography align="center" variant="h3" color="currentColor">
+      <Typography align="center" variant="h4" color="currentColor">
         {headline}
       </Typography>
     </Box>

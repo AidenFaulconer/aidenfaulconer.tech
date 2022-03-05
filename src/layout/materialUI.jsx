@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  CssBaseline, ThemeProvider, StyledEngineProvider,
+  CssBaseline, ThemeProvider, StyledEngineProvider, NoSsr,
 } from '@mui/material';
 import StylesProvider from '@mui/styles/StylesProvider';
 import {
@@ -53,20 +53,19 @@ export default ({ children }) => {
         {/* <link rel="preconnect" href="https://fonts.gstatic.com" /> */}
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
 
-        {/* <NoSsr> */}
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider
-            theme={type === 'light' && lt || dt}
-            key="ThemeProvider"
-            // sheetsManager={new Map()}
-          >
-            <StylesProvider injectFirst>
-              <CssBaseline />
-              {children}
-            </StylesProvider>
-          </ThemeProvider>
-        </StyledEngineProvider>
-        {/* </NoSsr> */}
+        <NoSsr>
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider
+              theme={type === 'light' && lt || dt}
+              key="ThemeProvider"
+            >
+              <StylesProvider injectFirst>
+                <CssBaseline />
+                {children}
+              </StylesProvider>
+            </ThemeProvider>
+          </StyledEngineProvider>
+        </NoSsr>
       </React.StrictMode>
     </>
   );

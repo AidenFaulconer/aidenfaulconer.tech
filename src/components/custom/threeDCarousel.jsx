@@ -137,6 +137,7 @@ export default React.memo(
 
     const theme = useTheme();
     const tiltAngle = 20;
+    const carouselID = carouselData[0].key;
     const tiltRadians = tiltAngle * (Math.PI / 180);
     const slideAngle = 360 / carouselData.length; // rotation increment for each slide
     // constrain width of circle to 600,
@@ -147,7 +148,7 @@ export default React.memo(
       lg: 1200,
       xl: 1600,
     });
-    const radius = breakpoint === 'xs' ? 225 : breakpoint === 'sm' ? 225 : breakpoint === 'md' ? 250 : breakpoint === 'lg' ? 300 : 450;
+    const radius = breakpoint === 'xs' ? 125 : breakpoint === 'sm' ? 175 : breakpoint === 'md' ? 150 : breakpoint === 'lg' ? 150 : 300;
     const zOrigin = 859 / carouselData.length - 1;
 
     const slideWidth = (gutter - radius * Math.cos(slideAngle));// was gutter - radius
@@ -237,22 +238,7 @@ export default React.memo(
           // config: { friction: 0, tension: down ? 800 : 200 },
         }));
         setCurRot(curRot);
-
-        // setOrigin((i) => {
-        //   const _current = slideAngle * current;
-        //   const amnt = _current > prevCurrent ? -_current : _current;
-        //   const rot = amnt;
-        //   const scale = 0;
-        //   const x = 1;
-        //   return {
-        //     x, rot, scale, delay: undefined, config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 },
-        //   };
-        // });
       }
-      // alter carousel origin
-
-      // reset carousel
-      // if (!down && gone.size === carouselData.length) setTimeout(() => gone.clear() || setCard((i) => to(i)), 600);
     };
 
     // because we nest instances of this, we need to make sure implements useCallback to memoize it to the instance
@@ -295,7 +281,6 @@ export default React.memo(
             : -slideAngle * _current;
 
         // setRotAcc(rot);
-
         console.log(
           `angle:${slideAngle},length: ${
             carouselData.length - 1
@@ -342,40 +327,32 @@ export default React.memo(
     }, []);
 
     // ========================================================================== //
-    //   carousel
+    //   carousel **has grid areas defined for use in a parent container**
     // ========================================================================== //
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          position: 'relative',
-          flexDirection: 'column',
-          pointerEvents: 'all',
-          height: '100%',
-          width: '100%',
-          background: (theme) => theme.palette.text.primary,
-          // borderTop: (theme) => theme.custom.borders.brandBorder,
-          // py: 4,
-        }}
-        {...bindGestureHandler(0)}
-      >
-        {/* carousel container */}
+      <>
+        {/* carousel container w controls */}
         <Box
+          {...bindGestureHandler(0)}
           sx={{
-            // background: 'yellow',
+            gridArea: `Slider-${carouselID}`,
+            background: (theme) => theme.palette.text.primary,
             // 3d carousel dimensions
-            py: 6,
+            py: 1,
             position: 'relative',
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'column',
             alignContent: 'center',
-            width: '100%',
             pointerEvents: 'all',
-            minHeight: carouselHeight || '40vh',
+            minHeight: carouselHeight || '30vh',
             perspective: 2500,
             perspectiveOrigin: '50% 50%',
             transformStyle: 'preserve-3d',
+            // width: {
+            //   xs: '100%', lg: 900,
+            // },
+            width: '100%',
             // configure scale so this fits properly into the users view without having to deal with associated sizing of children
             // transform: {
             //   xs: `scale(${1}) rotate(0deg) translateZ(100px)`,
@@ -386,7 +363,6 @@ export default React.memo(
             // },
             transform: `scale(${1}) rotate(0deg) translateZ(100px)`,
           }}
-          // listen to input events and handle them accordingly, this communicates with the springs, labeled with 'wrapped', which correspond with the data we input, and one is for the origin
         >
           {/* carousel button container */}
           <Box
@@ -399,7 +375,7 @@ export default React.memo(
               height: 0,
               p: 4,
               zIndex: 10,
-              display: 'inline-flex',
+              display: { xs: 'none', xl: 'inline-flex' },
               justifyContent: 'space-between',
               alignItems: 'center',
               alignSelf: 'center',
@@ -438,6 +414,7 @@ export default React.memo(
             />
           </Box>
 
+          {/* carousel container w carousel */}
           <Box
             sx={{
               // background: 'red',
@@ -498,7 +475,6 @@ export default React.memo(
                         width: `${slideWidth}px`,
                         backdropFilter: 'blur(25px)',
                         color: (theme) => theme.palette.text.seconary,
-                        padding: 0,
                         boxShadow: 'none !important',
                         position: 'absolute',
                         display: 'flex',
@@ -537,14 +513,16 @@ export default React.memo(
           </Box>
         </Box>
 
+        {/* additional Carousels */}
+
         {/* nest carousels from top to bottom via children, they need eachother, this is recursive, ensure a stopping condition */}
         {/* this carousel is different for every single subsection, current powers this selection */}
         {(SubSelectionComponent && (
           <SubSelectionComponent
             // carousel dimensions
             gutter={gutter}
-            carouselHeight={300}
-            cardWidth={500}
+            carouselHeight={carouselHeight}
+            cardWidth={cardWidth}
             carouselData={subSectionData[current].subSectionData} // this will contain selections, and the root subSectionData for the children to base from
             key={subSectionData[current].key}
             title={subSectionData[current].headline}
@@ -561,15 +539,22 @@ export default React.memo(
         {/* for a carousel, give an option for content, you see the above nested component places content here */}
         {/* current and set current, correspond to a parent WITH children, if they dont, they wont have a current/setCurrent to correspond */}
         {(HasContent && (
-          <HasContent
-            key="content component"
-            current={current} // edit parents selection if needed
-            setCurrent={setCurrent} // this is the NESTED selection carousels setCurrent
-            contentData={carouselData[current]}
-          />
+          <Box sx={{
+            gridArea: 'content',
+            width: '100%',
+            height: '100%',
+          }}
+          >
+            <HasContent
+              key="content component"
+              current={current} // edit parents selection if needed
+              setCurrent={setCurrent} // this is the NESTED selection carousels setCurrent
+              contentData={carouselData[current]}
+            />
+          </Box>
         )
         ) || null}
-      </Box>
+      </>
     );
   },
   (prevProps, nextProps) =>

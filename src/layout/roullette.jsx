@@ -1,4 +1,4 @@
-import { CardMedia } from '@mui/material';
+import { Box, CardMedia } from '@mui/material';
 import React from 'react';
 
 import ThreeDCarousel from '../components/custom/threeDCarousel';
@@ -697,9 +697,10 @@ const subSections = [
 // Routlette
 // ========================================================================== //
 export default () => (
+
   <ThreeDCarousel
     // carousel dimensions
-    carouselHeight={300}
+    carouselHeight={175}
     cardWidth={400}
     gutter={4}
     // top section
@@ -711,4 +712,5 @@ export default () => (
     subSectionData={subSections}// needs selectionComponent, subSectionComponent, headline, key
     SubSelectionComponent={ThreeDCarousel}
   />
+
 );

@@ -18,6 +18,8 @@ import {
   svgEncodeBaseSixtyFour,
 } from '../../store/theme';
 
+import headlineImage from '../../../static/assets/portfolio/designs.png';
+
 export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
   const handleError = () => {
 
@@ -26,6 +28,7 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
   React.useEffect(() => {
     console.log(inputSources.current);
   }, [inputSources]);
+  const theme = useTheme();
   return (
     <Grid
       container
@@ -33,14 +36,35 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
       alignItems="stretch"
       justifyContent="flex-start"
       sx={{
+        position: 'relative',
         width: '100%',
-        height: 600,
+        height: { xs: 1000, md: 600 },
         py: 4,
         color: (theme) => theme.palette.text.primary,
         borderLeft: (theme) => theme.custom.borders.brandBorder,
         borderRight: (theme) => theme.custom.borders.brandBorder,
       }}
     >
+      <Box sx={{
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+      }}
+      >
+        <img
+          src={headlineImage}
+          alt="designs"
+          height="100%"
+          style={{
+            position: 'absolute',
+            left: 115,
+            bottom: 0,
+            zIndex: 2,
+            height: 150,
+            width: 320,
+          }}
+        />
+      </Box>
       <Box sx={{
         px: 4, width: '100%', position: 'relative', height: 0,
       }}
@@ -101,6 +125,7 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
         />
       </Grid>
       <Grid sx={{ px: 4 }} display="flex" justifyContent="space-between" direction="column" xs={12} sm={6}>
+
         <FancyTextField
           ref={(ref) => inputSources.current.push(ref)}
           maxRows={11}
@@ -113,6 +138,7 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
           Send message
         </RegularButton>
       </Grid>
+
     </Grid>
   );
 };

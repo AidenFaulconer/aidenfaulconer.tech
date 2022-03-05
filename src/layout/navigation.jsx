@@ -495,17 +495,17 @@ const Navigation = React.memo(
     // ========================================================================== //
     return (
       <>
+        <div style={{ height: 100 }} />
         <Slide appear direction="down" in={!trigger}>
           <AppBar
             elevation={!trigger ? 6 : 0}
-            position="sticky"
+            position="fixed"
             sx={{
               boxShadow: (theme) => theme.custom.shadows.brand,
               zIndex: 30, // hidhest
               minHeight: 85,
               height: 100,
               display: 'flex',
-              // position: 'fixed',
               flexDirection: 'row',
               justifyContent: 'space-evenly',
               color: 'text.secondary',
