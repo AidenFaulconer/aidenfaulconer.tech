@@ -73,7 +73,13 @@ import env_map from '../../../static/assets/portfolio/envmap.png';
 // ========================================================================== //
 // Physics plane
 // ========================================================================== //
-
+import awmImage from '../../../static/assets/blog/awm.png';
+import rvrImage from '../../../static/assets/blog/rvr.png';
+import rgImage from '../../../static/assets/blog/railgun.png';
+import afImage from '../../../static/assets/blog/me.png';
+import lgImage from '../../../static/assets/blog/uc.png';
+import xprtImage from '../../../static/assets/blog/xperthubb.png';
+import ajImage from '../../../static/assets/blog/aj.png';
 // A physical plane with collisions
 // prettier-ignore
 export const Plane = React.memo(({

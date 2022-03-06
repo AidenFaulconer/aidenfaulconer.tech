@@ -121,6 +121,7 @@ So, `r` is (about) 412px long! This means we need to TRANSLATE the slides in the
 export default React.memo(
   ({
     // this section
+    _radius = 0,
     carouselData,
     gutter = 0.04,
     key = 'default',
@@ -148,7 +149,12 @@ export default React.memo(
       lg: 1200,
       xl: 1600,
     });
-    const radius = breakpoint === 'xs' ? 125 : breakpoint === 'sm' ? 175 : breakpoint === 'md' ? 150 : breakpoint === 'lg' ? 150 : 300;
+    const radius = (_radius !== 0)
+      ? _radius : breakpoint === 'xs'
+        ? 125 : breakpoint === 'sm'
+          ? 175 : breakpoint === 'md'
+            ? 150 : breakpoint === 'lg'
+              ? 150 : 300;
     const zOrigin = 859 / carouselData.length - 1;
 
     const slideWidth = (gutter - radius * Math.cos(slideAngle));// was gutter - radius

@@ -53,7 +53,7 @@ export const HeroHeader = React.memo((props) => {
       },
     },
   }));
-
+  const { noHeadline = false } = props;
   const selectedIndex = useStore((state) => state.threejsContext.context.selectedIndex);
   const postsData = useStore((state) => state.threejsContext.context.postsData);
   const post = postsData ? postsData[selectedIndex] : {
@@ -162,6 +162,7 @@ export const HeroHeader = React.memo((props) => {
         </Grid>
 
         {/* Headline */}
+        { noHeadline || (
         <Grid
           item
           md={12}
@@ -245,6 +246,7 @@ export const HeroHeader = React.memo((props) => {
             </Box>
           </Grid>
         </Grid>
+        )}
       </Grid>
       {/* // create a svg circle in html */}
     </section>
