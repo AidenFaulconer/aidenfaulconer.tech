@@ -36,117 +36,162 @@ const dt = afCreateTheme(DARK_THEME);
 // ========================================================================== //
 // App State
 // ========================================================================== //
-const useStore = create((set) =>
-  // ========================================================================== //
-  //   State
-  // ========================================================================== //
-  ({
-    appContext: {
-      type: 'light',
-      toggleTheme: () => {
+const useStore = create((set) => ({
+  // control the app
+  appContext: {
+    type: 'light',
+    toggleTheme: () => {
+      set((state) => ({
+        ...state,
+        appContext: {
+          ...state.appContext,
+          type: state.appContext.type === 'light' ? 'dark' : 'light',
+        },
+      }));
+    },
+    location: {},
+    setLocation: (location) => {
+      set((state) => ({
+        ...state,
+        appContext: {
+          ...state.appContext,
+          location,
+        },
+      }));
+    },
+  },
+  // control form input
+  contactForm: {
+    name: '',
+    email: '',
+    message: '',
+    phone: '',
+    service: '',
+    methods: {
+      changeContext: (newContext) => {
         set((state) => ({
           ...state,
-          appContext: {
-            ...state.appContext,
-            type: state.appContext.type === 'light' ? 'dark' : 'light',
-          },
-        }));
-      },
-      location: {},
-      setLocation: (location) => {
-        set((state) => ({
-          ...state,
-          appContext: {
-            ...state.appContext,
-            location,
+          bookingForm: {
+            ...state.bookingForm,
+            ...newContext,
           },
         }));
       },
     },
-    threejsContext: {
-      context: {
-        color: '#fff', // x
-        selectedIndex: -1,
-        position: { x: 0, y: 0, z: 0 },
-        pageLink: '/',
-        postData: [],
-        // react spring animated values from three wrapper and page transition overlay
-        animatedColor: '#fff',
-        animatedOpacity: 1,
-        // subtitle: 'default',
-        hand: {
-          animationsPlaying: ['hold'],
-          propsUsing: [],
-        },
-        // headline: 'THE BUILDING BLOCK FOR YOUR ORGANISATION',
-        pageTheme: {
-          primary: '#fff',
-          secondary: '#fff',
-        },
+  },
+  // control form input
+  bookingForm: {
+    // user details
+    name: '',
+    email: '',
+    message: '',
+    phone: '',
+    service: '',
+    // project details
+    referencePhotos: [],
+    projectRequirements: '',
+    budgetRange: '',
+    dueDate: '',
+    projectSuccessHow: '',
+    // confirmation
+    summary: [],
+    methods: {
+      changeContext: (newContext) => {
+        set((state) => ({
+          ...state,
+          bookingForm: {
+            ...state.bookingForm,
+            ...newContext,
+          },
+        }));
       },
-      methods: {
-        changeContext: (newContext) => {
-          set((state) => ({
-            ...state,
-            threejsContext: {
-              ...state.threejsContext,
-              context: {
-                ...state.threejsContext.context,
+    },
+  },
+  // control 3d app
+  threejsContext: {
+    context: {
+      color: '#fff', // x
+      selectedIndex: -1,
+      position: { x: 0, y: 0, z: 0 },
+      pageLink: '/',
+      postData: [],
+      // react spring animated values from three wrapper and page transition overlay
+      animatedColor: '#fff',
+      animatedOpacity: 1,
+      // subtitle: 'default',
+      hand: {
+        animationsPlaying: ['hold'],
+        propsUsing: [],
+      },
+      // headline: 'THE BUILDING BLOCK FOR YOUR ORGANISATION',
+      pageTheme: {
+        primary: '#fff',
+        secondary: '#fff',
+      },
+    },
+    methods: {
+      changeContext: (newContext) => {
+        set((state) => ({
+          ...state,
+          threejsContext: {
+            ...state.threejsContext,
+            context: {
+              ...state.threejsContext.context,
+              ...newContext,
+            },
+          },
+        }));
+      },
+      changeHand: (newContext) => {
+        set((state) => ({
+          ...state,
+          threejsContext: {
+            ...state.threejsContext,
+            context: {
+              ...state.threejsContext.context,
+              hand: {
                 ...newContext,
               },
             },
-          }));
-        },
-        changeHand: (newContext) => {
-          set((state) => ({
-            ...state,
-            threejsContext: {
-              ...state.threejsContext,
-              context: {
-                ...state.threejsContext.context,
-                hand: {
-                  ...newContext,
-                },
-              },
-            },
-          }));
-        },
-        changePage: (newSelectedData) => {
-          if (typeof window === 'undefined') return;
-
-          // set theme from selected props
-          set((state) => ({
-            ...state,
-            threejsContext: {
-              ...state.threejsContext,
-              context: {
-                ...state.threejsContext.context,
-                ...newSelectedData,
-              },
-            },
-          }));
-          // route to page
-          // alert(newSelectedData.pageLink);
-          // navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
-          // navigate to another page with @react/router
-          navigate(newSelectedData.pageLink, { replace: true, state: 'forceUpdate' });
-        },
-        // overritten by page transition overlay
-        triggerPageChange: () => { },
-        setColor: () => {},
+          },
+        }));
       },
-      gameObjects: [
-        {
-          blogUrl: './',
-          textureUrl: './',
+      changePage: (newSelectedData) => {
+        if (typeof window === 'undefined') return;
 
-          color: '#fff',
-        },
-      ],
-      setNewObjects: (newObjects) => set((state) => ({ threejsContext: { gameObjects: newObjects } })),
-      pushGameObject: (newObject) => set((state) => ({ threejsContext: { gameObjects: [...state.threejsContext.gameObjects, newObject] } })),
+        // set theme from selected props
+        set((state) => ({
+          ...state,
+          threejsContext: {
+            ...state.threejsContext,
+            context: {
+              ...state.threejsContext.context,
+              ...newSelectedData,
+            },
+          },
+        }));
+        // route to page
+        // alert(newSelectedData.pageLink);
+        // navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
+        // navigate to another page with @react/router
+        navigate(newSelectedData.pageLink, { replace: true, state: 'forceUpdate' });
+      },
+      // overritten by page transition overlay
+      triggerPageChange: () => { },
+      setColor: () => {},
     },
-  }));
+    gameObjects: [
+      {
+        blogUrl: './',
+        textureUrl: './',
+
+        color: '#fff',
+      },
+    ],
+    setNewObjects: (newObjects) => set((state) => ({ threejsContext: { gameObjects: newObjects } })),
+    pushGameObject: (newObject) => set((state) => ({ threejsContext: { gameObjects: [...state.threejsContext.gameObjects, newObject] } })),
+  },
+}));
 //   import { devtools } from 'zustand/middleware'
 
 // // Usage with a plain action store, it will log actions as "setState"

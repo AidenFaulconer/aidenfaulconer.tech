@@ -16,6 +16,8 @@ import {
   RegularButton,
   SelectionButton,
   FancyTextField,
+  FileUploadButton,
+  PickDate,
 } from './custom/buttons';
 
 import { SCROLL_PROPS, svgEncodeBaseSixtyFour } from '../store/theme';
@@ -374,16 +376,14 @@ export const PlanningStep = (props) => {
           maxRows={11}
           fullHeight
           label="Project Requirements"
-
-          defaultValue="Tell me what you need done, be specific"
           defaultValue={`I need this ${props.title || 'app'} project do the following.. `}
         />
-        <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+        <PickDate
+        //   ref={(ref) => inputSources.current.push(ref)}
           label="When is this project due?"
-          helperText="your full name"
-          size="normal"
-          input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
+        //   helperText="your full name"
+        //   size="normal"
+        //   input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
         />
       </Box>
       <Box
@@ -404,12 +404,14 @@ export const PlanningStep = (props) => {
           size="normal"
           input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
         />
-        <FancyTextField
+        <FileUploadButton
           ref={(ref) => inputSources.current.push(ref)}
           label="Upload reference photos"
-          helperText="Photos of what you want the project to look like"
-          size="normal"
-          input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
+          icon={{ start: true, type: 'item' }}
+        //   helperText="Photos of what you want the project to look like"
+        //   size="normal"
+        //   type="file"
+        //   input={{ mode: 'file' }}
         />
         <FancyTextField
           ref={(ref) => inputSources.current.push(ref)}

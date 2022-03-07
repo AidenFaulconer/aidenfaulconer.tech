@@ -9,105 +9,122 @@ import { LocationOn } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/system';
 import { text } from 'cheerio/lib/api/manipulation';
+
+// date picker imports
+import Badge from '@mui/material/Badge';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import PickersDay from '@mui/lab/PickersDay';
+import DatePicker from '@mui/lab/DatePicker';
+import CalendarPickerSkeleton from '@mui/lab/CalendarPickerSkeleton';
+import getDaysInMonth from 'date-fns/getDaysInMonth';
 import {
   patternHover, patternHoverKeyframes,
 } from '../../store/theme';
 
 // ========================================================================== //
-// Button styles
+// Date picker
 // ========================================================================== //
-const PREFIX = 'Buttons';
-const classes = {
-  root: `${PREFIX}-root`,
-  dropDownButton: `${PREFIX}-dropDownButton`,
-  inputButton: `${PREFIX}-inputButton`,
-  socialMediaPopup: `${PREFIX}-socialMediaPopup`,
-};
-const Root = styled('div')((theme, selected) => {
-  const buttonReuse = {
-    height: 40,
-    display: 'inline-flex',
-    lineHeight: '100%',
-    alignItems: 'center',
-  };
-  return ({
-    // ========================================================================== //
-    //     define animation names at top level
-    // ========================================================================== //
-    ...patternHoverKeyframes, // these can only be referenced in one spot in the app, either locally or globally **so here**
-    [`& .${classes.root}`]: {
-      background: theme.custom.shadows.brand,
-    },
-    // dark (in default theme)
-    [`& .${classes.regularButton}`]: {
-      ...patternHover,
-      ...buttonReuse,
-      height: 40,
-      display: 'inline-flex',
-      alignItems: 'center',
-      // background: ({ color }) => (color || theme.palette.primary.main),
-      background: theme.palette.background.primary,
-      color: theme.palette.text.secondary,
-    },
-    // light (in default theme)
-    [`& .${classes.secondaryButton}`]: {
-      ...buttonReuse,
-      ...patternHover,
-      background: theme.palette.background.secondary,
-      color: theme.palette.text.primary,
-      border: theme.custom.borders.brandBorderSecondary,
-    },
-    [`& .${classes.thirdButton}`]: {
-      ...buttonReuse,
-      ...patternHover,
-      background: theme.palette.background.default,
-      border: theme.custom.borders.brandBorderSecondary,
-      color: theme.palette.text.primary.main,
-    },
-    [`& .${classes.dropDownButton}`]: {
+function getRandomNumber(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
 
-      // effect
-      transition: theme.transitions.create(
-        ['color', 'box-shadow', 'background', 'margin', 'border'],
-        { duration: '0.3s', easing: 'ease-in-out' },
-      ),
+/**
+ * Mimic fetch with abort controller https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
+ * ⚠️ No IE11 support
+ */
+function fakeFetch(date, { signal }) {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      const daysInMonth = getDaysInMonth(date);
+      const daysToHighlight = [1, 2, 3].map(() => getRandomNumber(1, daysInMonth));
 
-      // effect
-      marginLeft: -theme.spacing(1),
-      marginBottom: -theme.spacing(1),
+      resolve({ daysToHighlight });
+    }, 500);
 
-      // theme styles
-      whiteSpace: 'nowrap',
-      display: 'inline',
-      color: theme.palette.text.primary,
-      background: theme.palette.background.default,
-      boxShadow: theme.custom.shadows.brandInset,
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      padding: '7px',
-    },
-    [`& .${classes.inputButton}`]: {
-
-      transition: theme.transitions.create(
-        ['color', 'box-shadow', 'background', 'margin', 'border'],
-        { duration: '0.3s', easing: 'ease-in-out' },
-      ),
-
-      whiteSpace: 'nowrap',
-
-      // effect
-      marginLeft: -theme.spacing(1),
-      marginBottom: -theme.spacing(1),
-      display: 'inline',
-
-      // theme styles
-      color: theme.palette.text.primary,
-      background: theme.palette.background.default,
-      boxShadow: theme.custom.shadows.brandInset,
-      borderRadius: theme.custom.borders.brandBorderRadius,
-      padding: '7px',
-    },
+    signal.onabort = () => {
+      clearTimeout(timeout);
+      reject(new DOMException('aborted', 'AbortError'));
+    };
   });
-});
+}
+const initialValue = new Date();
+export const PickDate = () => {
+  const requestAbortController = React.useRef(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
+  const [value, setValue] = React.useState(initialValue);
+
+  const fetchHighlightedDays = (date) => {
+    const controller = new AbortController();
+    fakeFetch(date, {
+      signal: controller.signal,
+    })
+      .then(({ daysToHighlight }) => {
+        setHighlightedDays(daysToHighlight);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        // ignore the error if it's caused by `controller.abort`
+        if (error.name !== 'AbortError') {
+          throw error;
+        }
+      });
+
+    requestAbortController.current = controller;
+  };
+
+  React.useEffect(() => {
+    fetchHighlightedDays(initialValue);
+    // abort request on unmount
+    return () => requestAbortController.current?.abort();
+  }, []);
+
+  const handleMonthChange = (date) => {
+    if (requestAbortController.current) {
+      // make sure that you are aborting useless requests
+      // because it is possible to switch between months pretty quickly
+      requestAbortController.current.abort();
+    }
+    setIsLoading(true);
+    setHighlightedDays([]);
+    fetchHighlightedDays(date);
+  };
+
+  const datePickerStyles = {
+
+  };
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        sx={{ ...datePickerStyles }}
+        value={value}
+        loading={isLoading}
+        onChange={(newValue) => {
+          setValue(newValue);
+        }}
+        onMonthChange={handleMonthChange}
+        renderInput={(params) => <TextField {...params} />}
+        renderLoading={() => <CalendarPickerSkeleton />}
+        renderDay={(day, _value, DayComponentProps) => {
+          const isSelected = !DayComponentProps.outsideCurrentMonth
+            && highlightedDays.indexOf(day.getDate()) > 0;
+
+          return (
+            <Badge
+              key={day.toString()}
+              overlap="circular"
+              badgeContent={isSelected ? '🌚' : undefined}
+            >
+              <PickersDay {...DayComponentProps} />
+            </Badge>
+          );
+        }}
+      />
+    </LocalizationProvider>
+  );
+};
 
 // ========================================================================== //
 // Icon library
@@ -367,6 +384,24 @@ export const SelectionButton = (props) => {
     >
       {children}
     </Button>
+  );
+};
+
+// ========================================================================== //
+// File upload Button
+// ========================================================================== //
+export const FileUploadButton = (props) => {
+  const [state, setState] = React.useState();
+  return (
+    <RegularButton {...props}>
+      <label htmlFor="upload-photos">{props.label}</label>
+      <input
+        type="file"
+        id="upload-photo"
+        name="upload-photo"
+        hidden
+      />
+    </RegularButton>
   );
 };
 

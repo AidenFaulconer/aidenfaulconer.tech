@@ -73,13 +73,6 @@ import env_map from '../../../static/assets/portfolio/envmap.png';
 // ========================================================================== //
 // Physics plane
 // ========================================================================== //
-import awmImage from '../../../static/assets/blog/awm.png';
-import rvrImage from '../../../static/assets/blog/rvr.png';
-import rgImage from '../../../static/assets/blog/railgun.png';
-import afImage from '../../../static/assets/blog/me.png';
-import lgImage from '../../../static/assets/blog/uc.png';
-import xprtImage from '../../../static/assets/blog/xperthubb.png';
-import ajImage from '../../../static/assets/blog/aj.png';
 // A physical plane with collisions
 // prettier-ignore
 export const Plane = React.memo(({
@@ -277,8 +270,10 @@ export const Models = ({
     } = post;
       // slice textureData length to three if tier is 1
       // tier === 1 ? textureData.slice(0, 3) : textureData;
-    const texture = (thumbnail && useLoader(THREE.TextureLoader, thumbnail))
-        || new THREE.Texture();
+    const texture = (
+      new THREE.Texture());
+    // thumbnail && useLoader(THREE.TextureLoader, thumbnail))
+    //   || new THREE.Texture();
 
     // const image = require(`${__dirname}static${thumbnail}`);
     return (
