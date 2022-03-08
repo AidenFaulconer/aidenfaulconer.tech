@@ -14,6 +14,7 @@ import React, {
   useState,
 } from 'react';
 import { useCookies } from 'react-cookie';
+import { useStore } from '../../store/store';
 
 // ========================================================================== //
 // Zustand hooks
@@ -33,6 +34,18 @@ export const reRenderOnVariables = (variables = []) => {
   }, [...variables]);
 };
 
+// ========================================================================== //
+// Global Store FORM handler **using zustand as global store**
+// ========================================================================== //
+export const useFormStore = (formName = 'testForm', fieldName = 'text', stateDefaultValue = false) => {
+  const [input, setFormInput] = useState(stateDefaultValue || useStore((state) => state[formName][fieldName]));
+  const changeFormData = useStore((state) => state[formName].methods.changeFormData);
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') console.log(`New Form Input: ${input} for form ${formName}`);
+    changeFormData({ [fieldName]: input });
+  }, [input]);
+  return [input, setFormInput];
+};
 // ========================================================================== //
 // Force re render
 // ========================================================================== //

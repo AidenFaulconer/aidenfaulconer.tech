@@ -19,6 +19,7 @@ import {
 } from '../../store/theme';
 
 import headlineImage from '../../../static/assets/portfolio/designs.png';
+import { sendContactForm } from '../util/apis';
 
 export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
   const handleError = () => {
@@ -79,20 +80,26 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
       <Grid sx={{ px: 4 }} display="flex" justifyContent="flex-start" gutterBottom align="center" direction="column" xs={12} sm={6}>
 
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="contactForm"
+          fieldName="name"
+
           label="name"
           helperText="your full name"
           size="normal"
         />
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="contactForm"
+          fieldName="phone"
+
           label="phone"
           helperText="your full name"
           size="normal"
           input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
         />
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="contactForm"
+          fieldName="email"
+
           label="email"
           helperText="your full name"
           size="normal"
@@ -100,7 +107,9 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
         />
 
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="contactForm"
+          fieldName="service"
+
           type="select"
           icon={{ start: true, type: 'item' }}
           data={[
@@ -127,14 +136,16 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
       <Grid sx={{ px: 4 }} display="flex" justifyContent="space-between" direction="column" xs={12} sm={6}>
 
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="contactForm"
+          fieldName="message"
+
           maxRows={11}
           fullHeight
           label="message"
           message="Tell me about yourself, and how I can help"
           defaultValue="Write me a message, tell me about what your project is, or just say hi!"
         />
-        <RegularButton style={{ marginTop: 16 }}>
+        <RegularButton style={{ marginTop: 16 }} onClick={() => sendContactForm()}>
           Send message
         </RegularButton>
       </Grid>

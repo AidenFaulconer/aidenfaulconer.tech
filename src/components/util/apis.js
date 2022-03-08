@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useStore } from '../../store/store';
 // ========================================================================== //
 // geolocation and other apis
 // ========================================================================== //
@@ -67,6 +68,49 @@ export const searchWeather = async (loc) => axios.get(
   `${process.env.NODE_ENV.APIURL}/data/2.5/weather?q=${loc}&appid=${process.env.OPENWEATHERAPIKEY}`,
 );
 export const sendSms = async ({ message, recipient }) => {
+  console.log(message, recipient);
+  return axios.request({
+    method: 'POST',
+    url: process.env.SMSSENDURL,
+    headers: {
+      ...commonHeaders,
+      'x-rapidapi-host': process.env.SMSHOST,
+      'x-rapidapi-key': process.env.RAPIDAPIKEY,
+    },
+    data: new URLSearchParams({
+      username: process.env.CLICKSENDUSERNAME,
+      key: process.env.CLICKSENDAPIKEY,
+      schedule: '1377959755',
+      senderid: 'AJ Garden Care',
+      message,
+      sms: `+${recipient}`,
+    }).toString(),
+  });
+};
+
+export const sendContactForm = async ({ message, recipient }) => {
+  const contactFormData = useStore((state) => state.contactForm);
+  return axios.request({
+    method: 'POST',
+    url: process.env.SMSSENDURL,
+    headers: {
+      ...commonHeaders,
+      'x-rapidapi-host': process.env.SMSHOST,
+      'x-rapidapi-key': process.env.RAPIDAPIKEY,
+    },
+    data: new URLSearchParams({
+      username: process.env.CLICKSENDUSERNAME,
+      key: process.env.CLICKSENDAPIKEY,
+      schedule: '1377959755',
+      senderid: 'AJ Garden Care',
+      message,
+      sms: `+${recipient}`,
+    }).toString(),
+  });
+};
+export const sendBookingForm = async ({ message, recipient }) => {
+  const bookingFormData = useStore((state) => state.bookingForm);
+
   console.log(message, recipient);
   return axios.request({
     method: 'POST',

@@ -479,7 +479,7 @@ export default React.memo(
                       style={{
                         minWidth: `${slideWidth}px`,
                         width: `${slideWidth}px`,
-                        backdropFilter: 'blur(25px)',
+                        // backdropFilter: 'blur(25px)',
                         color: (theme) => theme.palette.text.seconary,
                         boxShadow: 'none !important',
                         position: 'absolute',

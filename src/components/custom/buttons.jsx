@@ -21,6 +21,8 @@ import getDaysInMonth from 'date-fns/getDaysInMonth';
 import {
   patternHover, patternHoverKeyframes,
 } from '../../store/theme';
+import { useStore } from '../../store/store';
+import { useFormStore } from '../util/customHooks';
 
 // ========================================================================== //
 // Date picker
@@ -48,12 +50,11 @@ function fakeFetch(date, { signal }) {
     };
   });
 }
-const initialValue = new Date();
-export const PickDate = () => {
+export const PickDate = (props) => {
   const requestAbortController = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
-  const [value, setValue] = React.useState(initialValue);
+  const [input, setInput] = useFormStore(props.formName, props.fieldName, []);
 
   const fetchHighlightedDays = (date) => {
     const controller = new AbortController();
@@ -75,7 +76,7 @@ export const PickDate = () => {
   };
 
   React.useEffect(() => {
-    fetchHighlightedDays(initialValue);
+    fetchHighlightedDays(input);
     // abort request on unmount
     return () => requestAbortController.current?.abort();
   }, []);
@@ -99,10 +100,10 @@ export const PickDate = () => {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         sx={{ ...datePickerStyles }}
-        value={value}
+        value={input}
         loading={isLoading}
         onChange={(newValue) => {
-          setValue(newValue);
+          setInput(newValue);
         }}
         onMonthChange={handleMonthChange}
         renderInput={(params) => <TextField {...params} />}
@@ -298,6 +299,35 @@ export const RegularButton = (props) => {
 };
 
 // ========================================================================== //
+// qualification cards / content
+// ========================================================================== //
+const ItemTag = ({ props, children }) => {
+  const theme = useTheme();
+  return (
+    <Box
+      {...props}
+      sx={{
+        borderRadius: 30,
+        padding: 1,
+        background: (theme) => theme.palette.text.primary,
+        color: (theme) => theme.palette.text.secondary,
+        display: 'inline-flex',
+        alignItems: 'center',
+        border: (theme) => theme.custom.borders.brandBorder,
+        height: 25,
+        fontSize: 12,
+        '&:hover': {
+          background: (theme) => theme.palette.text.secondary,
+          color: (theme) => theme.palette.text.primary,
+        },
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
+// ========================================================================== //
 // Selection buttons
 // ========================================================================== //
 export const SelectionButton = (props) => {
@@ -388,20 +418,91 @@ export const SelectionButton = (props) => {
 };
 
 // ========================================================================== //
+// All inputs need to be directed to the STORE, where input data is kept
+// the structure is {state[formName].changeFormData({[fieldName]: value})}
+// so all inputs NEED a formName AND a fieldName
+
+// ========================================================================== //
 // File upload Button
 // ========================================================================== //
 export const FileUploadButton = (props) => {
-  const [state, setState] = React.useState();
+  const ref = React.useRef();
+  const [input, setInput] = useFormStore(props.formName, props.fieldName, []);
+
+  const getFileName = /[^/]*$/;
+  const handleInput = React.useCallback((e) => {
+    // go through all the files and check the type of file, and file size is under 3mb and there is no more than 3 files
+    const files = e?.target ? [...e.target.files] : Object.keys(e).map((f) => e[f]);
+    if (files) {
+      const fileTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
+      const fileSize = 5242880;
+      const maxFiles = 3;
+      const fileCount = files.length;
+      if (fileCount > maxFiles || input.length > maxFiles) { alert('You can only upload a maximum of 3 files'); return; }
+      for (let i = 0; i < files.length; i++) {
+        if (fileTypes.indexOf(files[i].type) === -1) { alert(`File type not supported for ${files[i].name}, use ${fileTypes.map((type) => type).join(', ')}`); return; }
+        if (files[i].size > fileSize) {
+          alert(`File size for ${files[i].name} is too large (Maximum file size is 5MB)`); return;
+        }
+      }
+      setInput(files);
+    }
+  }, [ref]);
+
+  const generateFileTags = React.useCallback(() => {
+    if (input.length > 0) {
+      // console.log(file);
+      return input.map((file) => (
+        <ItemTag key={file.name} style={{ zIndex: 10 }}>
+          {/* <AFIcon type="close" onClick={() => setInput(input.filter((item) => item !== file))} /> */}
+          {`  ${file.name}`}
+        </ItemTag>
+      ));
+    }
+  }, [input]);
+
   return (
-    <RegularButton {...props}>
-      <label htmlFor="upload-photos">{props.label}</label>
-      <input
-        type="file"
-        id="upload-photo"
-        name="upload-photo"
-        hidden
-      />
-    </RegularButton>
+    <>
+      <label htmlFor="upload-photos">
+        <RegularButton
+
+          {...props}
+          style={{
+            // overflowX: 'scroll',
+            display: 'flex',
+            flexWrap: 'no-wrap',
+            flexDirection: 'row',
+            height: 100,
+            marginBottom: 30,
+          }}
+          // allow users to drag and drop files on this button
+          draggable="true"
+          onDragStart={(e) => e.dataTransfer.setData('text/plain', 'anything')}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            const { files } = e.dataTransfer;
+            handleInput(files);
+          }}
+          // call file dialog in input
+          onClick={(e) => {
+            ref.current.click();
+          }}
+        >
+          <input
+            onChange={handleInput}
+            ref={ref}
+            type="file"
+            id="upload-photo"
+            name="upload-photo"
+            hidden
+            multiple
+          />
+          {generateFileTags()}
+          {input.length == 0 && props.label}
+        </RegularButton>
+      </label>
+    </>
   );
 };
 
@@ -455,9 +556,10 @@ export const FancyTextField = React.forwardRef((props, ref) => {
   const MenuItemStyles = {
 
   };
-  const [valueState, setValueState] = useState('');
-  const handleOptionChange = (e) => { setValueState(e.target.value.toString()); console.log(valueState); };
-  const handleChange = (e) => setValueState(e.target.value);
+  const [thisInput, setThisInput] = useFormStore(props.formName, props.fieldName, '');
+
+  const handleOptionChange = (e) => { setThisInput(e.target.value.toString()); console.log(thisInput); };
+  const handleChange = (e) => setThisInput(e.target.value);
   const createIcon = React.useCallback((icon) => (
     <>
       {!icon.start && (<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />)}
@@ -467,7 +569,7 @@ export const FancyTextField = React.forwardRef((props, ref) => {
       {icon.start && (<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />)}
     </>
   ),
-  [valueState]);
+  [thisInput]);
 
   // TODO: useImperative to override eventListeners
   return (
@@ -483,7 +585,7 @@ export const FancyTextField = React.forwardRef((props, ref) => {
       onChange={onChange || (data && handleOptionChange || null)}
       onInput={onChange ? null : handleChange}
 
-      value={value || valueState}
+      value={thisInput}
       label={label && label}
 
       autoComplete
@@ -491,9 +593,9 @@ export const FancyTextField = React.forwardRef((props, ref) => {
       color="primary"
       select={Boolean(data)}
       // color="currentColor"
-      defaultValue={defaultValue}
+      defaultValue={thisInput}
       helperText={message || ' '}
-      id={`${defaultValue}-textInput`}
+      id={`${thisInput}-textInput`}
       // variant="outlined"
       InputProps={{
         startAdornment: icon ? createIcon(icon) : null,
@@ -524,7 +626,7 @@ export const FancyTextField = React.forwardRef((props, ref) => {
           key={option.value}
           value={option.value}
           name={option.value}
-          selected={option.value === valueState}
+          selected={option.value === thisInput}
         >
           {/* {option.value === valueState && null || option.icon && createIcon(option.icon)} */}
           {option.label}

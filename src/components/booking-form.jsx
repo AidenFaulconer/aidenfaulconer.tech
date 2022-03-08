@@ -28,6 +28,8 @@ import ThreeDCarousel from './custom/threeDCarousel';
 // sections
 import { SectionHeader } from './section-header';
 
+import doItAll from '../../static/assets/portfolio/doitall.png';
+
 import awmImage from '../../static/assets/blog/awm.png';
 import rvrImage from '../../static/assets/blog/rvr.png';
 import rgImage from '../../static/assets/blog/railgun.png';
@@ -36,6 +38,8 @@ import lgImage from '../../static/assets/blog/uc.png';
 import xprtImage from '../../static/assets/blog/xperthubb.png';
 import ajImage from '../../static/assets/blog/aj.png';
 import { ServicesSelection } from './portfolio-page/services';
+import { useStore } from '../store/store';
+import { sendBookingForm } from './util/apis';
 
 export default ({ i, title = 'Start a project', setSelected = () => {} }) => {
   const handleError = () => {};
@@ -87,8 +91,8 @@ export default ({ i, title = 'Start a project', setSelected = () => {} }) => {
 export const ProjectStepper = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-
-  const useStepComponent = React.useCallback(({ StepComponent }) => <StepComponent />, [activeStep]);
+  const [finished, setFinished] = React.useState(false);
+  const useStepComponent = React.useCallback(({ StepComponent }) => <StepComponent finished={finished} />, [activeStep]);
   const isStepOptional = (step) => step === 1;
 
   const isStepSkipped = (step) => skipped.has(step);
@@ -99,6 +103,7 @@ export const ProjectStepper = () => {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
+    if (activeStep === steps.length - 1) sendBookingForm();
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
@@ -198,11 +203,10 @@ export const ProjectStepper = () => {
   );
 };
 
-export const DetailStep = (props) => {
+export const DetailStep = React.memo((props) => {
   const [state, setState] = React.useState();
   const inputSources = React.createRef([]);
   const theme = useTheme();
-  console.log(props);
   return (
     <Box sx={{
       width: '100%',
@@ -224,20 +228,26 @@ export const DetailStep = (props) => {
         }}
       >
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="bookingForm"
+          fieldName="name"
+
           label="name"
           helperText="your full name"
           size="normal"
         />
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="bookingForm"
+          fieldName="phone"
+
           label="phone"
           helperText="your full name"
           size="normal"
           input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
         />
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="bookingForm"
+          fieldName="email"
+
           label="email"
           helperText="your full name"
           size="normal"
@@ -249,7 +259,9 @@ export const DetailStep = (props) => {
         />
 
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="bookingForm"
+          fieldName="service"
+
           type="select"
           icon={{ start: true, type: 'item' }}
           data={[
@@ -334,7 +346,9 @@ export const DetailStep = (props) => {
         }}
       >
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="bookingForm"
+          fieldName="message"
+
           maxRows={11}
           fullHeight
           label="message"
@@ -344,13 +358,16 @@ export const DetailStep = (props) => {
       </Box>
     </Box>
   );
-};
+});
 
 export const PlanningStep = (props) => {
-  const [state, setState] = React.useState();
-  const inputSources = React.createRef([]);
+  const [input, setInput] = React.useState([]);
+  const inputSources = React.useRef([]);
   const theme = useTheme();
-  console.log(props);
+  React.useEffect(() => {
+    console.log(`input sources: ${input}`);
+  }, [inputSources]);
+
   return (
     <Box sx={{
       width: '100%',
@@ -372,7 +389,10 @@ export const PlanningStep = (props) => {
         }}
       >
         <FancyTextField
-          ref={(ref) => inputSources.current.push(ref)}
+          formName="bookingForm"
+          fieldName="projectRequirements"
+
+          ref={(ref) => inputSources.push(ref)}
           maxRows={11}
           fullHeight
           label="Project Requirements"
@@ -381,9 +401,6 @@ export const PlanningStep = (props) => {
         <PickDate
         //   ref={(ref) => inputSources.current.push(ref)}
           label="When is this project due?"
-        //   helperText="your full name"
-        //   size="normal"
-        //   input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
         />
       </Box>
       <Box
@@ -399,21 +416,27 @@ export const PlanningStep = (props) => {
         }}
       >
         <FancyTextField
+          formName="bookingForm"
+          fieldName="budgetRange"
+
           ref={(ref) => inputSources.current.push(ref)}
           label="Budget Range?"
           size="normal"
           input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
         />
         <FileUploadButton
+          formName="bookingForm"
+          fieldName="referencePhotos"
+
           ref={(ref) => inputSources.current.push(ref)}
           label="Upload reference photos"
           icon={{ start: true, type: 'item' }}
-        //   helperText="Photos of what you want the project to look like"
-        //   size="normal"
-        //   type="file"
-        //   input={{ mode: 'file' }}
+          style={{ marginBottom: 30 }}
         />
         <FancyTextField
+          formName="bookingForm"
+          fieldName="projectSuccessHow"
+
           ref={(ref) => inputSources.current.push(ref)}
           label="What would make this project successful?"
           helperText="your full name"
@@ -427,32 +450,20 @@ export const PlanningStep = (props) => {
     </Box>
   );
 };
-export const ConfirmationStep = (props) => {
-  const [state, setState] = React.useState();
-  const inputSources = React.createRef([]);
-  const theme = useTheme();
-  console.log(props);
-
-  const summarry = ['project: App', 'budget: 324', 'x: yzpdq'];
+export const ConfirmationStep = (finished = false) => {
+  // get bookingForm data from store
+  const bookingFormSummary = useStore((state) => state.bookingForm);
 
   return (
     <Box sx={{
       width: '100%',
       display: 'flex',
-      flexDirection: 'row',
+      flexDirection: 'column',
       position: 'relative',
       height: 400,
     }}
     >
-
-      <List>
-        {summarry.map((item, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={item} />
-          </ListItem>
-        ))}
-      </List>
-
+      {finished && (
       <ReactConfetti
         colors={[
           '#f44336',
@@ -467,22 +478,74 @@ export const ConfirmationStep = (props) => {
           '#4caf50',
           '#8bc34a',
         ]}
-        friction={0.5}
+        friction={0.75}
+        gravity={1}
+
+        height={400}
         numberOfPieces={200}
-        recycle={false}
+        // recycle={false}
         recyclePiece={(piece, key) => {
           piece.key = key;
-          piece.setAttribute('style', `
-                        left: ${Math.random() * 100}%;
-                    animation: confetti-animation ${Math.random() * 5 + 5}s linear infinite;
-                    `);
+          piece.setAttribute('style', `left: ${Math.random() * 100}%;animation: confetti-animation ${Math.random() * 5 + 5}s linear infinite;`);
         }}
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
-          height: '100%',
+          height: 400,
+        }}
+      />
+      )}
+
+      {/* summarry */}
+      <Box sx={{
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        p: 4,
+        textAlign: 'left',
+        borderRadius: (theme) => theme.custom.borders.brandBorderRadius,
+        m: 1,
+        border: (theme) => theme.custom.borders.brandBorder,
+        background: (theme) => theme.palette.text.primary,
+        color: (theme) => theme.palette.text.secondary,
+      }}
+      >
+
+        {Object.keys(bookingFormSummary).map((name, index) => {
+          if (name === 'methods') return;
+          { /* if (name === 'referencePhotos') { name = name.map((file) => file.name); }
+          if (typeof name === 'null' || typeof name === 'undefined') return; */ }
+          const value = bookingFormSummary[name];
+          return (
+            <Box sx={{
+              display: 'inline-block',
+              borderBottom: (theme) => theme.custom.borders.brandBorder,
+            }}
+            >
+              <b>
+                {`${name.toUpperCase()}: `}
+              </b>
+              {value}
+            </Box>
+          );
+        })}
+      </Box>
+
+      {/* graphic */}
+      <Box sx={{
+        height: 100, width: '100%',
+      }}
+      />
+      <img
+        src={doItAll}
+        alt=""
+        style={{
+          height: '100%', objectFit: 'cover', width: '100%', position: 'relative',
         }}
       />
     </Box>
@@ -588,7 +651,6 @@ export const MainSelections = () => (
     carouselData={sections} // needs, title, image, alt, description, icon, cta, category
     SelectionComponent={SectionHeader}
     subSelectionData={steps}
-
     HasContent={ProjectStepper}
   />
 );

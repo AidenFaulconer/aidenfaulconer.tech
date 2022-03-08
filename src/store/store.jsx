@@ -34,7 +34,7 @@ const lt = afCreateTheme(LIGHT_THEME);
 const dt = afCreateTheme(DARK_THEME);
 
 // ========================================================================== //
-// App State
+// App Global Shared State
 // ========================================================================== //
 const useStore = create((set) => ({
   // control the app
@@ -60,20 +60,57 @@ const useStore = create((set) => ({
       }));
     },
   },
-  // control form input
-  contactForm: {
-    name: '',
-    email: '',
+  // for useFormInput for testing purposes
+  testForm: {
+    text: '',
+    number: '',
+    file: '',
+    date: '',
     message: '',
-    phone: '',
-    service: '',
     methods: {
-      changeContext: (newContext) => {
+      changeFormData: (newContext) => {
         set((state) => ({
           ...state,
           bookingForm: {
             ...state.bookingForm,
             ...newContext,
+          },
+        }));
+      },
+      clear: () => {
+        set((state) => ({
+          ...state,
+          bookingForm: {
+            // empty an object to clear all the fields
+            ...Object(Object.keys(state.bookingForm).map((key) => ({ [key]: '' }))),
+          },
+        }));
+      },
+    },
+  },
+  // control form input
+  contactForm: {
+    name: false,
+    email: false,
+    message: 'Hello world',
+    phone: false,
+    service: false,
+    methods: {
+      changeFormData: (newContext) => {
+        set((state) => ({
+          ...state,
+          bookingForm: {
+            ...state.bookingForm,
+            ...newContext,
+          },
+        }));
+      },
+      clear: () => {
+        set((state) => ({
+          ...state,
+          bookingForm: {
+            // empty an object to clear all the fields
+            ...Object(Object.keys(state.bookingForm).map((key) => ({ [key]: '' }))),
           },
         }));
       },
@@ -96,12 +133,21 @@ const useStore = create((set) => ({
     // confirmation
     summary: [],
     methods: {
-      changeContext: (newContext) => {
+      changeFormData: (newContext) => {
         set((state) => ({
           ...state,
           bookingForm: {
             ...state.bookingForm,
             ...newContext,
+          },
+        }));
+      },
+      clear: () => {
+        set((state) => ({
+          ...state,
+          bookingForm: {
+            // empty an object to clear all the fields
+            ...Object(Object.keys(state.bookingForm).map((key) => ({ [key]: '' }))),
           },
         }));
       },
