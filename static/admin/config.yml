@@ -2,10 +2,13 @@ backend:
   name: github
   # change repo to your git repository url
   repo: AidenFaulconer/aidenfaulconer.com
+  publish_mode: editorial_workflow
+  media_folder: 'static/assets'
+  public_folder: 'public/assets'
 
 # reused
-media_folder: static/assets
-public_folder: /assets
+media_folder: 'static/assets'
+public_folder: 'public/assets'
 
 # collections CMS can edit
 collections:

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { graphql, useStaticQuery } from 'gatsby';
 import { useStore } from '../../store/store';
 // ========================================================================== //
 // geolocation and other apis

@@ -86,6 +86,7 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'markdown-pages',
+        // everything netlify cms outputs is now accessible under markdown-pages
         path: `${__dirname}/_data`,
       },
     },
@@ -98,19 +99,10 @@ module.exports = {
         path: `${__dirname}/static/assets`,
       },
     },
-    // call on each plugin instance
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'data/posts',
-        // everything netlify cms outputs is now accessible under markdown-pages
-        path: `${__dirname}/_data`,
-      },
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'data',
+        name: 'static',
         // everything netlify cms outputs is now accessible under markdown-pages
         path: `${__dirname}/static`,
       },

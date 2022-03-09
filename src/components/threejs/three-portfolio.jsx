@@ -270,10 +270,8 @@ export const Models = ({
     } = post;
       // slice textureData length to three if tier is 1
       // tier === 1 ? textureData.slice(0, 3) : textureData;
-    const texture = (
-      new THREE.Texture());
-    // thumbnail && useLoader(THREE.TextureLoader, thumbnail))
-    //   || new THREE.Texture();
+    const texture = (thumbnail && useLoader(THREE.TextureLoader, thumbnail))
+      || new THREE.Texture();
 
     // const image = require(`${__dirname}static${thumbnail}`);
     return (
