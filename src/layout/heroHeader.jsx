@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Typography,
   Grid,
@@ -60,42 +60,6 @@ export const HeroHeader = React.memo((props) => {
     node: {
       frontmatter: {
         date: Date.now(),
-        metaDescription: (
-          <>
-            I design apps that make users happy, through understanding your
-            <br />
-            identity, creating a strategy, and developing it to look and feel great.
-            <br />
-            Are you ready for the metaverse? I specialise in Virtual Reality. Let’s talk
-            <br />
-            business, start a project with me today.
-            {/* identity, creating a strategy, and developing it to look and feel great. */}
-            {/* Are you ready for the metaverse? I specialise in Virtual Reality. Let’s talk */}
-            {/* business, start a project with me today. */}
-          </>
-        ),
-        title: (
-          <>
-
-            {/* <Illustration
-              type="computer"
-              style={{
-                bottom: '2px',
-                position: 'relative',
-                display: 'inline-block',
-                width: 30,
-                maxHeight: 30,
-              }}
-            />
-            {' '} */}
-            I’M Aiden, I Deliver software
-            <br />
-            through design thinking 💡
-            {/* I'm Aiden, I understand your users, your brand, virtual reality,
-            <br />
-            and software */}
-          </>
-        ),
         path: '/',
         catagory: 'project',
         thumbnail: './static/assets/hero.png',
@@ -103,13 +67,62 @@ export const HeroHeader = React.memo((props) => {
     },
   };
 
-  const {
-    node: {
-      frontmatter: {
-        path, catagory, title, thumbnail, metaDescription, date,
-      },
-    },
-  } = post;
+  const defaultHero = {
+    headline: (
+      <>
+        I design apps that make users happy, through understanding your
+        <br />
+        identity, creating a strategy, and developing it to look and feel
+        great.
+        <br />
+        Are you ready for the metaverse? I specialise in Virtual Reality.
+        Let’s talk
+        <br />
+        business, start a project with me today.
+        {/* identity, creating a strategy, and developing it to look and feel great. */}
+        {/* Are you ready for the metaverse? I specialise in Virtual Reality. Let’s talk */}
+        {/* business, start a project with me today. */}
+      </>
+    ),
+    description: (
+      <>
+        I’m Aiden, I Deliver software
+        <br />
+        through design thinking 💡
+      </>
+    ),
+    ctas: ['Lets Talk', 'Start a project'],
+    enabled: true,
+  };
+  const defaultBooking = {
+    headline: (
+      <>
+        Lets get to know you, and what you need...
+        <br />
+        I can help you UI/UX, Digital Consultation, Branding, Software, and Virtual Reality
+      </>
+    ),
+    description: (
+      <>
+        Start a project, get your business off the ground ✈️
+      </>
+    ),
+    ctas: false,
+    enabled: true,
+  };
+  const [heroData, setHeroData] = useState(defaultHero);
+  React.useEffect(() => {
+    if (selectedIndex === -2) setHeroData(defaultBooking);
+    if (selectedIndex === -1) setHeroData(defaultHero);
+    if (selectedIndex > 0) {
+      const { metaDescription, title } = edges[selectedIndex];
+      setHeroData({
+        description: metaDescription,
+        headline: title,
+        ctas: false,
+      });
+    }
+  }, [selectedIndex]);
 
   // ========================================================================== //
   // Hero content
@@ -162,7 +175,7 @@ export const HeroHeader = React.memo((props) => {
         </Grid>
 
         {/* Headline */}
-        { noHeadline || (
+        { !heroData.enabled || (
         <Grid
           item
           md={12}
@@ -207,7 +220,7 @@ export const HeroHeader = React.memo((props) => {
               variant="h1"
               style={{ zIndex: 1, textTransform: 'uppercase' }}
             >
-              {title}
+              {heroData.description}
 
             </Typography>
             <Typography
@@ -217,33 +230,35 @@ export const HeroHeader = React.memo((props) => {
               align="left"
             >
               {/* {description} */}
-              {metaDescription}
+              {heroData.headline}
             </Typography>
             {/* Buttons */}
-            <Box
-              sx={{
-                pointerEvents: 'all',
-                zIndex: 2,
-                position: 'relative',
-                // maxWidth: 525,
-                maxWidth: 725,
-                display: 'inline-flex',
-                gap: 2,
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-              }}
-            >
-              <RegularButton onClick={() => navigate('/#contact')} type="primary" icon={{ enabled: true, type: 'arrow' }}>
-                Let's get in touch
-              </RegularButton>
-              <RegularButton
-                onClick={() => navigate('/booking')}
-                type="secondary"
-                icon={{ enabled: true, type: 'arrow' }}
+            {heroData.ctas === false || (
+              <Box
+                sx={{
+                  pointerEvents: 'all',
+                  zIndex: 2,
+                  position: 'relative',
+                  // maxWidth: 525,
+                  maxWidth: 725,
+                  display: 'inline-flex',
+                  gap: 2,
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                }}
               >
-                Start a Project
-              </RegularButton>
-            </Box>
+                <RegularButton onClick={() => navigate('/#contact')} type="primary" icon={{ enabled: true, type: 'arrow' }}>
+                  Let's get in touch
+                </RegularButton>
+                <RegularButton
+                  onClick={() => navigate('/booking')}
+                  type="secondary"
+                  icon={{ enabled: true, type: 'arrow' }}
+                >
+                  Start a Project
+                </RegularButton>
+              </Box>
+            )}
           </Grid>
         </Grid>
         )}

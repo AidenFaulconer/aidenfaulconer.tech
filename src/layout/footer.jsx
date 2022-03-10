@@ -11,15 +11,17 @@ import { InlineIcon } from '@iconify/react';
 // import linkedinLogo from "@iconify/icons-ion/logo-linkedin";
 // import instagramLogo from "@iconify/icons-ri/instagram-fill";
 import {
-  Box, Container, Typography, Grid,
+  Box, Container, Typography, Grid, useTheme,
 } from '@mui/material';
 import {
   RegularButton,
 } from '../components/custom/buttons';
+import { useStore } from '../store/store';
 
 export default ({ children }) => {
   // const theme = useTheme();
-
+  const type = useStore((state) => state.appContext.type);
+  const theme = useTheme();
   const pages = [
     { name: 'portfolio', url: './' },
     { name: 'services', url: './services' },
@@ -51,25 +53,22 @@ export default ({ children }) => {
           }}
           dangerouslySetInnerHTML={{
             __html: `
-              <svg width="133" height="144" viewBox="0 0 133 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M39.2405 0C60.3591 0 66.1187 7.67947 66.1187 7.67947V34.5593L31.561 19.2004L0.998047 31C0.998047 0.279963 39.2405 0 39.2405 0Z" fill="white"/>
-              <path d="M92.8781 0C71.7596 0 66 7.67947 66 7.67947V34.5593L100.558 19.2004L131.121 31C131.121 0.279963 92.8781 0 92.8781 0Z" fill="white"/>
-              <path d="M87.498 41L112.036 43.5L114.998 42.5V17H87.498V41Z" fill="white"/>
-              <path d="M44.5638 55.5979V119.616L20.5361 126.056V59.9181L44.5638 55.5979Z" fill="#000064" stroke="white"/>
-              <path d="M87.5 81.5L111.5 87.5L115.498 85V68.5L88 69L87.5 81.5Z" fill="white"/>
-              <path d="M20.0365 126.707L0.5 119.894V33.5C0.5 2.78256 31.5557 3.83514 31.5557 3.83514C66.1133 5.75517 66.1133 26.8737 66.1133 38.3929V143.985L43.0749 135.5V84.9953C43.0749 73.4761 20.0365 66.1183 20.0365 78.1231L20.0365 126.707Z" fill="white"/>
-              <path d="M86.998 53.5L122.5 59.5L86.998 67.5V53.5Z" fill="white"/>
-              <path d="M20.0361 34.5555C20.0361 23.0363 43.0745 26.876 43.0745 38.3966V65.2734L20.0361 59.5138V34.5555Z" fill="#000064" stroke="#000064"/>
-              <path d="M43.2152 65.364L20.0366 59.5132V34.5549C20.0366 23.3119 43.2152 25.81 43.2152 37.4681V65.364Z" fill="#000064" stroke="#000064"/>
-              <path d="M43.8811 66.4856L44.5 66.6372V66V55.5V54.8998L43.9097 55.0082L19.4097 59.5082L19.3811 60.4856L43.8811 66.4856Z" fill="#000064" stroke="white"/>
-              <path d="M88.6512 64V64.5793L89.2243 64.4946L106.142 61.9956L122 60.0646V83.6344L111.998 86.8163V77.0001C111.998 75.8722 111.6 74.9286 110.9 74.1919C110.21 73.4644 109.247 72.9608 108.141 72.6514C105.933 72.034 103.043 72.1581 100.19 72.9561C94.5052 74.546 88.6512 78.9234 88.6512 86.0001L88.6512 135.944L66.6128 143.291L66.6128 142.925L66.6129 139.92L66.6131 129.105L66.6135 95.508C66.6137 70.55 66.6137 44.1521 66.6128 38.393C66.6119 32.6167 66.6229 24.5998 70.8573 17.7779C75.0638 11.0011 83.5207 5.29055 100.683 4.33333L100.689 4.33338L100.753 4.33415C100.811 4.335 100.897 4.33668 101.01 4.33994C101.237 4.34647 101.57 4.35934 101.996 4.38474C102.848 4.43554 104.067 4.53637 105.53 4.73642C108.459 5.13689 112.353 5.93321 116.233 7.51369C120.113 9.09455 123.957 11.4505 126.814 14.9573C129.664 18.4553 131.557 23.126 131.5 29.3884V29.3929V39.0901L112.498 42.8902V34C112.498 31.3888 110.917 29.4312 108.666 28.2136C106.422 27.0001 103.465 26.4865 100.532 26.7361C97.5974 26.9858 94.6349 28.0044 92.3964 29.916C90.1447 31.8388 88.6512 34.6452 88.6512 38.393L88.6512 64Z" fill="#000064" stroke="white"/>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" height="100" width="100%" viewBox="0 0 133 144">
+                <defs/>
+                <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M18.662 50.518l-9.626 2.588V25.924l9.626-1.737v26.331z"/>
+                <path fill="${theme.palette.text.secondary}" d="M16.627.808c8.771 0 11.163 3.2 11.163 3.2V15.21l-14.352-6.4L.744 13.726C.744.925 16.627.808 16.627.808z"/>
+                <path fill="${theme.palette.text.secondary}" d="M38.905.808c-8.771 0-11.163 3.2-11.163 3.2V15.21l14.352-6.4 12.694 4.917C54.788.925 38.905.808 38.905.808z"/>
+                <path fill="${theme.palette.text.secondary}" d="M36.67 17.893l10.191 1.042 1.23-.417V7.892H36.67v10.001zM36.671 34.77l9.968 2.5 1.66-1.042v-6.875l-11.42.208-.208 5.209zM8.652 53.608L.538 50.769v-36c0-12.801 12.898-12.362 12.898-12.362 14.353.8 14.353 9.6 14.353 14.4v44.001l-9.569-3.536V36.227c0-4.8-9.568-7.867-9.568-2.864v20.245zM36.462 23.102l15.576 2.5-15.576 3.334v-5.834z"/>
+                <path fill="${theme.palette.text.primary}" stroke="#0${theme.palette.text.primary}064" stroke-width=".769" d="M8.651 15.208c0-4.8 9.569-3.2 9.569 1.6v11.2l-9.569-2.4v-10.4z"/>
+                <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.primary}" stroke-width=".769" d="M18.278 28.046L8.65 25.608v-10.4c0-4.685 9.627-3.645 9.627 1.214v11.624z"/>
+                <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M8.359 25.433l-.022.751 10.175 2.5.477.117v-5.327l-.455.083L8.36 25.433zM36.972 27.477v.437l.434-.055 14.247-1.82v9.478l-4.63 1.25v-3.872a1.83 1.83 0 00-.504-1.291c-.315-.333-.747-.556-1.227-.691-.957-.269-2.192-.212-3.398.127-2.397.672-4.922 2.542-4.922 5.605V57.33l-8.799 2.943V40.607v-23.8c0-2.413.008-5.704 1.737-8.498 1.707-2.76 5.154-5.121 12.24-5.519h.023l.104.003c.093.003.23.008.404.018.35.021.852.063 1.454.145 1.208.166 2.81.495 4.402 1.146 1.594.652 3.162 1.618 4.325 3.05 1.157 1.424 1.93 3.33 1.906 5.9h0v3.901l-7.538 1.512v-3.489c0-1.17-.71-2.037-1.683-2.566-.969-.525-2.233-.743-3.478-.636-1.248.106-2.516.54-3.48 1.367-.974.834-1.617 2.052-1.617 3.666v10.67z"/>
               </svg>
           `,
           }}
         />
       </Link>
     ),
-    [],
+    [type],
   );
 
   const makeCall = useCallback(
@@ -100,13 +99,12 @@ export default ({ children }) => {
         }}
       >
 
-        <Grid item container alignContent="stretch" xs={12} md={3}>
-          {logo('inherit')}
-        </Grid>
-
         <Grid item xs={6} md={4}>
 
           <Grid item container justifyContent="space-between">
+            {/* <Grid item xs={12}>
+              {logo('inherit')}
+            </Grid> */}
             <Grid item xs={12}>
               <Typography gutterBottom color="inherit">
                 Want to collaborate?
@@ -118,19 +116,7 @@ export default ({ children }) => {
                 Make a booking
               </RegularButton>
             </Grid>
-            <Grid item xs={12}>
-              <Typography gutterBottom color="inherit">
-                Send me an email
-              </Typography>
-              <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} onClick={() => sendEmail()}>
-                aidenf09@yahoo.com
-              </RegularButton>
-            </Grid>
           </Grid>
-
-        </Grid>
-
-        <Grid item xs={6} md={4}>
 
           <Grid item container justifyContent="space-between">
             <Grid item xs={12}>
@@ -140,8 +126,17 @@ export default ({ children }) => {
               <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} onClick={() => makeCall()}>
                 0475565709
               </RegularButton>
-
             </Grid>
+
+            <Grid item xs={12}>
+              <Typography gutterBottom color="inherit">
+                Send me an email
+              </Typography>
+              <RegularButton type="secondary" icon={{ enabled: true, type: 'arrow' }} onClick={() => sendEmail()}>
+                aidenf09@yahoo.com
+              </RegularButton>
+            </Grid>
+
             <Grid item xs={12}>
               <Typography
                 gutterBottom
@@ -155,6 +150,7 @@ export default ({ children }) => {
           </Grid>
 
         </Grid>
+
       </Grid>
     </footer>
   );

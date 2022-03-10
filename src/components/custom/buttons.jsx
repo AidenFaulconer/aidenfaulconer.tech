@@ -168,7 +168,7 @@ const iconLibrary = {
   ),
   close: () => (
     <svg width="20" height="13" viewBox="0 0 20 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path fillRule="evenodd" clipRule="evenodd" d="M11.3247 6.49004L19.132 1.95039C19.3708 1.81158 19.4518 1.50554 19.313 1.26682C19.1742 1.0281 18.8681 0.947101 18.6294 1.08591L10.313 5.92156L1.99653 1.08591C1.75781 0.947101 1.45176 1.0281 1.31296 1.26682C1.17415 1.50554 1.25515 1.81158 1.49387 1.95039L9.30122 6.49004L1.50721 10.82C1.26582 10.9542 1.17885 11.2586 1.31296 11.4999C1.44706 11.7413 1.75147 11.8283 1.99286 11.6942L10.313 7.07192L18.6331 11.6942C18.8745 11.8283 19.1789 11.7413 19.313 11.4999C19.4471 11.2586 19.3601 10.9542 19.1187 10.82L11.3247 6.49004Z" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M11.3247 6.49004L19.132 1.95039C19.3708 1.81158 19.4518 1.50554 19.313 1.26682C19.1742 1.0281 18.8681 0.947101 18.6294 1.08591L10.313 5.92156L1.99653 1.08591C1.75781 0.947101 1.45176 1.0281 1.31296 1.26682C1.17415 1.50554 1.25515 1.81158 1.49387 1.95039L9.30122 6.49004L1.50721 10.82C1.26582 10.9542 1.17885 11.2586 1.31296 11.4999C1.44706 11.7413 1.75147 11.8283 1.99286 11.6942L10.313 7.07192L18.6331 11.6942C18.8745 11.8283 19.1789 11.7413 19.313 11.4999C19.4471 11.2586 19.3601 10.9542 19.1187 10.82L11.3247 6.49004Z" fill="currentColor" />
     </svg>
   ),
   location: () => (
@@ -451,7 +451,6 @@ export const FileUploadButton = (props) => {
 
   const generateFileTags = React.useCallback(() => {
     if (input.length > 0) {
-      // console.log(file);
       return input.map((file) => (
         <ItemTag key={file.name} style={{ zIndex: 10 }}>
           {/* <AFIcon type="close" onClick={() => setInput(input.filter((item) => item !== file))} /> */}
@@ -512,7 +511,7 @@ export const FileUploadButton = (props) => {
 // *can be a search input
 // *can have adornments for additional functionality nested inside
 // ========================================================================== //
-export const FancyTextField = React.forwardRef((props, ref) => {
+export const FancyTextField = (props, ref) => {
   const {
     input = {
       pattern: '[a-zA-Z0-9]*',
@@ -558,7 +557,7 @@ export const FancyTextField = React.forwardRef((props, ref) => {
   };
   const [thisInput, setThisInput] = useFormStore(props.formName, props.fieldName, '');
 
-  const handleOptionChange = (e) => { setThisInput(e.target.value.toString()); console.log(thisInput); };
+  const handleOptionChange = (e) => { setThisInput(e.target.value.toString()); };
   const handleChange = (e) => setThisInput(e.target.value);
   const createIcon = React.useCallback((icon) => (
     <>
@@ -634,7 +633,7 @@ export const FancyTextField = React.forwardRef((props, ref) => {
       ))}
     </TextField>
   );
-});
+};
 
 // ========================================================================== //
 // Button Group

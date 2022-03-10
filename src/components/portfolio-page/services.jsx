@@ -8,15 +8,9 @@ import { NoToneMapping } from 'three';
 import { styled } from '@mui/material/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { StaticImage } from 'gatsby-plugin-image';
-import {
-  RegularButton,
-  SelectionButton,
-} from '../custom/buttons';
+import { RegularButton, SelectionButton } from '../custom/buttons';
 
-import {
-  SCROLL_PROPS,
-  svgEncodeBaseSixtyFour,
-} from '../../store/theme';
+import { SCROLL_PROPS, svgEncodeBaseSixtyFour } from '../../store/theme';
 
 // ========================================================================== //
 // services
@@ -36,7 +30,7 @@ import defaultImage from '../../../static/assets/portfolio/dibbles.png';
 // ========================================================================== //
 // services
 // ========================================================================== //
-export default React.forwardRef((props, ref) => {
+export default (props, ref) => {
   const bgAlt = 0;
   const { id } = props;
 
@@ -49,7 +43,7 @@ export default React.forwardRef((props, ref) => {
       <SelectionMenu />
     </section>
   );
-});
+};
 
 // ========================================================================== //
 // Selection Menu (SERVICES)
@@ -62,7 +56,7 @@ export const SelectionContent = ({
 }) => {
   const changeHand = useStore((state) => state.threejsContext.methods.changeHand);
   return (
-  // container
+    // container
     <Grid
       container
       wrap="no-wrap"
@@ -70,6 +64,7 @@ export const SelectionContent = ({
       sx={{
         position: 'relative',
         background: (theme) => theme.palette.text.primary,
+        border: (theme) => theme.custom.borders.brandBorder,
         flexDirection: { md: 'row', xs: 'column' },
         width: '100%',
         height: '100%',
@@ -78,7 +73,6 @@ export const SelectionContent = ({
         overflowY: 'hidden',
       }}
     >
-
       {/* description of service */}
       <Grid
         item
@@ -95,20 +89,25 @@ export const SelectionContent = ({
           flexDirection: { md: 'row', xs: 'column' },
         }}
       >
-        <Box sx={{
-          position: 'relative',
-          display: 'inline-flex',
-          flexDirection: 'column',
-          maxWidth: '100vw',
-          width: { md: '100%', xs: '100%' },
-          zIndex: 20,
-          // minHeight: 400,
-          height: { md: '100%', xs: 350 },
-        }}
+        <Box
+          sx={{
+            position: 'relative',
+            display: 'inline-flex',
+            flexDirection: 'column',
+            maxWidth: '100vw',
+            width: { md: '100%', xs: '100%' },
+            zIndex: 20,
+            // minHeight: 400,
+            height: { md: '100%', xs: 350 },
+          }}
         >
-
           {/* {JSON.stringify(selected, null, 2)} */}
-          <Typography align="left" variant="h2" component="h2" color="currentColor">
+          <Typography
+            align="left"
+            variant="h2"
+            component="h2"
+            color="currentColor"
+          >
             {title}
           </Typography>
 
@@ -151,7 +150,10 @@ export const SelectionContent = ({
               Start project
             </RegularButton>
 
-            <RegularButton type="secondary" onClick={() => navigate('/#contact')}>
+            <RegularButton
+              type="secondary"
+              onClick={() => navigate('/#contact')}
+            >
               Contact me
             </RegularButton>
           </Box>
@@ -208,7 +210,12 @@ export const ServicesSelection = ({
       justifyContent: 'center',
     }}
   >
-    <Typography sx={{ width: '100%' }} variant="h4" align="center" color="currentColor">
+    <Typography
+      sx={{ width: '100%' }}
+      variant="h4"
+      align="center"
+      color="currentColor"
+    >
       {title || 'title'}
     </Typography>
   </Box>

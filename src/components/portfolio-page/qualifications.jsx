@@ -206,7 +206,7 @@ export const QualificationCard = ({ props, children }) => (
 // ========================================================================== //
 // qualifications
 // ========================================================================== //
-export default React.forwardRef((props, ref) => {
+export default (props) => {
   const theme = useTheme();
   return (
     <Grid
@@ -278,4 +278,4 @@ export default React.forwardRef((props, ref) => {
       </QualificationCard>
     </Grid>
   );
-});
+};

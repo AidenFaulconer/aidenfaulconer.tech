@@ -22,6 +22,7 @@ import {
   useFrame,
   useThree,
   useLoader,
+  extend,
 } from '@react-three/fiber';// or @react-three-fiber or react-three-fiber
 import {
   Environment,
@@ -31,6 +32,7 @@ import {
   // useAspect
   Billboard,
   Reflector,
+  Html,
 } from '@react-three/drei';
 
 // removed for performance impact, and its un-importance for this sites needs
@@ -45,6 +47,7 @@ import {
 import { clamp, degToRad } from 'three/src/math/MathUtils';
 // import { EffectComposer } from '@react-three/postprocessing';
 // import { SVGLoader } from 'three/jsm/loaders/SVGLoader.js';
+import { Link } from 'gatsby';
 import cube_import from '../../../static/assets/gameModels/cube.glb';
 
 // eslint-disable-next-line import/no-unresolved
@@ -318,7 +321,6 @@ export const Model = React.memo(
     children,
     color,
     x,
-    // setColor,
     model,
     mobile = false,
     texture,
@@ -331,35 +333,32 @@ export const Model = React.memo(
     // ========================================================================== //
     // Global state methods
     // ========================================================================== //
-    const triggerPageChange = useStore(
-      (state) => state.threejsContext.methods.triggerPageChange,
-    );
+    const triggerPageChange = useStore((state) => state.threejsContext.methods.triggerPageChange);
     const setColor = useStore((state) => state.threejsContext.methods.setColor);
-    const changeContext = useStore(
-      (state) => state.threejsContext.methods.changeContext,
-    );
-    const changePage = useStore(
-      (state) => state.threejsContext.methods.changePage,
-    );
-    const { selectedIndex, animatedColor, animatedOpacity } = useStore(
-      (state) => state.threejsContext.context,
-    );
-    const context = useStore((state) => state.threejsContext.context);
-    const isSelectedProject = React.useCallback(
-      () => selectedIndex === index,
-      [selectedIndex, position],
-    );
+    const changePage = useStore((state) => state.threejsContext.methods.changePage);
+    const { selectedIndex, animatedColor, animatedOpacity } = useStore((state) => state.threejsContext.context);
+
+    // ========================================================================== //
+    //     State
+    // ========================================================================== //
+    const { viewport, set } = useThree();
+    const scale = Number(viewport.width / viewport.height / ratio + 0.7);
+    const cubeRef = createRef(new THREE.Mesh());
+    const { tier } = useDetectGPU();
+    const [hovered, setHovered] = useState(false);
+
     // ========================================================================== //
     //     Cube animation
     // ========================================================================== //
     const [animated, setAnimated] = useState(false);
+    const animationDuration = 530;// in miliseconds
     const animateCube = useCallback(
       () => {
         setAnimated(true);
         // if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
         setTimeout(() => {
           setAnimated(false);
-        }, 530);
+        }, animationDuration);
       },
       [selectedIndex],
     );
@@ -368,73 +367,48 @@ export const Model = React.memo(
       if (animated) {
         // roate the cube in every angle with a quaternion
         const amnt = Math.sin(state.clock.getElapsedTime()) * 5;
-        // api.rotation.set(0, amnt, 0);
+        cubeRef.current.rotation.set(0, amnt, 0);
       }
     });
 
-    const { viewport, set } = useThree();
-
     // ========================================================================== //
-    //     Cube physics properties
+    //     Cube methods and properties
     // ========================================================================== //
-    const scale = Number(viewport.width / viewport.height / ratio + 0.7);
-
-    // tier: number;
-    // type: TierType;
-    // isMobile?: boolean;
-    // fps?: number;
-    // gpu?: string;
-    // device?: string;
-    const cubeRef = createRef(new THREE.Mesh());
-    const { tier } = useDetectGPU();
-
-    // prettier-ignore bounding box is the scale times 2.01
-    // const [ref, api] = useBox(() => ({
-    //   mass: 10,
-    //   args: [scale * 2.01, scale * 2.01, scale * 2.01],
-    //   position: [position / (viewport.width / 2), 15, 0], // onCollide: (e) => console.log("hit")
-    // }));
-
-    const [hovered, setHovered] = useState(false);
-    // React.useEffect(() => {
-    //   // console.log(scale);
-    //   cubeRef.current = ref;
-    // }, [ref, hovered]);
 
     // zoom camera to this model
     const zoomCamera = React.useCallback((to) => {}, []);
 
     const ping = useMemo(() => new Audio(pingSound), []);
-
+    const isSelectedProject = React.useCallback(() => selectedIndex === index, [selectedIndex, position]);
     // prettier-ignore
     const onClick = useCallback((e) => {
-      console.log(cubeRef);
+      // console.log(cubeRef);
       e.stopPropagation();
       if (selectedIndex === index) {
         ping.play();
         animateCube(true);
-        triggerPageChange({ background: color, transform: 'skew(10deg)', left: '-115vw' });
         setColor({ x: color, y: 1.0 });
+        // set({ moveCamera: true, moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
+        triggerPageChange({ background: color, transform: 'skew(10deg)', left: '-215vw' });
         changePage({
-          selectedIndex: -1,
+          selectedIndex: -1, // no selected post, negative values represent a page, ie: -1 is the home page
           position: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z),
           pageLink: '/',
         });
-        // navigate('/', { replace: true });
       } else {
+        console.log(`selectedIndex: ${selectedIndex} animOpacity: ${JSON.stringify(animatedOpacity, null, 2)} | selectedIndex: ${selectedIndex} | index: ${index}`);
         ping.play();
-        setColor({ x: color, y: 0 });
         animateCube(true);
-        triggerPageChange({ background: color, transform: 'skew(-10deg)', left: '115vw' });
+        setColor({ x: color, y: 0 });
+        // set({ moveCamera: true, moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
+        triggerPageChange({ background: color, transform: 'skew(-10deg)', left: '215vw' });
         changePage({
-          selectedIndex: index,
+          selectedIndex: index, // select this post
           position: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z),
           pageLink: link,
-          // PAGE CHANGE DATA
         });
-        // navigate(link, { replace: true });
       }
-    }, [cubeRef, selectedIndex]);
+    }, [cubeRef, index]);
 
     // prettier-ignore
     const onPointerOver = useCallback((e) => {
@@ -442,21 +416,16 @@ export const Model = React.memo(
       setHovered(true);
       setColor({ x: color });
       animateCube(false);
-      set({ moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
-      set({ moveCamera: true });
-      // if (isSelectedProject()) { triggerPageChange({ background: color, transform: "skew(10deg)", left: '-90vw' }); } else { triggerPageChange({ background: color, transform: "skew(10deg)", left: '90vw' }); }
+      set({ moveCamera: true, moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
     }, [cubeRef, hovered]);
 
     // prettier-ignore
     const onPointerOut = useCallback(() => {
       setHovered(false);/* set({ x: "#FFFFFF" });* */
       set({ moveCamera: false });
-      // if (isSelectedProject()) { triggerPageChange({ background: color, transform: "skew(10deg)", left: '-115vw' }); } else { triggerPageChange({ background: color, transform: "skew(10deg)", left: '115vw' }); }
     }, [cubeRef, hovered]);
 
-    const determineMaterialFactor = useMemo(() => (hovered ? 0.9 : 0.6), [
-      hovered,
-    ]);
+    const determineMaterialFactor = useMemo(() => (hovered ? 0.9 : 0.6), [hovered]);
     const determineClearcoat = useMemo(() => (hovered ? 0.7 : 0.6), [hovered]);
     const determineColor = useMemo(() => (hovered ? '#F0F3FC' : x), [hovered]);
     const checkTier = useCallback((returnValue) => (tier !== 1 ? returnValue : false), []);
@@ -530,7 +499,9 @@ export const Model = React.memo(
           />
         </a.mesh>
         {/* ) */}
+
       </>
+
     );
   },
 );

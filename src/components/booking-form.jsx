@@ -40,14 +40,12 @@ import ajImage from '../../static/assets/blog/aj.png';
 import { ServicesSelection } from './portfolio-page/services';
 import { useStore } from '../store/store';
 import { sendBookingForm } from './util/apis';
+import { useFormStore } from './util/customHooks';
 
 export default ({ i, title = 'Start a project', setSelected = () => {} }) => {
   const handleError = () => {};
   const theme = useTheme();
   const inputSources = React.createRef([]);
-  React.useEffect(() => {
-    console.log(inputSources.current);
-  }, [inputSources]);
 
   return (
     <Grid
@@ -88,11 +86,15 @@ export default ({ i, title = 'Start a project', setSelected = () => {} }) => {
   );
 };
 
-export const ProjectStepper = () => {
+export const ProjectStepper = ({ contentData: { headline, title, key }, setCurrent, current }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [finished, setFinished] = React.useState(false);
+  const [service, setService] = useFormStore('bookingForm', 'service', key);
   const useStepComponent = React.useCallback(({ StepComponent }) => <StepComponent finished={finished} />, [activeStep]);
+
+  React.useEffect(() => setService(key), [key]);
+
   const isStepOptional = (step) => step === 1;
 
   const isStepSkipped = (step) => skipped.has(step);
@@ -109,9 +111,7 @@ export const ProjectStepper = () => {
     setSkipped(newSkipped);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  const handleBack = () => { setActiveStep((prevActiveStep) => prevActiveStep - 1); };
 
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
@@ -128,9 +128,7 @@ export const ProjectStepper = () => {
     });
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  const handleReset = () => { setActiveStep(0); };
 
   return (
     <Box sx={{ width: '100%', p: 4 }}>
@@ -148,13 +146,15 @@ export const ProjectStepper = () => {
             stepProps.completed = false;
           }
           return (
-            <Step key={step} {...stepProps}>
-              <StepLabel {...labelProps}>{step.label}</StepLabel>
+            <Step key={step + index + Math.random()} {...stepProps}>
+              <StepLabel {...labelProps}>{`${headline} ${step.label}`}</StepLabel>
             </Step>
           );
         })}
       </Stepper>
-      {useStepComponent(steps[activeStep])}
+
+      {/* step form */}
+      {useStepComponent(steps[activeStep], key)}
 
       {/* stepper controls */}
       {activeStep === steps.length ? (
@@ -260,7 +260,7 @@ export const DetailStep = React.memo((props) => {
 
         <FancyTextField
           formName="bookingForm"
-          fieldName="service"
+          fieldName="subService"
 
           type="select"
           icon={{ start: true, type: 'item' }}
@@ -364,9 +364,6 @@ export const PlanningStep = (props) => {
   const [input, setInput] = React.useState([]);
   const inputSources = React.useRef([]);
   const theme = useTheme();
-  React.useEffect(() => {
-    console.log(`input sources: ${input}`);
-  }, [inputSources]);
 
   return (
     <Box sx={{
@@ -554,6 +551,7 @@ export const ConfirmationStep = (finished = false) => {
 const steps = [
   {
     title: 'Project Details',
+    key: 'projectDetails',
     StepComponent: DetailStep,
     label: 'Project Details',
     description: `For each ad campaign that you create, you can control how much
@@ -562,6 +560,7 @@ const steps = [
   },
   {
     title: 'Planning & Budget',
+    key: 'planningBudget',
     StepComponent: PlanningStep,
     label: 'Planning & Budget',
     description:
@@ -569,6 +568,7 @@ const steps = [
   },
   {
     title: 'Confirmation',
+    key: 'confirmation',
     StepComponent: ConfirmationStep,
     label: 'Confirmation',
     description: `Try out different ad text to see what brings in the most customers,
@@ -584,7 +584,6 @@ const sections = [
     headline: 'Website',
     title: 'Website',
     key: 'Website',
-    steps,
   },
   // ========================================================================== //
   //     Design
@@ -592,7 +591,6 @@ const sections = [
     headline: 'Design',
     title: 'Design',
     key: 'Design',
-    steps,
   },
   // ========================================================================== //
   //   VR
@@ -600,7 +598,6 @@ const sections = [
     headline: 'VR',
     title: 'VR',
     key: 'VR',
-    steps,
   },
   // ========================================================================== //
   //   AR
@@ -608,7 +605,6 @@ const sections = [
     headline: 'AR',
     title: 'AR',
     key: 'AR',
-    steps,
   },
   // ========================================================================== //
   //   3D
@@ -616,7 +612,6 @@ const sections = [
     headline: '3D',
     title: '3D',
     key: '3D',
-    steps,
   },
   // ========================================================================== //
   //   Branding
@@ -624,7 +619,6 @@ const sections = [
     headline: 'Branding',
     title: 'Branding',
     key: 'Branding',
-    steps,
   },
   // ========================================================================== //
   //   Other
@@ -632,7 +626,6 @@ const sections = [
     headline: 'Other',
     title: 'Other',
     key: 'Other',
-    steps,
   },
 ];
 
@@ -643,8 +636,9 @@ export const MainSelections = () => (
   <ThreeDCarousel
       // carousel dimensions
     carouselHeight={300}
-    cardWidth={200}
-    gutter={4}
+    cardWidth={400}
+    gutter={55}
+
       // top section
     title="Sections"
     key="Sections-carousel"

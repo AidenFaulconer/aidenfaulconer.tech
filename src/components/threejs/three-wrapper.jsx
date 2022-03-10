@@ -153,10 +153,10 @@ const ThreeWrapper = React.memo(
       </a.div>
     );
   },
-  // (pre, post) => {
-  //   // console.log(pre, post)
-  //   return pre.threeContext !== post.threeContext && pre.props !== post.props
-  // }
+  (pre, post) =>
+    // console.log(pre, post)
+    pre.threeContext !== post.threeContext && pre.props !== post.props
+  ,
 );
 
 export default ThreeWrapper;

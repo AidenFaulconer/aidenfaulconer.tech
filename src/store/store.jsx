@@ -1,26 +1,21 @@
 import { createTheme } from '@mui/material';
 import create from 'zustand';
+import React from 'react';
 import { deepmerge } from '@mui/utils';
 // ========================================================================== //
 // Handle theming
 // ========================================================================== //
 import { navigate } from 'gatsby-link';
+
 import {
-  DARK_THEME,
-  LIGHT_THEME,
-  OVERRIDES,
-  CUSTOM_THEME_PROPS,
+  DARK_THEME, LIGHT_THEME, OVERRIDES, CUSTOM_THEME_PROPS,
 } from './theme';
 
 // create themes to be used in valtio
 const afCreateTheme = (theme) => {
   const muiTheme = createTheme({ ...theme });
-  const newTheme = deepmerge(
-    muiTheme,
-    CUSTOM_THEME_PROPS,
-    OVERRIDES,
-  );
-    // custom theme properties
+  const newTheme = deepmerge(muiTheme, CUSTOM_THEME_PROPS, OVERRIDES);
+  // custom theme properties
   newTheme.typography.h1.fontWeight = 900;
   newTheme.typography.h2.fontWeight = 900;
   newTheme.typography.h2.textTransform = 'capitalize';
@@ -50,14 +45,16 @@ const useStore = create((set) => ({
       }));
     },
     location: {},
-    setLocation: (location) => {
-      set((state) => ({
-        ...state,
-        appContext: {
-          ...state.appContext,
-          location,
-        },
-      }));
+    methods: {
+      setAppContext: (newAppContext) => {
+        set((state) => ({
+          ...state,
+          appContext: {
+            ...state.appContext,
+            newAppContext,
+          },
+        }));
+      },
     },
   },
   // for useFormInput for testing purposes
@@ -82,7 +79,9 @@ const useStore = create((set) => ({
           ...state,
           bookingForm: {
             // empty an object to clear all the fields
-            ...Object(Object.keys(state.bookingForm).map((key) => ({ [key]: '' }))),
+            ...Object(
+              Object.keys(state.bookingForm).map((key) => ({ [key]: '' })),
+            ),
           },
         }));
       },
@@ -110,7 +109,9 @@ const useStore = create((set) => ({
           ...state,
           bookingForm: {
             // empty an object to clear all the fields
-            ...Object(Object.keys(state.bookingForm).map((key) => ({ [key]: '' }))),
+            ...Object(
+              Object.keys(state.bookingForm).map((key) => ({ [key]: '' })),
+            ),
           },
         }));
       },
@@ -124,6 +125,7 @@ const useStore = create((set) => ({
     message: '',
     phone: '',
     service: '',
+    subService: '',
     // project details
     referencePhotos: [],
     projectRequirements: '',
@@ -147,7 +149,9 @@ const useStore = create((set) => ({
           ...state,
           bookingForm: {
             // empty an object to clear all the fields
-            ...Object(Object.keys(state.bookingForm).map((key) => ({ [key]: '' }))),
+            ...Object(
+              Object.keys(state.bookingForm).map((key) => ({ [key]: '' })),
+            ),
           },
         }));
       },
@@ -176,6 +180,21 @@ const useStore = create((set) => ({
       },
     },
     methods: {
+      changeHero: (newContext) => {
+        set((state) => ({
+          ...state,
+          threejsContext: {
+            ...state.threejsContext,
+            context: {
+              ...state.threejsContext.context,
+              hero: {
+                ...state.threejsContext.context.hero,
+                ...newContext,
+              },
+            },
+          },
+        }));
+      },
       changeContext: (newContext) => {
         set((state) => ({
           ...state,
@@ -220,10 +239,14 @@ const useStore = create((set) => ({
         // alert(newSelectedData.pageLink);
         // navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
         // navigate to another page with @react/router
-        navigate(newSelectedData.pageLink, { replace: true, state: 'forceUpdate' });
+        // navigate(newSelectedData.pageLink, newSelectedData);
+        navigate(newSelectedData.pageLink, { replace: true });
+        // force user to redirect to pageLink
+        // redirectTo(newSelectedData.pageLink);
+        // window.location.href = newSelectedData.pageLink;
       },
       // overritten by page transition overlay
-      triggerPageChange: () => { },
+      triggerPageChange: () => {},
       setColor: () => {},
     },
     gameObjects: [
@@ -235,7 +258,11 @@ const useStore = create((set) => ({
       },
     ],
     setNewObjects: (newObjects) => set((state) => ({ threejsContext: { gameObjects: newObjects } })),
-    pushGameObject: (newObject) => set((state) => ({ threejsContext: { gameObjects: [...state.threejsContext.gameObjects, newObject] } })),
+    pushGameObject: (newObject) => set((state) => ({
+      threejsContext: {
+        gameObjects: [...state.threejsContext.gameObjects, newObject],
+      },
+    })),
   },
 }));
 //   import { devtools } from 'zustand/middleware'

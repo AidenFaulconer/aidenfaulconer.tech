@@ -1,4 +1,4 @@
-import { Box, CardMedia } from '@mui/material';
+import { Box, CardMedia, Grid } from '@mui/material';
 import React from 'react';
 
 import ThreeDCarousel from '../components/custom/threeDCarousel';
@@ -6,7 +6,10 @@ import ThreeDCarousel from '../components/custom/threeDCarousel';
 import { SectionHeader } from '../components/section-header';
 // sub sections
 import Qualifications from '../components/portfolio-page/qualifications';
-import Services, { SelectionContent, ServicesSelection } from '../components/portfolio-page/services';
+import Services, {
+  SelectionContent,
+  ServicesSelection,
+} from '../components/portfolio-page/services';
 import { Languages, Experience } from '../components/portfolio-page/skills';
 
 import awmImage from '../../static/assets/blog/awm.png';
@@ -26,8 +29,8 @@ import ajImage from '../../static/assets/blog/aj.png';
 // dictate the sub selections availible
 // ========================================================================== //
 const sections = [
-// ========================================================================== //
-//     services
+  // ========================================================================== //
+  //     services
   {
     illustrationType: 'coffee',
     headline: 'Services',
@@ -69,12 +72,12 @@ const sections = [
     key: 'projects',
   },
 
-//   {
-//     selectionComponent: Services,
-//     subSectionComponent: null,
-//     headline: 'invisible',
-//     key: 'invisible',
-//   },
+  //   {
+  //     selectionComponent: Services,
+  //     subSectionComponent: null,
+  //     headline: 'invisible',
+  //     key: 'invisible',
+  //   },
 ];
 const imgPath = (assetName) => `../../static/assets/portfolio/${assetName}`;
 // ========================================================================== //
@@ -90,7 +93,7 @@ const subSections = [
         title: 'Websites',
         costRange: '400$-5000$',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         name: 'Websites',
         image: imgPath('website-image.png'),
         threejs: {
@@ -103,7 +106,7 @@ const subSections = [
         title: 'Design',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Design',
         image: imgPath('website-image.png'),
@@ -117,7 +120,7 @@ const subSections = [
         title: 'Virtual Reality',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Virtual Reality',
         image: imgPath('website-image.png'),
@@ -131,7 +134,7 @@ const subSections = [
         title: 'Branding',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Branding',
         image: imgPath('website-image.png'),
@@ -145,7 +148,7 @@ const subSections = [
         title: 'Other',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Other',
         image: imgPath('website-image.png'),
@@ -159,7 +162,7 @@ const subSections = [
         title: 'My Projects',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'My Projects',
         image: imgPath('website-image.png'),
@@ -170,8 +173,7 @@ const subSections = [
         },
       },
     ],
-    headline: 'Services',
-    key: 'Services',
+    key: 'sub-services',
   },
   {
     selectionComponent: ServicesSelection,
@@ -207,7 +209,8 @@ const subSections = [
             Built mini-games, and create on both web and mobile unity apps
             <br />
             <br />
-            Programmed frontend application to deliver configurable vr experiences
+            Programmed frontend application to deliver configurable vr
+            experiences
             <br />
             <br />
             Web interface for full remote-control of Virtual Reality experiences
@@ -218,12 +221,12 @@ const subSections = [
             <br />
             <br />
             Perform auto-scaling and load-balancing via Kubernetes and Docker
-            through GitLab pipelines and hosting services provided by Google Cloud
-            Platform
+            through GitLab pipelines and hosting services provided by Google
+            Cloud Platform
             <br />
             <br />
-            Extending the apollo platform to develop a versatile and clean backend
-            API with GraphQL
+            Extending the apollo platform to develop a versatile and clean
+            backend API with GraphQL
             <br />
             <br />
             UI/UX balanced and designed iteratively with changing clients needs
@@ -351,7 +354,8 @@ const subSections = [
         image: imgPath('website-image.png'),
         alt: 'JavaScript',
         // I consider javascript my child, it is where I have spent most of my career developing in, its extremely fast and easy to use especially with modern frameworks such as React, Vue, and more advanced frameworks like Gatsby.js and Quasar.js which can take a codebase and reform it into an ideal web platform, or even compiled down into platform agnostic applications.
-        description: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute.',
+        description:
+          'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute.',
         icon: '',
       },
       {
@@ -429,7 +433,8 @@ const subSections = [
         // at scales both large and small, and addressing the scalability proportionally in code.
 
         // Lets create some wacky, user friendly, and interactive applications together. 🥳
-        description: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute.',
+        description:
+          'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute.',
         icon: '',
       },
       {
@@ -450,7 +455,8 @@ const subSections = [
 
         // Businessses today may find it harder to understand and manage the expectations of there users, I've had enough expereince to know how to prototype, do user testing, and turn there ideas into reality taking into account your visions, business processes, and goals.
 
-        description: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute.',
+        description:
+          'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute.',
         icon: '',
       },
     ],
@@ -459,54 +465,47 @@ const subSections = [
   },
   {
     selectionComponent: ServicesSelection,
-    subSectionComponent: Services,
+    subSectionComponent: SelectionContent,
     subSectionData: [
       {
         title: 'Virtual Reality Process',
-        description:
-                    'Come back to read more :)',
+        description: 'Come back to read more :)',
         // image: servicesImage,
         name: 'VR process',
       },
       {
         title: 'Web Development Process',
-        description:
-                    'Come back to read more :)',
+        description: 'Come back to read more :)',
         // image: servicesImage,
         name: 'Web Development Process',
       },
       {
         title: 'UI/UX Process',
-        description:
-                    'Come back to read more :)',
+        description: 'Come back to read more :)',
         // image: servicesImage,
         name: 'UI/UX Process',
       },
       {
         title: 'Design Process',
-        description:
-                    'Come back to read more :)',
+        description: 'Come back to read more :)',
         // image: servicesImage,
         name: 'Design Process',
       },
       {
         title: 'Mobile Development Process',
-        description:
-                    'Come back to read more :)',
+        description: 'Come back to read more :)',
         // image: servicesImage,
         name: 'Mobile Development Process',
       },
       {
         title: 'Database Development Process',
-        description:
-                    'Come back to read more :)',
+        description: 'Come back to read more :)',
         // image: servicesImage,
         name: 'Mobile Development Process',
       },
       {
         title: 'Consultancy Process',
-        description:
-                    'Come back to read more :)',
+        description: 'Come back to read more :)',
         // image: servicesImage,
         name: 'Consultancy Process',
       },
@@ -516,13 +515,13 @@ const subSections = [
   },
   {
     selectionComponent: ServicesSelection,
-    subSectionComponent: Services,
+    subSectionComponent: SelectionContent,
     subSectionData: [
       {
         title: 'Websites',
         costRange: '400$-5000$',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Websites',
         threejs: {
@@ -535,7 +534,7 @@ const subSections = [
         title: 'Design',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Design',
         threejs: {
@@ -548,7 +547,7 @@ const subSections = [
         title: 'Virtual Reality',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Virtual Reality',
         threejs: {
@@ -561,7 +560,7 @@ const subSections = [
         title: 'Branding',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Branding',
         threejs: {
@@ -574,7 +573,7 @@ const subSections = [
         title: 'Other',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Other',
         threejs: {
@@ -587,7 +586,7 @@ const subSections = [
         title: 'My Projects',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'My Projects',
         threejs: {
@@ -602,13 +601,13 @@ const subSections = [
   },
   {
     selectionComponent: ServicesSelection,
-    subSectionComponent: Services,
+    subSectionComponent: SelectionContent,
     subSectionData: [
       {
         title: 'Websites',
         costRange: '400$-5000$',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Websites',
         threejs: {
@@ -621,7 +620,7 @@ const subSections = [
         title: 'Design',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Design',
         threejs: {
@@ -634,7 +633,7 @@ const subSections = [
         title: 'Virtual Reality',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Virtual Reality',
         threejs: {
@@ -647,7 +646,7 @@ const subSections = [
         title: 'Branding',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Branding',
         threejs: {
@@ -660,7 +659,7 @@ const subSections = [
         title: 'Other',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'Other',
         threejs: {
@@ -673,7 +672,7 @@ const subSections = [
         title: 'My Projects',
         costRange: '',
         description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.',
         // image: servicesImage,
         name: 'My Projects',
         threejs: {
@@ -686,31 +685,44 @@ const subSections = [
     headline: 'Projects',
     key: 'sub-vr',
   },
-//   {
-//     selectionComponent: Services,
-//     subSectionComponent: null,
-//     headline: 'invisible',
-//     key: 'invisible',
-//   },
+  //   {
+  //     selectionComponent: Services,
+  //     subSectionComponent: SelectionContent,
+  //     headline: 'invisible',
+  //     key: 'invisible',
+  //   },
 ];
 // ========================================================================== //
 // Routlette
 // ========================================================================== //
 export default () => (
-
-  <ThreeDCarousel
-    // carousel dimensions
-    carouselHeight={175}
-    cardWidth={400}
-    gutter={4}
-    // top section
-    title="Sections"
-    key="Sections-carousel"
-    carouselData={sections}// needs, title, image, alt, description, icon, cta, category
-    SelectionComponent={SectionHeader}// top level selection
-    // sub section
-    subSectionData={subSections}// needs selectionComponent, subSectionComponent, headline, key
-    SubSelectionComponent={ThreeDCarousel}
-  />
-
+  <Grid
+    container
+    display="flex"
+    alignItems="stretch"
+    justifyContent="flex-start"
+    sx={{
+      width: '100%',
+      py: 4,
+      height: 1000,
+      background: (theme) => theme.palette.text.primary,
+      color: (theme) => theme.palette.text.primary,
+      border: (theme) => theme.custom.borders.brandBorder,
+    }}
+  >
+    <ThreeDCarousel
+      // carousel dimensions
+      carouselHeight={200}
+      cardWidth={400}
+      gutter={40}
+      // top section
+      title="Sections"
+      key="Sections-carousel"
+      carouselData={sections} // needs, title, image, alt, description, icon, cta, category
+      SelectionComponent={SectionHeader} // top level selection
+      // sub section
+      subSectionData={subSections} // needs selectionComponent, subSectionComponent, headline, key
+      SubSelectionComponent={ThreeDCarousel}
+    />
+  </Grid>
 );

@@ -27,7 +27,7 @@ export const SectionHeader = ({ headline, illustrationType, type = 'default' }) 
         display: 'inline-flex',
         alignItems: 'center', // { md: 'row', sm: 'column', xs: 'column' },
         position: 'realtive',
-        width: 250,
+        width: 174,
         gap: 2,
         p: 2, // padding: (theme) => theme.spacing(8, 4),
 

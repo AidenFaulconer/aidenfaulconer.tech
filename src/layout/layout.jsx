@@ -32,11 +32,9 @@ import { hexToAlpha } from '../store/theme';
 
 import MaterialUI from './materialUI';
 
-const PREFIX = 'Layout';
-
 // TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
 
-const Layout = React.memo((props) => {
+const Layout = (props) => {
   //   //prettier-ignore
   const { site: { siteMetadata: { seoTitle, seoDescription } } } = useStaticQuery(
     graphql`
@@ -116,26 +114,7 @@ const Layout = React.memo((props) => {
 
   const toggleTheme = useStore((state) => state.appContext.toggleTheme);
   const type = useStore((state) => state.appContext.type);
-  const selectedIndex = useStore((state) => state.threejsContext.context.selectedIndex);
-
-  // const ambiance = useMemo(() => {
-  //   const ambiance = new Audio(ambianceSound);
-  //   ambiance.volume = 0.25;
-  //   ambiance.loop = true;
-  //   return ambiance;
-  // }, []);
-  // const [ambianceState, toggleAudio] = useToggle(false);
-  // useEffect(() => {
-  //   if (ambianceState) ambiance.play();
-  //   else ambiance.pause();
-  // }, [toggleAudio]);
-  // if (typeof window === 'undefined') return null;
-  // const [pageChanged, setPageChanged] = useState(false);
-  // useEffect(() => {
-  //   setPageChanged(true);
-
-  //   setPageChanged(false);
-  // }, [selectedIndex]);
+  const animatedOpacity = useStore((state) => state.threejsContext.context.animatedOpacity);
 
   // we cant ssr the entire app because gatsby-plugin-material-ui does not deal with window undefined, really stupid on the plugin creators behalf, it is a problem with gatsby-plugin-material-ui
   // use
@@ -163,13 +142,14 @@ const Layout = React.memo((props) => {
       id="#root"
       className="pattern-horizontal-lines-md"
     >
+      <PageTransitionOverlay />
       <MaterialUI>
         <Navigation />
 
         <HeroHeader id="projects" />
-
-        {/* <PageTransitionOverlay /> */}
-        {children}
+        <div style={{ opacity: animatedOpacity }}>
+          {children}
+        </div>
 
         <Footer />
         <Zoom in={trigger} role="presentation">
@@ -204,7 +184,7 @@ const Layout = React.memo((props) => {
       </MaterialUI>
     </div>
   );
-}, (pre, post) => pre !== post);
+};
 
 // {/* <Fab
 // className={classes.fab}
@@ -326,11 +306,11 @@ const PageTransitionOverlay = (props) => {
     //   // { left: '-200vw', background: 'black' },
     //   // { left: '200vw' /* background: 'white' */ },
     // ],
-    from: { left: '-115vw', background: 'white', transform: 'skew(0deg)' },
+    from: { left: '-215vw', background: 'white', transform: 'skew(0deg)' },
     // delay: 2000,
     immediate: true,
     // loop: true,
-    config: { ...config.molasses, duration: 600 },
+    config: { ...config.molasses, duration: 600, delay: 0 },
   }));
 
   // const [{ x }, set] = useSpring(() => ({
@@ -374,21 +354,7 @@ const PageTransitionOverlay = (props) => {
   }));
   // console.log(useStore((state) => state));
   const theme = useTheme();
-  const pageChangeStyles = {
-    position: 'absolute',
-    display: 'initial',
-    background: theme.palette.text.secondary,
-    width: '100vw',
-    height: '100vh',
-    transform: 'skew(10deg)',
-    overflow: 'hidden',
-    top: '0px',
-    left: '-115vw',
-    opacity: 1,
-    zIndex: 30,
-    visibility: 'visible',
-    pointerEvents: 'all',
-  };
+  const pageChangeStyles = { background: theme.palette.text.secondary };
   return (
     <>
       <a.div
@@ -396,7 +362,18 @@ const PageTransitionOverlay = (props) => {
           background,
           left,
           transform,
-          ...pageChangeStyles,
+          position: 'fixed',
+          display: 'initial',
+          width: '200vw',
+          height: '100vh',
+          // transform: 'skew(10deg)',
+          overflow: 'hidden',
+          top: '0px',
+          // left: '-115vw',
+          opacity: 1,
+          zIndex: 30,
+          visibility: 'visible',
+          pointerEvents: 'all',
         }}
       />
     </>

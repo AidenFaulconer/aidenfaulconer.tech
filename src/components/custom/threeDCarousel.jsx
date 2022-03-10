@@ -47,8 +47,6 @@ The width of the slides is 300px. We're going to split those triangles in half a
    r =  -----------
           tan(20º)
 
-Here's a screenshot of me doing the calculations in JavaScript, right in the browser console!
-
 Math things: https://cl.ly/image/1t0j1V2Y2l2Z
 
 So, `r` is (about) 412px long! This means we need to TRANSLATE the slides in the Z 3-dimensional plane by 412px. This should be done AFTER the rotateY transformation.
@@ -165,6 +163,14 @@ export default React.memo(
     const [current, setCurrent] = React.useState(0);
     const [curRot, setCurRot] = React.useState(0);
     const prevCurrent = usePrevious(current);
+
+    // ========================================================================== //
+    //     handle navigation outside this component, **listens to onpopstate for checking routing/url location**
+    const listenToNavigation = (queryName) => {
+      alert(queryName);
+      // setCurrent(carouselData.filter((data, i) => data.headline === queryName && i));// find the name of the selection, and navigate to it **these requests are listened from a link calls
+    };
+
     // ========================================================================== //
     //   handle animation **consider the current SELECTION**
     const to = (i) => ({
@@ -315,7 +321,6 @@ export default React.memo(
 
     // ========================================================================== //
     //   effects
-
     const carouselRef = useRef(null);
     const makeUnselectable = (node) => {
       if (node.nodeType == 1) {
@@ -327,10 +332,10 @@ export default React.memo(
         child = child.nextSibling;
       }
     };
-    useEffect(() => {
-      makeUnselectable(carouselRef.current);
-      carouselRef.current.onselectstart = () => false;
-    }, []);
+    // useEffect(() => {
+    //   makeUnselectable(carouselRef.current);
+    //   carouselRef.current.onselectstart = () => false;
+    // }, [carouselRef]);
 
     // ========================================================================== //
     //   carousel **has grid areas defined for use in a parent container**
@@ -371,7 +376,7 @@ export default React.memo(
           }}
         >
           {/* carousel button container */}
-          <Box
+          {/* <Box
             sx={{
               width: '100%',
               // left: '0%',
@@ -387,9 +392,9 @@ export default React.memo(
               alignSelf: 'center',
               // border: (theme) => theme.custom.borders.brandBorder2,
             }}
-          >
-            {/* go left */}
-            <RegularButton
+          > */}
+          {/* go left */}
+          {/* <RegularButton
               type="secondary"
               icon={{ enabled: true, type: 'arrow' }}
               style={{
@@ -403,10 +408,10 @@ export default React.memo(
                   ),
                 );
               }}
-            />
+            /> */}
 
-            {/* go right */}
-            <RegularButton
+          {/* go right */}
+          {/* <RegularButton
               type="secondary"
               icon={{ enabled: true, type: 'arrow' }}
               onClick={(e) => {
@@ -418,7 +423,7 @@ export default React.memo(
                 );
               }}
             />
-          </Box>
+          </Box> */}
 
           {/* carousel container w carousel */}
           <Box
@@ -506,6 +511,7 @@ export default React.memo(
                       }}
                     >
                       <SelectionComponent
+                        id={data.key}
                         width={slideWidth}
                         {...data}
                         setCurrent={setCurrent}

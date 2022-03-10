@@ -17,7 +17,7 @@ const SectionWrapper = ({ children, type = 'primary' }) =>
   // some stuff
   (
     (
-      <Grid container xs={12}>
+      <Grid container>
         <Grid
           item
           md={1}

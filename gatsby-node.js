@@ -209,8 +209,15 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   // ========================================================================== //
   //   Build pages
   // ========================================================================== //
-  await buildPageFromQuery('b|Blog', pth.resolve(__dirname, 'project-post.jsx')); // build blog pages
-  await buildPageFromQuery('P|project', pth.resolve(__dirname, 'project-post.jsx')); // build project pages
+  await buildPageFromQuery(
+    'b|Blog',
+    pth.resolve(__dirname, 'project-post.jsx'),
+  ); // build blog pages
+
+  await buildPageFromQuery(
+    'P|project',
+    pth.resolve(__dirname, 'project-post.jsx'),
+  ); // build project pages
 };
 
 // ========================================================================== //
@@ -226,17 +233,15 @@ exports.onCreateWebpackConfig = ({
 }) => {
   actions.setWebpackConfig({
     devtool: process.env.NODE_ENV === 'development' ? 'eval' /** 'eval-source-map' */ : process.env.NODE_ENV === 'devbuild' ? 'source-map' : 'hidden-source-map', // for debugging processes, production debug with source-map, source-map for most efficient production buildz
-    resolve: { extensions: ['.mjs', '.js', '.jsx', '.json', '.gltf', '.png', '.jpg', '.jpeg', '.gif', '.svg'] },
+    resolve: { extensions: ['.mjs', '.js', '.jsx', '.json', '.gltf', 'png', 'jpg', 'jpeg', 'gif', 'svg'] },
     module: {
       rules: [
         { test: /\.(glb|gltf)$/i, use: 'file-loader' }, // or gltf-webpack-loader
         { test: /react-hot-loader/, use: [loaders.js()] },
         {
-          test: /\.(pdf|gif|svg|png|jpg|jpeg)$/,
-          type: 'asset/resource',
-          use: 'url-loader',
-          // use: 'file-loader?name=[path][name].[ext]',
-          // include: pth.resolve(__dirname, 'static/assets'),
+          test: /\.(pdf|gif|svg)$/,
+          use: 'file-loader?name=[path][name].[ext]',
+          include: pth.resolve(__dirname, 'static/assets'),
         },
 
         // ========================================================================== //
