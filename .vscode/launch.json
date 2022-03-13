@@ -24,6 +24,17 @@
       "sourceMaps": true
     },
     {
+      "name": "netlify: deploy",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby",
+      "args": ["netlify build"],
+      "stopOnEntry": false,
+      "runtimeArgs": ["--nolazy","--verbose","--log-pages"],
+      "sourceMaps": true
+    },
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome",

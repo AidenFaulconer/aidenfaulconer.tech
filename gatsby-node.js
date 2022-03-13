@@ -5,7 +5,7 @@
 const pth = require('path');
 const chunk = require('lodash/chunk');
 
-const { graphql, Reporter } = require('gatsby');
+const { graphql } = require('gatsby');
 
 const cheerio = require('cheerio');
 // const projectTemplate = require('./src/components/template-components/project-template').default;
@@ -197,26 +197,25 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
             previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
           },
-          component: pth.resolve('src/templates/project-template.jsx'),
+          component: template,
           path,
         });
       });
-    }
-    reporter.warn(`queried data is null! for a ${regex}page${JSON.stringify(result, null, 2)}`);
+    } else { reporter.warn(`queried data is null! for a ${regex}page${JSON.stringify(result, null, 2)}`); }
   }
 
   // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
   // ========================================================================== //
   //   Build pages
   // ========================================================================== //
-  await buildPageFromQuery(
-    'b|Blog',
-    pth.resolve(__dirname, 'project-post.jsx'),
-  ); // build blog pages
+  // await buildPageFromQuery(
+  //   'b|Blog',
+  //   pth.resolve('src/templates/project-template.jsx'),
+  // ); // build blog pages
 
   await buildPageFromQuery(
     'P|project',
-    pth.resolve(__dirname, 'project-post.jsx'),
+    pth.resolve('src/templates/project-template.jsx'),
   ); // build project pages
 };
 

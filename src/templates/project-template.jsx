@@ -10,7 +10,7 @@ import stickybits from 'stickybits';
 import { Box, Grid, useTheme } from '@mui/material';
 // import Bio from "../components/bio"
 // import Seo from "../components/seo"
-import { RegularButton } from '../custom/buttons';
+import { RegularButton } from '../components/custom/buttons';
 
 // ========================================================================== //
 // Blog post template
