@@ -63,7 +63,7 @@ async function createBlogPostArchive({ edges, gatsbyUtilities }) {
 
         // use the blog post archive template as the page component
         // component: pth.resolve('./src/templates/blog-post-archive.jsx'),
-        component: pth.resolve('./src/components/templatecomponents/projecttemplate'),
+        component: pth.resolve('./src/templates/project-template.jsx'),
 
         // `context` is available in the template as a prop and
         // as a variable in GraphQL.
@@ -197,7 +197,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
             previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
           },
-          component: pth.resolve('src/components/template-components/project-template.jsx'),
+          component: pth.resolve('src/templates/project-template.jsx'),
           path,
         });
       });

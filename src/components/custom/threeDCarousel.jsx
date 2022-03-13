@@ -17,12 +17,13 @@ import React, {
   useState,
 } from 'react';
 import { useDrag, useGesture } from '@use-gesture/react';
-import { useBreakpoints } from 'react-use-breakpoints';
+import { useBreakpoints, useWindowSize } from 'react-use-breakpoints';
 import { hexToAlpha } from '../../store/theme';
-import { usePrevious, useDimensions } from '../util/customHooks';
+import { usePrevious, useDimensions, toggleScrollHook } from '../util/customHooks';
 import { RegularButton } from './buttons';
 
 import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
+import { useStore } from '../../store/store';
 
 // ========================================================================== //
 // Math
@@ -125,6 +126,7 @@ export default React.memo(
     key = 'default',
     cardWidth = 350,
     carouselHeight = 350,
+    carouselIndex = 0,
     SelectionComponent, // component used for selection
     // sub section
     children,
@@ -132,31 +134,26 @@ export default React.memo(
     SubSelectionComponent, // component used for content
     HasContent = false, // tells component we have children to render with THIS instance of the component
   }) => {
-    // current selection
-
+    // ========================================================================== //
+    //     Calculations and properties
+    // ========================================================================== //
     const theme = useTheme();
-    const tiltAngle = 20;
-    const carouselID = carouselData[0].key;
-    const tiltRadians = tiltAngle * (Math.PI / 180);
-    const slideAngle = 360 / carouselData.length; // rotation increment for each slide
-    // constrain width of circle to 600,
-    const { breakpoint, windowSize } = useBreakpoints({
-      xs: 0,
-      sm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1600,
-    });
-    const radius = (_radius !== 0)
-      ? _radius : breakpoint === 'xs'
-        ? 125 : breakpoint === 'sm'
-          ? 175 : breakpoint === 'md'
-            ? 150 : breakpoint === 'lg'
-              ? 150 : 300;
-    const zOrigin = 859 / carouselData.length - 1;
 
-    const slideWidth = (gutter - radius * Math.cos(slideAngle));// was gutter - radius
-    console.log(slideWidth);
+    const tiltAngle = 20;
+    const tiltRadians = tiltAngle * (Math.PI / 180);
+    const carouselID = carouselData[0].key;
+
+    const windowSize = useWindowSize();// detect resize
+    const [containerDimensions, setContainerDimensions] = React.useState({ width: 0, height: 0 });
+    const radius = ((containerDimensions.width) / 2) - (gutter * 2);
+    // const zOrigin = 859 / carouselData.length - 1;
+    const zOrigin = -containerDimensions.width;
+    const slideWidth = ((radius * 2) / (carouselData.length / Math.PI));
+    const slideAngle = 360 / carouselData.length; // rotation increment for each slide
+
+    const containerRef = useRef(null);
+    // expose setCurrent method to store (only for topmost level)
+
     // ========================================================================== //
     //   handling state change
     // ========================================================================== //
@@ -164,29 +161,39 @@ export default React.memo(
     const [curRot, setCurRot] = React.useState(0);
     const prevCurrent = usePrevious(current);
 
-    // ========================================================================== //
-    //     handle navigation outside this component, **listens to onpopstate for checking routing/url location**
-    const listenToNavigation = (queryName) => {
-      alert(queryName);
-      // setCurrent(carouselData.filter((data, i) => data.headline === queryName && i));// find the name of the selection, and navigate to it **these requests are listened from a link calls
-    };
+    useEffect(() => {
+      // cap the width at 1000
+      const { clientWidth, clientHeight } = containerRef.current;
+      const width = clientWidth > 1250 ? 1250 : clientWidth;
+      const height = clientHeight > 1250 ? 1250 : clientHeight;
 
+      setContainerDimensions({
+        width: width - gutter,
+        height: height - gutter,
+      });
+    }, [windowSize, containerRef]);
+
+    useEffect(() => {
+      if (carouselIndex === 0) {
+        useStore.setState((state) => ({
+          ...state,
+          appContext: {
+            ...state.appContext,
+            methods: {
+              ...state.appContext.methods,
+              setCurrent: (args) => setCurrent(setDirection(args)),
+            },
+          },
+        }));
+      }
+    }, []);
     // ========================================================================== //
     //   handle animation **consider the current SELECTION**
     const to = (i) => ({
-      x: 0,
-      rot: slideAngle * i,
-      y: i * -4,
-      scale: 1,
-      delay: i * 100,
-      // config: { ...config.gentle },
+      x: 0, rot: slideAngle * i, y: i * -4, scale: 1, delay: i * 100, // config: { ...config.gentle },
     });
     const from = (i) => ({
-      x: 0,
-      rot: slideAngle * i,
-      scale: 1.5,
-      y: -1000,
-      // config: { ...config.gentle },
+      x: 0, rot: slideAngle * i, scale: 1.5, y: -1000, // config: { ...config.gentle },
     });
 
     // we need two springs, one wraps all the carousel cards, another wraps the ORIGIN of the carousel
@@ -199,18 +206,25 @@ export default React.memo(
       from: from(0),
     })); // Create a spring using the helpers above for the ORIGIN
 
+    const [scrollEnabled, setScrollEnabled] = toggleScrollHook(true);
     // ========================================================================== //
     //   Handle interactions with the carousel
-
     const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
     const gestureHandler = ({
       args: [index],
       down,
-      delta: [xDelta],
+      delta: [xDelta, yDelta],
       direction: [xDir],
-      velocity: [xVel],
+      velocity: [xVel, yVel],
       tap,
+      // memo
+      // cancel
+      // touches
+      // scrolling,
+      // wheeling,
     }) => {
+      // if we are at the end of the carousel we dont handle gestures
+      if (current === carouselData.length) { setCurrent(0); return; }
       // TODO: hold an accumulative value for rotation, and change it ONLY when current changes
       // we want this accumulative value inside the gesture handler to save performance
 
@@ -222,35 +236,34 @@ export default React.memo(
       // console.log(trigger);
       // alter card, i comes from the helper function passed into react-spring, which is the index of the animation
       // it is distinct from index because index is THIS card
+
       if (tap) {
         console.log('tapped');
       }
 
-      if (down) {
-        const x = 200 + window.innerWidth;
-        const scale = down ? 1.1 : 1; // Active cards lift up a bit
-        xDelta = (Math.abs(xDelta) - window.innerWidth * xVel) / 100; // relative to velocity and viewport size
+      const x = 200 + window.innerWidth;
+      const scale = down ? 1.1 : 1; // Active cards lift up a bit
+      xDelta = (Math.abs(xDelta) - window.innerWidth * xVel) / 100; // relative to velocity and viewport size
 
-        // compensate for left and right directions
-        xDelta = xDir > 0 ? -xDelta : xDelta; // left or right
+      // compensate for left and right directions
+      xDelta = xDir > 0 ? -xDelta : xDelta; // left or right
 
-        const rot = curRot + xDelta;
-        // individual card animations
-        setCard((i) => {});
-        // carousel origin animations
-        console.log(
-          `curRot ${curRot} rotOffset ${rot} delta: ${xDelta} dir: ${xDir} vel: ${xVel}`,
-        );
+      const rot = curRot + xDelta;
+      // individual card animations
+      setCard((i) => {});
+      // carousel origin animations
+      console.log(
+        `curRot ${curRot} rotOffset ${rot} delta: ${xDelta} dir: ${xDir} vel: ${xVel}`,
+      );
 
-        setOrigin(() => ({
-          x,
-          rot,
-          scale,
-          delay: 0,
-          // config: { friction: 0, tension: down ? 800 : 200 },
-        }));
-        setCurRot(curRot);
-      }
+      setOrigin(() => ({
+        x,
+        rot,
+        scale,
+        delay: 0,
+        // config: { friction: 0, tension: down ? 800 : 200 },
+      }));
+      setCurRot(curRot);
     };
 
     // because we nest instances of this, we need to make sure implements useCallback to memoize it to the instance
@@ -268,12 +281,12 @@ export default React.memo(
           axis: 'x',
           filterTaps: true,
         },
-        useScroll: {
-          threshold: 5,
-          pointer: { capture: false },
-          axis: 'x',
-          filterTaps: true,
-        },
+        // useScroll: {
+        //   threshold: 5,
+        //   pointer: { capture: false },
+        //   axis: 'y',
+        //   filterTaps: true,
+        // },
         wheel: { threshold: 5 },
       },
     ); // this function instance comes from the component key
@@ -281,7 +294,7 @@ export default React.memo(
     // ========================================================================== //
     //   effects
     const setDirection = useCallback(
-      (_current, direction) => {
+      (_current, direction = 'right') => {
         // const rotAmnt = slideAngle * _current;
         // if we go left, we increment negatively -360 relative to current, if we go right, we increment positively 360 relative to current
         const rot = direction === 'left'
@@ -292,12 +305,11 @@ export default React.memo(
             ? -slideAngle
             : -slideAngle * _current;
 
-        // setRotAcc(rot);
-        console.log(
-          `angle:${slideAngle},length: ${
-            carouselData.length - 1
-          }, slide:${_current}, ${direction}, Rotate: ${rot}`,
-        );
+        // console.log(
+        //   `angle:${slideAngle},length: ${
+        //     carouselData.length - 1
+        //   }, slide:${_current}, ${direction}, Rotate: ${rot}`,
+        // );
 
         setOrigin((i) => {
           const isGone = 0; // gone.has(index);
@@ -320,59 +332,31 @@ export default React.memo(
     );
 
     // ========================================================================== //
-    //   effects
-    const carouselRef = useRef(null);
-    const makeUnselectable = (node) => {
-      if (node.nodeType == 1) {
-        node.setAttribute('unselectable', 'on');
-      }
-      let child = node.firstChild;
-      while (child) {
-        makeUnselectable(child);
-        child = child.nextSibling;
-      }
-    };
-    // useEffect(() => {
-    //   makeUnselectable(carouselRef.current);
-    //   carouselRef.current.onselectstart = () => false;
-    // }, [carouselRef]);
-
-    // ========================================================================== //
     //   carousel **has grid areas defined for use in a parent container**
     // ========================================================================== //
     return (
       <>
         {/* carousel container w controls */}
         <Box
+          id={`carousel-container-${carouselIndex}`}
+          ref={containerRef}
           {...bindGestureHandler(0)}
           sx={{
             gridArea: `Slider-${carouselID}`,
             background: (theme) => theme.palette.text.primary,
-            // 3d carousel dimensions
-            py: 1,
+            // py: 1,
             position: 'relative',
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'column',
             alignContent: 'center',
             pointerEvents: 'all',
-            minHeight: carouselHeight || '30vh',
+            height: carouselHeight,
             perspective: 2500,
             perspectiveOrigin: '50% 50%',
             transformStyle: 'preserve-3d',
-            // width: {
-            //   xs: '100%', lg: 900,
-            // },
             width: '100%',
-            // configure scale so this fits properly into the users view without having to deal with associated sizing of children
-            // transform: {
-            //   xs: `scale(${1}) rotate(0deg) translateZ(100px)`,
-            //   sm: `scale(${1}) rotate(0deg) translateZ(100px)`,
-            //   md: `scale(${1}) rotate(0deg) translateZ(100px)`,
-            //   lg: `scale(${1}) rotate(0deg) translateZ(100px)`,
-            //   xl: `scale(${1}) rotate(0deg) translateZ(100px)`,
-            // },
-            transform: `scale(${1}) rotate(0deg) translateZ(100px)`,
+            // transform: `scale(${1}) rotate(0deg) translateZ(100px)`,
           }}
         >
           {/* carousel button container */}
@@ -427,27 +411,29 @@ export default React.memo(
 
           {/* carousel container w carousel */}
           <Box
+            unselectable="on"
             sx={{
               // background: 'red',
-              // ({ cardDimension, carouselLength }) => cardDimension + 1250 + carouselLength ** 4 || 1000, // This is the perspective of the 3D circle.
               perspective: 'inherit',
+              perspectiveOrigin: `50% ${carouselIndex > 0 && -(carouselIndex * 100)}px`,
               position: 'relative',
               display: 'inline-flex',
               justifyContent: 'center',
               alignContent: 'center',
               alignSelf: 'center',
               width: '100%',
-              height: '100%', // centers the carousel, carousel is spawned at baseline of this element
+              transform: `scale(${0.7})`,
+              // transform: carouselIndex > 0 && `translateY(${-(carouselHeight) * (carouselIndex + 1)}px)`,
+              height: carouselHeight, // centers the carousel, carousel is spawned at baseline of this element
             }}
           >
             {/* the carousel origin */}
             <a.div
-              ref={carouselRef}
               style={{
                 pointerEvents: 'all',
                 transform: interpolate(
-                  [wrappedOrigin.rot],
-                  (rot) => `rotateY(${rot}deg)`,
+                  [wrappedOrigin.rot, wrappedOrigin.scale],
+                  (rot, scale) => `rotateY(${rot}deg) scale(${scale})`,
                 ),
                 zIndex: 5,
                 position: 'absolute',
@@ -461,6 +447,7 @@ export default React.memo(
                 justifyContent: 'center',
               }}
             >
+              {/* carousel panels */}
               {wrappedCards.map(
                 (
                   {
@@ -484,23 +471,27 @@ export default React.memo(
                       style={{
                         minWidth: `${slideWidth}px`,
                         width: `${slideWidth}px`,
+                        maxHeight: `${carouselHeight}px`,
                         // backdropFilter: 'blur(25px)',
-                        color: (theme) => theme.palette.text.seconary,
+                        color: theme.palette.text.seconary,
                         boxShadow: 'none !important',
                         position: 'absolute',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        borderRadius: theme.spacing(2),
+                        borderRadius: theme.spacing(1),
                         overflow: 'hidden',
+                        border: theme.custom.borders.brandBorder,
+                        padding: theme.spacing(1),
+
                         // align rotation to fit in a circle
-                        transform: `rotateY(${slideAngle * i}deg) translateZ(${gutter + radius}px)`,
+                        transform: `rotateY(${slideAngle * i}deg) translateZ(${radius}px)`,
                         zIndex: 5 * i + 1,
                         // handle selection/unselection
                         background: theme.palette.text.secondary,
                         ...(current === i
                           ? { opacity: 1 }
-                          : current === i - 1 || current === i + 1 ? { opacity: 0.7 }
+                          : current === i - 1 || current === i + 1 ? { opacity: 0.9 }
                             : { opacity: 0.3 }
                         ),
                       }}
@@ -511,8 +502,10 @@ export default React.memo(
                       }}
                     >
                       <SelectionComponent
-                        id={data.key}
+                        unselectable="on"
+                        id={`${String(data.key).toLowerCase()}`}
                         width={slideWidth}
+                        height={carouselHeight}
                         {...data}
                         setCurrent={setCurrent}
                         i={i}
@@ -526,11 +519,11 @@ export default React.memo(
         </Box>
 
         {/* additional Carousels */}
-
         {/* nest carousels from top to bottom via children, they need eachother, this is recursive, ensure a stopping condition */}
         {/* this carousel is different for every single subsection, current powers this selection */}
         {(SubSelectionComponent && (
           <SubSelectionComponent
+            carouselIndex={carouselIndex + 1}
             // carousel dimensions
             gutter={gutter}
             carouselHeight={carouselHeight}
@@ -540,11 +533,10 @@ export default React.memo(
             title={subSectionData[current].headline}
             SelectionComponent={subSectionData[current].selectionComponent}
             // handle further nested carousels
-            // SubSelectionComponent={subSectionData[current].subSectionData?.subSelectionComponent}
-            HasContent={subSectionData[current].subSectionComponent}
+            SubSelectionComponent={subSectionData[current].subSelectionComponent || null}
+            HasContent={subSectionData[current].HasContent}
           />
-        ))
-          || null}
+        )) || null}
 
         {/* note that carouselData in the childs point of view is of the parents, which is subsectionData[current].subSectionData **since its inheriting the grandfathers subsectionData** */}
         {/* props to this component are passed down below in children(), since we create it via (), we only pass a reference here */}
@@ -554,7 +546,12 @@ export default React.memo(
           <Box sx={{
             gridArea: 'content',
             width: '100%',
+            // mt: 12,
             height: '100%',
+            perspective: 'inherit',
+            // transform: 'preserve-3d',
+            // transform: `rotate(${slideAngle * i}deg) translateZ(${radius}px)`,
+            perspectiveOrigin: `50% ${carouselIndex > 0 && -(carouselIndex * 100)}px`,
           }}
           >
             <HasContent

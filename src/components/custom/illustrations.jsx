@@ -3,8 +3,7 @@
 // ========================================================================== //
 
 import makeStyles from '@mui/styles/makeStyles';
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
+import React, { useState } from 'react'; 
 import { Box } from '@mui/material';
 import { keyframes } from '@emotion/react';
 
@@ -266,20 +265,20 @@ export const illustrations = {
   coffee, confidence, computer, moustache, genie, vr, abstract,
 };
 
-const DivColorFocus = styled('div')(({ theme }) => ({
-  margin: '-50% auto',
-  width: 500,
-  height: 1395,
-  zIndex: 2,
-  backgroundImage: theme.palette.background.pipes,
+// const DivColorFocus = styled('div')(({ theme }) => ({
+//   margin: '-50% auto',
+//   width: 500,
+//   height: 1395,
+//   zIndex: 2,
+//   backgroundImage: theme.palette.background.pipes,
 
-  '&::hover': {
-    width: 1700,
-    height: 300,
-    transform: 'rotate(165deg)',
-    backgroundImage: theme.palette.background.pipesTwo,
-  },
-}));
+//   '&::hover': {
+//     width: 1700,
+//     height: 300,
+//     transform: 'rotate(165deg)',
+//     backgroundImage: theme.palette.background.pipesTwo,
+//   },
+// }));
 
 // ========================================================================== //
 // Illustration component **parent should generally be realtively positioned**
@@ -334,7 +333,7 @@ export const ColorFocus = React.memo(() => (
       flexDirection: 'column',
     }}
   >
-    <DivColorFocus />
+    {/* <DivColorFocus /> */}
   </div>
 ));
 

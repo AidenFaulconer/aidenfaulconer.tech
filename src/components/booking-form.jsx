@@ -30,13 +30,6 @@ import { SectionHeader } from './section-header';
 
 import doItAll from '../../static/assets/portfolio/doitall.png';
 
-import awmImage from '../../static/assets/blog/awm.png';
-import rvrImage from '../../static/assets/blog/rvr.png';
-import rgImage from '../../static/assets/blog/railgun.png';
-import afImage from '../../static/assets/blog/me.png';
-import lgImage from '../../static/assets/blog/uc.png';
-import xprtImage from '../../static/assets/blog/xperthubb.png';
-import ajImage from '../../static/assets/blog/aj.png';
 import { ServicesSelection } from './portfolio-page/services';
 import { useStore } from '../store/store';
 import { sendBookingForm } from './util/apis';
@@ -92,7 +85,7 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
   const [finished, setFinished] = React.useState(false);
   const [service, setService] = useFormStore('bookingForm', 'service', key);
   const useStepComponent = React.useCallback(({ StepComponent }) => <StepComponent finished={finished} />, [activeStep]);
-
+  const bookingForm = useStore((state) => state.bookingForm);
   React.useEffect(() => setService(key), [key]);
 
   const isStepOptional = (step) => step === 1;
@@ -105,7 +98,42 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-    if (activeStep === steps.length - 1) sendBookingForm();
+    if (activeStep === steps.length - 1) {
+      const {
+        name,
+        email,
+        message,
+        phone,
+        subService,
+        // project details
+        referencePhotos,
+        projectRequirements,
+        budgetRange,
+        dueDate,
+        projectSuccessHow,
+        // confirmation
+        summary,
+      } = bookingForm;
+      sendBookingForm({
+        recipient: bookingForm.email,
+        message: {
+          service,
+          name,
+          email,
+          message,
+          phone,
+          subService,
+          // project details
+          referencePhotos,
+          projectRequirements,
+          budgetRange,
+          dueDate,
+          projectSuccessHow,
+          // confirmation
+          summary,
+        },
+      });
+    }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
@@ -159,7 +187,7 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
       {/* stepper controls */}
       {activeStep === steps.length ? (
         <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
+          <Typography sx={{ mb: 1 }}>
             All steps completed - you&apos;re finished
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -169,7 +197,7 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
         </>
       ) : (
         <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
+          <Typography sx={{ mb: 1 }}>
             Step
             {activeStep + 1}
           </Typography>
@@ -637,13 +665,13 @@ export const MainSelections = () => (
       // carousel dimensions
     carouselHeight={300}
     cardWidth={400}
-    gutter={55}
+    gutter={50}
 
       // top section
     title="Sections"
     key="Sections-carousel"
     carouselData={sections} // needs, title, image, alt, description, icon, cta, category
-    SelectionComponent={SectionHeader}
+    SelectionComponent={ServicesSelection}
     subSelectionData={steps}
     HasContent={ProjectStepper}
   />

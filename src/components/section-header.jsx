@@ -4,7 +4,9 @@ import React, { PureComponent } from 'react';
 import { hexToAlpha, svgEncodeBaseSixtyFour } from '../store/theme';
 import { Illustration } from './custom/illustrations';
 
-export const SectionHeader = ({ headline, illustrationType, type = 'default' }) => {
+export const SectionHeader = ({
+  width = 200, height = 200, headline, illustrationType, type = 'default', id,
+}) => {
   const sectionHeaderStyles = {
     inverted: {
       // background: (theme) => theme.palette.text.primary,
@@ -20,6 +22,7 @@ export const SectionHeader = ({ headline, illustrationType, type = 'default' }) 
 
   return (
     <Box
+      id={id}
       sx={{
         ...sectionHeaderStyles[type],
         justifyContent: 'flex-start',
@@ -27,10 +30,10 @@ export const SectionHeader = ({ headline, illustrationType, type = 'default' }) 
         display: 'inline-flex',
         alignItems: 'center', // { md: 'row', sm: 'column', xs: 'column' },
         position: 'realtive',
-        width: 174,
         gap: 2,
-        p: 2, // padding: (theme) => theme.spacing(8, 4),
-
+        p: 2,
+        width,
+        height,
         '& .illustration-container': {
           // background: svgEncodeBaseSixtyFour(`
           //       <svg xmlns="http://www.w3.org/2000/svg" width="292" height="291" fill="none" viewBox="0 0 292 291">
@@ -39,25 +42,20 @@ export const SectionHeader = ({ headline, illustrationType, type = 'default' }) 
           //     </svg>
           //   `),
           // width: '100%',
-          backgroundColor: (theme) => hexToAlpha(theme.palette.text.primary, 0.3),
+          background: (theme) => hexToAlpha(theme.palette.text.primary, 0.3),
           border: (theme) => theme.custom.borders.brandBorder,
           justifyContent: 'center',
           display: 'inline-flex',
           borderRadius: '100%',
           alignItems: 'center',
           overflow: 'hidden',
-          height: 100,
-          width: 100,
+          height: 200,
+          width: 200,
           '& #illustration': {
-            // display: 'inline-flex',
-            // justifyContent: 'center',
-            // transform: "skewX(100)",
-            // alignItems: 'flex-end',
             display: 'contents',
             position: 'relative',
-            width: 100,
+            width: 200,
             height: 200,
-
             '& svg': {
               mt: 1,
               width: '100% !important ',
@@ -70,7 +68,7 @@ export const SectionHeader = ({ headline, illustrationType, type = 'default' }) 
         <Illustration type={illustrationType} maxWidth={350} />
       </div>
 
-      <Typography align="center" variant="h4" color="currentColor">
+      <Typography align="center" variant="h3" color="currentColor">
         {headline}
       </Typography>
     </Box>

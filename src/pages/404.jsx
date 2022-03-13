@@ -3,7 +3,6 @@ import Helmet from 'react-helmet';
 import { Link } from 'gatsby';
 import Layout from '../layout/layout';
 
-
 export default React.memo(() => (
   <Layout>
     <Helmet>

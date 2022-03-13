@@ -33,7 +33,6 @@ import logoPng from '../../static/svgs/logo.png';
 import {
   RegularButton,
 } from '../components/custom/buttons';
-import { NavigationBlob } from '../components/custom/navigationBlob';
 import { useStore } from '../store/store';
 import { SCROLL_PROPS } from '../store/theme';
 import { Illustration } from '../components/custom/illustrations';
@@ -46,25 +45,44 @@ const Navigation = ({ window }) => {
 
   const toggleDrawer = React.useCallback(() => setDrawerState((drawerState) => !drawerState), []);
   const theme = useTheme();
+  const toggleTheme = useStore((state) => state.appContext.toggleTheme);
   const triggerPageChange = useStore((state) => state.threejsContext.methods.triggerPageChange);
   const changePage = useStore((state) => state.threejsContext.methods.changePage);
+  const setCurrent = useStore((state) => state.appContext.methods.setCurrent);
   const setColor = useStore((state) => state.threejsContext.methods.setColor);
   const type = useStore((state) => state.appContext.type);
 
+  const scrollToElementById = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const navigateToPage = React.useCallback((pageLink, pageIndex) => {
+    // if (typeof window === 'undefined') return;
+    if (pageLink[0] === '#') {
+      if (document.location.pathname !== '/') changePage({ selectedIndex: -1, pageLink: '/' });// go to index page
+      setCurrent(pageIndex);
+      scrollToElementById('carousel-container-0');
+      return;
+    }
+
     setColor({ x: theme.palette.text.primary, y: 1 });
     triggerPageChange({ background: theme.palette.text.special, transform: 'skew(-10deg)', left: '215vw' });
     changePage({
-      selectedIndex: pageIndex || -1, // no selected post
+      selectedIndex: pageIndex || -1, // -1 is index page
       pageLink,
     });
-  }, []);
+  }, [setCurrent]);
 
   const pages = [
-    { name: 'Projects', url: '#projects' },
-    { name: 'Services', url: '#services' },
-    { name: 'Skills', url: '#skills' },
-    { name: 'Blog', url: '#blog' },
+    { name: 'Projects', url: '#projects', slideIndex: 5 },
+    { name: 'Services', url: '#services', slideIndex: 0 },
+    { name: 'Skills', url: '#skills', slideIndex: 2 },
+    { name: 'Blog', url: '#blog', slideIndex: 4 },
   ];
 
   // ========================================================================== //
@@ -156,54 +174,11 @@ const Navigation = ({ window }) => {
     return <>{name}</>;
   }, []);
 
-  const scrollToSmoothly = (pos, time) => {
-    if (typeof window === 'undefined') return;
-    const currentPos = window.pageYOffset;
-    let start = null;
-    if (time == null) time = 500;
-    (pos = +pos), (time = +time);
-    window.requestAnimationFrame((currentTime) /* step */ => {
-      start = !start ? currentTime : start;
-      const progress = currentTime - start;
-      if (currentPos < pos) {
-        window.scrollTo(
-          0,
-          ((pos - currentPos) * progress) / time + currentPos,
-        );
-      } else {
-        window.scrollTo(
-          0,
-          currentPos - ((currentPos - pos) * progress) / time,
-        );
-      }
-      if (progress < time) {
-        window.requestAnimationFrame(step);
-      } else {
-        window.scrollTo(0, pos);
-      }
-    });
-  };
-
-  const navigateTo = React.useCallback((page) => {
-    if (typeof window === 'undefined') return;
-    console.log(page);
-    if (page[0] === '#' && typeof document !== 'undefined') {
-      // navigatePage(page)
-      scrollToSmoothly(
-        document.getElementById(page.slice(1, page.length)).offsetTop,
-        2000,
-      );
-    } else {
-      // navigatePage(page)
-    }
-    // window.location.hash = page.url
-  }, []);
-
   const logo = React.useCallback(
     () => (
       <>
         <Box
-          onClick={() => navigateToPage('/')}
+          onClick={() => navigateToPage('/', 0)}
           sx={{
             ...menuIconStyles,
           }}
@@ -232,13 +207,13 @@ const Navigation = ({ window }) => {
   );
 
   const processPages = React.useCallback(
-    () => pages.map((page, i) => {
-      switch (page.url[0]) {
+    () => pages.map(({ url, name, slideIndex }, i) => {
+      switch (url[0]) {
         case '/':// for page navs use buttons
           return (
             <Box
-              key={page.name}
-              onClick={() => navigate(page.url)}
+              key={name}
+              onClick={() => navigateToPage(url, slideIndex)}
               sx={{
                 transform: { xs: 'scale(.75)' },
                 pointer: 'cursor',
@@ -248,18 +223,18 @@ const Navigation = ({ window }) => {
                 size="small"
                 style={{ fontSize: '.5rem !important' }}
               >
-                {boldCurrentPage(page.name.toUpperCase(), i)}
+                {boldCurrentPage(name.toUpperCase(), i)}
               </RegularButton>
             </Box>
           );
         case '#':// for internal links use anchors
           return (
             <Box
-              key={page.name}
-              onClick={() => navigate(page.url)}
+              key={name}
+              onClick={() => navigateToPage(url, slideIndex)}
               sx={{ ...pageLinkStyles }}
             >
-              {boldCurrentPage(page.name.toUpperCase(), i)}
+              {boldCurrentPage(name.toUpperCase(), i)}
             </Box>
           );
         default:
@@ -311,7 +286,11 @@ const Navigation = ({ window }) => {
       <div
         id="menu-header"
         style={{
-          display: 'inline-flex', padding: 30, justifyContent: 'center', width: '100%', height: '23.5%',
+          display: 'inline-flex',
+          padding: 30,
+          justifyContent: 'center',
+          width: '100%',
+          height: '23.5%',
         }}
       >
         <RegularButton
@@ -324,35 +303,40 @@ const Navigation = ({ window }) => {
       <List
         sx={{
           flexDirection: { sm: 'row', xs: 'column' },
-          overflowX: 'scroll',
+          overflow: 'hidden',
           height: '61.72%',
           width: '100%',
+          border: theme.custom.borders.brandBorder,
+          color: theme.palette.text.secondary,
           background: theme.palette.text.primary,
           alignItems: 'center',
           display: 'inline-flex',
         }}
       >
-        {pages.map((page, index) => (
+        {pages.map(({ name, url, slideIndex }, index) => (
           <ListItem
             button
             style={{ justifyContent: 'center', maxWidth: '300' }}
-            key={page.name}
+            key={name}
             onClick={() => {
-              navigateTo(page.url);
+              navigateToPage(url);
               toggleDrawer();
             }}
           >
-            <Link
-              style={{
-                color: 'white', fontSize: '2rem', textTransform: 'capitalize', display: 'inline-flex', justifyContent: 'center',
+            <Typography
+              variant="h2"
+              sx={{
+                ...pageLinkStyles,
+                color: 'currentColor',
+                // fontSize: '2rem',
+                textTransform: 'capitalize',
+                display: 'inline-flex',
+                justifyContent: 'center',
               }}
-              sx={{ ...pageLinkStyles }}
-              key={page.name}
-              to={page.url}
-              onClick={() => navigateTo(page.url)}
+              onClick={() => navigateToPage(url, slideIndex)}
             >
-              {boldCurrentPage(page.name, index)}
-            </Link>
+              {boldCurrentPage(name, index)}
+            </Typography>
           </ListItem>
         ))}
         <Illustration
@@ -364,17 +348,30 @@ const Navigation = ({ window }) => {
       <div
         id="menu-footer"
         style={{
-          height: '27.1%', width: '100%', gap: 60, display: 'inline-flex', justifyContent: 'center', alignItems: 'center', padding: 30,
+          height: '27.1%',
+          width: '100%',
+          gap: 60,
+          display: 'inline-flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 30,
+          color: theme.palette.text.primary,
         }}
       >
 
         <div
           id="theme-switch"
           style={{
-            display: 'inline-flex', height: 100, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 10,
+            display: 'inline-flex',
+            height: 100,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 10,
+            color: theme.palette.text.primary,
           }}
         >
-          <Typography gutterBottom variant="body1" color="primary" align="center">{`${type} theme`}</Typography>
+          <Typography width="100%" gutterBottom variant="body1" color="currentColor" align="center">{`${type} theme`}</Typography>
           <div
             id="social-media"
             style={{
@@ -383,9 +380,19 @@ const Navigation = ({ window }) => {
           >
             <button
               type="button"
-                // onClick={() => toggleTheme()}
+              onClick={() => toggleTheme()}
               style={{
-                background: theme.palette.text.primary, color: theme.palette.text.secondary, width: 50, height: 50, position: 'relative', border: '1px solid black', borderRadius: '100%', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', border: theme.custom.borders.brandBorder,
+                background: theme.palette.text.primary,
+                width: 50,
+                height: 50,
+                position: 'relative',
+                border: '1px solid black',
+                borderRadius: '100%',
+                display: 'inline-flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: theme.palette.text.secondary,
+                border: theme.custom.borders.brandBorder,
               }}
               aria-label="change theme"
             >
@@ -397,10 +404,17 @@ const Navigation = ({ window }) => {
         <div
           id="social-media-container"
           style={{
-            display: 'inline-flex', width: '100%', height: 100, flexDirection: 'column', maxWidth: 250, alignItems: 'center', gap: 10,
+            display: 'inline-flex',
+            width: '100%',
+            height: 100,
+            flexDirection: 'column',
+            maxWidth: 250,
+            alignItems: 'center',
+            gap: 10,
+            color: theme.palette.text.primary,
           }}
         >
-          <Typography gutterBottom variant="body1" color="primary" align="center">Follow me</Typography>
+          <Typography width="100%" gutterBottom variant="body1" color="currentColor" align="center">Follow me</Typography>
           <div
             id="social-media"
             style={{
@@ -410,22 +424,22 @@ const Navigation = ({ window }) => {
             <RegularButton
               type="icon"
               icon={{ enabled: true, type: 'instagram' }}
-              onClick={navigateTo('./instagram')}
+              onClick={() => navigateToPage('./instagram')}
             />
             <RegularButton
               type="icon"
               icon={{ enabled: true, type: 'linkedin' }}
-              onClick={navigateTo('./linkedin')}
+              onClick={() => navigateToPage('./linkedin')}
             />
             <RegularButton
               type="icon"
               icon={{ enabled: true, type: 'github' }}
-              onClick={navigateTo('./github')}
+              onClick={() => navigateToPage('./github')}
             />
             <RegularButton
               type="icon"
               icon={{ enabled: true, type: 'facebook' }}
-              onClick={navigateTo('./facebook')}
+              onClick={() => navigateToPage('./facebook')}
             />
             <div />
           </div>

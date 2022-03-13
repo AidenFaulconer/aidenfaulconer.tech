@@ -25,7 +25,7 @@ import servicesImage from '../../../static/assets/portfolio/delivery.png';
 import ThreeWrapper from '../threejs/three-wrapper';
 import { useStore } from '../../store/store';
 
-import defaultImage from '../../../static/assets/portfolio/dibbles.png';
+import defaultImage from '../../../static/assets/portfolio/delivery.png';
 
 // ========================================================================== //
 // services
@@ -64,11 +64,12 @@ export const SelectionContent = ({
       sx={{
         position: 'relative',
         background: (theme) => theme.palette.text.primary,
-        border: (theme) => theme.custom.borders.brandBorder,
+        // border: (theme) => theme.custom.borders.brandBorder,
         flexDirection: { md: 'row', xs: 'column' },
         width: '100%',
         height: '100%',
         minHeight: 400,
+        mt: 12,
         overflowX: 'hidden',
         overflowY: 'hidden',
       }}
@@ -85,7 +86,6 @@ export const SelectionContent = ({
           color: (theme) => theme.palette.text.secondary,
           padding: 4,
           height: '100%',
-          maxWidth: '100vw',
           flexDirection: { md: 'row', xs: 'column' },
         }}
       >
@@ -94,8 +94,7 @@ export const SelectionContent = ({
             position: 'relative',
             display: 'inline-flex',
             flexDirection: 'column',
-            maxWidth: '100vw',
-            width: { md: '100%', xs: '100%' },
+            width: '100%',
             zIndex: 20,
             // minHeight: 400,
             height: { md: '100%', xs: 350 },
@@ -139,7 +138,6 @@ export const SelectionContent = ({
               flexDirection: 'row',
               position: 'relative',
               width: '100%',
-              height: '50%',
               justifyContent: 'flex-start',
               alignItems: 'flex-end',
               alignSelf: 'flex-end',
@@ -172,6 +170,11 @@ export const SelectionContent = ({
           order: { md: 1, xs: 0 },
           width: '60%',
           maxHeight: { xs: 150, md: 400 },
+          height: '100%',
+          position: 'relative',
+          borderRadius: (theme) => theme.spacing(1),
+          overflow: 'hidden',
+          mb: 8,
         }}
       >
         <img
@@ -179,9 +182,8 @@ export const SelectionContent = ({
           style={{
             position: 'relative',
             width: '100%',
+            height: '100%',
             objectFit: 'contain',
-            maxHeight: { xs: 180, md: 400 },
-            top: 0,
           }}
           src={defaultImage}
         />
@@ -194,15 +196,16 @@ export const SelectionContent = ({
 
 // selection components get headline, subsectionData, their corresponding index and a method to change the current selection
 export const ServicesSelection = ({
-  setCurrent, i, title, width,
+  setCurrent, i, title, width, height, id,
 }) => (
   <Box
+    id={id}
     onClick={() => setCurrent(i)}
     sx={{
-      width: '100%',
+      width: width || '100%',
       position: 'relative',
       p: 2,
-      height: 75,
+      height: height || 75,
       color: 'text.primary',
       background: 'inherit',
       display: 'inline-flex',
@@ -212,7 +215,7 @@ export const ServicesSelection = ({
   >
     <Typography
       sx={{ width: '100%' }}
-      variant="h4"
+      variant="h3"
       align="center"
       color="currentColor"
     >

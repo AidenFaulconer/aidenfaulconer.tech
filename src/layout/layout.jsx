@@ -32,6 +32,7 @@ import { hexToAlpha } from '../store/theme';
 
 import MaterialUI from './materialUI';
 
+
 // TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
 
 const Layout = (props) => {

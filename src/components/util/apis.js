@@ -24,17 +24,17 @@ export const commonHeaders = {
   // 'content-type': 'application/x-www-form-urlencoded',//default
   // Accept: 'application/json, text/plain, */*',
   Accept: 'application/json, text/plain, */*',
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Credentials': true,
-  'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-  'Access-Control-Allow-Headers':
-    'Content-Type, Authorization, Content-Length, X-Requested-With',
-  'cache-control': 'no-cache',
+  // 'Access-Control-Allow-Origin': '*',
+  // 'Access-Control-Allow-Credentials': true,
+  // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+  // 'Access-Control-Allow-Headers':
+  //   'Content-Type, Authorization, Content-Length, X-Requested-With',
+  // 'cache-control': 'no-cache',
   // 'sec-fetch-dest': 'empty',
   // 'sec-fetch-mode': 'cors',
   // 'sec-fetch-site': 'same-site',
-  pragma: 'no-cache',
-  usequerystring: 'true',
+  // pragma: 'no-cache',
+  // usequerystring: 'true',
 };
 // use in auth param in request
 // export const authorizeApp = async () => `Bearer ${new google.auth.JWT({
@@ -68,66 +68,38 @@ export const postToSpreadsheeets = async (data) => axios.post({
 export const searchWeather = async (loc) => axios.get(
   `${process.env.NODE_ENV.APIURL}/data/2.5/weather?q=${loc}&appid=${process.env.OPENWEATHERAPIKEY}`,
 );
-export const sendSms = async ({ message, recipient }) => {
+
+export const sendContactForm = async ({ message, recipient }) => {
   console.log(message, recipient);
   return axios.request({
     method: 'POST',
-    url: process.env.SMSSENDURL,
-    headers: {
-      ...commonHeaders,
-      'x-rapidapi-host': process.env.SMSHOST,
-      'x-rapidapi-key': process.env.RAPIDAPIKEY,
-    },
+    port: process.env.SERVER_PORT,
+    url: `http://localhost:3001${process.env.CONTACT_ENDPOINT}`,
+    headers: { ...commonHeaders },
+    // body: {
+    //   recipient,
+    //   message,
+    // },
     data: new URLSearchParams({
-      username: process.env.CLICKSENDUSERNAME,
-      key: process.env.CLICKSENDAPIKEY,
-      schedule: '1377959755',
-      senderid: 'AJ Garden Care',
+      recipient,
       message,
-      sms: `+${recipient}`,
-    }).toString(),
-  });
-};
-
-export const sendContactForm = async ({ message, recipient }) => {
-  const contactFormData = useStore((state) => state.contactForm);
-  return axios.request({
-    method: 'POST',
-    url: process.env.SMSSENDURL,
-    headers: {
-      ...commonHeaders,
-      'x-rapidapi-host': process.env.SMSHOST,
-      'x-rapidapi-key': process.env.RAPIDAPIKEY,
-    },
-    data: new URLSearchParams({
-      username: process.env.CLICKSENDUSERNAME,
-      key: process.env.CLICKSENDAPIKEY,
-      schedule: '1377959755',
-      senderid: 'AJ Garden Care',
-      message,
-      sms: `+${recipient}`,
     }).toString(),
   });
 };
 export const sendBookingForm = async ({ message, recipient }) => {
-  const bookingFormData = useStore((state) => state.bookingForm);
-
   console.log(message, recipient);
   return axios.request({
     method: 'POST',
-    url: process.env.SMSSENDURL,
-    headers: {
-      ...commonHeaders,
-      'x-rapidapi-host': process.env.SMSHOST,
-      'x-rapidapi-key': process.env.RAPIDAPIKEY,
+    port: process.env.SERVER_PORT,
+    url: `http://localhost:3001${process.env.BOOKING_ENDPOINT}`,
+    headers: { ...commonHeaders },
+    body: {
+      recipient,
+      message,
     },
     data: new URLSearchParams({
-      username: process.env.CLICKSENDUSERNAME,
-      key: process.env.CLICKSENDAPIKEY,
-      schedule: '1377959755',
-      senderid: 'AJ Garden Care',
+      recipient,
       message,
-      sms: `+${recipient}`,
     }).toString(),
   });
 };

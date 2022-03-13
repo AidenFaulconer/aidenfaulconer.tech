@@ -63,7 +63,7 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
   {
     // domTarget: typeof window !== 'undefined' && window,
     target: ref.current,
-  }); 
+  });
   return (
     <Grid container>
       <SectionWrapper>
@@ -74,35 +74,31 @@ export const ScrollContainer = React.forwardRef(({ children, inView }, ref) => {
       </SectionWrapper>
     </Grid>
   );
-}); 
+});
 
-const SectionWrapper = ({ children, type = 'primary' }) =>
-  // some stuff
-  (
-    (
-      <>
-        <Grid
-          item
-          md={1}
-          sx={{
-            background: (theme) => theme.palette.text[type],
-            // border: (theme) => theme.custom.borders.brandBorder
-          }}
-        />
-        <Grid item md={10} xs={12} sx={{ overflow: 'hidden' }}>
-          {children}
-        </Grid>
-        <Grid
-          item
-          md={1}
-          sx={{
-            background: (theme) => theme.palette.text[type],
-            // border: (theme) => theme.custom.borders.brandBorder
-          }}
-        />
-      </>
-    )
-  );
+const SectionWrapper = ({ children, type = 'primary' }) => ((
+  <>
+    <Grid
+      item
+      md={1}
+      sx={{
+        background: (theme) => theme.palette.text[type],
+        // border: (theme) => theme.custom.borders.brandBorder
+      }}
+    />
+    <Grid item md={10} xs={12} sx={{ overflow: 'hidden' }}>
+      {children}
+    </Grid>
+    <Grid
+      item
+      md={1}
+      sx={{
+        background: (theme) => theme.palette.text[type],
+        // border: (theme) => theme.custom.borders.brandBorder
+      }}
+    />
+  </>
+));
 const IndexPage = ({
   // returned from pageQuery as props
   data: {

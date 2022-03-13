@@ -23,8 +23,9 @@ const SectionWrapper = ({ children, type = 'primary' }) =>
           md={1}
           width="100%"
           sx={{
+            mt: 0,
             background: (theme) => theme.palette.text[type],
-            // border: (theme) => theme.custom.borders.brandBorder
+          // border: (theme) => theme.custom.borders.brandBorder
           }}
         />
         <Grid item width="100%" md={10} xs={12} sx={{ overflow: 'hidden' }}>

@@ -35,7 +35,7 @@ const useStore = create((set) => ({
   // control the app
   appContext: {
     type: 'light',
-    toggleTheme: () => {
+    toggleTheme: () => { // TODO: move to methods for better separation
       set((state) => ({
         ...state,
         appContext: {
@@ -55,6 +55,8 @@ const useStore = create((set) => ({
           },
         }));
       },
+      // this method is overridden when a threeDCarousel is instanced with its setCurrent method
+      setCurrent: () => {},
     },
   },
   // for useFormInput for testing purposes
@@ -223,7 +225,6 @@ const useStore = create((set) => ({
       },
       changePage: (newSelectedData) => {
         if (typeof window === 'undefined') return;
-
         // set theme from selected props
         set((state) => ({
           ...state,
@@ -235,15 +236,8 @@ const useStore = create((set) => ({
             },
           },
         }));
-        // route to page
-        // alert(newSelectedData.pageLink);
-        // navigate(newSelectedData.pageLink, { replace: true, state: newSelectedData });
-        // navigate to another page with @react/router
-        // navigate(newSelectedData.pageLink, newSelectedData);
+        // other methods to run TODO: add more methods, ie: setColor, triggerPageChange, etc... so its cleaner
         navigate(newSelectedData.pageLink, { replace: true });
-        // force user to redirect to pageLink
-        // redirectTo(newSelectedData.pageLink);
-        // window.location.href = newSelectedData.pageLink;
       },
       // overritten by page transition overlay
       triggerPageChange: () => {},

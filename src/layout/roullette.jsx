@@ -87,7 +87,7 @@ const imgPath = (assetName) => `../../static/assets/portfolio/${assetName}`;
 const subSections = [
   {
     selectionComponent: ServicesSelection,
-    subSectionComponent: SelectionContent,
+    HasContent: SelectionContent,
     subSectionData: [
       {
         title: 'Websites',
@@ -177,7 +177,7 @@ const subSections = [
   },
   {
     selectionComponent: ServicesSelection,
-    subSectionComponent: SelectionContent,
+    HasContent: SelectionContent,
     subSectionData: [
       {
         title: 'Australian War Memorial',
@@ -703,18 +703,15 @@ export default () => (
     justifyContent="flex-start"
     sx={{
       width: '100%',
-      py: 4,
-      height: 1000,
       background: (theme) => theme.palette.text.primary,
       color: (theme) => theme.palette.text.primary,
-      border: (theme) => theme.custom.borders.brandBorder,
     }}
   >
     <ThreeDCarousel
       // carousel dimensions
-      carouselHeight={200}
+      carouselHeight={300}
       cardWidth={400}
-      gutter={40}
+      gutter={0}
       // top section
       title="Sections"
       key="Sections-carousel"

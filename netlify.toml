@@ -4,7 +4,6 @@
 # # The install prefix where the package will be installed.
 # command = "npm run install"
 
-[build]
   # Directory to change to before starting a build.
   # This is where we will look for package.json/.nvmrc/etc.
   # If not set, defaults to the root directory.
@@ -14,32 +13,37 @@
   # the build. This is relative to the base directory if one has been set, or the
   # root directory if a base has not been set. This sample publishes the
   # directory located at the absolute path "root/project/build-output"
-  publish = "public/"
 
   # Default build command.
   # command = "echo 'default context'"
-  functions = "netlify/functions"
+[build]
   command = "npm run build"
-
+  functions = "netlify/functions"
+  publish = "public/"
+ 
 [[plugins]]
-  # Installs the Lighthouse Build Plugin for all deploy contexts
   package = "@netlify/plugin-lighthouse"
 
 
 [[redirects]]
     from = "/api/*"
-    # to = ".netlify/functions/:splat"
-    to = ".netlify/functions/"
+    # to = ".netlify/functions/:splat" 
+    to = ".netlify/functions/server" 
     status = 200
     force = true # COMMENT: ensure that we always redirect
 
-
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover.
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
 # Production context: all deploys from the Production branch set in your site’s
 # Branches settings in the UI will inherit these settings.
-# [context.production]
-#   publish = "public/"
-#   command = "make publish"
-#   environment = { ACCESS_TOKEN = "super secret", NODE_VERSION = "14.15.3" }
+[context.production]
+  command = "npm run build"
+  functions = "netlify/functions"
+  publish = "public/"
+  # environment = { ACCESS_TOKEN = "super secret", NODE_VERSION = "14.15.3" }
 
   
 # # Here is another way to define context specific environment variables.
@@ -72,49 +76,10 @@
 # from the Production branch will inherit these settings.
 [context.branch-deploy]
   command = "echo branch"
+
 [context.branch-deploy.environment]
   NODE_ENV = "development"
-
-
-# Redirects and headers are GLOBAL for all builds – they do not get scoped to
-# contexts no matter where you define them in the file.
-# For context-specific rules, use _headers or _redirects files, which are
-# PER-DEPLOY.
-
-# A basic redirect rule
-# [[redirects]]
-#   from = "/*"
-#   to = "/blog/:splat"
-
-# A redirect rule with many of the supported properties
-# [[redirects]]
-#   from = "/old-path"
-#   to = "/new-path"
-
-#   # The default HTTP status code is 301, but you can define a different one.
-#   status = 302
-
-#   # By default, redirects won’t be applied if there’s a file with the same
-#   # path as the one defined in the `from` property. Setting `force` to `true`
-#   # will make the redirect rule take precedence over any existing files.
-#   force = true
-
-#   # Redirect from /old-path?id=123 to /new-path. Each combination of query
-#   # params needs to be defined in a separate [[redirects]] block.
-#   # More information at https://docs.netlify.com/routing/redirects/redirect-options/#query-parameters
-#   query = {id = ":id"}
-
-#   # Redirect based on conditions including browser language, geolocation, 
-#   # identity role, and/or cookie presence.
-#   conditions = {Language = ["en"], Country = ["US"]}
-
-#   # Sign each request with a value defined in an environment variable
-#   signed = "API_SIGNATURE_TOKEN"
-
-#   # You can also define custom headers within your redirects blocks.
-#   [redirects.headers]
-#     X-From = "Netlify"
-#     X-Api-Key = "some-api-key-string"
+ 
 
 # Role-based redirects do not have a “to” property.
 [[redirects]]
@@ -141,11 +106,11 @@
     Content-Security-Policy = "frame-ancestors https://www.facebook.com"
 
     # Multi-value headers are expressed with multi-line strings.
-	cache-control = '''
-	max-age=0,
-	no-cache,
-	no-store,
-	must-revalidate'''
+    # cache-control = '''
+    # max-age=0,
+    # no-cache,
+    # no-store,
+    # must-revalidate'''
 
     # Basic-Auth allows you to password protect your whole site.
     # This feature may not be available on all plans.
@@ -173,7 +138,7 @@
   publish = "public" # The path to your static content folder
   # jwtSecret = "secret" # The secret used to verify tokens for JWT based redirects
   # jwtRolePath = "app_metadata.authorization.roles" # Object path we should look for role values for JWT based redirects
-  autoLaunch = true # a Boolean value that determines if Netlify Dev launches the local server address in your browser
+  autoLaunch = false # a Boolean value that determines if Netlify Dev launches the local server address in your browser
 
 
   # to start an https server instead of an http one, configure a certificate and key files

@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import { LocationOn } from '@mui/icons-material';
 
-import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/system';
 import { text } from 'cheerio/lib/api/manipulation';
 
@@ -198,15 +197,19 @@ const iconLibrary = {
 
   ),
 };
-export const AFIcon = (props) => {
-  const {
-    type, color, size, customIcon = false,
-  } = props;
+export const AFIcon = ({
+  type = 'primary', color, size, customIcon = false,
+}) => {
   const icon = customIcon || React.useCallback(iconLibrary[type](), []);
   return (
     <Box
-      style={{ fill: color, color }}
-      sx={{ display: 'inline-flex', alignItems: 'center', alignSelf: 'center' }}
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        alignSelf: 'center',
+        fill: color,
+        color,
+      }}
     >
       {icon}
     </Box>
@@ -293,7 +296,7 @@ export const RegularButton = (props) => {
         {children}
       </div>
       )}
-      {icon.enabled && (<AFIcon {...icon} />)}
+      {icon.enabled && (<AFIcon color={buttonTypes[type].color || buttonTypes.primary.color} {...icon} />)}
     </Button>
   );
 };

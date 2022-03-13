@@ -13,23 +13,40 @@ import {
   FancyTextField,
 } from '../custom/buttons';
 
-import {
-  SCROLL_PROPS,
-  svgEncodeBaseSixtyFour,
-} from '../../store/theme';
+import { SCROLL_PROPS, svgEncodeBaseSixtyFour } from '../../store/theme';
 
 import headlineImage from '../../../static/assets/portfolio/designs.png';
 import { sendContactForm } from '../util/apis';
+import { useStore } from '../../store/store';
 
-export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
-  const handleError = () => {
-
-  };
-  const inputSources = React.createRef([]);
-  React.useEffect(() => {
-    console.log(inputSources.current);
-  }, [inputSources]);
+export default ({ i, title = 'Contact Me', setSelected = () => {} }) => {
+  const handleError = () => {};
+  const contactForm = useStore((state) => state.contactForm);
   const theme = useTheme();
+
+  const sendContact = React.useCallback(async () => {
+    const {
+      name, email, message, phone, service,
+    } = contactForm;
+    const res = await sendContactForm({
+      recipient: contactForm.email,
+      message: {
+        name,
+        email,
+        message,
+        phone,
+        service,
+      },
+    }).then(
+      (response) => {
+        console.log(response);
+        if (response.status === 200) {
+          // alert(response);
+          // navigate('/contact/success');
+        }
+      },
+    ).catch(handleError);
+  }, [contactForm]);
   return (
     <Grid
       container
@@ -46,11 +63,12 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
         borderRight: (theme) => theme.custom.borders.brandBorder,
       }}
     >
-      <Box sx={{
-        position: 'absolute',
-        height: '100%',
-        width: '100%',
-      }}
+      <Box
+        sx={{
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+        }}
       >
         <img
           src={headlineImage}
@@ -66,23 +84,40 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
           }}
         />
       </Box>
-      <Box sx={{
-        px: 4, width: '100%', position: 'relative', height: 0,
-      }}
+      <Box
+        sx={{
+          px: 4,
+          width: '100%',
+          position: 'relative',
+          height: 0,
+        }}
       >
-        <Typography variant="h2" component="h4" align="left" color="currentColor" sx={{ my: 3 }}>
+        <Typography
+          variant="h2"
+          component="h4"
+          align="left"
+          color="currentColor"
+          sx={{ my: 3 }}
+        >
           {title}
         </Typography>
         {/* <RegularButton>
           Start a project
         </RegularButton> */}
       </Box>
-      <Grid sx={{ px: 4 }} display="flex" justifyContent="flex-start" gutterBottom align="center" direction="column" xs={12} sm={6}>
-
+      <Grid
+        sx={{ px: 4 }}
+        display="flex"
+        justifyContent="flex-start"
+        gutterBottom
+        align="center"
+        direction="column"
+        xs={12}
+        sm={6}
+      >
         <FancyTextField
           formName="contactForm"
           fieldName="name"
-
           label="name"
           helperText="your full name"
           size="normal"
@@ -90,7 +125,6 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
         <FancyTextField
           formName="contactForm"
           fieldName="phone"
-
           label="phone"
           helperText="your full name"
           size="normal"
@@ -99,32 +133,82 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
         <FancyTextField
           formName="contactForm"
           fieldName="email"
-
           label="email"
           helperText="your full name"
           size="normal"
-          input={{ mode: 'text', pattern: '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' }}
+          input={{
+            mode: 'text',
+            pattern:
+              '^(([^<>()[]\\.,;:s@"]+(.[^<>()[]\\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$',
+          }}
         />
 
         <FancyTextField
           formName="contactForm"
           fieldName="service"
-
           type="select"
           icon={{ start: true, type: 'item' }}
           data={[
-            { label: 'Software Development', value: 'Software Development', icon: { start: true, type: 'item' } },
-            { label: 'Virtual Reality', value: 'Virtual Reality', icon: { start: true, type: 'item' } },
-            { label: 'Backend Development', value: 'Backend Development', icon: { start: true, type: 'item' } },
-            { label: 'Frontend Development', value: 'Frontend Development', icon: { start: true, type: 'item' } },
-            { label: 'Software Maintenence', value: 'Software Maintenence', icon: { start: true, type: 'item' } },
-            { label: 'User Interface Design', value: 'User Interface Design', icon: { start: true, type: 'item' } },
-            { label: 'User Experience Design', value: 'User Experience Design', icon: { start: true, type: 'item' } },
-            { label: 'Strategy', value: 'Strategy', icon: { start: true, type: 'item' } },
-            { label: 'Graphic Design', value: 'Graphic Design', icon: { start: true, type: 'item' } },
-            { label: 'Branding', value: 'Branding', icon: { start: true, type: 'item' } },
-            { label: 'Website', value: 'Website', icon: { start: true, type: 'item' } },
-            { label: 'Mobile App', value: 'Mobile App', icon: { start: true, type: 'item' } },
+            {
+              label: 'Software Development',
+              value: 'Software Development',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Virtual Reality',
+              value: 'Virtual Reality',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Backend Development',
+              value: 'Backend Development',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Frontend Development',
+              value: 'Frontend Development',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Software Maintenence',
+              value: 'Software Maintenence',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'User Interface Design',
+              value: 'User Interface Design',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'User Experience Design',
+              value: 'User Experience Design',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Strategy',
+              value: 'Strategy',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Graphic Design',
+              value: 'Graphic Design',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Branding',
+              value: 'Branding',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Website',
+              value: 'Website',
+              icon: { start: true, type: 'item' },
+            },
+            {
+              label: 'Mobile App',
+              value: 'Mobile App',
+              icon: { start: true, type: 'item' },
+            },
             { label: 'App', value: 'App', icon: { start: true, type: 'item' } },
           ]}
           label="service"
@@ -133,23 +217,30 @@ export default ({ i, title = 'Contact Me', setSelected = () => { } }) => {
           input={{ mode: 'text' }}
         />
       </Grid>
-      <Grid sx={{ px: 4 }} display="flex" justifyContent="space-between" direction="column" xs={12} sm={6}>
-
+      <Grid
+        sx={{ px: 4 }}
+        display="flex"
+        justifyContent="space-between"
+        direction="column"
+        xs={12}
+        sm={6}
+      >
         <FancyTextField
           formName="contactForm"
           fieldName="message"
-
           maxRows={11}
           fullHeight
           label="message"
           message="Tell me about yourself, and how I can help"
           defaultValue="Write me a message, tell me about what your project is, or just say hi!"
         />
-        <RegularButton style={{ marginTop: 16 }} onClick={() => sendContactForm()}>
+        <RegularButton
+          style={{ marginTop: 16 }}
+          onClick={sendContact}
+        >
           Send message
         </RegularButton>
       </Grid>
-
     </Grid>
   );
 };

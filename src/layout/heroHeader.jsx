@@ -135,6 +135,7 @@ export const HeroHeader = React.memo((props) => {
   return (
     <section id={id}>
       <Grid
+
         container
         sx={{
           // minHeight: '89.5vh',
@@ -183,6 +184,7 @@ export const HeroHeader = React.memo((props) => {
             alignSelf: 'end',
             justifyContent: 'center',
             display: 'inline-flex',
+            maxWidth: 700,
           }}
         >
 
@@ -197,6 +199,7 @@ export const HeroHeader = React.memo((props) => {
               justifyContent: 'flex-start',
               flexDirection: 'column',
               bottom: 0,
+              margin: 'auto',
               pointerEvents: 'none',
               // overflowY: 'clip',
               position: 'relative',
@@ -218,13 +221,21 @@ export const HeroHeader = React.memo((props) => {
               align="left"
               color="secondary"
               variant="h1"
-              style={{ zIndex: 1, textTransform: 'uppercase' }}
+              style={{
+                zIndex: 1,
+                textTransform: 'uppercase',
+                margin: 'auto',
+              }}
             >
               {heroData.description}
 
             </Typography>
             <Typography
-              style={{ maxWidth: 600, zIndex: 1 }}
+              style={{
+                maxWidth: 600,
+                zIndex: 1,
+                margin: 'auto',
+              }}
               variant="body1"
               color="secondary"
               align="left"
@@ -240,6 +251,7 @@ export const HeroHeader = React.memo((props) => {
                   zIndex: 2,
                   position: 'relative',
                   // maxWidth: 525,
+                  margin: 'auto',
                   maxWidth: 725,
                   display: 'inline-flex',
                   gap: 2,

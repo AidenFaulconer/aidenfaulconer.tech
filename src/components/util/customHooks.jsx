@@ -17,6 +17,92 @@ import { useCookies } from 'react-cookie';
 import { useStore } from '../../store/store';
 
 // ========================================================================== //
+// Disable text highlighting
+// ========================================================================== //
+ 
+export const toggleTextHighlight = (defaultValue = false) => {
+  const [highlightEnabled, setHighlightEnabled] = useState({ enabled: defaultValue, styles: highLightStyles });
+  const highLightStyles = {
+    '-moz-user-select': 'none',
+    '-khtml-user-select': 'none',
+    '-webkit-user-select': 'none',
+    /*
+     Introduced in Internet Explorer 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+    '-ms-user-select': 'none',
+    'user-select': 'none',
+  };
+  useEffect(() => {
+    if (highlightEnabled) setHighlightEnabled({ enabled: !highlightEnabled.enabled, styles: {} });
+    else setHighlightEnabled({ enabled: false, styles: highLightStyles });
+  }, [highlightEnabled]);
+
+  // returns object with configuration ie: it holds the truthy value, and the styles needed to disable highlight
+  return [highlightEnabled, setHighlightEnabled];
+};
+
+// ========================================================================== //
+// Scrolling hooks
+// ========================================================================== //
+
+// modern Chrome requires { passive: false } when adding event
+//     handle global scroll events
+// left: 37, up: 38, right: 39, down: 40,
+// spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+const keys = {
+  37: 1, 38: 1, 39: 1, 40: 1,
+};
+
+function preventDefault(e) {
+  e.preventDefault();
+}
+
+function preventDefaultForScrollKeys(e) {
+  if (keys[e.keyCode]) {
+    preventDefault(e);
+    return false;
+  }
+}
+let supportsPassive = false;
+try {
+  window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
+    get() { supportsPassive = true; },
+  }));
+} catch (e) {}
+
+const wheelOpt = supportsPassive ? { passive: false } : false;
+const wheelEvent = typeof document !== 'undefined' && 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+
+// call this to Disable
+function disableScroll() {
+  if (typeof window !== 'undefined') return;
+  window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+  window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+  window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+  window.addEventListener('keydown', preventDefaultForScrollKeys, false);
+}
+
+// call this to Enable
+function enableScroll() {
+  if (typeof window !== 'undefined') return;
+  window.removeEventListener('DOMMouseScroll', preventDefault, false);
+  window.removeEventListener(wheelEvent, preventDefault, wheelOpt);
+  window.removeEventListener('touchmove', preventDefault, wheelOpt);
+  window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+}
+export const toggleScrollHook = (defaultValue = true) => {
+  const [scrollEnabled, setScrollEnabled] = useState(defaultValue);
+
+  useEffect(() => {
+    if (scrollEnabled) enableScroll();
+    else disableScroll();
+  }, [scrollEnabled]);
+
+  return [scrollEnabled, setScrollEnabled];
+};
+
+// ========================================================================== //
 // Zustand hooks
 // ========================================================================== //
 // get the store
