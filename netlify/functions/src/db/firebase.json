@@ -1,0 +1,24 @@
+{
+  "database": {
+    "rules": "database.rules.json",
+    "indexes": "database.indexes.json"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {".source": "functions"},
+  "hosting":{
+    "site": "aidenfaulconer",
+    "public": "dist",
+    "rewrites": {
+      "source": "/app/**/*",
+      "destination":  "/index.html"
+    },
+    "ignore": ["firebase.json",
+    "**/.*",
+    "**/node_modules/**",
+    ".vscode"
+  ]
+  }
+}

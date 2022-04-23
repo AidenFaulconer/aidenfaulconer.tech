@@ -1,9 +1,15 @@
-// // https://www.gatsbyjs.org/docs/browser-apis/#wrapRootElement
+// https://www.gatsbyjs.org/docs/browser-apis/#wrapRootElement
 
 import 'prismjs/themes/prism-okaidia.css';
 import './src/styles/bootstrap.scss';
 import '@fontsource/poppins'; // https://github.com/fontsource/fontsource/blob/main/packages/roboto/README.md
 import 'pattern.css/dist/pattern.min.css'; // https://github.com/fontsource/fontsource/blob/main/packages/roboto/README.md
+
+// import './static/fonts/Poppins/Poppins-Bold.otf';
+// import './static/fonts/Poppins/Poppins-Regular.otf';
+// import './static/fonts/Poppins/Poppins-Thin.otf';
+// import './static/fonts/Poppins/Poppins-Light.otf';
+
 
 // // wrap entire app in custom element, this is done by hooking into gatsbys wrapRootElement
 // import React from 'react';

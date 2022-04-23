@@ -32,7 +32,6 @@ import { hexToAlpha } from '../store/theme';
 
 import MaterialUI from './materialUI';
 
-
 // TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
 
 const Layout = (props) => {
@@ -115,7 +114,6 @@ const Layout = (props) => {
 
   const toggleTheme = useStore((state) => state.appContext.toggleTheme);
   const type = useStore((state) => state.appContext.type);
-  const animatedOpacity = useStore((state) => state.threejsContext.context.animatedOpacity);
 
   // we cant ssr the entire app because gatsby-plugin-material-ui does not deal with window undefined, really stupid on the plugin creators behalf, it is a problem with gatsby-plugin-material-ui
   // use
@@ -141,16 +139,16 @@ const Layout = (props) => {
         color: 'rgba(1,1,100,.1)',
       }}
       id="#root"
-      className="pattern-horizontal-lines-md"
+      // className="pattern-horizontal-lines-md"
     >
-      <PageTransitionOverlay />
+      {/* <PageTransitionOverlay /> */}
       <MaterialUI>
         <Navigation />
 
         <HeroHeader id="projects" />
-        <div style={{ opacity: animatedOpacity }}>
-          {children}
-        </div>
+        {/* <div style={{ opacity: animatedOpacity }}> */}
+        {children}
+        {/* </div> */}
 
         <Footer />
         <Zoom in={trigger} role="presentation">

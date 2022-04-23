@@ -53,7 +53,7 @@ export const PickDate = (props) => {
   const requestAbortController = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
-  const [input, setInput] = useFormStore(props.formName, props.fieldName, []);
+  const [input, setInput] = useFormStore(props.formName, props.fieldName, [], props.validateType || 'phone');
 
   const fetchHighlightedDays = (date) => {
     const controller = new AbortController();
@@ -430,7 +430,7 @@ export const SelectionButton = (props) => {
 // ========================================================================== //
 export const FileUploadButton = (props) => {
   const ref = React.useRef();
-  const [input, setInput] = useFormStore(props.formName, props.fieldName, []);
+  const [input, setInput] = useFormStore(props.formName, props.fieldName, [], props.validateType || 'file');
 
   const getFileName = /[^/]*$/;
   const handleInput = React.useCallback((e) => {
@@ -537,7 +537,7 @@ export const FancyTextField = (props, ref) => {
     maxRows = 1,
     fullWidth = false,
 
-    error, label, defaultValue, message, value, type, onChange,
+    label, defaultValue, message, value, type, onChange,
 
     data, // configure selections for a dropdown
     children,
@@ -558,7 +558,7 @@ export const FancyTextField = (props, ref) => {
   const MenuItemStyles = {
 
   };
-  const [thisInput, setThisInput] = useFormStore(props.formName, props.fieldName, '');
+  const [thisInput, setThisInput, error] = useFormStore(props.formName, props.fieldName, '', props.validateType || 'cleanString');
 
   const handleOptionChange = (e) => { setThisInput(e.target.value.toString()); };
   const handleChange = (e) => setThisInput(e.target.value);
@@ -586,17 +586,15 @@ export const FancyTextField = (props, ref) => {
       fullWidth={fullWidth}
       onChange={onChange || (data && handleOptionChange || null)}
       onInput={onChange ? null : handleChange}
-
       value={thisInput}
       label={label && label}
-
-      autoComplete
+      autoComplete="on"
       multiline
       color="primary"
       select={Boolean(data)}
       // color="currentColor"
       defaultValue={thisInput}
-      helperText={message || ' '}
+      helperText={message || error?.message || ' '}
       id={`${thisInput}-textInput`}
       // variant="outlined"
       InputProps={{

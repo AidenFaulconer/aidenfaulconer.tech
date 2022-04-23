@@ -9,9 +9,7 @@ import { useStore } from '../../store/store';
 const serialize = (obj) => {
   const str = [];
   for (const p in obj) {
-    if (obj.hasOwnProperty(p)) {
-      str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`);
-    }
+    if (obj.hasOwnProperty(p)) { str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`); }
   }
   return str.join('&');
 };
@@ -43,6 +41,9 @@ export const commonHeaders = {
 //   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 // }).authorize()}`;
 // use as headers: {Authorization: 'Bearer JWT'}
+const serverPort = Number(process.env.SERVER_PORT);
+const apiUrl = process.env.API_URL;
+const apiEndpoint = `http://localhost:3001${apiUrl}`;
 
 // google sheets post
 export const postToSpreadsheeets = async (data) => axios.post({
@@ -74,7 +75,7 @@ export const sendContactForm = async ({ message, recipient }) => {
   return axios.request({
     method: 'POST',
     port: process.env.SERVER_PORT,
-    url: `http://localhost:3001${process.env.CONTACT_ENDPOINT}`,
+    url: `${apiEndpoint}makeContact`,
     headers: { ...commonHeaders },
     // body: {
     //   recipient,
@@ -86,12 +87,13 @@ export const sendContactForm = async ({ message, recipient }) => {
     }).toString(),
   });
 };
+
 export const sendBookingForm = async ({ message, recipient }) => {
   console.log(message, recipient);
   return axios.request({
     method: 'POST',
     port: process.env.SERVER_PORT,
-    url: `http://localhost:3001${process.env.BOOKING_ENDPOINT}`,
+    url: `http://localhost:3001${process.env.API_URL}makeBooking}`,
     headers: { ...commonHeaders },
     body: {
       recipient,
@@ -103,6 +105,42 @@ export const sendBookingForm = async ({ message, recipient }) => {
     }).toString(),
   });
 };
+
+export const reverseGeocode = async (lat, lon) => axios(process.env.RGEOCODEURL, {
+  method: 'get',
+  headers: {
+    ...commonHeaders,
+    'x-rapidapi-host': process.env.RGEOCODEHOST,
+    'x-rapidapi-key': process.env.RGEOCODEKEY,
+  },
+  params: {
+    location: `${lat},${lon}`,
+    language: 'en',
+  },
+  body: {
+    code: 'US',
+  },
+});
+export const queryGeoDB = async (loc) => axios.get({
+  url: '',
+  headers: {
+    ...commonHeaders,
+  },
+});
+export const queryUserIpInformation = async () => axios.get({
+  url: 'https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/',
+  headers: {
+    ...commonHeaders,
+    'x-rapidapi-host': 'ip-geolocation-ipwhois-io.p.rapidapi.com',
+    'x-rapidapi-key': `${process.env.NODE_ENV.RAPIDAPIKEY}`,
+  },
+});
+export const searchForecast = async (loc) => axios.get(
+  `${process.env.NODE_ENV.APIURL}/data/2.5/forecast?q=${loc}&appid=${process.env.OPENWEATHERAPIKEY}`,
+);
+export const getLocationByLatyLng = async (lat, lng) => axios.get(
+  `${process.env.GOOGLEMAPAPIURL}?latlng=${lat},${lng}&key=${process.env.GOOGLEAPIKEY}`,
+);
 
 // rapidapi
 // fetch('https://inteltech.p.rapidapi.com/send.php', {
@@ -164,39 +202,3 @@ export const sendBookingForm = async ({ message, recipient }) => {
 //   mode: 'cors',
 //   credentials: 'omit',
 // });
-
-export const reverseGeocode = async (lat, lon) => axios(process.env.RGEOCODEURL, {
-  method: 'get',
-  headers: {
-    ...commonHeaders,
-    'x-rapidapi-host': process.env.RGEOCODEHOST,
-    'x-rapidapi-key': process.env.RGEOCODEKEY,
-  },
-  params: {
-    location: `${lat},${lon}`,
-    language: 'en',
-  },
-  body: {
-    code: 'US',
-  },
-});
-export const queryGeoDB = async (loc) => axios.get({
-  url: '',
-  headers: {
-    ...commonHeaders,
-  },
-});
-export const queryUserIpInformation = async () => axios.get({
-  url: 'https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/',
-  headers: {
-    ...commonHeaders,
-    'x-rapidapi-host': 'ip-geolocation-ipwhois-io.p.rapidapi.com',
-    'x-rapidapi-key': `${process.env.NODE_ENV.RAPIDAPIKEY}`,
-  },
-});
-export const searchForecast = async (loc) => axios.get(
-  `${process.env.NODE_ENV.APIURL}/data/2.5/forecast?q=${loc}&appid=${process.env.OPENWEATHERAPIKEY}`,
-);
-export const getLocationByLatyLng = async (lat, lng) => axios.get(
-  `${process.env.GOOGLEMAPAPIURL}?latlng=${lat},${lng}&key=${process.env.GOOGLEAPIKEY}`,
-);

@@ -84,7 +84,7 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
   const [skipped, setSkipped] = React.useState(new Set());
   const [finished, setFinished] = React.useState(false);
   const [service, setService] = useFormStore('bookingForm', 'service', key);
-  const useStepComponent = React.useCallback(({ StepComponent }) => <StepComponent finished={finished} />, [activeStep]);
+  const useStepComponent = React.useCallback(({ StepComponent }) => StepComponent && <StepComponent finished={finished} /> || <div />, [activeStep]);
   const bookingForm = useStore((state) => state.bookingForm);
   React.useEffect(() => setService(key), [key]);
 
@@ -99,6 +99,8 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
       newSkipped.delete(activeStep);
     }
     if (activeStep === steps.length - 1) {
+      console.log(bookingForm);
+
       const {
         name,
         email,
@@ -114,6 +116,7 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
         // confirmation
         summary,
       } = bookingForm;
+
       sendBookingForm({
         recipient: bookingForm.email,
         message: {
@@ -555,7 +558,7 @@ export const ConfirmationStep = (finished = false) => {
               <b>
                 {`${name.toUpperCase()}: `}
               </b>
-              {value}
+              {String(value) }
             </Box>
           );
         })}

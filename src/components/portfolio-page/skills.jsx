@@ -1,14 +1,8 @@
 import {
   Box,
-  Grid, Typography, useTheme,
+  Typography, useTheme,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import * as React from 'react';
-
-import { styled } from '@mui/material/styles';
-import {
-  svgEncodeBaseSixtyFour,
-} from '../../store/theme';
 
 // ========================================================================== //
 // Experience images
@@ -20,14 +14,6 @@ import afImage from '../../../static/assets/blog/me.png';
 import lgImage from '../../../static/assets/blog/uc.png';
 import xprtImage from '../../../static/assets/blog/xperthubb.png';
 import ajImage from '../../../static/assets/blog/aj.png';
-
-import ThreeDCarousel from '../custom/threeDCarousel';
-
-// ========================================================================== //
-//  Index page styles
-// ========================================================================== //
-
-const contentColSpacing = 12;
 
 // ========================================================================== //
 // Experience

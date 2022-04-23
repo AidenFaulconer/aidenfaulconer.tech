@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import {
-  Vector3, Vector2,
+  Vector3, Vector2, ObjectLoader,
+  MeshStandardMaterial,
+  Quaternion,
 } from 'three';
 import React, {
   Suspense,
@@ -14,6 +16,7 @@ import React, {
 import { ResizeObserver } from '@juggle/resize-observer';
 
 // animation and post processing
+import { useSpring, config, useChain } from '@react-spring/core';
 import { a } from '@react-spring/three';
 
 // three.js in react
@@ -48,7 +51,11 @@ import { clamp, degToRad } from 'three/src/math/MathUtils';
 // import { EffectComposer } from '@react-three/postprocessing';
 // import { SVGLoader } from 'three/jsm/loaders/SVGLoader.js';
 import { Link } from 'gatsby';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { useTheme } from '@mui/material';
+import Tween from 'gsap/gsap-core';
 import cube_import from '../../../static/assets/gameModels/cube.glb';
+import cloud_import from '../../../static/assets/gameModels/cloud.glb';
 
 // eslint-disable-next-line import/no-unresolved
 
@@ -65,6 +72,7 @@ import HandModel from './hand';
 // Canvas
 // ========================================================================== //
 import env_map from '../../../static/assets/portfolio/envmap.png';
+
 // ========================================================================== //
 // Clouds
 // ========================================================================== //
@@ -206,6 +214,16 @@ export const Borders = ({ opacity }) => {
 // ========================================================================== //
 useGLTF.preload(cube_import);
 
+// useFrame((state) => {
+//   const t = state.clock.getElapsedTime()
+//   state.camera.position.lerp(vec.set(0, 0, open ? -24 : -32), 0.1)
+//   state.camera.lookAt(0, 0, 0)
+//   group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, open ? Math.cos(t / 2) / 8 + 0.25 : 0, 0.1)
+//   group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, open ? Math.sin(t / 4) / 4 : 0, 0.1)
+//   group.current.rotation.z = THREE.MathUtils.lerp(group.current.rotation.z, open ? Math.sin(t / 4) / 4 : 0, 0.1)
+//   group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, open ? (-2 + Math.sin(t)) / 3 : -4.3, 0.1)
+// })
+
 // ========================================================================== //
 // Models
 // ========================================================================== //
@@ -250,18 +268,51 @@ export const Models = ({
   const colors = ['#000064', '#21bcfe', '#28bd7f', '#21bcfe'];
 
   const calculatePosition = useCallback((i) => {
-    const angle = (Math.PI * 2) / postData.length;
+    const angleSliceSize = (Math.PI * 2) / postData.length;
     const origin = [0, 0, 0];
     const radius = 3.5;
     // return position;
 
-    // return a position from the origin moving in i angles across the x plane
+    // return a position from the origin moving in i angleSliceSizes across the x plane
     return [
-      origin[0] + radius * Math.cos(angle * i),
+      origin[0] + radius * Math.cos(angleSliceSize * i),
       origin[1],
-      origin[2] + radius * Math.sin(angle * i),
+      origin[2] + radius * Math.sin(angleSliceSize * i),
     ];
   }, []);
+
+  const clamp = (value) => Math.max(0, Math.min(1, value));
+  const animDurMs = 230;// in miliseconds
+
+  const [{ y }, spinRoulette] = useSpring(() => ({
+    config: {
+      ...config.gentle,
+      duration: animDurMs,
+    },
+    to: { y: 0 },
+  }));
+
+  const getPositions = (amount) => new Array(amount).fill().map((_, index) => [
+    0,
+    -2 * Math.sin((2 * Math.PI * index) / NUM),
+    -2 * Math.cos((2 * Math.PI * index) / NUM),
+  ]);
+  // angle: Math.PI * index / itemsLength
+  // cosnt { rotY } = useSpring({
+  //   ref: springRotY,
+  //   rotY: wheelOpen ? Math.PI / 4 : Math.PI / 2
+  // })
+  // const { posX, posZ } = useSpring({
+  //   ref: springPosX,
+  //   posX: wheelOpen ? 2 : -3,
+  //   posZ: wheelOpen ? -4 : -1.9,
+  // })
+  // useChain(!wheelOpen?[springRotY, springPosX]:[springPosX, springRotY], [0, 0.2])
+
+  const calculateAngle = (i) => {
+    console.log(`angle: ${2 * Math.PI * i / postData.length} index ${i}`);
+    return (2 * Math.PI * i) / postData.length;
+  };
 
   const mapObjects = useCallback((showState) => postData.map((post, i) => {
     const {
@@ -279,17 +330,20 @@ export const Models = ({
     // const image = require(`${__dirname}static${thumbnail}`);
     return (
       <Model
+        spinRoulette={(i) => setTimeout(() => {
+          // spinRoulette({ y: calculateAngle(i) });
+        }, animDurMs)}
         color={colors[i]}
         model={Cube}
         mobile={mobile}
         link={path}
         texture={texture}
         key={i}
-        position={calculatePosition(i + 1)}
+        position={calculatePosition(i)}
         index={i}
         setColor={set}
         x={x}
-        ratio={postData.length - 1}
+        itemsLength={postData.length}
       />
     );
   }, []));
@@ -305,19 +359,21 @@ export const Models = ({
     <a.group
       receiveShadow
       castShadow
-      position={[0, 0, 0]}
+      rotation-y={y}
+      // rotation-y={180}
       scale={[0.5, 0.5, 0.5]}
     >
       {mapObjects()}
     </a.group>
   );
 };
-
 // ========================================================================== //
 // Cubes
 // ========================================================================== //
 export const Model = React.memo(
   ({
+    angle,
+    spinRoulette,
     children,
     color,
     x,
@@ -325,10 +381,11 @@ export const Model = React.memo(
     mobile = false,
     texture,
     link,
+    rotation,
     position,
     index,
     setCurrent,
-    ratio,
+    itemsLength,
   }) => {
     // ========================================================================== //
     // Global state methods
@@ -341,42 +398,59 @@ export const Model = React.memo(
     // ========================================================================== //
     //     State
     // ========================================================================== //
-    const { viewport, set } = useThree();
-    const scale = Number(viewport.width / viewport.height / ratio + 0.7);
+    const { viewport, set, clock } = useThree();
+    const scale = Number(viewport.width / viewport.height / itemsLength + 0.7);
     const cubeRef = createRef(new THREE.Mesh());
     const { tier } = useDetectGPU();
     const [hovered, setHovered] = useState(false);
-
     // ========================================================================== //
     //     Cube animation
     // ========================================================================== //
-    const [animated, setAnimated] = useState(false);
-    const animationDuration = 530;// in miliseconds
-    const animateCube = useCallback(
-      () => {
-        setAnimated(true);
-        // if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
-        setTimeout(() => {
-          setAnimated(false);
-        }, animationDuration);
-      },
-      [selectedIndex],
-    );
 
-    useFrame((state) => {
-      if (animated) {
-        // roate the cube in every angle with a quaternion
-        const amnt = Math.sin(state.clock.getElapsedTime()) * 5;
-        cubeRef.current.rotation.set(0, amnt, 0);
+    const clamp = (value) => Math.max(0, Math.min(1, value));
+    const [animated, setAnimated] = useState(false);
+    const animDurMs = 530;// in miliseconds
+
+    const [{ py, s }, hoverAnimate] = useSpring(() => ({
+      config: { ...config.wobbly, duration: 130 },
+      // spring: animated,
+      reset: animated,
+      to: { py: 0, s: 1 },
+    }));
+
+    // const jumpSpringAnim = spring.to([0, 0.25], [0.15, 0.25]);
+    // const scaleSpringAnim = spring.to([0, 1], [1, 1.25]);
+
+    // handle hover state
+    useEffect(() => {
+      if (hovered) {
+        hoverAnimate({
+          py: 0.9,
+          s: 1.1,
+        });
+        // scaleSpringAnim.
+      } else {
+        hoverAnimate({
+          py: 0,
+          s: 1,
+        });
       }
-    });
+    }, [hovered]);
+
+    // const animateCube = useCallback(
+    //   () => {
+    //     setAnimated(true);
+    //     // if (useForce) api.applyImpulse([0, 30 * 5, 0], [0, 0, 0]);
+    //     setTimeout(() => {
+    //       setAnimated(false);
+    //     }, animDurMs);
+    //   },
+    //   [selectedIndex],
+    // );
 
     // ========================================================================== //
     //     Cube methods and properties
     // ========================================================================== //
-
-    // zoom camera to this model
-    const zoomCamera = React.useCallback((to) => {}, []);
 
     const ping = useMemo(() => new Audio(pingSound), []);
     const isSelectedProject = React.useCallback(() => selectedIndex === index, [selectedIndex, position]);
@@ -385,10 +459,10 @@ export const Model = React.memo(
       // console.log(cubeRef);
       e.stopPropagation();
       if (selectedIndex === index) {
-        ping.play();
-        animateCube(true);
-        setColor({ x: color, y: 1.0 });
         // set({ moveCamera: true, moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
+        ping.play();
+        // animateCube(true);
+        setColor({ x: color, y: 1.0 });
         triggerPageChange({ background: color, transform: 'skew(10deg)', left: '-215vw' });
         changePage({
           selectedIndex: -1, // no selected post, negative values represent a page, ie: -1 is the home page
@@ -396,11 +470,9 @@ export const Model = React.memo(
           pageLink: '/',
         });
       } else {
-        console.log(`selectedIndex: ${selectedIndex} animOpacity: ${JSON.stringify(animatedOpacity, null, 2)} | selectedIndex: ${selectedIndex} | index: ${index}`);
-        ping.play();
-        animateCube(true);
-        setColor({ x: color, y: 0 });
         // set({ moveCamera: true, moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
+        // animateCube(true);
+        setColor({ x: color, y: 0.3 });
         triggerPageChange({ background: color, transform: 'skew(-10deg)', left: '215vw' });
         changePage({
           selectedIndex: index, // select this post
@@ -410,16 +482,15 @@ export const Model = React.memo(
       }
     }, [cubeRef, index]);
 
-    // prettier-ignore
     const onPointerOver = useCallback((e) => {
       e.stopPropagation(); // when hovering over a cube in react three fiber ensure it only hovers the first raycast hit
       setHovered(true);
+      // spinRoulette(index);
       setColor({ x: color });
-      animateCube(false);
+      setAnimated(true);
       set({ moveCamera: true, moveCameraTo: new Vector3(cubeRef.current.position.x, cubeRef.current.position.y, cubeRef.current.position.z) });
     }, [cubeRef, hovered]);
 
-    // prettier-ignore
     const onPointerOut = useCallback(() => {
       setHovered(false);/* set({ x: "#FFFFFF" });* */
       set({ moveCamera: false });
@@ -427,8 +498,8 @@ export const Model = React.memo(
 
     const determineMaterialFactor = useMemo(() => (hovered ? 0.9 : 0.6), [hovered]);
     const determineClearcoat = useMemo(() => (hovered ? 0.7 : 0.6), [hovered]);
-    const determineColor = useMemo(() => (hovered ? '#F0F3FC' : x), [hovered]);
     const checkTier = useCallback((returnValue) => (tier !== 1 ? returnValue : false), []);
+    const determineColor = useMemo(() => (hovered ? '#F0F3FC' : x), [hovered]);
 
     const normalMap = useMemo(() => {
       // convert texture to a normal map
@@ -441,31 +512,30 @@ export const Model = React.memo(
       normalMap.blending = THREE.NormalBlending;
       return normalMap;
     }, [texture]);
-    // make a.mesh an instanced mesh
-    // {/* (selectedIndex === -1 || selectedIndex === position) && ( */}
-    // {
+
     return (
-      <>
+      <a.group position={position}>
         <a.mesh
-          scale={mobile ? [0.5, 0.5, 0.5] : [scale, scale, scale]}
+          // scale={[s, s, s]}
+          scale={isSelectedProject() ? [scale + 0.2, scale + 0.2, scale + 0.2] : [scale, scale, scale]}
           onPointerOver={onPointerOver}
           onPointerOut={onPointerOut}
           geometry={model.geometry}
             // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
           dispose={null} // dont dispose objects once spawned for performance
           onClick={onClick}
-          position={position}
+
+          rotation-y={(2 * Math.PI * index) / itemsLength}
+          scale-y={s}
+          scale-x={s}
+          scale-z={s}
+          position-y={py}
+
           receiveShadow
           castShadow
           ref={cubeRef}
         >
           {/* repalce with animatedMaterial(drei) where the props are the props from this material in a js object */}
-
-          {/*
-          // ========================================================================== //
-          //       Cube material
-          // ========================================================================== //
-       */}
           <a.meshPhysicalMaterial
             map={texture}
             map-flipY={false}
@@ -474,33 +544,30 @@ export const Model = React.memo(
             map-repeat={[1, 1]}
             map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
             map-anisotropy={tier == 1 ? 3 : 10}
-              // flatShading
             toneMapped
             transparent
-            opacity={(isSelectedProject() && 1) || animatedOpacity}
+            opacity={(isSelectedProject() || hovered && 1) || animatedOpacity}
               // visible={selectedIndex === -1 || selectedIndex === position}// disable ghost cubes
             attach="material"
             receiveShadow
             castShadow
             color={determineColor}
-            roughness={0.5}
+            roughness={0.75}
               // alphaMap={checkTier(texture)}
               // aoMap={checkTier(texture)}
-            roughnessMap={texture} // sexy
+            roughnessMap={texture}
               // lightMap={checkTier(texture)}// sexy
               // clearcoat={determineClearcoat}
               // envMap={[texture, texture, texture]}
               // opacity={0.7}
-            envMapIntensity={0.6}
+            envMapIntensity={0.3}
               // dispose={null}
             normalMap={normalMap}
             normalMap-repeat={[35, 35]}
             normalScale={[0.15, 0.15]}
           />
         </a.mesh>
-        {/* ) */}
-
-      </>
+      </a.group>
 
     );
   },
@@ -517,7 +584,10 @@ export const Scene = ({
 // Camera
 // ========================================================================== //
 // export const cameraCoords = [0, 6, -4.5];
-export const cameraCoords = [0, 6, -4.5];
+// export const cameraCoords = [0, 4, -5.5];
+export const cameraCoords = [
+  3.7, 1.5, 11,
+];
 
 const X_SPACING = 2;
 const Y_SPACING = -1;
@@ -530,6 +600,7 @@ export const getPositionExternalGrid = (index, columnWidth = 3) => {
 export const Camera = React.memo(
   () => {
     const { viewport, camera } = useThree();
+    const zoomOffset = [0, 0, 5];// negative values zoom IN not OUT
 
     const radius = Math.min(viewport.width, viewport.height) / 2;
     const center = new Vector2(viewport.width / 2, viewport.height / 2);
@@ -545,11 +616,11 @@ export const Camera = React.memo(
       const mouse = new Vector2(px + upwards, py + upwards);
       const center = new Vector2(viewport.width / 2, viewport.height / 2);
       const angle = Math.atan2(mouse.y - center.y, mouse.x - center.x);
-      const x = -(Math.cos(angle) * radius);
-      const y = -(Math.sin(angle) * radius - offsetUp);
-      const z = zoom;
+      const x = -(Math.cos(angle) * radius) + zoomOffset[0];
+      const y = -(Math.sin(angle) * radius - offsetUp) + zoomOffset[1];
+      // const y = 0;
+      const z = zoom + zoomOffset[2];
       const vec = new Vector3(x, y, z);
-
       state.camera.position.lerp(vec, 0.075);
       state.camera.lookAt(0, 0, 0);
       state.camera.updateProjectionMatrix();
@@ -728,17 +799,16 @@ export const Orb = ({ x }) => {
       <a.meshPhysicalMaterial
         attach="material"
         color={x}
-        // transparent={.3}
-        // opacity={0.3}
         // transparent
         // flatShading={false}
         clearcoat
         // roughness={0.5}
         // clearcoatRoughness={0.25}
-        // reflectivity={0.5}
-        depthTest={false}
+        reflectivity={0.5}
+        depthTest
         depthWrite={false}
-        opacity={0.6}
+        opacity={0.4}
+        // side={THREE.BackSide}
         // alphaTest={0.5}
         // clearcoatMap
         // clearcoatNormalMap
@@ -842,6 +912,61 @@ const Clouds = () => (
     scale={[1, 1, 1]}
   />
 );
+
+function CartoonCloud({
+  x,
+  opacity = 1,
+  position = [0, 0, 0],
+  scale = [1, 1, 1],
+  ...props
+}) {
+  const texture = (cloudImg && useLoader(THREE.TextureLoader, cloudImg))
+    || new THREE.Texture();
+
+  // get obj model
+  const { nodes, materials, animations } = useGLTF(cloud_import);
+  const { color, animatedOpacity } = useStore((state) => state.threejsContext.context);
+
+  // const texture = useTexture('/cloud.png');
+
+  // useFrame((state) => group.current?.children.forEach((cloud, index) => {
+  //   cloud.rotation.z += clouds[index].rotation * dir;
+  //   cloud.scale.setScalar(
+  //     clouds[index].scale
+  //         + (((1 + Math.sin(state.clock.getElapsedTime() / 10)) / 2) * index) / 10,
+  //   );
+  // }));
+
+  useEffect(() => console.log(nodes), [nodes]);
+  const theme = useTheme();
+  return (
+    <>
+      <a.mesh
+        dispose={null}
+        position={position}
+        scale={scale}
+        geometry={nodes?.cloud?.geometry}
+        receiveShadow
+        material={new MeshStandardMaterial({
+          color: theme.palette.text.secondary,
+          alphaTest: 1,
+          toneMapped: true,
+          transparent: true,
+          opacity,
+          specular: 0.3,
+          roughness: 0.8,
+        })}
+      >
+        <a.meshStandardMaterial
+          attatch="material"
+          color={x}
+          roughness={0.6}
+          transparent
+        />
+      </a.mesh>
+    </>
+  );
+}
 
 // const SkyBox = () => {
 //   const { scene } = useThree();
@@ -951,26 +1076,20 @@ export const AFCanvas = React.memo(
           rotation: [Math.PI * 0.25, 0, 0],
         }}
       >
-        <ambientLight color={x} intensity={0.6} />
-        <rectAreaLight
-          intensity={20.5}
-          args={[x, 8, 8, 8]}
-          position={[0, -0.99, 0]}
-          rotation-x={Math.PI / 2}
-        />
-        <Camera />
-
+        <ambientLight color={x} intensity={0.3} />
         {/* dont use presets, they are requested over network and block reasources, pass your own */}
         <Environment preset="studio" scene={undefined} />
 
-        <Suspense fallback={null}>
-          <HandModel />
+        <Camera />
 
-          <group dispose={null} scale={[0.75, 0.75, 0.75]} position={[0, 0.7, 0]}>
-            {/* <BrandRing x={x} /> */}
+        <Suspense fallback={null}>
+          <HandModel position={[0, -1, 0]} />
+
+          <group dispose={null} scale={[0.85, 0.85, 0.85]} position={[0, 2, 0]}>
             {/* all dependendant on physics */}
             {/* <Physics {...physicsProps}> */}
             {determineScene()}
+            {/* <CartoonCloud x={x} position={[-1.25, -4.7, 0]} scale={[2, 0.9, 2]} /> */}
 
             {/* <axesHelper args={[1, 1, 1]} position={[0,0,0]} /> */}
             {/* <PreviewPlane /> */}

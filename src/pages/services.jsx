@@ -1,19 +1,24 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
-  Grid, useTheme,
+  Box,
+  Container, Grid, Typography, useTheme,
 } from '@mui/material';
-
 import { graphql } from 'gatsby';
-import Contact from '../components/portfolio-page/contact';
-import Roullete from '../layout/roullette';
-import { useIntersectionObserver, useScrollSnappedChildren } from '../components/util/customHooks';
 
-const SectionWrapper = React.forwardRef(({ styles, children, type = 'primary' }, ref) => ((
+import Services from '../components/portfolio-page/services';
+import { Languages, Experience } from '../components/portfolio-page/skills';
+
+import { SectionHeader } from '../components/section-header';
+import Roullete from '../layout/roullette';
+import Contact from '../components/portfolio-page/contact';
+
+// TODO: get model actions from store, compare against the services sections data
+const SectionWrapper = ({ children, type = 'primary' }) => ((
   <>
     <Grid
       item
       md={1}
-      styles={styles}
       sx={{ background: (theme) => theme.palette.text[type] }}
     />
     <Grid item md={10} xs={12} sx={{ overflow: 'hidden' }}>
@@ -25,35 +30,29 @@ const SectionWrapper = React.forwardRef(({ styles, children, type = 'primary' },
       sx={{ background: (theme) => theme.palette.text[type] }}
     />
   </>
-)));
+));
 
-const IndexPage = ({
+const ServicesPage = ({
   // returned from pageQuery as props
-  data: { allMarkdownRemark: { edges } },
-}) => {
-  const marginAmount = '175px';
-  // alert(JSON.stringify(edges));
-  // ========================================================================== //
-  //     Scroll snapping
-  // ========================================================================== //
-  const [count, setCount] = React.useState(0);
-  // const addNode = useScrollSnappedChildren();
-  return (
-    <Grid container>
-      <SectionWrapper>
-        <Roullete />
-      </SectionWrapper>
-      <SectionWrapper type="secondary">
-        <Contact />
-      </SectionWrapper>
-    </Grid>
-  );
-};
+  data: {
+    allMarkdownRemark: { edges },
+  },
+  location,
+}) => (
+  <Grid container>
+    <SectionWrapper>
+      <Roullete headline="Services" threejs />
+    </SectionWrapper>
+    <SectionWrapper type="secondary">
+      <Contact />
+    </SectionWrapper>
+  </Grid>
+);
 
-export default IndexPage;
+export default ServicesPage;
 // autorun at gatsby rebuild-cycle
 export const pageQuery = graphql`
-  query indexPageQuery {
+  query servicesPageQuery {
     allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}, filter: {frontmatter: {catagory: {eq: "blog"}}}) {
       edges {
         node {

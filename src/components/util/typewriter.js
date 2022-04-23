@@ -1,38 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { StaticQuery, graphql, Link } from 'gatsby';
-const PREFIX = 'typewriter';
-
-const classes = {
-  typewriter: `${PREFIX}-typewriter`
-};
-
-const Root = styled('div')((
-  {
-    theme
-  }
-) => ({
-  [`&.${classes.typewriter}`]: {
-    width: '100%',
-    margin: 'auto',
-    textAlign: 'center',
-    lineHeight: '110%',
-    position: 'relative',
-    '& span': {
-      borderRight: '0.08em solid',
-      paddingRight: '0.15em',
-      animation: 'caret 1s steps(1) infinite',
-    },
-    '@keyframes caret': {
-      '50%': {
-        borderColor: 'transparent',
-      },
-    },
-  }
-}));
 
 export default ({ text }) => {
-
   // type one text in the typwriter
   const [showText, setShowText] = useState('Ello mate');
 
@@ -77,8 +47,8 @@ export default ({ text }) => {
   }, []); // stop when text isnt changed
 
   return (
-    <Root className={classes.typewriter}>
+    <div>
       <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: showText }} />
-    </Root>
+    </div>
   ); // text modified in funciton
 };

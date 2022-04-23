@@ -1,33 +1,28 @@
 import {
-  Box, CardMedia, Typography, useTheme, Grid,
+  Box, useTheme,
 } from '@mui/material';
 import {
   useSpring,
   a,
-  config,
   interpolate,
   useSprings,
 } from '@react-spring/web';
 import React, {
-  cloneElement,
   useCallback,
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from 'react';
-import { useDrag, useGesture } from '@use-gesture/react';
-import { useBreakpoints, useWindowSize } from 'react-use-breakpoints';
-import { hexToAlpha } from '../../store/theme';
-import { usePrevious, useDimensions, toggleScrollHook } from '../util/customHooks';
-import { RegularButton } from './buttons';
+import { useGesture } from '@use-gesture/react';
+import { useWindowSize } from 'react-use-breakpoints';
+import { usePrevious, toggleScrollHook, useManyGestures } from '../util/customHooks';
 
 import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
 import { useStore } from '../../store/store';
-
-// ========================================================================== //
-// Math
-// ========================================================================== //
+import Services, { SelectionContent, ServicesSelection } from '../portfolio-page/services';
+import Qualifications from '../portfolio-page/qualifications';
+import { Experience, Languages } from '../portfolio-page/skills';
+import SectionHeader from '../section-header';
 
 /*
 9 Slides total: 360 Degrees (full circle) --> 360/9 = 40 --> our increment for rotation
@@ -52,68 +47,6 @@ Math things: https://cl.ly/image/1t0j1V2Y2l2Z
 
 So, `r` is (about) 412px long! This means we need to TRANSLATE the slides in the Z 3-dimensional plane by 412px. This should be done AFTER the rotateY transformation.
 */
-// export const useStyles = makeStyles((theme) => ({
-
-// wrapper size, and hardcoded translateZ all correlate to a ratio to be z aligned
-// root container, this is tilted to tilt the entire carousel, rotate to position to selected card
-
-// ...threeDHoverKeyframes,
-
-// ========================================================================== //
-// SPIN TEXT
-// ========================================================================== //
-// const splitter = new GraphemeSplitter();
-// const graphicStyles = {
-//   borderRadius: theme.custom.borders.brandBorderRadius,
-//   zIndex: 0,
-//   width: '100%',
-//   // transform: 'scale(.8)',
-//   mb: 12,
-//   position: 'absolute',
-//   display: 'inline',
-//   transform: {
-//     xl: { scale: 0.5 },
-//     lg: { scale: 0.5 },
-//     md: { scale: 0.5 },
-//     sm: { scale: 0.5 },
-//     xs: { scale: 0.5 },
-//   },
-//   '& .spin-container': {
-//     transform: 'translate(-50%,-50%) scale(1)',
-//     left: '50%',
-//     top: '50%',
-//     fontWeight: 1000,
-//     position: 'absolute',
-//   },
-//   '& #spinText': {
-//     animation: '$rotateAngle 6s linear infinite',
-//     zIndex: 'inherit',
-//     fontWeight: 100,
-//   },
-// };
-// const spinText = React.useCallback((spinText, scale = 1) => {
-//   // curve text
-//   const ref = React.useRef(null);
-//   let circleType = null;
-//   React.useEffect(() => {
-//     circleType = new CircleType(
-//       ref?.current,
-//       splitter.splitGraphemes.bind(splitter), // bind to this circletype method to automatically split the elements content text
-//     );
-//   }, [ref.current]);
-//   return (
-//     <Box
-//       item
-//       sx={{ ...graphicStyles }}
-//       style={{ transform: `scale(${scale})` }}
-//     >
-//       <h1 ref={ref} id="spinText">
-//         {spinText}
-//       </h1>
-//     </Box>
-//   );
-// }, []);
-
 // ========================================================================== //
 // selection carousel
 // ========================================================================== //
@@ -125,9 +58,9 @@ export default React.memo(
     gutter = 0.04,
     key = 'default',
     cardWidth = 350,
-    carouselHeight = 350,
+    carouselHeight = 250,
     carouselIndex = 0,
-    SelectionComponent, // component used for selection
+    SelectionComponent = SectionHeader, // component used for selection
     // sub section
     children,
     subSectionData,
@@ -138,9 +71,6 @@ export default React.memo(
     //     Calculations and properties
     // ========================================================================== //
     const theme = useTheme();
-
-    const tiltAngle = 20;
-    const tiltRadians = tiltAngle * (Math.PI / 180);
     const carouselID = carouselData[0].key;
 
     const windowSize = useWindowSize();// detect resize
@@ -187,14 +117,55 @@ export default React.memo(
         }));
       }
     }, []);
+
+    // ========================================================================== //
+    //     For custom components associated with sub-content
+    // ========================================================================== //
+    const componentReference = {
+      SelectionContent,
+      ServicesSelection,
+      Qualifications,
+      Services,
+      Languages,
+      Experience,
+    };
+    const renderContent = React.useCallback((componentRef) => {
+      const ContentComponent = componentReference[componentRef || 'SelectionContent'];
+      return (
+        <Box sx={{
+          gridArea: 'content',
+          width: '100%',
+          height: '100%',
+          perspective: 'inherit',
+          mt: 3,
+          // transform: 'preserve-3d',
+          // transform: `rotate(${slideAngle * i}deg) translateZ(${radius}px)`,
+          perspectiveOrigin: `50% ${carouselIndex > 0 && -(carouselIndex * 100)}px`,
+        }}
+        >
+          <ContentComponent
+            key="content-component"
+            current={current} // edit parents selection if needed
+            setCurrent={setCurrent} // this is the NESTED selection carousels setCurrent
+            contentData={carouselData[current]}
+          />
+        </Box>
+      );
+    }, []);
+
+    // ========================================================================== //
+    //   Handle interactions with the carousel
+    const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
+
     // ========================================================================== //
     //   handle animation **consider the current SELECTION**
+    // ========================================================================== //
     const to = (i) => ({
-      x: 0, rot: slideAngle * i, y: i * -4, scale: 1, delay: i * 100, // config: { ...config.gentle },
-    });
+      x: 0, rot: slideAngle * i, y: i * -4, scale: 1, delay: i * 100,
+    }); // config: { ...config.gentle },
     const from = (i) => ({
-      x: 0, rot: slideAngle * i, scale: 1.5, y: -1000, // config: { ...config.gentle },
-    });
+      x: 0, rot: slideAngle * i, scale: 1.5, y: -1000,
+    });// config: { ...config.gentle }
 
     // we need two springs, one wraps all the carousel cards, another wraps the ORIGIN of the carousel
     const [wrappedCards, setCard] = useSprings(carouselData.length, (i) => ({
@@ -206,10 +177,6 @@ export default React.memo(
       from: from(0),
     })); // Create a spring using the helpers above for the ORIGIN
 
-    const [scrollEnabled, setScrollEnabled] = toggleScrollHook(true);
-    // ========================================================================== //
-    //   Handle interactions with the carousel
-    const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
     const gestureHandler = ({
       args: [index],
       down,
@@ -223,38 +190,21 @@ export default React.memo(
       // scrolling,
       // wheeling,
     }) => {
+      const swipeSpeed = 1.5;
+
       // if we are at the end of the carousel we dont handle gestures
       if (current === carouselData.length) { setCurrent(0); return; }
-      // TODO: hold an accumulative value for rotation, and change it ONLY when current changes
-      // we want this accumulative value inside the gesture handler to save performance
-
-      const trigger = xVel > 0.2; // If you flick hard enough it should trigger the card to fly out
-      const dir = xDir < 0 ? -1 : 1; // Direction should either point left or right
-      // if (!down && trigger) gone.add(index); // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
-
-      // console.log(`arg: ${index} d: ${down} delta: ${xDelta} dist: ${distance} dir: ${xDir} vel: ${xVel}`);
-      // console.log(trigger);
-      // alter card, i comes from the helper function passed into react-spring, which is the index of the animation
-      // it is distinct from index because index is THIS card
-
-      if (tap) {
-        console.log('tapped');
-      }
-
-      const x = 200 + window.innerWidth;
+      // const trigger = xVel > 0.1; // If you flick hard enough it should trigger the card to fly out
+      // const dir = xDir < 0 ? -1 : 1; // Direction should either point left or right
+      const x = 200 * swipeSpeed + window.innerWidth;
       const scale = down ? 1.1 : 1; // Active cards lift up a bit
-      xDelta = (Math.abs(xDelta) - window.innerWidth * xVel) / 100; // relative to velocity and viewport size
 
       // compensate for left and right directions
+      xDelta = (Math.abs(xDelta) - window.innerWidth * xVel) / 100; // relative to velocity and viewport size
       xDelta = xDir > 0 ? -xDelta : xDelta; // left or right
 
-      const rot = curRot + xDelta;
-      // individual card animations
-      setCard((i) => {});
-      // carousel origin animations
-      console.log(
-        `curRot ${curRot} rotOffset ${rot} delta: ${xDelta} dir: ${xDir} vel: ${xVel}`,
-      );
+      const rot = curRot + (xDelta * swipeSpeed);
+      // console.log(`curRot ${curRot} rotOffset ${rot} delta: ${xDelta} dir: ${xDir} vel: ${xVel}`,);
 
       setOrigin(() => ({
         x,
@@ -266,16 +216,13 @@ export default React.memo(
       setCurRot(curRot);
     };
 
-    // because we nest instances of this, we need to make sure implements useCallback to memoize it to the instance
-    const bindGestureHandler = useGesture(
-      {
-        onDrag: (state) => gestureHandler(state), // set angleBounds to 360/-360
-        onWheel: (state) => gestureHandler(state), // swipe.distance capped at 3 pixels of movement
-        // onScroll: (state) => gestureHandler(state),
-        onHover: () => {},
-      },
-      {
-        drag: {
+    const bindGestureHandler = useManyGestures({
+      // onScroll: (state) => gestureHandler(state),
+      onDrag: (state) => gestureHandler(state), // set angleBounds to 360/-360
+      onWheel: (state) => gestureHandler(state), // swipe.distance capped at 3 pixels of movement
+      onHover: () => {},
+      handlerConfig: {
+        onDrag: {
           threshold: 5,
           pointer: { capture: false },
           axis: 'x',
@@ -287,15 +234,15 @@ export default React.memo(
         //   axis: 'y',
         //   filterTaps: true,
         // },
-        wheel: { threshold: 5 },
+        onWheel: { threshold: 5 },
       },
-    ); // this function instance comes from the component key
+    });
 
     // ========================================================================== //
     //   effects
+    // ========================================================================== //
     const setDirection = useCallback(
       (_current, direction = 'right') => {
-        // const rotAmnt = slideAngle * _current;
         // if we go left, we increment negatively -360 relative to current, if we go right, we increment positively 360 relative to current
         const rot = direction === 'left'
           ? _current == carouselData.length - 1
@@ -316,11 +263,7 @@ export default React.memo(
           const scale = 1; // Active cards lift up a bit
           const x = 0;
           return {
-            x,
-            rot,
-            scale,
-            delay: undefined,
-            config: { friction: 50, tension: 1 ? 800 : isGone ? 200 : 500 },
+            x, rot, scale, delay: undefined, config: { friction: 50, tension: 1 ? 800 : isGone ? 200 : 500 },
           };
         });
         setCurRot(rot);
@@ -356,7 +299,6 @@ export default React.memo(
             perspectiveOrigin: '50% 50%',
             transformStyle: 'preserve-3d',
             width: '100%',
-            // transform: `scale(${1}) rotate(0deg) translateZ(100px)`,
           }}
         >
           {/* carousel button container */}
@@ -422,8 +364,7 @@ export default React.memo(
               alignContent: 'center',
               alignSelf: 'center',
               width: '100%',
-              transform: `scale(${0.7})`,
-              // transform: carouselIndex > 0 && `translateY(${-(carouselHeight) * (carouselIndex + 1)}px)`,
+              transform: `scale(${0.7}) translateY(${-carouselIndex * 35}px)`,
               height: carouselHeight, // centers the carousel, carousel is spawned at baseline of this element
             }}
           >
@@ -449,25 +390,15 @@ export default React.memo(
             >
               {/* carousel panels */}
               {wrappedCards.map(
-                (
-                  {
-                    // get animation values for each card
-                    x,
-                    y,
-                    rot,
-                    scale,
-                  },
-                  i,
-                ) => {
+                // get animation values for each card
+                ({
+                  x, y, rot, scale,
+                }, i) => {
                   const data = carouselData[i];
+                  { /* console.log(data); */ }
                   return (
                     <a.div
-
-                      // listener to change state of this card
-                      // {...bindGestureHandler(i)}
-                      key={`selection-${i}-${
-                        data?.key || subSectionData?.title
-                      }-${Math.random()}`}
+                      key={`selection-${i}-${data?.key || subSectionData?.title}-${Math.random()}`}
                       style={{
                         minWidth: `${slideWidth}px`,
                         width: `${slideWidth}px`,
@@ -531,9 +462,9 @@ export default React.memo(
             carouselData={subSectionData[current].subSectionData} // this will contain selections, and the root subSectionData for the children to base from
             key={subSectionData[current].key}
             title={subSectionData[current].headline}
-            SelectionComponent={subSectionData[current].selectionComponent}
+            SelectionComponent={componentReference[subSectionData[current].selectionComponent]}
             // handle further nested carousels
-            SubSelectionComponent={subSectionData[current].subSelectionComponent || null}
+            SubSelectionComponent={componentReference[subSectionData[current].subSelectionComponent] || null}
             HasContent={subSectionData[current].HasContent}
           />
         )) || null}
@@ -542,27 +473,7 @@ export default React.memo(
         {/* props to this component are passed down below in children(), since we create it via (), we only pass a reference here */}
         {/* for a carousel, give an option for content, you see the above nested component places content here */}
         {/* current and set current, correspond to a parent WITH children, if they dont, they wont have a current/setCurrent to correspond */}
-        {(HasContent && (
-          <Box sx={{
-            gridArea: 'content',
-            width: '100%',
-            // mt: 12,
-            height: '100%',
-            perspective: 'inherit',
-            // transform: 'preserve-3d',
-            // transform: `rotate(${slideAngle * i}deg) translateZ(${radius}px)`,
-            perspectiveOrigin: `50% ${carouselIndex > 0 && -(carouselIndex * 100)}px`,
-          }}
-          >
-            <HasContent
-              key="content component"
-              current={current} // edit parents selection if needed
-              setCurrent={setCurrent} // this is the NESTED selection carousels setCurrent
-              contentData={carouselData[current]}
-            />
-          </Box>
-        )
-        ) || null}
+        {(HasContent && (renderContent(HasContent))) || null}
       </>
     );
   },

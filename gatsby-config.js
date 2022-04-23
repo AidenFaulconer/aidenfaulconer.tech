@@ -88,12 +88,11 @@ module.exports = {
         path: `${__dirname}/_data`,
       },
     },
-    // optimize images for pluign-sharp
     {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
-        // access images through graphql queries for sharp
+        // access images through graphql queries w sharp
         path: `${__dirname}/static/assets`,
       },
     },
@@ -101,8 +100,14 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'static',
-        // everything netlify cms outputs is now accessible under markdown-pages
         path: `${__dirname}/static`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'admin',
+        path: `${__dirname}/static/admin`,
       },
     },
     // ========================================================================== //
@@ -327,13 +332,12 @@ module.exports = {
       options: {},
     },
 
-    process.env.NODE_ENV === 'development' && {
-
-      resolve: 'gatsby-plugin-webpack-size',
-      options: {
-        development: true,
-      },
-    },
+    // process.env.NODE_ENV === 'development' && {
+    //   resolve: 'gatsby-plugin-webpack-size',
+    //   options: {
+    //     development: true,
+    //   },
+    // },
 
     process.env.NODE_ENV === 'development' && {
       resolve: 'gatsby-plugin-webpack-bundle-analyser-v2',
@@ -349,12 +353,12 @@ module.exports = {
     // ========================================================================== //
     //     Compression
     // ========================================================================== //
-    {
+    process.env.NODE_ENV === 'production' && {
       // prefer this to gzip
       resolve: 'gatsby-plugin-brotli', // was zopfli
       options: {
         // verbose: true,
-        extensions: ['css', 'html', 'js', 'svg', 'gltf', 'glb', 'png', 'jpg', 'jpeg'],
+        extensions: ['css', 'html', 'js', 'svg', 'gltf', 'glb', 'png', 'jpg', 'jpeg', 'html', 'jsx'],
         // level: 4,//default is highest level, dont change it
         // compression: {
         //   numiterations: 25,

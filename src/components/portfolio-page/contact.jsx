@@ -47,6 +47,7 @@ export default ({ i, title = 'Contact Me', setSelected = () => {} }) => {
       },
     ).catch(handleError);
   }, [contactForm]);
+
   return (
     <Grid
       container
@@ -57,10 +58,11 @@ export default ({ i, title = 'Contact Me', setSelected = () => {} }) => {
         position: 'relative',
         width: '100%',
         height: { xs: 1000, md: 600 },
-        py: 4,
+        pb: 4,
+        py: 6,
         color: (theme) => theme.palette.text.primary,
-        borderLeft: (theme) => theme.custom.borders.brandBorder,
-        borderRight: (theme) => theme.custom.borders.brandBorder,
+        // borderLeft: (theme) => theme.custom.borders.brandBorder,
+        // borderRight: (theme) => theme.custom.borders.brandBorder,
       }}
     >
       <Box
@@ -226,6 +228,7 @@ export default ({ i, title = 'Contact Me', setSelected = () => {} }) => {
         sm={6}
       >
         <FancyTextField
+
           formName="contactForm"
           fieldName="message"
           maxRows={11}

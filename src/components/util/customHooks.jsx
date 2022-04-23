@@ -1,6 +1,9 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
 /* eslint-disable no-case-declarations */
+import { config, useTrail, useTransition } from '@react-spring/core';
+import { a } from '@react-spring/web';
+import { useGesture } from '@use-gesture/react';
 import React, {
   useCallback,
   useContext,
@@ -14,12 +17,30 @@ import React, {
   useState,
 } from 'react';
 import { useCookies } from 'react-cookie';
+import * as yup from 'yup';
 import { useStore } from '../../store/store';
+
+// const defaultRules = {
+//   required: (value) => !!value || 'Required',
+//   minLength: (value, length) => (value && value.length >= length) || `Must be at least ${length} characters`,
+//   maxLength: (value, length) => (value && value.length <= length) || `Must be less than ${length} characters`,
+//   minValue: (value, min) => (value && value >= min) || `Must be greater than ${min}`,
+//   maxValue: (value, max) => (value && value <= max) || `Must be less than ${max}`,
+//   email: (value) => (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) || 'Invalid email address',
+//   alphaNumeric: (value) => (value && /[^a-zA-Z0-9]/i.test(value)) || 'Only alphanumeric characters',
+//   numeric: (value) => (value && /[^0-9]/i.test(value)) || 'Only numbers',
+//   phone: (value) => (value && !/^(0|[1-9][0-9]{9})$/i.test(value)) || 'Invalid phone number, must be 10 digits',
+//   url: (value) => (value && !/^(ftp|http|https):\/\/[^ "]+$/i.test(value)) || 'Invalid url',
+//   date: (value) => (value && !/^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/i.test(value)) || 'Invalid date, must be MM/DD/YYYY',
+//   dateISO: (value) => (value && !/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/i.test(value)) || 'Invalid date, must be ISO',
+// };
+
+// use yup for validation
 
 // ========================================================================== //
 // Disable text highlighting
 // ========================================================================== //
- 
+
 export const toggleTextHighlight = (defaultValue = false) => {
   const [highlightEnabled, setHighlightEnabled] = useState({ enabled: defaultValue, styles: highLightStyles });
   const highLightStyles = {
@@ -43,8 +64,194 @@ export const toggleTextHighlight = (defaultValue = false) => {
 };
 
 // ========================================================================== //
-// Scrolling hooks
+// Scrolling and animation hooks
 // ========================================================================== //
+
+export const useSidewayScroll = (id) => {
+  const scrollHorizontally = (e) => {
+    e = window.event || e;
+    const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail)) * 2;
+    Object.keys(document.getElementsByClassName(id)).map(
+      (elem) => (elements[elem].scrollLeft -= delta * 40),
+    ); // Multiplied by 40
+    e.preventDefault();
+  };
+  let elements = document.getElementsByClassName(id);
+  if (elements.length > 0) {
+    // IE9, Chrome, Safari, Opera
+    Object.keys(elements).map((elem) => elements[elem].addEventListener('mousewheel', scrollHorizontally, false));
+    // Firefox
+    Object.keys(elements).map((elem) => elements[elem].addEventListener(
+      'DOMMouseScroll',
+      scrollHorizontally,
+      false,
+    ));
+  } else {
+    // IE 6/7/8
+    Object.keys(elements).map((elem) => elements[elem]
+      .getElementsByClassName(id)
+      .attachEvent('onmousewheel', scrollHorizontally));
+  }
+};
+
+export const useScrollProgress = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  // get scroll progress relative to page
+  const getScrollProgress = useCallback(() => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const { scrollHeight } = document.documentElement;
+    const { clientHeight } = document.documentElement;
+    const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+
+    // console.log(`scroll progress: ${scrollPercent}`);
+    setScrollProgress(scrollPercent);
+  }, []);
+  useLayoutEffect(() => {
+    window.addEventListener('scroll', getScrollProgress);
+    return () => window.removeEventListener('scroll', getScrollProgress);
+  }, [getScrollProgress]);
+  return scrollProgress;
+};
+
+export const useAnimatedMount = ({ children }) => {
+  const [show, set] = useState(false);
+  const transitions = useTransition(show, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    reverse: show,
+    delay: 200,
+    config: config.molasses,
+    onRest: () => set(!show),
+  });
+  return transitions(
+    (styles, item) => item && <a.div style={styles}>{children}</a.div>,
+  );
+};
+
+// INPUT: HTMLELEMENTS array
+// OUTPUT: reactive events attatched to interpolate betwwn the elements in array from start to end based on users scroll
+export const useIntersectionObserver = (handler =
+(entries, observer = null) => {
+  entries.map((entry) => {
+    if (entry.intersectionRation >= 1) console.log('visible: ', entry.target);
+    return '';
+  });
+}) => {
+  // logic to listen to observe when we are inside one of the elements added via addNode
+  const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5,
+  };
+
+  const getObserver = (ref) => {
+    const observer = ref.current;
+    if (observer !== null) {
+      return observer;
+    }
+    const newObserver = new IntersectionObserver(handler, options);
+    ref.current = newObserver;
+    return newObserver;
+  };
+  const refs = React.useRef([]);
+  const observer = React.useRef(null);
+  const addNode = React.useCallback((node) => refs.current.push(node), []);
+
+  React.useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+
+    const newObserver = getObserver(observer);
+    refs.current.forEach((node) => newObserver.observe(node));
+    console.log(refs.current);
+
+    return () => newObserver.disconnect();
+  }, []);
+
+  return addNode;
+};
+
+export const useManyGestures = (config) => {
+  // example gesture handler
+  const gestureHandler = ({
+    args: [index],
+    down,
+    delta: [xDelta, yDelta],
+    direction: [xDir],
+    velocity: [xVel, yVel],
+    tap,
+    // memo
+    // cancel
+    // touches
+    // scrolling,
+    // wheel
+  }) => '';
+
+  const defaultConfig = {
+    onWheel: gestureHandler,
+    onScroll: gestureHandler,
+    onDrag: gestureHandler,
+    onHover: gestureHandler,
+    handlerConfig: {
+
+      onWheel: { threshold: 5 },
+      onScroll: {
+        threshold: 5,
+        pointer: { capture: false },
+        axis: 'y',
+        filterTaps: true,
+      },
+      pinch: {},
+      move: {},
+      onDrag: {},
+      onHover: {},
+    },
+  };
+
+  // because we nest instances of this, we need to make sure implements useCallback to memoize it to the instance
+  const bindGestureHandler = useGesture(
+    // event handlers
+    {
+      onDrag: config?.onDrag || defaultConfig.onDrag, // set angleBounds to 360/-360
+      onWheel: config?.onWheel || defaultConfig.onWheel, // swipe.distance capped at 3 pixels of movement
+      onScroll: config?.onScroll || defaultConfig.onScroll, // swipe.distance capped at 3 pixels of movement
+      onHover: config?.onHover || defaultConfig.onHover, // swipe.distance capped at 3 pixels of movement
+    },
+    // handler configuration
+    {
+      drag: config?.onDrag || defaultConfig.onDrag,
+      scroll: config?.onScroll || defaultConfig.handlerConfig.onScroll,
+      wheel: config?.onWheel || defaultConfig.handlerConfig.onWheel,
+      move: config?.onScroll || defaultConfig.handlerConfig.onScroll,
+      pinch: config?.onDrag || defaultConfig.handlerConfig.onDrag,
+      hover: config?.onHover || defaultConfig.handlerConfig.onHover,
+    },
+  ); // this function instance comes from the component key
+
+  return bindGestureHandler;
+};
+
+// create trailing text effects
+export const useTrailingText = ({ open, children, style = {} }) => {
+  const items = React.Children.toArray(children);
+  const trail = useTrail(items.length, {
+    config: { mass: 5, tension: 210, friction: 20 },
+    opacity: open ? 1 : 0,
+    x: open ? 0 : 20,
+    height: open ? 110 : 0,
+    from: { opacity: 0, x: 20, height: 0 },
+  });
+
+  return (
+    <div>
+      {trail.map(({ height, ...style }, index) => (
+        <a.div key={index} style={style}>
+          <a.div style={{ height }}>{items[index]}</a.div>
+        </a.div>
+      ))}
+    </div>
+  );
+};
 
 // modern Chrome requires { passive: false } when adding event
 //     handle global scroll events
@@ -103,6 +310,180 @@ export const toggleScrollHook = (defaultValue = true) => {
 };
 
 // ========================================================================== //
+// Api hooks
+// ========================================================================== //
+export const useGoogleAnalytics = (
+  category = '',
+  action = '',
+  label = '',
+  value = 0,
+) => {
+  // google analytics context
+  const {
+    gtag,
+  } = useContext({
+    gtag: () => { },
+  });
+
+  useEffect(() => {
+    if (gtag) {
+      gtag('event', action, {
+        event_category: category,
+        event_label: label,
+        value,
+      });
+    }
+  }, [gtag, action, category, label, value]);
+};
+
+export const useGoogleAds = (
+  adSlot,
+  adSize,
+  adFormat,
+  adTargeting,
+  adLifetime,
+  adLifetimeUnit,
+) => {
+  const {
+    gtag,
+  } = useContext({
+    gtag: () => { },
+  });
+
+  useEffect(() => {
+    if (gtag) {
+      gtag('event', 'ad_slot', {
+        event_category: 'ad_slot',
+        event_label: adSlot,
+        value: adSize,
+      });
+      gtag('event', 'ad_format', {
+        event_category: 'ad_format',
+        event_label: adFormat,
+        value: adSize,
+      });
+      gtag('event', 'ad_targeting', {
+        event_category: 'ad_targeting',
+        event_label: adTargeting,
+        value: adSize,
+      });
+      gtag('event', 'ad_lifetime', {
+        event_category: 'ad_lifetime',
+        event_label: adLifetime,
+        value: adSize,
+      });
+      gtag('event', 'ad_lifetime_unit', {
+        event_category: 'ad_lifetime_unit',
+        event_label: adLifetimeUnit,
+        value: adSize,
+      });
+    }
+  }, [gtag, adSlot, adSize, adFormat, adTargeting, adLifetime, adLifetimeUnit]);
+};
+
+// export const useShopify = (
+//   productId,
+//   productName,
+//   productPrice,
+//   productQuantity,
+//   productVariant,
+//   productCategory,
+//   productPosition,
+//   productCoupon,
+//   productVariantId,
+//   productVariantTitle,
+//   productVariantPrice,
+//   productVariantQuantity,
+//   productVariantSku,
+//   productVariantPosition,
+//   productVariantCoupon,
+//   productVariantImage,
+// ) => {
+
+// }
+
+// ========================================================================== //
+// Forms
+// ========================================================================== //
+export const useFormValidation = (initialState, validationSchema) => {
+  const [values, setValues] = useState(initialState);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    if (isSubmitting) {
+      const validationErrors = validationSchema.validate(values, { abortEarly: false });
+      setErrors(validationErrors.errors);
+      setIsValid(validationErrors.isValid);
+    }
+  }, [isSubmitting, values]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleBlur = (event) => {
+    const { name } = event.target;
+    setTouched({ ...touched, [name]: true });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+  };
+
+  return {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    isValid,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+  };
+};
+
+// ========================================================================== //
+// Gesture hooks
+// ========================================================================== //
+export const useClickDrag = (container) => {
+  const slider = document.getElementsByClassName(container);
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  Object.keys(slider).map((elem) => {
+    elem = slider[elem];
+
+    elem.addEventListener('mousedown', (e) => {
+      isDown = true;
+      elem.classList.add('click-active');
+      startX = e.pageX - elem.offsetLeft;
+      scrollLeft = elem.scrollLeft;
+    });
+    elem.addEventListener('mouseleave', () => {
+      isDown = false;
+      elem.classList.remove('click-active');
+    });
+    elem.addEventListener('mouseup', () => {
+      isDown = false;
+      elem.classList.remove('click-active');
+    });
+    elem.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const x = e.pageX - elem.offsetLeft;
+      const walk = (x - startX) * 3; // scroll-fast
+      elem.scrollLeft = scrollLeft - walk;
+    });
+  });
+};
+
+// ========================================================================== //
 // Zustand hooks
 // ========================================================================== //
 // get the store
@@ -119,17 +500,64 @@ export const reRenderOnVariables = (variables = []) => {
     setRerender(!rerender);
   }, [...variables]);
 };
-
 // ========================================================================== //
 // Global Store FORM handler **using zustand as global store**
 // ========================================================================== //
-export const useFormStore = (formName = 'testForm', fieldName = 'text', stateDefaultValue = false) => {
+const validationTypes = {
+  text: yup.string().required('Required'),
+  required: yup.string().required('Required'),
+  selection: yup.string().required('Please select an option'),
+  fullName: yup.string().required('Full Name is required'),
+  email: yup.string().email('Invalid email address').required('Email is required'),
+  password: yup.string().required('Password is required'),
+  confirmPassword: yup.string().required('Confirm Password is required'),
+  phone: yup.string().required('Phone is required'),
+  acceptTerms: yup.boolean().oneOf([true], 'You must accept the terms and conditions'),
+  textArea: yup.string().max(500, 'Maximum 500 characters only'),
+  file: yup.mixed().required('File is required').test('fileSize', 'File size is too big', (value) => value && value.size <= 2000000),
+  image: yup.mixed().required('Image is required').test('fileSize', 'File size is too large', (value) => value && value.size <= 3000000),
+  video: yup.mixed().required('Video is required').test('fileSize', 'File size is too large', (value) => value && value.size <= 3000000),
+  cleanString: yup.string().matches(/^[a-zA-Z0-9_.-]*$/, 'Only alphanumeric characters, underscores, dashes and periods are allowed'),
+  cleanNumber: yup.string().matches(/^[0-9]*$/, 'Only numbers are allowed'),
+};
+
+export const useFormStore = (formName = 'testForm', fieldName = 'text', stateDefaultValue = false, validationType) => {
+  const [input, setFormInput] = useState(stateDefaultValue || useStore((state) => state[formName][fieldName]));
+  const changeFormData = useStore((state) => state[formName].methods.changeFormData);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') console.log(`New Form Input: ${input} for form ${formName}`);
+
+    // test input for errors
+
+    yup.string(validationTypes[validationType]).validate(input, { abortEarly: false, strict: true })
+      .then((validationErrors) => {
+        if (validationErrors.errors) {
+          console.log(validationErrors.errors);
+          setError(validationErrors.errors);
+        } else setError(false);
+      })
+      .catch((validationErrors) => {
+        console.log(validationErrors.errors);
+        setError(validationErrors.errors);
+      });
+
+    changeFormData({ [fieldName]: input });
+  }, [input]);
+
+  return [input, setFormInput, error];
+};
+
+export const useFormStoreNoValidation = (formName = 'testForm', fieldName = 'text', stateDefaultValue = false) => {
   const [input, setFormInput] = useState(stateDefaultValue || useStore((state) => state[formName][fieldName]));
   const changeFormData = useStore((state) => state[formName].methods.changeFormData);
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') console.log(`New Form Input: ${input} for form ${formName}`);
+
     changeFormData({ [fieldName]: input });
   }, [input]);
+
   return [input, setFormInput];
 };
 // ========================================================================== //
@@ -154,12 +582,174 @@ export const useClickOutside = (ref, callback) => {
       callback();
     }
   };
+
   useEffect(() => {
     document.addEventListener('click', handleClick);
     return () => {
       document.removeEventListener('click', handleClick);
     };
   });
+};
+
+export const useScrollControl = (ref, children) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolledUp, setIsScrolledUp] = useState(false);
+  const [isScrolledDown, setIsScrolledDown] = useState(false);
+  const [isScrolledLeft, setIsScrolledLeft] = useState(false);
+  const [isScrolledRight, setIsScrolledRight] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, scrollLeft } = ref.current;
+      const {
+        scrollHeight, offsetHeight, scrollWidth, offsetWidth,
+      } = ref.current;
+      const isScrolled = scrollTop + offsetHeight >= scrollHeight;
+      const isScrolledUp = scrollTop <= 0;
+      const isScrolledDown = scrollTop + offsetHeight >= scrollHeight;
+      const isScrolledLeft = scrollLeft <= 0;
+      const isScrolledRight = scrollLeft + offsetWidth >= scrollWidth;
+      setIsScrolled(isScrolled);
+      setIsScrolledUp(isScrolledUp);
+      setIsScrolledDown(isScrolledDown);
+
+      setIsScrolledLeft(isScrolledLeft);
+      setIsScrolledRight(isScrolledRight);
+    };
+    handleScroll();
+    ref.current.addEventListener('scroll', handleScroll);
+    return () => {
+      ref.current.removeEventListener('scroll', handleScroll);
+    };
+  }, [ref]);
+
+  return {
+    isScrolled,
+    isScrolledUp,
+    isScrolledDown,
+    isScrolledLeft,
+    isScrolledRight,
+  };
+};
+
+// import { useForm } from 'react-hook-form';
+// import * as yup from 'yup';
+// import { yupResolver } from '@hookform/resolvers/yup';
+// export const useMUIFormValidation = (config) => {
+//   const defaultValidationSchema = yup.object().shape({
+//     selection: yup.string().required('Please select an option'),
+//     fullName: yup.string().required('Full Name is required'),
+//     email: yup.string().email('Invalid email address').required('Email is required'),
+//     password: yup.string().required('Password is required'),
+//     confirmPassword: yup.string().required('Confirm Password is required'),
+//     phone: yup.string().required('Phone is required'),
+//     acceptTerms: yup.boolean().oneOf([true], 'You must accept the terms and conditions'),
+//     textArea: yup.string().max(500, 'Maximum 500 characters only'),
+//     file: yup.mixed().required('File is required').test('fileSize', 'File size is too big', (value) => value && value.size <= 2000000),
+//     image: yup.mixed().required('Image is required').test('fileSize', 'File size is too large', (value) => value && value.size <= 3000000),
+//     video: yup.mixed().required('Video is required').test('fileSize', 'File size is too large', (value) => value && value.size <= 3000000),
+//     cleanString: yup.string().matches(/^[a-zA-Z0-9_.-]*$/, 'Only alphanumeric characters, underscores, dashes and periods are allowed'),
+//     cleanNumber: yup.string().matches(/^[0-9]*$/, 'Only numbers are allowed'),
+//   });
+
+//   const {
+//     register, control, handleSubmit, formState: { errors },
+//   } = useForm({
+//     resolver: yupResolver(defaultValidationSchema),
+//   });
+//   // {...register('schemaRef')}
+//   // <FormControlLabel>
+//   // <Controller control={control />
+//   // </FormControlLabel>
+//   return {
+//     register, control, handleSubmit, errors,
+//   };
+// };
+
+export const useScrollSnappedChildren = () => {
+  const bindGestureHandler = useGesture({
+    onDrag: ({ args: [ref], down, delta }) => {
+      const { scrollTop, scrollLeft } = ref.current;
+      const {
+        scrollHeight, offsetHeight, scrollWidth, offsetWidth,
+      } = ref.current;
+      const isScrolled = scrollTop + offsetHeight >= scrollHeight;
+      const isScrolledUp = scrollTop <= 0;
+      const isScrolledDown = scrollTop + offsetHeight >= scrollHeight;
+      const isScrolledLeft = scrollLeft <= 0;
+      const isScrolledRight = scrollLeft + offsetWidth >= scrollWidth;
+      if (isScrolledUp && down) {
+        ref.current.scrollTop = scrollTop + delta[1];
+      }
+      if (isScrolledDown && down) {
+        ref.current.scrollTop = scrollTop + delta[1];
+      }
+      if (isScrolledLeft && down) {
+        ref.current.scrollLeft = scrollLeft + delta[0];
+      }
+      if (isScrolledRight && down) {
+        ref.current.scrollLeft = scrollLeft + delta[0];
+      }
+    },
+    onScroll: ({ args: [ref], down, delta }) => {
+      const { scrollTop, scrollLeft } = ref.current;
+      const {
+        scrollHeight, offsetHeight, scrollWidth, offsetWidth,
+      } = ref.current;
+      const isScrolled = scrollTop + offsetHeight >= scrollHeight;
+      const isScrolledUp = scrollTop <= 0;
+      const isScrolledDown = scrollTop + offsetHeight >= scrollHeight;
+      const isScrolledLeft = scrollLeft <= 0;
+      const isScrolledRight = scrollLeft + offsetWidth >= scrollWidth;
+      if (isScrolledUp && down) {
+        ref.current.scrollTop = scrollTop + delta[1];
+      }
+      if (isScrolledDown && down) {
+        ref.current.scrollTop = scrollTop + delta[1];
+      }
+      if (isScrolledLeft && down) {
+        ref.current.scrollLeft = scrollLeft + delta[0];
+      }
+      if (isScrolledRight && down) {
+        ref.current.scrollLeft = scrollLeft + delta[0];
+      }
+    },
+  });
+
+  // const addChild = useIntersectionObserver({
+  //   handler: (entries) => {
+  //     entries.forEach((entry) => {
+  //       if (entry.isIntersecting) {
+  //         entry.target.classList.add('scroll-snapped');
+  //       } else {
+  //         entry.target.classList.remove('scroll-snapped');
+  //       }
+  //     });
+  //   },
+  //   options: {
+  //     root: null,
+  //     rootMargin: '0px',
+  //     threshold: 0.5,
+  //   },
+  // });
+
+  const refs = React.useRef([]);
+  const addNode = React.useCallback((node) => {
+    console.log(node);
+    return refs.current.push(node);
+  }, []);
+
+  // add gesture handler to all added chilren
+  useEffect(() => {
+    // bindGestureHandler to components referenced in refs
+    refs.current.map((ref) => {
+      const child = ref.current;
+      if (child) { child.props = { ...child.props, ...bindGestureHandler(child) }; }
+    });
+    console.log(refs.current);
+  }, [refs]);
+
+  return addNode;
 };
 
 // ========================================================================== //

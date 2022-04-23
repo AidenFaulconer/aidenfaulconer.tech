@@ -1,0 +1,20 @@
+{
+  "database": {
+    "rules": "database.rules.json",
+    "indexes": "database.indexes.json"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "hosting": {
+    "postdeploy": "",
+    "predeploy": "",
+    "site": "aidenfaulconer",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

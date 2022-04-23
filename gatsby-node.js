@@ -8,6 +8,8 @@ const chunk = require('lodash/chunk');
 const { graphql } = require('gatsby');
 
 const cheerio = require('cheerio');
+const { fsync } = require('fs');
+const { node } = require('prop-types');
 // const projectTemplate = require('./src/components/template-components/project-template').default;
 
 // const { dd } = require('dumper.js');
@@ -135,6 +137,8 @@ async function getPosts({ graphql, reporter, regex }) {
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
+ 
+
   // ========================================================================== //
   //   function to Get and create blog posts
   // ========================================================================== //
@@ -232,13 +236,13 @@ exports.onCreateWebpackConfig = ({
 }) => {
   actions.setWebpackConfig({
     devtool: process.env.NODE_ENV === 'development' ? 'eval' /** 'eval-source-map' */ : process.env.NODE_ENV === 'devbuild' ? 'source-map' : 'hidden-source-map', // for debugging processes, production debug with source-map, source-map for most efficient production buildz
-    resolve: { extensions: ['.mjs', '.js', '.jsx', '.json', '.gltf', 'png', 'jpg', 'jpeg', 'gif', 'svg'] },
+    resolve: { extensions: ['.mjs', '.js', '.jsx', '.json', '.gltf', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'otf'] },
     module: {
       rules: [
         { test: /\.(glb|gltf)$/i, use: 'file-loader' }, // or gltf-webpack-loader
         { test: /react-hot-loader/, use: [loaders.js()] },
         {
-          test: /\.(pdf|gif|svg)$/,
+          test: /\.(pdf|gif|svg|json)$/,
           use: 'file-loader?name=[path][name].[ext]',
           include: pth.resolve(__dirname, 'static/assets'),
         },

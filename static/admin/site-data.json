@@ -1,0 +1,452 @@
+{
+  "sections": [
+    {
+      "illustrationType": "coffee",
+      "headline": "Services",
+      "key": "services"
+    },
+    {
+      "illustrationType": "confidence",
+      "headline": "Experience",
+      "key": "experience"
+    },
+    {
+      "illustrationType": "moustache",
+      "headline": "Skills",
+      "key": "skills"
+    },
+    {
+      "illustrationType": "vr",
+      "headline": "Process",
+      "key": "pprocess"
+    },
+    {
+      "illustrationType": "genie",
+      "headline": "Blog",
+      "key": "blog"
+    },
+    {
+      "illustrationType": "genie",
+      "headline": "Projects",
+      "key": "projects"
+    }
+  ],
+  "subSections": [
+    {
+      "headline": "Services",
+      "key": "sub-services",
+      "selectionComponent": "ServicesSelection",
+      "HasContent": "SelectionContent",
+      "subSectionData": [
+        {
+          "title": "Websites",
+          "costRange": "400$-5000$",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "image": "website-image.png",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Iphone"]
+          }
+        },
+        {
+          "title": "Design",
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Design",
+          "image": "website-image.png",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Pencil", "Emoji"]
+          }
+        },
+        {
+          "title": "Virtual Reality",
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Virtual Reality",
+          "image": "website-image.png",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["VR"]
+          }
+        },
+        {
+          "title": "Branding",
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Branding",
+          "image": "website-image.png",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Pencil", "Paper"]
+          }
+        },
+        {
+          "title": "Other",
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Other",
+          "image": "website-image.png",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Hammer"]
+          }
+        },
+        {
+          "title": "My Projects",
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "My Projects",
+          "image": "website-image.png",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": []
+          }
+        }
+      ]
+    },
+    {   
+      "headline": "Experience",
+      "key": "sub-experience",
+      "selectionComponent": "ServicesSelection",
+      "HasContent": "SelectionContent",
+      "subSectionData": [
+        {
+          "title": "Australian War Memorial",
+          "alt": "JavaScript",
+          "category": "Full-Stack Developer",
+          "image": "website-image.png",
+          "description": "",
+          "icon": ""
+        },
+        {
+          "title": "Recovery VR",
+          "alt": "JavaScript",
+          "category": "Full-Stack Developer",
+          "image": "website-image.png",
+          "icon": ""
+        },
+        {
+          "title": "Freelance",
+          "image": "website-image.png",
+          "alt": "JavaScript",
+          "category": "Graphic Design, Full-Stack Development",
+          "description": "",
+          "icon": ""
+        },
+        {
+          "title": "XpertHubb",
+          "image": "website-image.png",
+          "alt": "JavaScript",
+          "category": "Full-Stack Developer",
+          "description": "",
+          "icon": ""
+        },
+        {
+          "title": "Railgun",
+          "image": "website-image.png",
+          "alt": "JavaScript",
+          "category": "Full-Stack Developer",
+          "description": "",
+          "icon": ""
+        },
+        {
+          "title": "L'arche Genesaret",
+          "image": "website-image.png",
+          "alt": "JavaScript",
+          "category": "Disability support worker",
+          "description": "",
+          "icon": ""
+        },
+        {
+          "title": "AJ Gardencare",
+          "image": "website-image.png",
+          "alt": "JavaScript",
+          "category": "Full-Stack Developer",
+          "description": "",
+          "icon": ""
+        },
+        {
+          "title": "You",
+          "image": "website-image.png",
+          "alt": "JavaScript",
+          "category": "Lets find out together",
+          "description": "",
+          "icon": ""
+        },
+        {
+          "title": "ICN",
+          "image": "website-image.png",
+          "alt": "JavaScript",
+          "category": "Consulting",
+          "description":  "",
+          "icon": ""
+        }
+      ]
+    },
+    { 
+      "headline": "Skills",
+      "key": "sub-skills",
+      "selectionComponent": "ServicesSelection",
+      "subSectionComponent": "SelectionContent",
+      "subSectionData": [
+        {
+          "title": "JavaScript",
+          "image": "website-image.png",
+          "alt": "JavaScript",
+          "description": "nocontent",
+          "icon": ""
+        },
+        {
+          "title": "C#",
+          "image": "website-image.png",
+          "alt": "C#",
+          "description": "nocontent",
+          "icon": ""
+        },
+        {
+          "title": "Typescript",
+          "image": "website-image.png",
+          "alt": "Typescript",
+          "description": "nocontent",
+          "icon": ""
+        },
+        {
+          "title": "C++",
+          "image": "website-image.png",
+          "alt": "C++",
+          "description": "nocontent",
+          "icon": ""
+        },
+        {
+          "title": "Back-End",
+          "image": "website-image.png",
+          "alt": "Express",
+          "frameworks": ["Express", "Node.js", "IIS", "ASP.NET", "ASP.NET Core"],
+          "description": "nocontent",
+          "icon": ""
+        },
+        {
+          "title": "Python",
+          "image": "website-image.png",
+          "alt": "Python",
+          "description": "nocontent",
+          "icon": ""
+        },
+        {
+          "title": "Front-End",
+          "image": "website-image.png",
+          "alt": "Front-End",
+          "description": "nocontent",
+          "icon": ""
+        },
+        {
+          "title": "Office",
+          "image": "website-image.png",
+          "alt": "Office",
+          "description": "nocontent",
+          "icon": ""
+        },
+        {
+          "title": "Business accumen",
+          "image": "website-image.png",
+          "alt": "Business accumen", 
+          "description": "nocontent",
+          "icon": ""
+        }
+      ]
+    },
+    {
+      "key": "sub-vr",
+      "headline": "Virtual Reality",
+      "selectionComponent": "ServicesSelection",
+      "subSectionComponent": "SelectionContent",
+      "subSectionData": [
+        {
+          "title": "Virtual Reality Process",
+          "description": "Come back to read more :)",
+          "name": "VR process"
+        },
+        {
+          "title": "Web Development Process",
+          "description": "Come back to read more :)",
+          "name": "Web Development Process"
+        },
+        {
+          "title": "UI/UX Process",
+          "description": "Come back to read more :)",
+          "name": "UI/UX Process"
+        },
+        {
+          "title": "Design Process",
+          "description": "Come back to read more :)",
+          "name": "Design Process"
+        },
+        {
+          "title": "Mobile Development Process",
+          "description": "Come back to read more :)",
+          "name": "Mobile Development Process"
+        },
+        {
+          "title": "Database Development Process",
+          "description": "Come back to read more :)",
+          "name": "Mobile Development Process"
+        },
+        {
+          "title": "Consultancy Process",
+          "description": "Come back to read more :)",
+          "name": "Consultancy Process"
+        }
+      ]
+    },
+    { 
+      "key": "sub-vr",
+      "headline": "Blog",
+      "selectionComponent": "ServicesSelection",
+      "subSectionComponent": "SelectionContent",
+      "subSectionData": [
+        {
+          "title": "Websites",
+          "costRange": "400$-5000$",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Websites",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Iphone"]
+          }
+        },
+        {
+          "title": "Design",
+          "costRange": "0",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Design",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Pencil", "Emoji"]
+          }
+        },
+        {
+          "title": "Virtual Reality",
+          "costRange": "0",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Virtual Reality",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["VR"]
+          }
+        },
+        {
+          "title": "Branding",
+          "costRange": "0",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Branding",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Pencil", "Paper"]
+          }
+        },
+        {
+          "title": "Other",
+          "costRange": "0",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Other",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Hammer"]
+          }
+        },
+        {
+          "title": "My Projects",
+          "costRange": "0",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "My Projects",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": []
+          }
+        }
+      ]
+    },
+    {  
+      "headline": "Projects",
+      "key": "sub-vr",
+      "selectionComponent": "ServicesSelection",
+      "subSectionComponent": "SelectionContent",
+      "subSectionData": [
+        {
+          "title": "Websites",
+          "costRange": "400$-5000$",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Websites",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Iphone"]
+          }
+        },
+        {
+          "title": "Design",
+          "costRange": "0",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Design",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Pencil", "Emoji"]
+          }
+        },
+        {
+          "title": "Virtual Reality",
+          "costRange": 0,
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Virtual Reality",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["VR"]
+          }
+        },
+        {
+          "title": "Branding",
+          "costRange": 0,
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Branding",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Pencil", "Paper"]
+          }
+        },
+        {
+          "title": "Other",
+          "costRange": "0",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Other",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": ["Hammer"]
+          }
+        },
+        {
+          "title": "My Projects",
+          "costRange": "0",
+          "description":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "My Projects",
+          "threejs": {
+            "animationsPlaying": ["hold"],
+            "propsUsing": []
+          }
+        }
+      ]
+    
+    }
+  ]
+}

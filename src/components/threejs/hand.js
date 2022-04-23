@@ -216,7 +216,6 @@ export default function Model({ instances, ...props }) {
       ref={group}
       {...props}
       dispose={null}
-      position={[0, -2, 0]}
       scale={[1.35, 1.35, 1.35, 1.35]}
       rotation={[0, Math.PI, 0]}
     >

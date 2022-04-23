@@ -28,6 +28,17 @@ const afCreateTheme = (theme) => {
 const lt = afCreateTheme(LIGHT_THEME);
 const dt = afCreateTheme(DARK_THEME);
 
+const persist = (config) => (set, get, api) => config(
+  (args) => {
+    set(args);
+    // const { itemsToPersist} = get()
+    // const s = new URLSearchParams({c:btoa(colors.join(''),p: 0)})
+    // window.histoery.replaceState('','',`?{s.toString()}`)
+  },
+  get,
+  api,
+);
+
 // ========================================================================== //
 // App Global Shared State
 // ========================================================================== //
@@ -91,8 +102,8 @@ const useStore = create((set) => ({
   },
   // control form input
   contactForm: {
-    name: false,
-    email: false,
+    name: 'aiden',
+    email: 'aidenf09@yahoo.com',
     message: 'Hello world',
     phone: false,
     service: false,
@@ -122,9 +133,9 @@ const useStore = create((set) => ({
   // control form input
   bookingForm: {
     // user details
-    name: '',
-    email: '',
-    message: '',
+    name: 'aiden',
+    email: 'aidenf09@yahoo.com',
+    message: 'test message',
     phone: '',
     service: '',
     subService: '',
@@ -132,7 +143,7 @@ const useStore = create((set) => ({
     referencePhotos: [],
     projectRequirements: '',
     budgetRange: '',
-    dueDate: '',
+    dueDate: new Date().getTime(),
     projectSuccessHow: '',
     // confirmation
     summary: [],
@@ -269,3 +280,4 @@ const useStore = create((set) => ({
 export {
   createTheme, lt, dt, useStore,
 };
+// 60668172

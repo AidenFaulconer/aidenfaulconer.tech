@@ -55,6 +55,7 @@ export const HeroHeader = React.memo((props) => {
   }));
   const { noHeadline = false } = props;
   const selectedIndex = useStore((state) => state.threejsContext.context.selectedIndex);
+  const animatedOpacity = useStore((state) => state.threejsContext.context.animatedOpacity);
   const postsData = useStore((state) => state.threejsContext.context.postsData);
   const post = postsData ? postsData[selectedIndex] : {
     node: {
@@ -135,13 +136,14 @@ export const HeroHeader = React.memo((props) => {
   return (
     <section id={id}>
       <Grid
-
         container
         sx={{
           // minHeight: '89.5vh',
+          paddingTop: '100px',
           height: '100%',
           boxSizing: 'border-box',
           width: '100vw',
+          // height: '90vh',
           position: 'relative',
           // marginBottom: theme.spacing(3),
           // marginBottom: theme.spacing(0),
@@ -156,23 +158,45 @@ export const HeroHeader = React.memo((props) => {
         {/* ThreeJS */}
         <Grid
           item
-          md={10}
+          md={12}
           sx={{
             position: 'relative',
             zIndex: 1,
-            width: '100%',
-            // height: '70%',
-            height: '55vh',
+            width: '100vw',
+            height: '70%',
+            // minHeight: '75vh',
+            minHeight: '55vh',
 
             display: 'inline-flex',
             maxHeight: '70%',
-            // borderBottom: theme.custom.borders.brandBorder,
-            overflowY: 'clip',
+            // overflowY: 'clip',
             marginTop: 0,
             margin: 'auto',
           }}
         >
-          <ThreeWrapper posts={edges} />
+
+          <Box
+            // this allows the threejs to be shown outside this main containment
+            sx={{
+              position: 'absolute',
+              zIndex: 1,
+              width: '100vw',
+              // height: '100%',
+              // minHeight: '55vh',
+              minHeight: '95vh',
+
+              display: 'inline-flex',
+              // maxHeight: '70%',
+              background: (theme) => `linear-gradient('50% ${theme.palette.text.primary}','50% transparent')`,
+              // borderBottom: theme.custom.borders.brandBorder,
+              // overflowY: 'clip',
+              top: -100,
+              margin: 'auto',
+
+            }}
+          >
+            <ThreeWrapper posts={edges} />
+          </Box>
         </Grid>
 
         {/* Headline */}
@@ -181,7 +205,7 @@ export const HeroHeader = React.memo((props) => {
           item
           md={12}
           sx={{
-            alignSelf: 'end',
+            alignSelf: 'center',
             justifyContent: 'center',
             display: 'inline-flex',
             maxWidth: 700,
@@ -220,11 +244,11 @@ export const HeroHeader = React.memo((props) => {
             <Typography
               align="left"
               color="secondary"
-              variant="h1"
+              variant="h2"
               style={{
                 zIndex: 1,
                 textTransform: 'uppercase',
-                margin: 'auto',
+                // margin: 'auto',
               }}
             >
               {heroData.description}
@@ -232,9 +256,10 @@ export const HeroHeader = React.memo((props) => {
             </Typography>
             <Typography
               style={{
-                maxWidth: 600,
+                // maxWidth: 600,
+                maxWidth: 556,
                 zIndex: 1,
-                margin: 'auto',
+                // margin: 'auto',
               }}
               variant="body1"
               color="secondary"
@@ -250,24 +275,24 @@ export const HeroHeader = React.memo((props) => {
                   pointerEvents: 'all',
                   zIndex: 2,
                   position: 'relative',
-                  // maxWidth: 525,
-                  margin: 'auto',
-                  maxWidth: 725,
+                  maxWidth: 556,
+                  // maxWidth: 725,
                   display: 'inline-flex',
                   gap: 2,
                   justifyContent: 'flex-start',
-                  alignItems: 'center',
+                  // margin: 'auto',
+                  alignItems: 'left',
                 }}
               >
                 <RegularButton onClick={() => navigate('/#contact')} type="primary" icon={{ enabled: true, type: 'arrow' }}>
-                  Let's get in touch
+                  Get in touch
                 </RegularButton>
                 <RegularButton
                   onClick={() => navigate('/booking')}
                   type="secondary"
                   icon={{ enabled: true, type: 'arrow' }}
                 >
-                  Start a Project
+                  Start Project
                 </RegularButton>
               </Box>
             )}

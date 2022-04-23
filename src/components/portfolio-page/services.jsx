@@ -69,7 +69,7 @@ export const SelectionContent = ({
         width: '100%',
         height: '100%',
         minHeight: 400,
-        mt: 12,
+        // mt: 12,
         overflowX: 'hidden',
         overflowY: 'hidden',
       }}
