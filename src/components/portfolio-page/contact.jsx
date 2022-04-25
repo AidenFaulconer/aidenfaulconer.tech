@@ -68,7 +68,7 @@ export default ({ i, title = 'Contact Me', setSelected = () => {} }) => {
       <Box
         sx={{
           position: 'absolute',
-          height: '100%',
+          height: '100%'git p,
           width: '100%',
         }}
       >
