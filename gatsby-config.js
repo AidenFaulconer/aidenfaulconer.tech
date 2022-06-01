@@ -198,7 +198,25 @@ module.exports = {
 
     // MDX is markdown format that also allows embedding jsx within the markdown itself
     // reference: https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/?=remark
-    // reference: https://mdxjs.com/ (absoloutely broken plugin, not worth the pain)
+    {
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        extensions: ['.mdx', '.md'],
+        mediaTypes: ['text/markdown', 'text/x-markdown'],
+        // rehypePlugins: []
+        // defaultLayouts: {
+        //   posts: require.resolve("./src/components/posts-layout.js"),
+        //   default: require.resolve("./src/components/default-page-layout.js"),
+        // },
+        // shouldBlockNodeFromTransformation(node) {
+        //   return (
+        //     [`NPMPackage`, `NPMPackageReadme`].includes(node.internal.type) ||
+        //     (node.internal.type === `File` &&
+        //       path.parse(node.dir).dir.endsWith(`packages`))
+        //   )
+        // },
+      },
+    },
     // `gatsby-plugin-mdx`,
     // ========================================================================== //
     //     analytics

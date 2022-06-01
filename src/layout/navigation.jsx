@@ -47,7 +47,7 @@ const Navigation = ({ window }) => {
 
   const toggleDrawer = React.useCallback(() => setDrawerState((drawerState) => !drawerState), []);
   const theme = useTheme();
-  const toggleTheme = useStore((state) => state.appContext.toggleTheme);
+  const toggleTheme = useStore((state) => state.appContext.methods.toggleTheme);
   const triggerPageChange = useStore((state) => state.threejsContext.methods.triggerPageChange);
   const changePage = useStore((state) => state.threejsContext.methods.changePage);
   const setCurrent = useStore((state) => state.appContext.methods.setCurrent);

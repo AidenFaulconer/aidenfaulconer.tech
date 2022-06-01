@@ -10,51 +10,34 @@ import { navigate } from 'gatsby-link';
 import {
   DARK_THEME, LIGHT_THEME, OVERRIDES, CUSTOM_THEME_PROPS,
 } from './theme';
-
-// create themes to be used in valtio
+ 
 const afCreateTheme = (theme) => {
   const muiTheme = createTheme({ ...theme });
-  const newTheme = deepmerge(muiTheme, CUSTOM_THEME_PROPS, OVERRIDES);
-  // custom theme properties
+  const newTheme = deepmerge(muiTheme, CUSTOM_THEME_PROPS, OVERRIDES); 
   newTheme.typography.h1.fontWeight = 900;
   newTheme.typography.h2.fontWeight = 900;
-  newTheme.typography.h2.textTransform = 'capitalize';
-  // console.log(newTheme);
-  // newTheme.typography = TYPOGRAPHY;
+  newTheme.typography.h2.textTransform = 'capitalize'; 
   return newTheme;
 };
-
-// To avoid 'this' pitfall, the recommended pattern is not to use this and prefer arrow function.
+ 
 const lt = afCreateTheme(LIGHT_THEME);
 const dt = afCreateTheme(DARK_THEME);
-
-const persist = (config) => (set, get, api) => config(
-  (args) => {
-    set(args);
-    // const { itemsToPersist} = get()
-    // const s = new URLSearchParams({c:btoa(colors.join(''),p: 0)})
-    // window.histoery.replaceState('','',`?{s.toString()}`)
-  },
-  get,
-  api,
-);
 
 // ========================================================================== //
 // App Global Shared State
 // ========================================================================== //
-const useStore = create((set) => ({
-  // control the app
+const saveStore = (storeSnapshot) => {
+  localStorage.setItem('store', JSON.stringify(storeSnapshot));
+}
+const loadStore = () => {
+  return JSON.parse(localStorage.getItem('store'));
+}
+
+const useStore = create(persist((set,get) => {
+  //add on top of this for a more robust store
+  return {
   appContext: {
     type: 'light',
-    toggleTheme: () => { // TODO: move to methods for better separation
-      set((state) => ({
-        ...state,
-        appContext: {
-          ...state.appContext,
-          type: state.appContext.type === 'light' ? 'dark' : 'light',
-        },
-      }));
-    },
     location: {},
     methods: {
       setAppContext: (newAppContext) => {
@@ -66,11 +49,19 @@ const useStore = create((set) => ({
           },
         }));
       },
-      // this method is overridden when a threeDCarousel is instanced with its setCurrent method
-      setCurrent: () => {},
+      toggleTheme: () => { // TODO: move to methods for better separation
+        set((state) => ({
+          ...state,
+          appContext: {
+            ...state.appContext,
+            type: state.appContext.type === 'light' ? 'dark' : 'light',
+          },
+        }));
+      },
     },
   },
-  // for useFormInput for testing purposes
+
+  // temp holder for forms that have not been assigned their own store space
   testForm: {
     text: '',
     number: '',
@@ -91,7 +82,6 @@ const useStore = create((set) => ({
         set((state) => ({
           ...state,
           bookingForm: {
-            // empty an object to clear all the fields
             ...Object(
               Object.keys(state.bookingForm).map((key) => ({ [key]: '' })),
             ),
@@ -100,7 +90,7 @@ const useStore = create((set) => ({
       },
     },
   },
-  // control form input
+
   contactForm: {
     name: 'aiden',
     email: 'aidenf09@yahoo.com',
@@ -121,7 +111,6 @@ const useStore = create((set) => ({
         set((state) => ({
           ...state,
           bookingForm: {
-            // empty an object to clear all the fields
             ...Object(
               Object.keys(state.bookingForm).map((key) => ({ [key]: '' })),
             ),
@@ -130,7 +119,7 @@ const useStore = create((set) => ({
       },
     },
   },
-  // control form input
+
   bookingForm: {
     // user details
     name: 'aiden',
@@ -170,7 +159,7 @@ const useStore = create((set) => ({
       },
     },
   },
-  // control 3d app
+
   threejsContext: {
     context: {
       color: '#fff', // x
@@ -269,15 +258,10 @@ const useStore = create((set) => ({
       },
     })),
   },
-}));
-//   import { devtools } from 'zustand/middleware'
+}
+})); 
 
-// // Usage with a plain action store, it will log actions as "setState"
-// const useStore = create(devtools(store))
-// // Usage with a redux store, it will log full action types
-// const useStore = create(devtools(redux(reducer, initialState)))
-// export all
 export {
-  createTheme, lt, dt, useStore,
+  createTheme, lt, dt, useStore, saveStore
 };
 // 60668172

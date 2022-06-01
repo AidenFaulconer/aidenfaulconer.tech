@@ -1,26 +1,10 @@
-import { createTypography } from '@mui/material/styles';
 import { createTheme } from '@mui/system';
-import { adaptV4Theme } from '@mui/material';
 
-import * as React from 'react';
-
-// ========================================================================== //
-// Noise generation
-// ========================================================================== //
-import SimplexNoise from 'simplex-noise';
+import * as React from 'react'; 
 
 // ========================================================================== //
 // Base Theme
-// ========================================================================== //
-
-// theme = { ...theme, ...baseTheme };
-// responsiveFontSizes(createMuiTheme(), {
-// breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
-// disableAlign: false,
-// factor: 0.5,
-// variants: ['responsive', 'hover', 'focus', 'active', 'group-hover'],
-// });
-
+// ========================================================================== // 
 const defaultSpacing = [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80];
 const defaultPadding = [0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80];
 const defaultMargin = [0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80];
@@ -90,45 +74,6 @@ export const objectTokenizer = (object, parameter) => JSON.stringify(object, nul
   /"([a-zA-Z]+)"/g,
   (match, p1) => `"${parameter[p1]}`,
 );
-
-// function generateNoisePng(
-//   width,
-//   height,
-//   seed,
-//   octaves,
-//   persistence,
-//   lacunarity,
-//   scale,
-// ) {
-//   const noise = new SimplexNoise(seed);
-//   const size = width * height * 4;
-//   const data = new Uint8Array(size);
-//   for (let i = 0; i < size; i += 4) {
-//     const x = (i / 4) % width;
-//     const y = ~~(i / 4 / width);
-//     let value = 0;
-//     for (let j = 0; j < octaves; j++) {
-//       const frequency = Math.pow(2, j);
-//       const amplitude = Math.pow(persistence, j);
-//       value
-//         += noise.noise2D(x * scale * frequency, y * scale * frequency) * amplitude;
-//     }
-//     value = value * 128 + 128;
-//     data[i] = data[i + 1] = data[i + 2] = value;
-//     data[i + 3] = 255;
-//   }
-//   // color the noise
-//   // const canvas = document.createElement('canvas');
-//   // canvas.width = width;
-//   // canvas.height = height;
-//   // const context = canvas.getContext('2d');
-//   // const imageData = context.createImageData(width, height);
-//   // imageData.data.set(data);
-//   // context.putImageData(imageData, 0, 0);
-//   // return canvas.toDataURL();
-
-//   return `url(data:image/png;base64,${typeof window !== 'undefined' && btoa(data)})`;
-// }
 
 // ========================================================================== //
 // Font scaling
@@ -345,17 +290,8 @@ const DARK_THEME = {
     },
   },
 };
-// linear-gradient(180deg, #6496FF 0%,
-// rgba(100, 150, 255, 0) 12.04%,
-// rgba(180, 102, 255, 0) 30.72%,
-// #B466FF 43.61%,
-// rgba(180, 102, 255, 0) 43.67%,
-// rgba(58, 195, 223, 0) 55.45%,
-// #1AE6C7 55.73%,
-// #34CFD1 55.74%,
-// rgba(52, 207, 209, 0) 68.05%,
-// rgba(100, 150, 255, 0) 87.03%,
-// #6496FF 99.28%)
+
+
 // ========================================================================== //
 // Special Patterns
 // ========================================================================== //
@@ -489,21 +425,7 @@ export const patternHover = {
 
 // ========================================================================== //
 // Theme patterns
-// ========================================================================== //
-// export const sideBorders = {
-//   '&::before': {
-//     background: _theme.palette.text.primary,
-//     content: '""',
-//     left: 0,
-//     top: -1,
-//     position: 'absolute',
-//     height: '100%',
-//     width: '86.5%',
-//     margin: _theme.spacing('auto', 6),
-//     borderLeft: _theme.custom.borders.brandBorder,
-//     borderRight: _theme.custom.borders.brandBorder,
-//   },
-// };
+// ========================================================================== // 
 const commonButton = {
   root: {
     // boxShadow: `${_theme.custom.shadows.brand} !important`,
@@ -732,29 +654,4 @@ export {
   OVERRIDES,
   CUSTOM_THEME_PROPS,
   SCROLL_PROPS,
-};
-
-// bubble gradient
-// background: `radial-gradient(50% 50% at 50% 50%, ${hexToAlpha(
-//   theme.palette.text.primary,
-//   1,
-// )} 41.66%, rgba(255, 255, 255, 0) 100%),
-// radial-gradient(21.07% 10.97% at 60.57% 12.66%, rgba(255, 255, 255, 0.6) 54.48%, rgba(255, 255, 255, 0) 100%),
-// radial-gradient(99.61% 99.61% at 87.86% 22.85%, rgba(0, 0, 100, 0) 22.71%, ${hexToAlpha(
-// theme.palette.text.primary,
-// 0.6,
-// )} 78.96%)`,
-// objectFit: 'contain',
-// zIndex: 1,
-// // "&:before": {
-// //     content: "",
-// //     position: 'absolute',
-// //     top: '1%',
-// //     left: '5%',
-// //     width: '90%',
-// //     height: '90%',
-// //     borderRadius: '50%',
-// //     background: `radial-gradient(circle at bottom,white, ${theme.palette.text.secondary},${theme.palette.text.primary} 58%)`,
-// //     filter: 'blur(5px)',
-// //     zIndex: 2,
-// //   },
+}; 

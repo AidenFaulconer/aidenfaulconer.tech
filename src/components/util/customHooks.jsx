@@ -19,28 +19,23 @@ import React, {
 import { useCookies } from 'react-cookie';
 import * as yup from 'yup';
 import { useStore } from '../../store/store';
+// ========================================================================== //
+// Custom react hooks https://usehooks.com/
+// react hooks allow you to be modular with logic that would be written in
+// the react pure component anyway, they basically drop in and make reusable
+// REACT BASED protocals, so logic declared in hook, is essentially logic
+// youd have in the component anyway.
+// remember to get output from these via [x,setX] = hookName(input)
+// remember to be mindful of the data returned in each hook! some are objects
+// some are arrays!
+// Don’t call Hooks inside loops, conditions, or nested functions. Instead,
+// always use Hooks at the top level of your React function
+// ========================================================================== //
 
-// const defaultRules = {
-//   required: (value) => !!value || 'Required',
-//   minLength: (value, length) => (value && value.length >= length) || `Must be at least ${length} characters`,
-//   maxLength: (value, length) => (value && value.length <= length) || `Must be less than ${length} characters`,
-//   minValue: (value, min) => (value && value >= min) || `Must be greater than ${min}`,
-//   maxValue: (value, max) => (value && value <= max) || `Must be less than ${max}`,
-//   email: (value) => (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) || 'Invalid email address',
-//   alphaNumeric: (value) => (value && /[^a-zA-Z0-9]/i.test(value)) || 'Only alphanumeric characters',
-//   numeric: (value) => (value && /[^0-9]/i.test(value)) || 'Only numbers',
-//   phone: (value) => (value && !/^(0|[1-9][0-9]{9})$/i.test(value)) || 'Invalid phone number, must be 10 digits',
-//   url: (value) => (value && !/^(ftp|http|https):\/\/[^ "]+$/i.test(value)) || 'Invalid url',
-//   date: (value) => (value && !/^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/i.test(value)) || 'Invalid date, must be MM/DD/YYYY',
-//   dateISO: (value) => (value && !/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/i.test(value)) || 'Invalid date, must be ISO',
-// };
-
-// use yup for validation
 
 // ========================================================================== //
 // Disable text highlighting
 // ========================================================================== //
-
 export const toggleTextHighlight = (defaultValue = false) => {
   const [highlightEnabled, setHighlightEnabled] = useState({ enabled: defaultValue, styles: highLightStyles });
   const highLightStyles = {
@@ -565,14 +560,6 @@ export const useFormStoreNoValidation = (formName = 'testForm', fieldName = 'tex
 // ========================================================================== //
 export const forceUpdate = () => React.useReducer(() => ({}))[1];
 
-// export const usePrevious = (value) => {
-//   const ref = useRef();
-//   useEffect(() => {
-//     ref.current = value;
-//   });
-//   return ref.current;
-// }
-
 // ========================================================================== //
 // Misc
 // ========================================================================== //
@@ -631,40 +618,6 @@ export const useScrollControl = (ref, children) => {
     isScrolledRight,
   };
 };
-
-// import { useForm } from 'react-hook-form';
-// import * as yup from 'yup';
-// import { yupResolver } from '@hookform/resolvers/yup';
-// export const useMUIFormValidation = (config) => {
-//   const defaultValidationSchema = yup.object().shape({
-//     selection: yup.string().required('Please select an option'),
-//     fullName: yup.string().required('Full Name is required'),
-//     email: yup.string().email('Invalid email address').required('Email is required'),
-//     password: yup.string().required('Password is required'),
-//     confirmPassword: yup.string().required('Confirm Password is required'),
-//     phone: yup.string().required('Phone is required'),
-//     acceptTerms: yup.boolean().oneOf([true], 'You must accept the terms and conditions'),
-//     textArea: yup.string().max(500, 'Maximum 500 characters only'),
-//     file: yup.mixed().required('File is required').test('fileSize', 'File size is too big', (value) => value && value.size <= 2000000),
-//     image: yup.mixed().required('Image is required').test('fileSize', 'File size is too large', (value) => value && value.size <= 3000000),
-//     video: yup.mixed().required('Video is required').test('fileSize', 'File size is too large', (value) => value && value.size <= 3000000),
-//     cleanString: yup.string().matches(/^[a-zA-Z0-9_.-]*$/, 'Only alphanumeric characters, underscores, dashes and periods are allowed'),
-//     cleanNumber: yup.string().matches(/^[0-9]*$/, 'Only numbers are allowed'),
-//   });
-
-//   const {
-//     register, control, handleSubmit, formState: { errors },
-//   } = useForm({
-//     resolver: yupResolver(defaultValidationSchema),
-//   });
-//   // {...register('schemaRef')}
-//   // <FormControlLabel>
-//   // <Controller control={control />
-//   // </FormControlLabel>
-//   return {
-//     register, control, handleSubmit, errors,
-//   };
-// };
 
 export const useScrollSnappedChildren = () => {
   const bindGestureHandler = useGesture({
@@ -756,18 +709,7 @@ export const useScrollSnappedChildren = () => {
 // Local storage, cookies, session storage, global state (mobX)
 // ========================================================================== //
 
-// ========================================================================== //
-// Custom react hooks https://usehooks.com/
-// react hooks allow you to be modular with logic that would be written in
-// the react pure component anyway, they basically drop in and make reusable
-// REACT BASED protocals, so logic declared in hook, is essentially logic
-// youd have in the component anyway.
-// remember to get output from these via [x,setX] = hookName(input)
-// remember to be mindful of the data returned in each hook! some are objects
-// some are arrays!
-// Don’t call Hooks inside loops, conditions, or nested functions. Instead,
-// always use Hooks at the top level of your React function
-// ========================================================================== //
+
 
 // ========================================================================== //
 // State based react hooks
@@ -988,7 +930,6 @@ export const useHover = () => {
   return [ref, value];
 };
 
-// Hook
 export const useLocalStorage = (key, initialValue) => {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
@@ -1021,8 +962,7 @@ export const useLocalStorage = (key, initialValue) => {
   };
   return [storedValue, setValue];
 };
-
-// Hook
+ 
 export const useWindowSize = () => {
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
@@ -1485,6 +1425,7 @@ export const useAsync = (asyncFunction, immediate = false) => {
     error,
   };
 };
+
 // Hook (use-require-auth.js)
 export const useRequireAuth = (
   authMethod,
@@ -1523,3 +1464,67 @@ export const useDebounce = (value, delay) => {
   );
   return debouncedValue;
 };
+
+
+
+
+//random util functions 
+function getRelativePointerPosition(node) {
+  // the function will return pointer position relative to the passed node
+  const transform = node.getAbsoluteTransform().copy();
+  // to detect relative position we need to invert transform
+  transform.invert();
+
+  // get pointer (say mouse or touch) position
+  const pos = node.getStage().getPointerPosition();
+
+  // now we find relative point
+  return transform.point(pos);
+}
+
+function zoomStage(stage, scaleBy) {
+  const oldScale = stage.scaleX();
+
+  const pos = {
+    x: stage.width() / 2,
+    y: stage.height() / 2,
+  };
+  const mousePointTo = {
+    x: pos.x / oldScale - stage.x() / oldScale,
+    y: pos.y / oldScale - stage.y() / oldScale,
+  };
+
+  const newScale = Math.max(0.05, oldScale * scaleBy);
+
+  const newPos = {
+    x: -(mousePointTo.x - pos.x / newScale) * newScale,
+    y: -(mousePointTo.y - pos.y / newScale) * newScale,
+  };
+
+  const newAttrs = limitAttributes(stage, { ...newPos, scale: newScale });
+
+  stage.to({
+    x: newAttrs.x,
+    y: newAttrs.y,
+    scaleX: newAttrs.scale,
+    scaleY: newAttrs.scale,
+    duration: 0.1,
+  });
+}
+
+function limitAttributes(stage, newAttrs) {
+  const box = stage.findOne('Image').getClientRect();
+  const minX = -box.width + stage.width() / 2;
+  const maxX = stage.width() / 2;
+
+  const x = Math.max(minX, Math.min(newAttrs.x, maxX));
+
+  const minY = -box.height + stage.height() / 2;
+  const maxY = stage.height() / 2;
+
+  const y = Math.max(minY, Math.min(newAttrs.y, maxY));
+
+  const scale = Math.max(0.05, newAttrs.scale);
+
+  return { x, y, scale };
+}

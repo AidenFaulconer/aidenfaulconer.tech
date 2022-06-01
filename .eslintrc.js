@@ -13,7 +13,6 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    // "linebreak-style": ["warning",process.env.NODE_ENV === 'production' ? "unix" : "windows"],
     'react/jsx-props-no-spreading': 'off',
     'react/no-array-index-key': 'off',
     'no-underscore-dangle': 'off',
