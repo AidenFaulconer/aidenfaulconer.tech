@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hasura-postgres
+  labels:
+    app: hasura-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hasura-postgres
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: hasura-postgres
+    spec:
+      containers:
+        - name: hasura-postgres
+          image: postgres
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          env:
+            - name: POSTGRES_PASSWORD
+              value: supersecret
+          # readinessProbe: 
+          #   exec:
+          #     command: 
+          #       - /bin/sh
+          #       - -c 
+          #       - psql -U postgres -h localhost -c "SELECT resource_version from hdb_catalog.hdb_metadata"
+          #       # - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+          #       # - psql -U "postgres" -h localhost -p 5432 
+          #   failureThreshold: 6
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command: 
+                - /bin/sh
+                - -c 
+                - psql -U postgres -h localhost -c "SELECT format('Hello %s', 'World')"
+                # - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+                # - psql -U "postgres" -h localhost -p 5432 
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hasura-postgres-service
+spec:
+  selector:
+    app: hasura-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

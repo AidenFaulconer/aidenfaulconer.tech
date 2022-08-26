@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hasura
+  labels:
+    app: hasura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hasura
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: hasura
+    spec:
+      containers:
+        - name: hasura
+          image: hasura/graphql-engine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          # check if metadata is consistent with database to determine true readiness
+          # readinessProbe: 
+          #   httpGet:
+          #     path: /settings/metadata-status
+          #     port: 8080
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 5
+          #   timeoutSeconds: 1
+          # use hasuras /healtz endpoing to assess the overall health 
+          livenessProbe:
+            httpGet:
+              path: /healthz 
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 1
+          env:
+            - name: HASURA_GRAPHQL_DATABASE_URL
+              value: 'postgres://postgres:supersecret@hasura-postgres-service:5432/postgres'
+              # toggle varying types of logging for hasura
+            - name: HASURA_GRAPHQL_ENABLE_CONSOLE
+              value: 'true' 
+            - name: HASURA_GRAPHQL_LOG_QUERIES 
+              value: 'true'  
+            - name: HASURA_GRAPHQL_LOG_LEVEL
+              value: 'debug'  
+            - name: HASURA_GRAPHQL_DEV_MODE
+              value: 'true'
+            - name: HASURA_GRAPHQL_ENABLED_LOG_TYPES
+              value: startup, http-log, webhook-log, websocket-log, query-log  
+              # this secret is needed in x-hasura-admin-secret to acces the graphql api, remember with hasura to POST your graphql requests
+            - name: HASURA_GRAPHQL_ADMIN_SECRET
+              value: 'apis-over-data-$238'
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+      initContainers:
+        - name: liquibase
+          image: hasura-liquibase-migrations
+          env:
+            - name: URL
+              value: 'jdbc:postgresql://hasura-postgres-service:5432/postgres'
+            - name: USERNAME
+              value: postgres
+            - name: PASSWORD
+              value: supersecret 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hasura-admin-service
+spec:
+  selector:
+    app: hasura
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

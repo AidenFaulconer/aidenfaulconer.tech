@@ -1,9 +1,0 @@
-{
-  "functions": {
-  },
-  "hosting": {
-    "predeploy": "",
-    "postdeploy": "",
-    "public": "public"
-  }
-}

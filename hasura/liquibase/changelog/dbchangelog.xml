@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
+    <changeSet author="dan" id="1">
+        <createTable tableName="actor">
+            <column defaultValue="gen_random_uuid ()" name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="firstname" type="text"/>
+            <column name="lastname" type="text"/>
+        </createTable>
+
+        <createTable tableName="film">
+            <column defaultValue="gen_random_uuid ()" name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="name" type="text"/>
+            <column name="release_date" type="timestamptz"/>
+        </createTable>
+
+        <createTable tableName="role">
+            <column defaultValue="gen_random_uuid ()" name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="name" type="text"/>
+            <column name="actor_id" type="uuid">
+                <constraints references="actor(id)" nullable="false" foreignKeyName="role_actor_ref"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="aiden" id="2">
+        <addColumn tableName="actor">
+            <column name="middlename" type="text">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="aiden" id="3">
+        <addColumn tableName="role">
+            <column name="film_id" type="uuid">
+                <constraints nullable="true" foreignKeyName="film_role_ref" references="film(id)" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="aiden" id="4">
+        <addColumn tableName="role">
+            <column name="created_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </addColumn>
+        <addColumn tableName="film">
+            <column name="created_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </addColumn>
+        <addColumn tableName="actor">
+            <column name="created_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="aiden" id="5">
+        <addColumn tableName="role">
+            <column name="version" defaultValue="0" type="integer" />
+        </addColumn>
+        <addColumn tableName="film">
+            <column name="version" defaultValue="0" type="integer" />
+        </addColumn>
+        <addColumn tableName="actor">
+            <column name="version" defaultValue="0" type="integer" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="aiden" id="6">
+        <addColumn tableName="role">
+            <column name="updated_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </addColumn>
+        <addColumn tableName="film">
+            <column name="updated_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </addColumn>
+        <addColumn tableName="actor">
+            <column name="updated_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="aiden" id="7">
+        <validCheckSum>8:4a0713cb516a03f1483e2467c9c5343c</validCheckSum>
+        <sqlFile path="/create_update_trigger.sql" dbms="postgres" stripComments="true"/>
+        <sqlFile path="/trigger_create_update.sql" dbms="postgres" stripComments="true"/>
+    </changeSet>
+
+    <changeSet author="aiden" id="8">
+        <createTable tableName="message">
+            <column defaultValue="gen_random_uuid ()" name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="actor_id" type="UUID">
+                <constraints nullable="false" foreignKeyName="message_actor_ref" references="actor(id)"/>
+            </column>
+            <column name="body" type="text"/>
+            <column name="timestamp" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+            <column name="updated_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </createTable>
+    </changeSet>
+
+    <changeSet author="aiden" id="9">
+        <createTable tableName="user">
+            <column defaultValue="gen_random_uuid ()" name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="user_type" type="text"/>
+
+            <column name="username" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="password" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_data" type="text">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="bio" type="text"/>
+
+            <column name="profile_picture" type="text">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="created_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+
+            <column name="updated_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </createTable>
+
+        <createTable tableName="post">
+            <column defaultValue="gen_random_uuid ()" name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="user_id" type="UUID">
+                <constraints nullable="false" foreignKeyName="message_actor_ref" references="user(id)"/>
+            </column>
+
+            <column name="body" type="text"/>
+
+            <column name="post_picture" type="text">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="timestamp" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+
+            <column name="updated_at" defaultValue="transaction_timestamp()" type="timestamp with time zone" />
+        </createTable>
+    </changeSet>
+</databaseChangeLog> 
