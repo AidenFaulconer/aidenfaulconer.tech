@@ -37,8 +37,8 @@ import { useScrollProgress } from '../components/util/customHooks';
 const Navigation = ({ window }) => {
   const [drawerState, setDrawerState] = React.useState(false);
   const iOS = (typeof window !== 'undefined'
-      && /iPad|iPhone|iPod/.test(navigator?.userAgent))
-      || false;
+    && /iPad|iPhone|iPod/.test(navigator?.userAgent))
+    || false;
 
   const toggleDrawer = React.useCallback(() => setDrawerState((drawerState) => !drawerState), []);
   const theme = useTheme();
@@ -144,7 +144,7 @@ const Navigation = ({ window }) => {
     () => (
       <Box
         sx={{ ...menuIconStyles }}
-          // eslint-disable-next-line react/no-danger
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: `
             <svg xmlns="http://www.w3.org/2000/svg" width="54" height="61" fill="none" viewBox="0 0 54 61">
@@ -179,7 +179,11 @@ const Navigation = ({ window }) => {
       const secondaryColor = theme.palette.text.secondary;
 
       return (
-        <>
+        <Box style={{
+          marginLeft: theme.spacing(3),
+          position: 'relative',
+        }}
+        >
           {/* progress svg bar */}
           <svg
             width="80"
@@ -209,7 +213,7 @@ const Navigation = ({ window }) => {
             sx={{
               ...menuIconStyles,
             }}
-          // {...SCROLL_PROPS}
+            // {...SCROLL_PROPS}
             style={{
               fill: 'currentColor',
             }}
@@ -228,7 +232,7 @@ const Navigation = ({ window }) => {
           `,
             }}
           />
-        </>
+        </Box>
       );
     },
     [type, scrollProgress],
@@ -484,7 +488,7 @@ const Navigation = ({ window }) => {
         {menuIcon()}
       </Button>
       <SwipeableDrawer
-          // isableBackdropTransition={!iOS}
+        // isableBackdropTransition={!iOS}
         onOpen={() => setDrawerState(true)}
         onClose={() => setDrawerState(false)}
         disableDiscovery={iOS}
@@ -496,7 +500,7 @@ const Navigation = ({ window }) => {
       </SwipeableDrawer>
     </React.Fragment>
   ),
-  [drawerState]);
+    [drawerState]);
 
   const hexToAlpha = (hex, alpha) => {
     const r = parseInt(hex.slice(1, 3), 16);

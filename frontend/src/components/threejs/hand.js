@@ -23,8 +23,33 @@ export default function Model({ instances, ...props }) {
   // ========================================================================== //
   //   hand controls
   // ========================================================================== //
+  const changeHand = useStore((state) => state.threejsContext.methods.changeHand);
   const { animationsPlaying, propsUsing } = useStore((state) => state.threejsContext.context.hand);
+  const _handProps = ['Iphone', 'Emoji', 'Hammer', 'Pencil', 'VR', 'Paper'];
   const _actions = ['wave', 'hold', 'snap', 'write', 'build'];
+
+  const wave = () => {
+    const start = () => {
+      changeHand({
+        animationsPlaying: ['wave'],
+        propsUsing: ['None'],
+      });
+    };
+    const end = () => {
+      changeHand({
+        animationsPlaying: ['hold'],
+        propsUsing: [],
+      });
+    };
+    return { start, end };
+  };
+
+  React.useEffect(() => {
+    const { start, end } = wave();
+    start();
+    setTimeout(() => end(), 2500);
+  }, []);
+
   React.useEffect(() => {
     if (process.env.development) {
       console.log('===== Nodes =====');
@@ -41,24 +66,25 @@ export default function Model({ instances, ...props }) {
     const {
       wave, hold, snap, write, build,
     } = actions;
-    // fadeIn(duration)
-    // fadeOut(duration)
-    // play()
-    // reset()
-    // stop()
-    // stopFading()
-    // halt()
 
     // toggle animations based on user input/scroll input
     // map through array with names, if name is not found, toggle off from actions
     _actions.map((availibleAction) => {
+      // fadeIn(duration)
+      // fadeOut(duration)
+      // play()
+      // reset()
+      // stop()
+      // stopFading()
+      // halt()
       if (animationsPlaying.includes(availibleAction)) {
         actions[availibleAction]?.reset();
-        actions[availibleAction]?.fadeIn(0.015);
+        actions[availibleAction]?.fadeIn(0.15);
         actions[availibleAction]?.play();
       } else {
-        actions[availibleAction]?.fadeOut(0.015);
         actions[availibleAction]?.reset();
+        actions[availibleAction]?.fadeOut(0.55);
+        actions[availibleAction]?.play();
       }
     });
 
@@ -203,6 +229,14 @@ export default function Model({ instances, ...props }) {
           />
         </group>
       ),
+      None: () => (
+        <group
+          name="paper"
+          position={[-2.161, -0.937, 0.85]}
+          rotation={[-2.989, 1.173, 3.006]}
+          scale={[0.752, 0.752, 0.752]}
+        />
+      ),
     };
 
     return propsUsing.map((propName) => (React.createElement(props[propName])));
@@ -248,9 +282,9 @@ export default function Model({ instances, ...props }) {
         // ========================================================================== //
        */}
         {propsUsing.length > 0 && (
-        <>
-          {determineProp()}
-        </>
+          <>
+            {determineProp()}
+          </>
         )}
         {/**
           // ========================================================================== //

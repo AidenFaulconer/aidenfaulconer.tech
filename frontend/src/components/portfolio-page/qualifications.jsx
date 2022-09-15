@@ -1,7 +1,6 @@
 import {
   Grid, Typography, Box, Card, useTheme,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { useBreakpoints } from 'react-use-breakpoints';
 import { navigate, useStaticQuery } from 'gatsby';

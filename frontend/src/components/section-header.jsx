@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import React, { PureComponent } from 'react';
 import { hexToAlpha, svgEncodeBaseSixtyFour } from '../store/theme';
 import { Illustration } from './custom/illustrations';

@@ -84,7 +84,7 @@ const Layout = (props) => {
       <MaterialUI>
         <Navigation />
 
-        {/* <HeroHeader id="projects" /> */}
+        <HeroHeader id="projects" />
         {/* <div style={{ opacity: animatedOpacity }}> */}
         {children}
         {/* </div> */}
@@ -116,9 +116,7 @@ const Layout = (props) => {
         >
           {(type === 'light' && <Brightness5 />) || <Brightness2 />}
         </Fab>
-
         <Consolelogs />
-
       </MaterialUI>
     </div>
   );

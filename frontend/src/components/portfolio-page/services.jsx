@@ -3,9 +3,10 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import * as React from 'react';
-import { graphql, navigate, useStaticQuery } from 'gatsby';
+import {
+  graphql, navigate, StaticQuery, useStaticQuery,
+} from 'gatsby';
 import { NoToneMapping } from 'three';
-import { styled } from '@mui/material/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { StaticImage } from 'gatsby-plugin-image';
 import { RegularButton, SelectionButton } from '../custom/buttons';
@@ -38,7 +39,7 @@ export default (props, ref) => {
     <section
       id={id}
       ref={ref}
-      // className={(classes.section)}
+    // className={(classes.section)}
     >
       <SelectionMenu />
     </section>
@@ -65,10 +66,11 @@ export const SelectionContent = ({
         position: 'relative',
         background: (theme) => theme.palette.text.primary,
         // border: (theme) => theme.custom.borders.brandBorder,
-        flexDirection: { md: 'row', xs: 'column' },
+        flexDirection: 'row',
         width: '100%',
         height: '100%',
         minHeight: 400,
+        padding: (theme) => theme.spacing(3, 0),
         // mt: 12,
         overflowX: 'hidden',
         overflowY: 'hidden',
@@ -77,7 +79,7 @@ export const SelectionContent = ({
       {/* description of service */}
       <Grid
         item
-        xs={12}
+        xs={9}
         md={6}
         lg={5}
         sx={{
@@ -161,15 +163,15 @@ export const SelectionContent = ({
       {/* media content */}
       <Grid
         item
-        xs={12}
+        xs={3}
         md={6}
         lg={6}
         sx={{
-          display: 'inline-flex',
+          display: { md: 'inline-flex', sm: 'none' },
           color: (theme) => theme.palette.text.secondary,
           order: { md: 1, xs: 0 },
-          width: '60%',
-          maxHeight: { xs: 150, md: 400 },
+          // width: '60%',
+          // maxHeight: { xs: 150, md: 400 },
           height: '100%',
           position: 'relative',
           borderRadius: (theme) => theme.spacing(1),
@@ -177,6 +179,48 @@ export const SelectionContent = ({
           mb: 8,
         }}
       >
+        {/* <StaticQuery
+          query={graphql`
+              allMarkdownRemark(
+                filter: {frontmatter: {category: {regex: "/${title}/"}}}
+                limit: 5
+              ) {
+                edges {
+                  node {
+                    id
+                    html
+                    excerpt
+                    frontmatter {
+                      catagory
+                      metaDescription
+                      date
+                      path
+                      title
+                      thumbnail
+                    }
+                  }
+                  next {
+                    nid: id
+                  }
+                  previous {
+                    pid: id
+                  }
+                }
+              }
+          `}
+          render={(data) => data.map((d) => (
+            <img
+              alt={`${title}`}
+              style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+              }}
+              src={defaultImage}
+            />
+          ))}
+        /> */}
         <img
           alt={`${title}`}
           style={{

@@ -40,12 +40,12 @@ const IndexPage = ({
   // const addNode = useScrollSnappedChildren();
   return (
     <Grid container>
-      {/* <SectionWrapper>
+      <SectionWrapper>
         <Roullete />
       </SectionWrapper>
       <SectionWrapper type="secondary">
         <Contact />
-      </SectionWrapper> */}
+      </SectionWrapper>
     </Grid>
   );
 };

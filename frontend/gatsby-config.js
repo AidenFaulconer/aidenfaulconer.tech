@@ -18,11 +18,11 @@ const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE;
 
 module.exports = {
   flags: {
-    PRESERVE_WEBPACK_CACHE: true,
-    GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
-    PARALLEL_SOURCING: true,
-    FAST_DEV: true,
-    DEV_SSR: true,
+    // PRESERVE_WEBPACK_CACHE: true,
+    // GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
+    // PARALLEL_SOURCING: true,
+    // FAST_DEV: true,
+    // DEV_SSR: true,
     // ENABLE_GATSBY_EXTERNAL_JOBS: true,//for gatsby-parallel-runner, which outsources to google cloud
   },
   // 'gatsby-parallel-runner',//uses google cloud,
@@ -33,7 +33,7 @@ module.exports = {
     // ========================================================================== //
     // disable 404 pages **temporary fix for gatsby issue (gatsby sucks!!!!)**
     // ========================================================================== //
-    'gatsby-disable-404',
+    // 'gatsby-disable-404',
     // ========================================================================== //
     //     Scroll animations
     // ========================================================================== //

@@ -15,6 +15,8 @@ import React, {
 } from 'react';
 import { ResizeObserver } from '@juggle/resize-observer';
 
+import * as VR from 'three/examples/jsm/webxr/VRButton';
+
 // animation and post processing
 import { useSpring, config, useChain } from '@react-spring/core';
 import { a } from '@react-spring/three';
@@ -109,8 +111,8 @@ export const Plane = React.memo(({
       />
       {/* some planes only used for collisions, but the ground is used for shadows and collisions */}
       {shadows && (
-      <>
-        {/* <a.meshPhysicalMaterial
+        <>
+          {/* <a.meshPhysicalMaterial
             tonemapped={false}
             attach="material"
             visible={visible}
@@ -123,35 +125,35 @@ export const Plane = React.memo(({
             // dispose={(e)=>planeRef.current.texture.dispose()}
             // transparent
           /> */}
-        <shadowMaterial
-          receiveShadow
-          tonemapped={false}
-          color="#ffffff"
-          visible
-          opacity={0.6}
-          attach="material"
-        />
-      </>
+          <shadowMaterial
+            receiveShadow
+            tonemapped={false}
+            color="#ffffff"
+            visible
+            opacity={0.6}
+            attach="material"
+          />
+        </>
       ) || (
-      <>
-        <meshBasicMaterial
-          tonemapped={false}
-          attach="material"
-          opacity={0}
-          // dont allow this material to occlude other objects
-          visible={false}
-          depthWrite={false}
-          // depthTest={false}
-          // visible={visible}
-          side={THREE.BackSide}
-          alphaTest={0.5}
-          transparent
-          dispose={null}
-          // dispose={(e)=>ref.current.texture.dispose()}
-          receiveShadow
-        />
-      </>
-      )}
+          <>
+            <meshBasicMaterial
+              tonemapped={false}
+              attach="material"
+              opacity={0}
+              // dont allow this material to occlude other objects
+              visible={false}
+              depthWrite={false}
+              // depthTest={false}
+              // visible={visible}
+              side={THREE.BackSide}
+              alphaTest={0.5}
+              transparent
+              dispose={null}
+              // dispose={(e)=>ref.current.texture.dispose()}
+              receiveShadow
+            />
+          </>
+        )}
     </a.mesh>
   );
 }, (pre, post) => {
@@ -322,8 +324,8 @@ export const Models = ({
         },
       },
     } = post;
-      // slice textureData length to three if tier is 1
-      // tier === 1 ? textureData.slice(0, 3) : textureData;
+    // slice textureData length to three if tier is 1
+    // tier === 1 ? textureData.slice(0, 3) : textureData;
     const texture = (thumbnail && useLoader(THREE.TextureLoader, thumbnail))
       || new THREE.Texture();
 
@@ -521,7 +523,7 @@ export const Model = React.memo(
           onPointerOver={onPointerOver}
           onPointerOut={onPointerOut}
           geometry={model.geometry}
-            // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
+          // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
           dispose={null} // dont dispose objects once spawned for performance
           onClick={onClick}
 
@@ -547,21 +549,21 @@ export const Model = React.memo(
             toneMapped
             transparent
             opacity={(isSelectedProject() || hovered && 1) || animatedOpacity}
-              // visible={selectedIndex === -1 || selectedIndex === position}// disable ghost cubes
+            // visible={selectedIndex === -1 || selectedIndex === position}// disable ghost cubes
             attach="material"
             receiveShadow
             castShadow
             color={determineColor}
             roughness={0.75}
-              // alphaMap={checkTier(texture)}
-              // aoMap={checkTier(texture)}
+            // alphaMap={checkTier(texture)}
+            // aoMap={checkTier(texture)}
             roughnessMap={texture}
-              // lightMap={checkTier(texture)}// sexy
-              // clearcoat={determineClearcoat}
-              // envMap={[texture, texture, texture]}
-              // opacity={0.7}
+            // lightMap={checkTier(texture)}// sexy
+            // clearcoat={determineClearcoat}
+            // envMap={[texture, texture, texture]}
+            // opacity={0.7}
             envMapIntensity={0.3}
-              // dispose={null}
+            // dispose={null}
             normalMap={normalMap}
             normalMap-repeat={[35, 35]}
             normalScale={[0.15, 0.15]}
@@ -578,7 +580,7 @@ export const Model = React.memo(
 // ========================================================================== //
 export const Scene = ({
   children, set, x, mobile,
-}) => {};
+}) => { };
 
 // ========================================================================== //
 // Camera
@@ -599,6 +601,8 @@ export const getPositionExternalGrid = (index, columnWidth = 3) => {
 
 export const Camera = React.memo(
   () => {
+    const changeHandPosition = useStore((state) => state.threejsContext.methods.changeHandPosition);
+
     const { viewport, camera } = useThree();
     const zoomOffset = [0, 0, 5];// negative values zoom IN not OUT
 
@@ -621,6 +625,8 @@ export const Camera = React.memo(
       // const y = 0;
       const z = zoom + zoomOffset[2];
       const vec = new Vector3(x, y, z);
+
+      changeHandPosition({ handPosition: [x / 3, (y / 4) - 1, 0] });
       state.camera.position.lerp(vec, 0.075);
       state.camera.lookAt(0, 0, 0);
       state.camera.updateProjectionMatrix();
@@ -734,7 +740,7 @@ export const BrandRing = ({ x, rotation }) => {
         position={[0, 0, 0]}
         geometry={Cylinder.geometry}
         dispose={null} // dont dispose objects once spawned for performance
-        // attach="geometry"
+      // attach="geometry"
       >
         {/* glass like material */}
         <a.meshPhysicalMaterial
@@ -752,15 +758,15 @@ export const BrandRing = ({ x, rotation }) => {
           reflectivity={0.5}
           color={x}
           side={THREE.DoubleSide}
-          // depthTest={false}
-          // depthWrite={false}
-          //   map={texture}
-          //   map-flipY
-          //   map-wrapS={THREE.WrapAroundEnding}
-          //   map-wrapT={THREE.WrapAroundEnding}
-          //   map-repeat={[5, 5]}
-          // map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
-          //   map-anisotropy={10}
+        // depthTest={false}
+        // depthWrite={false}
+        //   map={texture}
+        //   map-flipY
+        //   map-wrapS={THREE.WrapAroundEnding}
+        //   map-wrapT={THREE.WrapAroundEnding}
+        //   map-repeat={[5, 5]}
+        // map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
+        //   map-anisotropy={10}
         />
       </a.mesh>
     </>
@@ -789,9 +795,9 @@ export const Orb = ({ x }) => {
         args={[1, 32, 32]}
         rotation={[0, 0, 0]}
         position={[0, 0, 0]}
-        onPointerOver={() => {}}
-        onPointerOut={() => {}}
-        onClick={() => {}}
+        onPointerOver={() => { }}
+        onPointerOut={() => { }}
+        onClick={() => { }}
         dispose={null}
       />
       {/* glass like material */}
@@ -808,17 +814,17 @@ export const Orb = ({ x }) => {
         depthTest
         depthWrite={false}
         opacity={0.4}
-        // side={THREE.BackSide}
-        // alphaTest={0.5}
-        // clearcoatMap
-        // clearcoatNormalMap
-        // clearcoatNormalScale={[1, 1]}
-        // clearcoatNormalMap-flipY={false}
-        // clearcoatNormalMap-wrapS={THREE.RepeatWrapping}
-        // clearcoatNormalMap-wrapT={THREE.RepeatWrapping}
-        // clearcoatNormalMap-repeat={[1, 1]}
-        // clearcoatNormalMap-offset={[0.01, 0.01]}
-        // clearcoatNormalMap-anisotropy={3}
+      // side={THREE.BackSide}
+      // alphaTest={0.5}
+      // clearcoatMap
+      // clearcoatNormalMap
+      // clearcoatNormalScale={[1, 1]}
+      // clearcoatNormalMap-flipY={false}
+      // clearcoatNormalMap-wrapS={THREE.RepeatWrapping}
+      // clearcoatNormalMap-wrapT={THREE.RepeatWrapping}
+      // clearcoatNormalMap-repeat={[1, 1]}
+      // clearcoatNormalMap-offset={[0.01, 0.01]}
+      // clearcoatNormalMap-anisotropy={3}
       />
     </a.mesh>
   );
@@ -858,10 +864,10 @@ function Cloud({
       x: spread / 2 - Math.random() * spread,
       y: spread / 2 - Math.random() * spread,
       scale:
-          0.4
-          + Math.sin(((index + 1) / segments) * Math.PI)
-            * ((0.2 + Math.random()) * 10)
-            * size,
+        0.4
+        + Math.sin(((index + 1) / segments) * Math.PI)
+        * ((0.2 + Math.random()) * 10)
+        * size,
       density: Math.max(0.2, Math.random()),
       rotation: Math.max(0.002, 0.005 * Math.random()) * speed,
     })),
@@ -871,7 +877,7 @@ function Cloud({
     cloud.rotation.z += clouds[index].rotation * dir;
     cloud.scale.setScalar(
       clouds[index].scale
-          + (((1 + Math.sin(state.clock.getElapsedTime() / 10)) / 2) * index) / 10,
+      + (((1 + Math.sin(state.clock.getElapsedTime() / 10)) / 2) * index) / 10,
     );
   }));
   return (
@@ -1016,6 +1022,7 @@ export const AFCanvas = React.memo(
     //   samples: 17,
     //   rings: 11 // Rings (default: 11) must be a int
     // });
+    const { handPosition } = useStore((state) => state.threejsContext.context.hand);
 
     const {
       fps, gpu, isMobile, tier,
@@ -1035,15 +1042,15 @@ export const AFCanvas = React.memo(
       <>
         {(propsUsing.length > 0)
           || (
-          <>
-            <Borders opacity={1} />
-            <Models set={setColor} x={x} mobile={false} />
-            <Orb x={x} />
-          </>
+            <>
+              <Borders opacity={1} />
+              <Models set={setColor} x={x} mobile={false} />
+              <Orb x={x} />
+            </>
           )}
       </>
     ),
-    [propsUsing]);
+      [propsUsing]);
 
     if (process.env.NODE_ENV === 'development') console.log('threejs: time elapsed now ', performance.now());
     return (
@@ -1060,7 +1067,9 @@ export const AFCanvas = React.memo(
         // sRGB
         // orthographic
         id={id}
-        pixelRatio={typeof window !== 'undefined' && window.devicePixelRatioo}
+        vr
+        pixelRatio={typeof window !== 'undefined' && window.devicePixelRatio}
+        onCreated={({ gl }) => document.body.appendChild(VR.VRButton.createButton(gl))}
         gl={{
           alpha: true,
           powerPreference: tier !== 1 ? 'high-performance' : 'default',
@@ -1083,7 +1092,7 @@ export const AFCanvas = React.memo(
         <Camera />
 
         <Suspense fallback={null}>
-          <HandModel position={[0, -1, 0]} />
+          <HandModel position={handPosition} />
 
           <group dispose={null} scale={[0.85, 0.85, 0.85]} position={[0, 2, 0]}>
             {/* all dependendant on physics */}

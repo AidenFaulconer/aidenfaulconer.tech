@@ -22,7 +22,7 @@ import { useStore } from '../../store/store';
 import Services, { SelectionContent, ServicesSelection } from '../portfolio-page/services';
 import Qualifications from '../portfolio-page/qualifications';
 import { Experience, Languages } from '../portfolio-page/skills';
-import SectionHeader from '../section-header';
+import { SectionHeader } from '../section-header';
 
 /*
 9 Slides total: 360 Degrees (full circle) --> 360/9 = 40 --> our increment for rotation
@@ -220,7 +220,7 @@ export default React.memo(
       // onScroll: (state) => gestureHandler(state),
       onDrag: (state) => gestureHandler(state), // set angleBounds to 360/-360
       onWheel: (state) => gestureHandler(state), // swipe.distance capped at 3 pixels of movement
-      onHover: () => {},
+      onHover: () => { },
       handlerConfig: {
         onDrag: {
           threshold: 5,
