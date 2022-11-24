@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import {
   Box, useTheme,
 } from '@mui/material';
@@ -15,15 +16,15 @@ import React, {
 } from 'react';
 import { useGesture } from '@use-gesture/react';
 import { useWindowSize } from 'react-use-breakpoints';
+import produce from 'immer';
 import { usePrevious, toggleScrollHook, useManyGestures } from '../util/customHooks';
 
 import pingSound from '../../../static/assets/portfolio/interaction-sound.mp3';
 import { useStore } from '../../store/store';
-import Services, { SelectionContent, ServicesSelection } from '../portfolio-page/services';
-import Qualifications from '../portfolio-page/qualifications';
-import { Experience, Languages } from '../portfolio-page/skills';
+import Services, { SelectionContent, ServicesSelection } from '../index-page-roulette/services';
+import Qualifications from '../index-page-roulette/qualifications';
+import { Experience, Languages } from '../index-page-roulette/skills';
 import { SectionHeader } from '../section-header';
-
 /*
 9 Slides total: 360 Degrees (full circle) --> 360/9 = 40 --> our increment for rotation
 
@@ -67,30 +68,27 @@ export default React.memo(
     SubSelectionComponent, // component used for content
     HasContent = false, // tells component we have children to render with THIS instance of the component
   }) => {
-    // ========================================================================== //
-    //     Calculations and properties
-    // ========================================================================== //
+    // hooks
     const theme = useTheme();
-    const carouselID = carouselData[0].key;
-
     const windowSize = useWindowSize();// detect resize
     const [containerDimensions, setContainerDimensions] = React.useState({ width: 0, height: 0 });
+    const containerRef = useRef(null);
+    const [current, setCurrent] = React.useState(0);
+    const [curRot, setCurRot] = React.useState(0);
+
+    // const prevCurrent = usePrevious(current);
+
+    // properties
+    const carouselID = carouselData[0].key;
     const radius = ((containerDimensions.width) / 2) - (gutter * 2);
-    // const zOrigin = 859 / carouselData.length - 1;
     const zOrigin = -containerDimensions.width;
     const slideWidth = ((radius * 2) / (carouselData.length / Math.PI));
     const slideAngle = 360 / carouselData.length; // rotation increment for each slide
+    // const zOrigin = 859 / carouselData.length - 1;
 
-    const containerRef = useRef(null);
     // expose setCurrent method to store (only for topmost level)
 
-    // ========================================================================== //
     //   handling state change
-    // ========================================================================== //
-    const [current, setCurrent] = React.useState(0);
-    const [curRot, setCurRot] = React.useState(0);
-    const prevCurrent = usePrevious(current);
-
     useEffect(() => {
       // cap the width at 1000
       const { clientWidth, clientHeight } = containerRef.current;
@@ -104,6 +102,7 @@ export default React.memo(
     }, [windowSize, containerRef]);
 
     useEffect(() => {
+      // if top level carousel control
       if (carouselIndex === 0) {
         useStore.setState((state) => ({
           ...state,
@@ -111,6 +110,7 @@ export default React.memo(
             ...state.appContext,
             methods: {
               ...state.appContext.methods,
+              // eslint-disable-next-line no-use-before-define
               setCurrent: (args) => setCurrent(setDirection(args)),
             },
           },
@@ -118,9 +118,7 @@ export default React.memo(
       }
     }, []);
 
-    // ========================================================================== //
     //     For custom components associated with sub-content
-    // ========================================================================== //
     const componentReference = {
       SelectionContent,
       ServicesSelection,
@@ -153,19 +151,14 @@ export default React.memo(
       );
     }, []);
 
-    // ========================================================================== //
-    //   Handle interactions with the carousel
+    //   Handle interactions/animation with the carousel
     const ping = typeof window !== 'undefined' && useMemo(() => new Audio(pingSound), []);
-
-    // ========================================================================== //
-    //   handle animation **consider the current SELECTION**
-    // ========================================================================== //
     const to = (i) => ({
       x: 0, rot: slideAngle * i, y: i * -4, scale: 1, delay: i * 100,
-    }); // config: { ...config.gentle },
+    });
     const from = (i) => ({
       x: 0, rot: slideAngle * i, scale: 1.5, y: -1000,
-    });// config: { ...config.gentle }
+    });
 
     // we need two springs, one wraps all the carousel cards, another wraps the ORIGIN of the carousel
     const [wrappedCards, setCard] = useSprings(carouselData.length, (i) => ({
@@ -238,25 +231,16 @@ export default React.memo(
       },
     });
 
-    // ========================================================================== //
-    //   effects
-    // ========================================================================== //
     const setDirection = useCallback(
       (_current, direction = 'right') => {
         // if we go left, we increment negatively -360 relative to current, if we go right, we increment positively 360 relative to current
         const rot = direction === 'left'
-          ? _current == carouselData.length - 1
+          ? _current === carouselData.length - 1
             ? slideAngle
             : slideAngle * Math.abs(_current - carouselData.length)
-          : carouselData.length == 0
+          : carouselData.length === 0
             ? -slideAngle
             : -slideAngle * _current;
-
-        // console.log(
-        //   `angle:${slideAngle},length: ${
-        //     carouselData.length - 1
-        //   }, slide:${_current}, ${direction}, Rotate: ${rot}`,
-        // );
 
         setOrigin((i) => {
           const isGone = 0; // gone.has(index);
@@ -274,9 +258,6 @@ export default React.memo(
       [current],
     );
 
-    // ========================================================================== //
-    //   carousel **has grid areas defined for use in a parent container**
-    // ========================================================================== //
     return (
       <>
         {/* carousel container w controls */}
@@ -395,7 +376,6 @@ export default React.memo(
                   x, y, rot, scale,
                 }, i) => {
                   const data = carouselData[i];
-                  { /* console.log(data); */ }
                   return (
                     <a.div
                       key={`selection-${i}-${data?.key || subSectionData?.title}-${Math.random()}`}
@@ -477,8 +457,6 @@ export default React.memo(
       </>
     );
   },
-  (prevProps, nextProps) =>
-    // console.log(prevProps, nextProps);
-    prevProps.carouselData !== nextProps.carouselData
+  (prevProps, nextProps) => prevProps.carouselData !== nextProps.carouselData
     || prevProps.subSectionData !== nextProps.subSectionData,
 );

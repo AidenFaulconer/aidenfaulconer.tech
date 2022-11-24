@@ -3,6 +3,23 @@ import React, { PureComponent } from 'react';
 import { hexToAlpha, svgEncodeBaseSixtyFour } from '../store/theme';
 import { Illustration } from './custom/illustrations';
 
+/**
+ * The SectionHeader function is a React component that renders a header for the
+ * section of the page. It accepts an optional `width` and `height` prop to
+ * control its size, as well as an optional `headline` prop to display text in
+ * the center of it. The default type is 'default', but can be set to 'inverted'
+ *
+ * @param {width=200 Set the width of the illustration
+ * @param height=200 Set the height of the illustration
+ * @param headline Set the headline text in the sectionheader component
+ * @param illustrationType Determine which illustration to use
+ * @param type='default' Set the background color of the section header
+ * @param id Set the id of the section header
+ * @param } Close the function
+ *
+ * @return A box with a background color, and some text
+ *
+ */
 export const SectionHeader = ({
   width = 200, height = 200, headline, illustrationType, type = 'default', id,
 }) => {

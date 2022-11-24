@@ -33,6 +33,7 @@ import { useStore } from '../store/store';
 import { SCROLL_PROPS } from '../store/theme';
 import { Illustration } from '../components/custom/illustrations';
 import { useScrollProgress } from '../components/util/customHooks';
+import { hexToAlpha } from '../components/util/customFunctions';
 
 const Navigation = ({ window }) => {
   const [drawerState, setDrawerState] = React.useState(false);
@@ -98,6 +99,7 @@ const Navigation = ({ window }) => {
     '& svg': {
       // transform: 'scale(.5)',
       left: 0,
+      zIndex: 100,
       top: '-12mm',
       display: 'inline-block',
       transition: (theme) => theme.transitions.create(
@@ -139,7 +141,19 @@ const Navigation = ({ window }) => {
       // xs: 'none',
     },
   };
-
+  // <svg xmlns="http://www.w3.org/2000/svg" width="54" height="61" fill="none" viewBox="0 0 54 61">
+  //   <defs/>
+  //   <g clip-path="url(#clip0_913_38226)">
+  //     <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M2.57 46.656L24.338 59.91l19.854-17.463-21.786-13.265L2.57 46.656z"/>
+  //     <path fill="${theme.palette.text.secondary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M23.792 59.577L2.025 46.324l4.413-26.863 21.787 13.263-4.433 26.853zM27.21 1.653l21.766 13.253-4.413 26.864-21.787-13.264 4.433-26.853z"/>
+  //     <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M48.43 14.574L26.664 1.322 6.81 18.784 28.595 32.05 48.43 14.574z"/>
+  //   </g>
+  //   <defs>
+  //     <clipPath id="clip0_913_38226">
+  //       <path fill="${theme.palette.text.secondary}" d="M0 0h54v61H0z"/>
+  //     </clipPath>
+  //   </defs>
+  // </svg>
   const menuIcon = React.useCallback(
     () => (
       <Box
@@ -147,19 +161,9 @@ const Navigation = ({ window }) => {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: `
-            <svg xmlns="http://www.w3.org/2000/svg" width="54" height="61" fill="none" viewBox="0 0 54 61">
-              <defs/>
-              <g clip-path="url(#clip0_913_38226)">
-                <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M2.57 46.656L24.338 59.91l19.854-17.463-21.786-13.265L2.57 46.656z"/>
-                <path fill="${theme.palette.text.secondary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M23.792 59.577L2.025 46.324l4.413-26.863 21.787 13.263-4.433 26.853zM27.21 1.653l21.766 13.253-4.413 26.864-21.787-13.264 4.433-26.853z"/>
-                <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M48.43 14.574L26.664 1.322 6.81 18.784 28.595 32.05 48.43 14.574z"/>
-              </g>
-              <defs>
-                <clipPath id="clip0_913_38226">
-                  <path fill="${theme.palette.text.secondary}" d="M0 0h54v61H0z"/>
-                </clipPath>
-              </defs>
-            </svg>
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 15C20 16.3261 19.4732 17.5979 18.5355 18.5355C17.5979 19.4732 16.3261 20 15 20C13.6739 20 12.4021 19.4732 11.4645 18.5355C10.5268 17.5979 10 16.3261 10 15C10 13.6739 10.5268 12.4021 11.4645 11.4645C12.4021 10.5268 13.6739 10 15 10C16.3261 10 17.5979 10.5268 18.5355 11.4645C19.4732 12.4021 20 13.6739 20 15V15ZM20 30C20 31.3261 19.4732 32.5979 18.5355 33.5355C17.5979 34.4732 16.3261 35 15 35C13.6739 35 12.4021 34.4732 11.4645 33.5355C10.5268 32.5979 10 31.3261 10 30C10 28.6739 10.5268 27.4021 11.4645 26.4645C12.4021 25.5268 13.6739 25 15 25C16.3261 25 17.5979 25.5268 18.5355 26.4645C19.4732 27.4021 20 28.6739 20 30ZM15 50C16.3261 50 17.5979 49.4732 18.5355 48.5355C19.4732 47.5979 20 46.3261 20 45C20 43.6739 19.4732 42.4021 18.5355 41.4645C17.5979 40.5268 16.3261 40 15 40C13.6739 40 12.4021 40.5268 11.4645 41.4645C10.5268 42.4021 10 43.6739 10 45C10 46.3261 10.5268 47.5979 11.4645 48.5355C12.4021 49.4732 13.6739 50 15 50V50ZM35 15C35 16.3261 34.4732 17.5979 33.5355 18.5355C32.5979 19.4732 31.3261 20 30 20C28.6739 20 27.4021 19.4732 26.4645 18.5355C25.5268 17.5979 25 16.3261 25 15C25 13.6739 25.5268 12.4021 26.4645 11.4645C27.4021 10.5268 28.6739 10 30 10C31.3261 10 32.5979 10.5268 33.5355 11.4645C34.4732 12.4021 35 13.6739 35 15V15ZM30 35C31.3261 35 32.5979 34.4732 33.5355 33.5355C34.4732 32.5979 35 31.3261 35 30C35 28.6739 34.4732 27.4021 33.5355 26.4645C32.5979 25.5268 31.3261 25 30 25C28.6739 25 27.4021 25.5268 26.4645 26.4645C25.5268 27.4021 25 28.6739 25 30C25 31.3261 25.5268 32.5979 26.4645 33.5355C27.4021 34.4732 28.6739 35 30 35ZM35 45C35 46.3261 34.4732 47.5979 33.5355 48.5355C32.5979 49.4732 31.3261 50 30 50C28.6739 50 27.4021 49.4732 26.4645 48.5355C25.5268 47.5979 25 46.3261 25 45C25 43.6739 25.5268 42.4021 26.4645 41.4645C27.4021 40.5268 28.6739 40 30 40C31.3261 40 32.5979 40.5268 33.5355 41.4645C34.4732 42.4021 35 43.6739 35 45V45ZM45 20C46.3261 20 47.5979 19.4732 48.5355 18.5355C49.4732 17.5979 50 16.3261 50 15C50 13.6739 49.4732 12.4021 48.5355 11.4645C47.5979 10.5268 46.3261 10 45 10C43.6739 10 42.4021 10.5268 41.4645 11.4645C40.5268 12.4021 40 13.6739 40 15C40 16.3261 40.5268 17.5979 41.4645 18.5355C42.4021 19.4732 43.6739 20 45 20V20ZM50 30C50 31.3261 49.4732 32.5979 48.5355 33.5355C47.5979 34.4732 46.3261 35 45 35C43.6739 35 42.4021 34.4732 41.4645 33.5355C40.5268 32.5979 40 31.3261 40 30C40 28.6739 40.5268 27.4021 41.4645 26.4645C42.4021 25.5268 43.6739 25 45 25C46.3261 25 47.5979 25.5268 48.5355 26.4645C49.4732 27.4021 50 28.6739 50 30ZM45 50C46.3261 50 47.5979 49.4732 48.5355 48.5355C49.4732 47.5979 50 46.3261 50 45C50 43.6739 49.4732 42.4021 48.5355 41.4645C47.5979 40.5268 46.3261 40 45 40C43.6739 40 42.4021 40.5268 41.4645 41.4645C40.5268 42.4021 40 43.6739 40 45C40 46.3261 40.5268 47.5979 41.4645 48.5355C42.4021 49.4732 43.6739 50 45 50V50Z" fill="currentColor"/>
+          </svg>          
           `,
         }}
       />
@@ -195,6 +199,7 @@ const Navigation = ({ window }) => {
               position: 'absolute',
               top: '-6.25px',
               left: '-12.5px',
+              zIndex: 5,
               strokeDasharray: 250,
               strokeDashoffset: 250 - ((250 * scrollProgress) / 100),
             }}
@@ -502,13 +507,6 @@ const Navigation = ({ window }) => {
   ),
     [drawerState]);
 
-  const hexToAlpha = (hex, alpha) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  };
-
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
     threshold: 6000,
@@ -538,8 +536,8 @@ const Navigation = ({ window }) => {
             backdropFilter: 'blur(10px)',
             color: 'text.secondary',
             padding: {
-              xs: 2,
-              sm: 2,
+              xs: 1,
+              sm: 1,
               md: [2, 0],
             },
           }}

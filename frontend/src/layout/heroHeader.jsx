@@ -142,7 +142,7 @@ export const HeroHeader = React.memo((props) => {
           paddingTop: '100px',
           height: '100%',
           boxSizing: 'border-box',
-          width: '100vw',
+          width: '100%',
           // height: '90vh',
           position: 'relative',
           // marginBottom: theme.spacing(3),
@@ -155,150 +155,92 @@ export const HeroHeader = React.memo((props) => {
           background: (theme) => theme.palette.text.primary,
         }}
       >
+        {' '}
+        {/* Headline */}
+        {!heroData.enabled || (
+          <Grid
+            item
+            md={6}
+            sm={12}
+            sx={{
+              sm: { order: 0 },
+              alignSelf: 'center',
+              justifyContent: 'center',
+              display: 'inline-flex',
+              maxWidth: 700,
+            }}
+          >
+
+            <Grid
+              item
+              md={10}
+              class="self-center w-full inline-flex gap-3 justify-start flex-col relative m-auto h-2/6 pointer-events-none p-3"
+              sx={{
+                color: (theme) => theme.palette.text.primary,
+                '&:after': {
+                  color: (theme) => theme.palette.text.primary,
+                  mixBlendMode: 'difference',
+                },
+              }}
+            >
+
+              {/* Typography */}
+              <Typography
+                align="left"
+                color="secondary"
+                variant="h2"
+                class="z-[1] uppercase"
+              >
+                {heroData.description}
+
+              </Typography>
+              <Typography
+                class="max-w-[556px] z-[1]"
+                variant="body1"
+                color="secondary"
+                align="left"
+              >
+                {/* {description} */}
+                {heroData.headline}
+              </Typography>
+              {/* Buttons */}
+              {heroData.ctas === false || (
+                <Box class="pointer-events-[all] inline-flex gap-2 justify-start items-start relative z-[2] max-w-[556px]">
+                  <RegularButton onClick={() => navigate('/#contact')} type="primary" icon={{ enabled: true, type: 'arrow' }}>
+                    Get in touch
+                  </RegularButton>
+                  <RegularButton
+                    onClick={() => navigate('/booking')}
+                    type="secondary"
+                    icon={{ enabled: true, type: 'arrow' }}
+                  >
+                    Start Project
+                  </RegularButton>
+                </Box>
+              )}
+            </Grid>
+          </Grid>
+        )}
         {/* ThreeJS */}
         <Grid
           item
-          md={12}
-          sx={{
-            position: 'relative',
-            zIndex: 1,
-            width: '100vw',
-            height: '70%',
-            // minHeight: '75vh',
-            minHeight: '55vh',
-
-            display: 'inline-flex',
-            maxHeight: '70%',
-            // overflowY: 'clip',
-            marginTop: 0,
-            margin: 'auto',
-          }}
+          md={6}
+          sm={12}
+          class="relative z-[1] w-full h-3/4 min-h-[55vh] inline-flex max-h-3/4 mt-0 m-auto"
         >
 
           <Box
+            class="w-[50vw] min-h-[95vh] absolute inline-flex top-[-100px] m-auto z-1"
             // this allows the threejs to be shown outside this main containment
             sx={{
-              position: 'absolute',
-              zIndex: 1,
-              width: '100vw',
-              // height: '100%',
-              // minHeight: '55vh',
-              minHeight: '95vh',
-
-              display: 'inline-flex',
-              // maxHeight: '70%',
               background: (theme) => `linear-gradient('50% ${theme.palette.text.primary}','50% transparent')`,
               // borderBottom: theme.custom.borders.brandBorder,
-              // overflowY: 'clip',
-              top: -100,
-              margin: 'auto',
-
             }}
           >
             <ThreeWrapper posts={edges} />
           </Box>
         </Grid>
 
-        {/* Headline */}
-        { !heroData.enabled || (
-        <Grid
-          item
-          md={12}
-          sx={{
-            alignSelf: 'center',
-            justifyContent: 'center',
-            display: 'inline-flex',
-            maxWidth: 700,
-          }}
-        >
-
-          <Grid
-            item
-            md={10}
-            sx={{
-              alignSelf: 'center',
-              width: '100%',
-              display: 'inline-flex',
-              gap: 3,
-              justifyContent: 'flex-start',
-              flexDirection: 'column',
-              bottom: 0,
-              margin: 'auto',
-              pointerEvents: 'none',
-              // overflowY: 'clip',
-              position: 'relative',
-              height: '30%',
-              color: (theme) => theme.palette.text.primary,
-              '&:after': {
-                color: (theme) => theme.palette.text.primary,
-                mixBlendMode: 'difference',
-              },
-              p: {
-                sm: 3,
-                xs: 3,
-              },
-            }}
-          >
-
-            {/* Typography */}
-            <Typography
-              align="left"
-              color="secondary"
-              variant="h2"
-              style={{
-                zIndex: 1,
-                textTransform: 'uppercase',
-                // margin: 'auto',
-              }}
-            >
-              {heroData.description}
-
-            </Typography>
-            <Typography
-              style={{
-                // maxWidth: 600,
-                maxWidth: 556,
-                zIndex: 1,
-                // margin: 'auto',
-              }}
-              variant="body1"
-              color="secondary"
-              align="left"
-            >
-              {/* {description} */}
-              {heroData.headline}
-            </Typography>
-            {/* Buttons */}
-            {heroData.ctas === false || (
-              <Box
-                sx={{
-                  pointerEvents: 'all',
-                  zIndex: 2,
-                  position: 'relative',
-                  maxWidth: 556,
-                  // maxWidth: 725,
-                  display: 'inline-flex',
-                  gap: 2,
-                  justifyContent: 'flex-start',
-                  // margin: 'auto',
-                  alignItems: 'left',
-                }}
-              >
-                <RegularButton onClick={() => navigate('/#contact')} type="primary" icon={{ enabled: true, type: 'arrow' }}>
-                  Get in touch
-                </RegularButton>
-                <RegularButton
-                  onClick={() => navigate('/booking')}
-                  type="secondary"
-                  icon={{ enabled: true, type: 'arrow' }}
-                >
-                  Start Project
-                </RegularButton>
-              </Box>
-            )}
-          </Grid>
-        </Grid>
-        )}
       </Grid>
       {/* // create a svg circle in html */}
     </section>

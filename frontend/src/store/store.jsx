@@ -1,7 +1,9 @@
+/* eslint-disable no-param-reassign */
 import { createTheme } from '@mui/material';
 import create from 'zustand';
 import React from 'react';
 import { deepmerge } from '@mui/utils';
+import produce from 'immer';
 // ========================================================================== //
 // Handle theming
 // ========================================================================== //
@@ -31,34 +33,39 @@ const saveStore = (storeSnapshot) => {
 };
 const loadStore = () => JSON.parse(localStorage.getItem('store'));
 
-const useStore = create((set, get) =>
 // add on top of this for a more robust store
-({
+const useStore = create((set, get) => ({
   appContext: {
     type: 'light',
     location: {},
     methods: {
+      // ⚠️ setCurrent **is injected here via threeDCarousel** this allows you to set the carousel globally
       setAppContext: (newAppContext) => {
-        set((state) => ({
-          ...state,
-          appContext: {
+        set(produce((state) => {
+          state.appContext = {
             ...state.appContext,
             newAppContext,
-          },
+          };
         }));
       },
-      toggleTheme: () => { // TODO: move to methods for better separation
-        set((state) => ({
-          ...state,
-          appContext: {
-            ...state.appContext,
-            type: state.appContext.type === 'light' ? 'dark' : 'light',
-          },
+      toggleTheme: () => {
+        set(produce((state) => {
+          state.appContext.type = state.appContext.type === 'light' ? 'dark' : 'light';
         }));
       },
     },
   },
 
+  carousel: {
+    currentSlide: 0,
+    // ⚠️ setCurrent is injected here via threeDCarousel's own setCurrent handler (takes indexofslide, direction,)
+  },
+
+  methods: {
+    setSlide: (newSlide) => {
+
+    },
+  },
   // temp holder for forms that have not been assigned their own store space
   testForm: {
     text: '',
@@ -68,22 +75,20 @@ const useStore = create((set, get) =>
     message: '',
     methods: {
       changeFormData: (newContext) => {
-        set((state) => ({
-          ...state,
-          bookingForm: {
+        set(produce((state) => {
+          state.bookingForm = {
             ...state.bookingForm,
             ...newContext,
-          },
+          };
         }));
       },
       clear: () => {
-        set((state) => ({
-          ...state,
-          bookingForm: {
+        set(produce((state) => {
+          state.bookingForm = {
             ...Object(
               Object.keys(state.bookingForm).map((key) => ({ [key]: '' })),
             ),
-          },
+          };
         }));
       },
     },
@@ -97,22 +102,20 @@ const useStore = create((set, get) =>
     service: false,
     methods: {
       changeFormData: (newContext) => {
-        set((state) => ({
-          ...state,
-          bookingForm: {
+        set(produce((state) => {
+          state.bookingForm = {
             ...state.bookingForm,
             ...newContext,
-          },
+          };
         }));
       },
       clear: () => {
-        set((state) => ({
-          ...state,
-          bookingForm: {
+        set(produce((state) => {
+          state.bookingForm = {
             ...Object(
               Object.keys(state.bookingForm).map((key) => ({ [key]: '' })),
             ),
-          },
+          };
         }));
       },
     },
@@ -136,23 +139,21 @@ const useStore = create((set, get) =>
     summary: [],
     methods: {
       changeFormData: (newContext) => {
-        set((state) => ({
-          ...state,
-          bookingForm: {
+        set(produce((state) => {
+          state.bookingForm = {
             ...state.bookingForm,
             ...newContext,
-          },
+          };
         }));
       },
       clear: () => {
-        set((state) => ({
-          ...state,
-          bookingForm: {
-            // empty an object to clear all the fields
+        set(produce((state) => {
+          // empty an object to clear all the fields
+          state.bookingForm = {
             ...Object(
               Object.keys(state.bookingForm).map((key) => ({ [key]: '' })),
             ),
-          },
+          };
         }));
       },
     },
@@ -182,73 +183,43 @@ const useStore = create((set, get) =>
     },
     methods: {
       changeHero: (newContext) => {
-        set((state) => ({
-          ...state,
-          threejsContext: {
-            ...state.threejsContext,
-            context: {
-              ...state.threejsContext.context,
-              hero: {
-                ...state.threejsContext.context.hero,
-                ...newContext,
-              },
-            },
-          },
+        set(produce((state) => {
+          state.threejsContext.context.hero = {
+            ...newContext,
+          };
         }));
       },
       changeContext: (newContext) => {
-        set((state) => ({
-          ...state,
-          threejsContext: {
-            ...state.threejsContext,
-            context: {
-              ...state.threejsContext.context,
-              ...newContext,
-            },
-          },
+        set(produce((state) => {
+          state.threejsContext.context = {
+            ...state.threejsContext.context,
+            ...newContext,
+          };
         }));
       },
       changeHand: (newContext) => {
-        set((state) => ({
-          ...state,
-          threejsContext: {
-            ...state.threejsContext,
-            context: {
-              ...state.threejsContext.context,
-              hand: {
-                ...newContext,
-              },
-            },
-          },
+        set(produce((state) => {
+          state.threejsContext.context.hand = {
+            ...newContext,
+          };
         }));
       },
       changeHandPosition: (newPosition) => {
-        set((state) => ({
-          ...state,
-          threejsContext: {
-            ...state.threejsContext,
-            context: {
-              ...state.threejsContext.context,
-              hand: {
-                ...state.threejsContext.context.hand,
-                ...newPosition,
-              },
-            },
-          },
+        set(produce((state) => {
+          state.threejsContext.context.hand = {
+            ...state.threejsContext.context.hand,
+            ...newPosition,
+          };
         }));
       },
       changePage: (newSelectedData) => {
         if (typeof window === 'undefined') return;
         // set theme from selected props
-        set((state) => ({
-          ...state,
-          threejsContext: {
-            ...state.threejsContext,
-            context: {
-              ...state.threejsContext.context,
-              ...newSelectedData,
-            },
-          },
+        set(produce((state) => {
+          state.threejsContext.context = {
+            ...state.threejsContext.context,
+            ...newSelectedData,
+          };
         }));
         // other methods to run TODO: add more methods, ie: setColor, triggerPageChange, etc... so its cleaner
         navigate(newSelectedData.pageLink, { replace: true });

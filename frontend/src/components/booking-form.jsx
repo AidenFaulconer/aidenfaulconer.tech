@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import {
   Box, Grid, List, ListItem, ListItemText, Typography, useTheme,
 } from '@mui/material';
@@ -30,13 +31,13 @@ import { SectionHeader } from './section-header';
 
 import doItAll from '../../static/assets/portfolio/doitall.png';
 
-import { ServicesSelection } from './portfolio-page/services';
+import { ServicesSelection } from './index-page-roulette/services';
 import { useStore } from '../store/store';
 import { sendBookingForm } from './util/apis';
 import { useFormStore } from './util/customHooks';
 
-export default ({ i, title = 'Start a project', setSelected = () => {} }) => {
-  const handleError = () => {};
+export default ({ i, title = 'Start a project', setSelected = () => { } }) => {
+  const handleError = () => { };
   const theme = useTheme();
   const inputSources = React.createRef([]);
 
@@ -79,6 +80,20 @@ export default ({ i, title = 'Start a project', setSelected = () => {} }) => {
   );
 };
 
+/**
+ * The ProjectStepper function renders a Stepper component that allows users to
+ * navigate through the steps of a project. It also provides controls for
+ * navigating between each step and submitting the form at any given step.
+ *
+ * @param {contentData:{headline Set the title of the stepper
+ * @param title Set the title of the page
+ * @param key} Identify the component in the stepper
+ * @param setCurrent Set the current step in the stepper
+ * @param current} Determine which step is currently active
+ *
+ * @return A stepper component that contains the steps and controls for each step
+ *
+* */
 export const ProjectStepper = ({ contentData: { headline, title, key }, setCurrent, current }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -261,7 +276,6 @@ export const DetailStep = React.memo((props) => {
         <FancyTextField
           formName="bookingForm"
           fieldName="name"
-
           label="name"
           helperText="your full name"
           size="normal"
@@ -269,7 +283,6 @@ export const DetailStep = React.memo((props) => {
         <FancyTextField
           formName="bookingForm"
           fieldName="phone"
-
           label="phone"
           helperText="your full name"
           size="normal"
@@ -278,7 +291,6 @@ export const DetailStep = React.memo((props) => {
         <FancyTextField
           formName="bookingForm"
           fieldName="email"
-
           label="email"
           helperText="your full name"
           size="normal"
@@ -292,7 +304,6 @@ export const DetailStep = React.memo((props) => {
         <FancyTextField
           formName="bookingForm"
           fieldName="subService"
-
           type="select"
           icon={{ start: true, type: 'item' }}
           data={[
@@ -379,7 +390,6 @@ export const DetailStep = React.memo((props) => {
         <FancyTextField
           formName="bookingForm"
           fieldName="message"
-
           maxRows={11}
           fullHeight
           label="message"
@@ -391,9 +401,21 @@ export const DetailStep = React.memo((props) => {
   );
 });
 
+/**
+ * The PlanningStep function is a React component that renders the planning step
+ * of the booking form. It contains two input fields, one for project requirements and
+ * another for budget range. The function also has a reference to an instance of FancyTextField, which is used to render the text field in this step.
+
+ *
+ * @param props Pass in the title of the project
+ *
+ * @return A set of input fields that are used to collect information about the project
+ *
+ */
 export const PlanningStep = (props) => {
   const [input, setInput] = React.useState([]);
   const inputSources = React.useRef([]);
+  const { title } = props;
   const theme = useTheme();
 
   return (
@@ -419,15 +441,14 @@ export const PlanningStep = (props) => {
         <FancyTextField
           formName="bookingForm"
           fieldName="projectRequirements"
-
           ref={(ref) => inputSources.push(ref)}
           maxRows={11}
           fullHeight
           label="Project Requirements"
-          defaultValue={`I need this ${props.title || 'app'} project do the following.. `}
+          defaultValue={`I need this ${title || 'app'} project do the following.. `}
         />
         <PickDate
-        //   ref={(ref) => inputSources.current.push(ref)}
+          //   ref={(ref) => inputSources.current.push(ref)}
           label="When is this project due?"
         />
       </Box>
@@ -446,7 +467,6 @@ export const PlanningStep = (props) => {
         <FancyTextField
           formName="bookingForm"
           fieldName="budgetRange"
-
           ref={(ref) => inputSources.current.push(ref)}
           label="Budget Range?"
           size="normal"
@@ -455,7 +475,6 @@ export const PlanningStep = (props) => {
         <FileUploadButton
           formName="bookingForm"
           fieldName="referencePhotos"
-
           ref={(ref) => inputSources.current.push(ref)}
           label="Upload reference photos"
           icon={{ start: true, type: 'item' }}
@@ -464,20 +483,28 @@ export const PlanningStep = (props) => {
         <FancyTextField
           formName="bookingForm"
           fieldName="projectSuccessHow"
-
           ref={(ref) => inputSources.current.push(ref)}
           label="What would make this project successful?"
           helperText="your full name"
           maxRows={7}
           fullHeight
-          defaultValue={`I need this ${props.title || 'app'} project do the following.. `}
-
+          defaultValue={`I need this ${title || 'app'} project do the following.. `}
           input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
         />
       </Box>
     </Box>
   );
 };
+
+/**
+ * The ConfirmationStep function renders a confirmation step for the booking form.
+ *
+ *
+ * @param finished=false Show the confirmationstep only once
+ *
+ * @return A box with a summary of the booking data and an image
+ *
+ */
 export const ConfirmationStep = (finished = false) => {
   // get bookingForm data from store
   const bookingFormSummary = useStore((state) => state.bookingForm);
@@ -492,38 +519,37 @@ export const ConfirmationStep = (finished = false) => {
     }}
     >
       {finished && (
-      <ReactConfetti
-        colors={[
-          '#f44336',
-          '#e91e63',
-          '#9c27b0',
-          '#673ab7',
-          '#3f51b5',
-          '#2196f3',
-          '#03a9f4',
-          '#00bcd4',
-          '#009688',
-          '#4caf50',
-          '#8bc34a',
-        ]}
-        friction={0.75}
-        gravity={1}
-
-        height={400}
-        numberOfPieces={200}
-        // recycle={false}
-        recyclePiece={(piece, key) => {
-          piece.key = key;
-          piece.setAttribute('style', `left: ${Math.random() * 100}%;animation: confetti-animation ${Math.random() * 5 + 5}s linear infinite;`);
-        }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: 400,
-        }}
-      />
+        <ReactConfetti
+          colors={[
+            '#f44336',
+            '#e91e63',
+            '#9c27b0',
+            '#673ab7',
+            '#3f51b5',
+            '#2196f3',
+            '#03a9f4',
+            '#00bcd4',
+            '#009688',
+            '#4caf50',
+            '#8bc34a',
+          ]}
+          friction={0.75}
+          gravity={1}
+          height={400}
+          numberOfPieces={200}
+          // recycle={false}
+          recyclePiece={(piece, key) => {
+            piece.key = key;
+            piece.setAttribute('style', `left: ${Math.random() * 100}%;animation: confetti-animation ${Math.random() * 5 + 5}s linear infinite;`);
+          }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: 400,
+          }}
+        />
       )}
 
       {/* summarry */}
@@ -546,8 +572,6 @@ export const ConfirmationStep = (finished = false) => {
 
         {Object.keys(bookingFormSummary).map((name, index) => {
           if (name === 'methods') return;
-          { /* if (name === 'referencePhotos') { name = name.map((file) => file.name); }
-          if (typeof name === 'null' || typeof name === 'undefined') return; */ }
           const value = bookingFormSummary[name];
           return (
             <Box sx={{
@@ -558,7 +582,7 @@ export const ConfirmationStep = (finished = false) => {
               <b>
                 {`${name.toUpperCase()}: `}
               </b>
-              {String(value) }
+              {String(value)}
             </Box>
           );
         })}
@@ -579,11 +603,12 @@ export const ConfirmationStep = (finished = false) => {
     </Box>
   );
 };
+
 const steps = [
   {
     title: 'Project Details',
     key: 'projectDetails',
-    StepComponent: DetailStep,
+    // StepComponent: DetailStep,
     label: 'Project Details',
     description: `For each ad campaign that you create, you can control how much
                   you're willing to spend on clicks and conversions, which networks
@@ -592,15 +617,15 @@ const steps = [
   {
     title: 'Planning & Budget',
     key: 'planningBudget',
-    StepComponent: PlanningStep,
+    // StepComponent: PlanningStep,
     label: 'Planning & Budget',
     description:
-          'An ad group contains one or more ads which target a shared set of keywords.',
+      'An ad group contains one or more ads which target a shared set of keywords.',
   },
   {
     title: 'Confirmation',
     key: 'confirmation',
-    StepComponent: ConfirmationStep,
+    // StepComponent: ConfirmationStep,
     label: 'Confirmation',
     description: `Try out different ad text to see what brings in the most customers,
                   and learn how to enhance your ads using features like ad extensions.
@@ -660,22 +685,31 @@ const sections = [
   },
 ];
 
-// ========================================================================== //
-// Routlette
-// ========================================================================== //
-export const MainSelections = () => (
-  <ThreeDCarousel
+/**
+ * The MainSelections function renders a carousel of 3D cards with the following
+ * properties:
+ * - carouselHeight: The height of the entire carousel. This is used to set the
+ *   height of each card in pixels. (defaults to 300)
+ * - cardWidth: The width of each individual card in pixels. (defaults to 400)
+ *
+ * @return A carousel that has a number of cards
+ *
+ */
+export const MainSelections = () => {
+  const x = 0;
+  return (
+    <ThreeDCarousel
       // carousel dimensions
-    carouselHeight={300}
-    cardWidth={400}
-    gutter={50}
-
+      carouselHeight={300}
+      cardWidth={400}
+      gutter={50}
       // top section
-    title="Sections"
-    key="Sections-carousel"
-    carouselData={sections} // needs, title, image, alt, description, icon, cta, category
-    SelectionComponent={ServicesSelection}
-    subSelectionData={steps}
-    HasContent={ProjectStepper}
-  />
-);
+      title="Sections"
+      key="Sections-carousel"
+      carouselData={sections} // needs, title, image, alt, description, icon, cta, category
+      SelectionComponent={ServicesSelection}
+      subSelectionData={steps}
+      HasContent={ProjectStepper}
+    />
+  );
+};

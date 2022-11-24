@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import * as THREE from 'three';
 import {
   Vector3, Vector2, ObjectLoader,
@@ -70,22 +71,10 @@ import ring_import from '../../../static/assets/gameModels/ring.gltf';
 
 import HandModel from './hand';
 
-// ========================================================================== //
-// Canvas
-// ========================================================================== //
 import env_map from '../../../static/assets/portfolio/envmap.png';
 
-// ========================================================================== //
-// Clouds
-// ========================================================================== //
-
-// ========================================================================== //
-// Post processing
-// ========================================================================== //
-
-// ========================================================================== //
 // Physics plane
-// ========================================================================== //
+
 // A physical plane with collisions
 // prettier-ignore
 export const Plane = React.memo(({
@@ -135,35 +124,41 @@ export const Plane = React.memo(({
           />
         </>
       ) || (
-          <>
-            <meshBasicMaterial
-              tonemapped={false}
-              attach="material"
-              opacity={0}
+      <>
+        <meshBasicMaterial
+          tonemapped={false}
+          attach="material"
+          opacity={0}
               // dont allow this material to occlude other objects
-              visible={false}
-              depthWrite={false}
+          visible={false}
+          depthWrite={false}
               // depthTest={false}
               // visible={visible}
-              side={THREE.BackSide}
-              alphaTest={0.5}
-              transparent
-              dispose={null}
+          side={THREE.BackSide}
+          alphaTest={0.5}
+          transparent
+          dispose={null}
               // dispose={(e)=>ref.current.texture.dispose()}
-              receiveShadow
-            />
-          </>
-        )}
+          receiveShadow
+        />
+      </>
+      )}
     </a.mesh>
   );
 }, (pre, post) => {
   pre !== post;
 });
 
-// ========================================================================== //
-// Physics bounds
-// ========================================================================== //
-// Creates a crate that catches the spheres
+/**
+ * The Borders function renders a group of planes that form the borders of the
+ * scene. It also renders shadows on these planes to give a sense of depth.
+ *
+ * @param {opacity} Control the opacity of the borders
+ *
+ * @return A group of planes that can be used to create a border around the screen
+ *
+ * @docauthor Trelent
+ */
 export const Borders = ({ opacity }) => {
   const { viewport } = useThree();
   const offset = 0;
@@ -211,24 +206,25 @@ export const Borders = ({ opacity }) => {
   );
 };
 
-// ========================================================================== //
 // Preload cube **convert gltf to glb**
-// ========================================================================== //
 useGLTF.preload(cube_import);
 
-// useFrame((state) => {
-//   const t = state.clock.getElapsedTime()
-//   state.camera.position.lerp(vec.set(0, 0, open ? -24 : -32), 0.1)
-//   state.camera.lookAt(0, 0, 0)
-//   group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, open ? Math.cos(t / 2) / 8 + 0.25 : 0, 0.1)
-//   group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, open ? Math.sin(t / 4) / 4 : 0, 0.1)
-//   group.current.rotation.z = THREE.MathUtils.lerp(group.current.rotation.z, open ? Math.sin(t / 4) / 4 : 0, 0.1)
-//   group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, open ? (-2 + Math.sin(t)) / 3 : -4.3, 0.1)
-// })
-
-// ========================================================================== //
-// Models
-// ========================================================================== //
+/**
+ * The Models function renders a group of objects.
+ *
+ *
+ * @param {children Pass in the children of the parent component
+ * @param set Set the color of the model
+ * @param x Offset the position of the models in a way that makes them appear to be spinning
+ * @param mobile Determine if the model is rendered on a mobile device
+ * @param } Pass the state to the function
+const model = ({
+  children, setcolor, model, mobile, link, texture: { image }, position: [xpos = 0
+ *
+ * @return A group of three
+ *
+ * @docauthor Trelent
+ */
 export const Models = ({
   children, set, x, mobile,
 }) => {
@@ -248,25 +244,22 @@ export const Models = ({
   const {
     nodes: { Cube },
   } = useGLTF(cube_import);
-  // ========================================================================== //
+
   //   Global state
-  // ========================================================================== //
+
   const {
     selectedIndex, color, position, pageLink,
   } = useStore(
     (state) => state.threejsContext.context,
   );
 
-  // ========================================================================== //
   //     Project selection
-  // ========================================================================== //
 
   // useEffect(() => {
   //   console.log(selectedIndex);
   // }, [selectedIndex]);
-  // ========================================================================== //
+
   //  Handle selection state
-  // ========================================================================== //
   const colors = ['#000064', '#21bcfe', '#28bd7f', '#21bcfe'];
 
   const calculatePosition = useCallback((i) => {
@@ -369,9 +362,8 @@ export const Models = ({
     </a.group>
   );
 };
-// ========================================================================== //
+
 // Cubes
-// ========================================================================== //
 export const Model = React.memo(
   ({
     angle,
@@ -389,25 +381,22 @@ export const Model = React.memo(
     setCurrent,
     itemsLength,
   }) => {
-    // ========================================================================== //
     // Global state methods
-    // ========================================================================== //
+
     const triggerPageChange = useStore((state) => state.threejsContext.methods.triggerPageChange);
     const setColor = useStore((state) => state.threejsContext.methods.setColor);
     const changePage = useStore((state) => state.threejsContext.methods.changePage);
     const { selectedIndex, animatedColor, animatedOpacity } = useStore((state) => state.threejsContext.context);
 
-    // ========================================================================== //
     //     State
-    // ========================================================================== //
+
     const { viewport, set, clock } = useThree();
     const scale = Number(viewport.width / viewport.height / itemsLength + 0.7);
     const cubeRef = createRef(new THREE.Mesh());
     const { tier } = useDetectGPU();
     const [hovered, setHovered] = useState(false);
-    // ========================================================================== //
+
     //     Cube animation
-    // ========================================================================== //
 
     const clamp = (value) => Math.max(0, Math.min(1, value));
     const [animated, setAnimated] = useState(false);
@@ -450,9 +439,7 @@ export const Model = React.memo(
     //   [selectedIndex],
     // );
 
-    // ========================================================================== //
     //     Cube methods and properties
-    // ========================================================================== //
 
     const ping = useMemo(() => new Audio(pingSound), []);
     const isSelectedProject = React.useCallback(() => selectedIndex === index, [selectedIndex, position]);
@@ -526,13 +513,11 @@ export const Model = React.memo(
           // raycast={instancedMeshBounds} somehow fix's raycasting, not sure how its working without yet
           dispose={null} // dont dispose objects once spawned for performance
           onClick={onClick}
-
           rotation-y={(2 * Math.PI * index) / itemsLength}
           scale-y={s}
           scale-x={s}
           scale-z={s}
           position-y={py}
-
           receiveShadow
           castShadow
           ref={cubeRef}
@@ -545,7 +530,7 @@ export const Model = React.memo(
             map-wrapT={THREE.RepeatWrapping}
             map-repeat={[1, 1]}
             map-offset={[0.01, 0.01]} // no gaps between textures, scale the image inwards just slightly
-            map-anisotropy={tier == 1 ? 3 : 10}
+            map-anisotropy={tier === 1 ? 3 : 10}
             toneMapped
             transparent
             opacity={(isSelectedProject() || hovered && 1) || animatedOpacity}
@@ -575,16 +560,14 @@ export const Model = React.memo(
   },
 );
 
-// ========================================================================== //
 // Backdrop scene
-// ========================================================================== //
+
 export const Scene = ({
   children, set, x, mobile,
 }) => { };
 
-// ========================================================================== //
 // Camera
-// ========================================================================== //
+
 // export const cameraCoords = [0, 6, -4.5];
 // export const cameraCoords = [0, 4, -5.5];
 export const cameraCoords = [
@@ -626,7 +609,6 @@ export const Camera = React.memo(
       const z = zoom + zoomOffset[2];
       const vec = new Vector3(x, y, z);
 
-      changeHandPosition({ handPosition: [x / 3, (y / 4) - 1, 0] });
       state.camera.position.lerp(vec, 0.075);
       state.camera.lookAt(0, 0, 0);
       state.camera.updateProjectionMatrix();
@@ -665,18 +647,22 @@ export const Camera = React.memo(
       }
     });
   },
-  (pre, post) =>
-    // pre.mouse.x !== post.mouse.x ||
-    // pre.mouse.y !== post.mouse.y ||
-    pre.selectedIndex !== post.selectedIndex
+  (pre, post) => pre.selectedIndex !== post.selectedIndex
     || pre.moveCameraTo !== post.moveCameraTo,
+  // pre.mouse.x !== post.mouse.x ||
+  // pre.mouse.y !== post.mouse.y ||
 );
 
-// ========================================================================== //
-// Brand ring
-// ========================================================================== //
-// useGLTF.preload(ring_import);//slows down first contentful paint
-
+/**
+ * The BrandRing function renders a ring of the brand.
+ *
+ *
+ * @param {x Set the color of the ring
+ * @param rotation} Rotate the cube around its own axis
+ *
+ * @return An object with a mesh property that has the shape of a ring
+ *
+ */
 export const BrandRing = ({ x, rotation }) => {
   const ref = useRef();
   const { viewport } = useThree();
@@ -773,11 +759,15 @@ export const BrandRing = ({ x, rotation }) => {
   );
 };
 
-// ========================================================================== //
-// Orb
-// ========================================================================== //
-
-// create transparent orb in react three fiber
+/**
+ * The Orb function creates a sphere with a given radius and color.
+ *
+ *
+ * @param {x} Set the color of the orb
+ *
+ * @return A mesh, which is a threejs sphereBufferGeometry
+ *
+ */
 export const Orb = ({ x }) => {
   const ref = useRef();
   const { viewport } = useThree();
@@ -844,6 +834,25 @@ function Effects() {
   return (null);
 }
 
+/**
+ * The Cloud function creates a cloud of clouds.
+ *
+ *
+ * @param {size=2 Set the size of the cloud
+ * @param opacity=0.3 Control the opacity of the cloud
+ * @param speed=0.4 Control the speed of the cloud rotation
+ * @param spread=2 Set the size of the cloud
+ * @param length=1.5 Set the length of each cloud
+ * @param segments=10 Create 10 different clouds
+ * @param dir=1 Make the clouds move from left to right
+ * @param position=[0 Place the cloud in the scene
+ * @param 0 Pass the texture
+ * @param 0] Specify the index of the cloud in the group
+ * @param ...props} Pass all the remaining properties to the cloud function
+ *
+ * @return A group of billboards with the texture applied to them
+ *
+ */
 function Cloud({
   size = 2,
   opacity = 0.3,
@@ -1050,7 +1059,7 @@ export const AFCanvas = React.memo(
           )}
       </>
     ),
-      [propsUsing]);
+    [propsUsing]);
 
     if (process.env.NODE_ENV === 'development') console.log('threejs: time elapsed now ', performance.now());
     return (
@@ -1087,7 +1096,7 @@ export const AFCanvas = React.memo(
       >
         <ambientLight color={x} intensity={0.3} />
         {/* dont use presets, they are requested over network and block reasources, pass your own */}
-        <Environment preset="studio" scene={undefined} />
+        <Environment preset="sunset" scene={undefined} />
 
         <Camera />
 
@@ -1134,9 +1143,9 @@ export const AFCanvas = React.memo(
 //           far={1.6}
 //         /> */
 // }
-// // ========================================================================== //
+//
 // // orbit controls
-// // ========================================================================== //
+//
 // extend({ OrbitControls });
 // export const deg2rad = (deg) => deg * (Math.PI / 180);
 // const CameraControls = () => {

@@ -6,12 +6,12 @@ import {
 } from '@mui/material';
 import { graphql } from 'gatsby';
 
-import Services from '../components/portfolio-page/services';
-import { Languages, Experience } from '../components/portfolio-page/skills';
+import Services from '../components/index-page-roulette/services';
+import { Languages, Experience } from '../components/index-page-roulette/skills';
 
 import { SectionHeader } from '../components/section-header';
-import Roullete from '../layout/roullette';
-import Contact from '../components/portfolio-page/contact';
+import Roullete from '../components/roullette';
+import Contact from '../components/index-page-roulette/contact';
 
 // TODO: get model actions from store, compare against the services sections data
 const SectionWrapper = ({ children, type = 'primary' }) => ((

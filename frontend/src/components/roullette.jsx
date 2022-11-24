@@ -1,15 +1,24 @@
 import { Grid } from '@mui/material';
 import React from 'react';
-import ThreeDCarousel from '../components/custom/threeDCarousel';
-import { SectionHeader } from '../components/section-header';
+import ThreeDCarousel from './custom/threeDCarousel';
+import { SectionHeader } from './section-header';
 
 // ========================================================================== //
 // Routlette
 // ========================================================================== //
 import jsonConfiguration from '../../static/admin/site-data.json';
+import { useStore } from '../store/store';
+import { useEventListener } from './util/customHooks';
 
 export default () => {
   const { sections, subSections } = jsonConfiguration;
+  const setCurrent = useStore((state) => state.appContext.setCurrent);
+
+  // useEventListener("scroll",(e)=>{
+  //   let heightOffset = e.scrollHeight
+  //   // setCurrent()
+  // })
+
   return (
     <Grid
       container

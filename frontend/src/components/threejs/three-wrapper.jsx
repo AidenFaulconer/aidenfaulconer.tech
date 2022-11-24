@@ -2,11 +2,7 @@
   useEffect,
 } from 'react';
 // All hooks are cross platform now
-
-// ========================================================================== //
 // page transition
-// ========================================================================== //
-
 // Platform knowledge is in here ...
 import {
   a, useSpring,
@@ -25,7 +21,7 @@ import { DesignWorld } from '../custom/illustrations';
 // const Canvas = lazy(() => import('./three-portfolio'));// prevents request is not defined in build-time/ssr rendering from loading gltf models, three.js simply isnt buddies with server-side-rendering it seems
 // import Canvas from './three-portfolio';
 
-// The heftiest boy of the codebase, deffinitely also should be code-split
+// The heftiest boy of the codebase, definitely also should be code-split
 const LoadableCanvas = Loadable({
   loader: () => import('./three-portfolio'),
   loading: () => <p>Loading</p>,
@@ -44,9 +40,9 @@ export const colors = ['#823B3B', '#76EFA6', '#F4D1A4', '#666666'];
 const ThreeWrapper = React.memo(
   (props) => {
     const theme = useTheme();
-    // ========================================================================== //
+
     //   color change spring
-    // ========================================================================== //
+
     const [{ x, y }, set] = useSpring(() => ({
       // when we pass an object through set, it updates this to property and puts the old property in the from object, for internal interpolation
       to: { x: theme.palette.text.primary, y: 1 },
@@ -62,9 +58,9 @@ const ThreeWrapper = React.memo(
         precision: 0.01,
       },
     }));
-    // ========================================================================== //
+
     //     Add color change spring to global state
-    // ========================================================================== //
+
     useStore.setState((state) => ({
       ...state,
       threejsContext: {
@@ -81,9 +77,8 @@ const ThreeWrapper = React.memo(
       },
     }));
 
-    // ========================================================================== //
     //     Handle three.js loading progress
-    // ========================================================================== //
+
     const { progress } = useProgress();
     useEffect(() => {
       console.log(progress);
@@ -260,9 +255,11 @@ const ThreeWrapper = React.memo(
 
 export default ThreeWrapper;
 
-// ========================================================================== //
-// progress bar
-// ========================================================================== //
+/**
+ * The LinearProgressWithLabel function is a component that displays a linear progress bar with the current percentage of completion.
+ * @param props Pass the value of the progress bar
+ * @return A div element with two children
+ */
 function LinearProgressWithLabel(props) {
   return (
     <div style={{

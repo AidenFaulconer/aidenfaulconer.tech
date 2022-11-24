@@ -4,8 +4,8 @@ import {
 } from '@mui/material';
 
 import { graphql } from 'gatsby';
-import Contact from '../components/portfolio-page/contact';
-import Roullete from '../layout/roullette';
+import Contact from '../components/index-page-roulette/contact';
+import Roullete from '../components/roullette';
 import { useIntersectionObserver, useScrollSnappedChildren } from '../components/util/customHooks';
 
 const SectionWrapper = React.forwardRef(({ styles, children, type = 'primary' }, ref) => ((
@@ -32,10 +32,6 @@ const IndexPage = ({
   data: { allMarkdownRemark: { edges } },
 }) => {
   const marginAmount = '175px';
-  // alert(JSON.stringify(edges));
-  // ========================================================================== //
-  //     Scroll snapping
-  // ========================================================================== //
   const [count, setCount] = React.useState(0);
   // const addNode = useScrollSnappedChildren();
   return (
