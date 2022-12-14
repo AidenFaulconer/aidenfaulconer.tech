@@ -24,6 +24,7 @@ import {
 import {
   Brightness2, Brightness5, Close, ClosedCaptionOutlined, Menu,
 } from '@mui/icons-material';
+import { Bars3Icon } from '@heroicons/react/20/solid';
 
 import logoPng from '../../static/svgs/logo.png';
 import {
@@ -35,7 +36,7 @@ import { Illustration } from '../components/custom/illustrations';
 import { useScrollProgress } from '../components/util/customHooks';
 import { hexToAlpha } from '../components/util/customFunctions';
 
-const Navigation = ({ window }) => {
+function Navigation({ window }) {
   const [drawerState, setDrawerState] = React.useState(false);
   const iOS = (typeof window !== 'undefined'
     && /iPad|iPhone|iPod/.test(navigator?.userAgent))
@@ -55,6 +56,7 @@ const Navigation = ({ window }) => {
     if (element) {
       element.scrollIntoView({
         behavior: 'smooth',
+        block: 'center',
       });
     }
   };
@@ -88,14 +90,6 @@ const Navigation = ({ window }) => {
   // ========================================================================== //
   const menuIconStyles = {
     color: 'inherit',
-    border: 'none !important',
-    width: 54,
-    height: 64,
-    zIndex: 20,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
     '& svg': {
       // transform: 'scale(.5)',
       left: 0,
@@ -104,7 +98,7 @@ const Navigation = ({ window }) => {
       display: 'inline-block',
       transition: (theme) => theme.transitions.create(
         ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
-        { duration: '0.3s', easing: 'ease-in-out' },
+        { duration: '0.25s', easing: 'ease-in-out' },
       ),
     },
     '&:hover': {
@@ -114,22 +108,34 @@ const Navigation = ({ window }) => {
         fill: 'text.primary.main',
         transition: (theme) => theme.transitions.create(
           ['transform', 'box-shadow', 'background', 'margin', 'border', 'top'],
-          { duration: '0.3s', easing: 'ease-in-out' },
+          { duration: '0.25s', easing: 'ease-in-out' },
         ),
       },
     },
   };
   const pageLinkStyles = {
-    fontSize: '.75rem',
-    pl: { xs: 1, md: 3 },
-    pr: { xs: 1, md: 3 },
     textDecoration: 'none',
-    fontWeight: 500,
     color: 'text.secondary',
-    textAlign: 'center',
-    textTransform: 'capitalize',
+    textTransform: '',
     fontFamily: 'Poppins',
-    display: { sm: 'inline', xs: 'none' },
+    position: 'relative',
+    '&:before': {
+      content: '""',
+      bottom: 0,
+      position: 'absolute',
+      height: 2,
+      width: '0%',
+      background: (theme) => theme.palette.text.secondary,
+    },
+    '&:hover': {
+      '&:before': {
+        width: '100%',
+        transition: (theme) => theme.transitions.create(
+          ['width'],
+          { duration: '0.25s', easing: 'ease-in-out' },
+        ),
+      },
+    },
   };
   const pageNavigationStyles = {
     alignContent: 'center',
@@ -141,39 +147,10 @@ const Navigation = ({ window }) => {
       // xs: 'none',
     },
   };
-  // <svg xmlns="http://www.w3.org/2000/svg" width="54" height="61" fill="none" viewBox="0 0 54 61">
-  //   <defs/>
-  //   <g clip-path="url(#clip0_913_38226)">
-  //     <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M2.57 46.656L24.338 59.91l19.854-17.463-21.786-13.265L2.57 46.656z"/>
-  //     <path fill="${theme.palette.text.secondary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M23.792 59.577L2.025 46.324l4.413-26.863 21.787 13.263-4.433 26.853zM27.21 1.653l21.766 13.253-4.413 26.864-21.787-13.264 4.433-26.853z"/>
-  //     <path fill="${theme.palette.text.primary}" stroke="${theme.palette.text.secondary}" stroke-width=".769" d="M48.43 14.574L26.664 1.322 6.81 18.784 28.595 32.05 48.43 14.574z"/>
-  //   </g>
-  //   <defs>
-  //     <clipPath id="clip0_913_38226">
-  //       <path fill="${theme.palette.text.secondary}" d="M0 0h54v61H0z"/>
-  //     </clipPath>
-  //   </defs>
-  // </svg>
-  const menuIcon = React.useCallback(
-    () => (
-      <Box
-        sx={{ ...menuIconStyles }}
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{
-          __html: `
-          <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 15C20 16.3261 19.4732 17.5979 18.5355 18.5355C17.5979 19.4732 16.3261 20 15 20C13.6739 20 12.4021 19.4732 11.4645 18.5355C10.5268 17.5979 10 16.3261 10 15C10 13.6739 10.5268 12.4021 11.4645 11.4645C12.4021 10.5268 13.6739 10 15 10C16.3261 10 17.5979 10.5268 18.5355 11.4645C19.4732 12.4021 20 13.6739 20 15V15ZM20 30C20 31.3261 19.4732 32.5979 18.5355 33.5355C17.5979 34.4732 16.3261 35 15 35C13.6739 35 12.4021 34.4732 11.4645 33.5355C10.5268 32.5979 10 31.3261 10 30C10 28.6739 10.5268 27.4021 11.4645 26.4645C12.4021 25.5268 13.6739 25 15 25C16.3261 25 17.5979 25.5268 18.5355 26.4645C19.4732 27.4021 20 28.6739 20 30ZM15 50C16.3261 50 17.5979 49.4732 18.5355 48.5355C19.4732 47.5979 20 46.3261 20 45C20 43.6739 19.4732 42.4021 18.5355 41.4645C17.5979 40.5268 16.3261 40 15 40C13.6739 40 12.4021 40.5268 11.4645 41.4645C10.5268 42.4021 10 43.6739 10 45C10 46.3261 10.5268 47.5979 11.4645 48.5355C12.4021 49.4732 13.6739 50 15 50V50ZM35 15C35 16.3261 34.4732 17.5979 33.5355 18.5355C32.5979 19.4732 31.3261 20 30 20C28.6739 20 27.4021 19.4732 26.4645 18.5355C25.5268 17.5979 25 16.3261 25 15C25 13.6739 25.5268 12.4021 26.4645 11.4645C27.4021 10.5268 28.6739 10 30 10C31.3261 10 32.5979 10.5268 33.5355 11.4645C34.4732 12.4021 35 13.6739 35 15V15ZM30 35C31.3261 35 32.5979 34.4732 33.5355 33.5355C34.4732 32.5979 35 31.3261 35 30C35 28.6739 34.4732 27.4021 33.5355 26.4645C32.5979 25.5268 31.3261 25 30 25C28.6739 25 27.4021 25.5268 26.4645 26.4645C25.5268 27.4021 25 28.6739 25 30C25 31.3261 25.5268 32.5979 26.4645 33.5355C27.4021 34.4732 28.6739 35 30 35ZM35 45C35 46.3261 34.4732 47.5979 33.5355 48.5355C32.5979 49.4732 31.3261 50 30 50C28.6739 50 27.4021 49.4732 26.4645 48.5355C25.5268 47.5979 25 46.3261 25 45C25 43.6739 25.5268 42.4021 26.4645 41.4645C27.4021 40.5268 28.6739 40 30 40C31.3261 40 32.5979 40.5268 33.5355 41.4645C34.4732 42.4021 35 43.6739 35 45V45ZM45 20C46.3261 20 47.5979 19.4732 48.5355 18.5355C49.4732 17.5979 50 16.3261 50 15C50 13.6739 49.4732 12.4021 48.5355 11.4645C47.5979 10.5268 46.3261 10 45 10C43.6739 10 42.4021 10.5268 41.4645 11.4645C40.5268 12.4021 40 13.6739 40 15C40 16.3261 40.5268 17.5979 41.4645 18.5355C42.4021 19.4732 43.6739 20 45 20V20ZM50 30C50 31.3261 49.4732 32.5979 48.5355 33.5355C47.5979 34.4732 46.3261 35 45 35C43.6739 35 42.4021 34.4732 41.4645 33.5355C40.5268 32.5979 40 31.3261 40 30C40 28.6739 40.5268 27.4021 41.4645 26.4645C42.4021 25.5268 43.6739 25 45 25C46.3261 25 47.5979 25.5268 48.5355 26.4645C49.4732 27.4021 50 28.6739 50 30ZM45 50C46.3261 50 47.5979 49.4732 48.5355 48.5355C49.4732 47.5979 50 46.3261 50 45C50 43.6739 49.4732 42.4021 48.5355 41.4645C47.5979 40.5268 46.3261 40 45 40C43.6739 40 42.4021 40.5268 41.4645 41.4645C40.5268 42.4021 40 43.6739 40 45C40 46.3261 40.5268 47.5979 41.4645 48.5355C42.4021 49.4732 43.6739 50 45 50V50Z" fill="currentColor"/>
-          </svg>          
-          `,
-        }}
-      />
-    ),
-    [type],
-  );
 
   const boldCurrentPage = React.useCallback((name, i) => {
     if (typeof window !== 'undefined') { if (pages[i].url === document.location.hash) return <b>{name}</b>; }
-    return <>{name}</>;
+    return name;
   }, []);
 
   const scrollProgress = useScrollProgress();
@@ -183,11 +160,7 @@ const Navigation = ({ window }) => {
       const secondaryColor = theme.palette.text.secondary;
 
       return (
-        <Box style={{
-          marginLeft: theme.spacing(3),
-          position: 'relative',
-        }}
-        >
+        <Box className="ml-2 relative">
           {/* progress svg bar */}
           <svg
             width="80"
@@ -195,11 +168,8 @@ const Navigation = ({ window }) => {
             viewBox="0 0 80 80"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className="absolute top-[-6.25px] left-[-12.5px] z-[5] "
             style={{
-              position: 'absolute',
-              top: '-6.25px',
-              left: '-12.5px',
-              zIndex: 5,
               strokeDasharray: 250,
               strokeDashoffset: 250 - ((250 * scrollProgress) / 100),
             }}
@@ -215,13 +185,9 @@ const Navigation = ({ window }) => {
 
           <Box
             onClick={() => navigateToPage('/', 0)}
-            sx={{
-              ...menuIconStyles,
-            }}
+            className="border-none w-12 h-16 z-20 ml-[5px] mt-[3px] flex justify-center cursor-pointer fill-current"
+            sx={{ ...menuIconStyles }}
             // {...SCROLL_PROPS}
-            style={{
-              fill: 'currentColor',
-            }}
             dangerouslySetInnerHTML={{
               __html: `
             <svg xmlns="http://www.w3.org/2000/svg" width="54" height="61" fill="none" viewBox="0 0 56 61">
@@ -251,10 +217,7 @@ const Navigation = ({ window }) => {
             <Box
               key={name}
               onClick={() => navigateToPage(url, slideIndex)}
-              sx={{
-                transform: { xs: 'scale(.75)' },
-                pointer: 'cursor',
-              }}
+              className="xs:scale-75 cursor-pointer"
             >
               <RegularButton
                 size="small"
@@ -269,6 +232,7 @@ const Navigation = ({ window }) => {
             <Box
               key={name}
               onClick={() => navigateToPage(url, slideIndex)}
+              className="font-medium sm:inline xs:hidden text-center cursor-pointer"
               sx={{ ...pageLinkStyles }}
             >
               {boldCurrentPage(name.toUpperCase(), i)}
@@ -285,44 +249,25 @@ const Navigation = ({ window }) => {
   //       Pages
   // ========================================================================== //
   const pageNavigation = React.useCallback(() => (
-    <Box sx={{ ...pageNavigationStyles }} style={{ zIndex: 30 }}>
+    <Box sx={{ ...pageNavigationStyles }} className="z-30 gap-5">
       {processPages(pages)}
-      <RegularButton
-        onClick={() => navigateToPage('/booking', -2)}
-        style={{ marginLeft: 30 }}
-      >
-        Start Project
-
-      </RegularButton>
     </Box>
   ), []);
 
-  // contains drawer for the menu
   // ========================================================================== //
   // Popup drawer Menu
   // ========================================================================== //
+  // contains drawer for the menu
   const drawerMenu = React.useCallback(() => (
     <Box
       role="presentation"
       onClick={(e) => toggleDrawer(e)}
       onKeyDown={(e) => toggleDrawer(e)}
-      sx={{
-        height: '100vh',
-        width: { sm: '100vw', xs: '100vw' },
-        display: 'inline-flex',
-        flexDirection: 'column',
-      }}
+      className="h-[100vh] sm:w-[100vw] xs-[100vw] inline-flex flex-col"
     >
-
       <div
         id="menu-header"
-        style={{
-          display: 'inline-flex',
-          padding: 30,
-          justifyContent: 'center',
-          width: '100%',
-          height: '23.5%',
-        }}
+        className="inline-flex p-8 justify-center w-full h-1/4"
       >
         <RegularButton
           type="icon"
@@ -332,22 +277,17 @@ const Navigation = ({ window }) => {
       </div>
 
       <List
+        className="sm:flex-row xs:flex-col overflow-hidden h-3/5 w-full gap-5 items-center flex"
         sx={{
-          flexDirection: { sm: 'row', xs: 'column' },
-          overflow: 'hidden',
-          height: '61.72%',
-          width: '100%',
           border: theme.custom.borders.brandBorder,
           color: theme.palette.text.secondary,
           background: theme.palette.text.primary,
-          alignItems: 'center',
-          display: 'inline-flex',
         }}
       >
         {pages.map(({ name, url, slideIndex }, index) => (
           <ListItem
             button
-            style={{ justifyContent: 'center', maxWidth: '300' }}
+            className="justify-center max-w[300px] relative"
             key={name}
             onClick={() => {
               navigateToPage(url);
@@ -356,14 +296,8 @@ const Navigation = ({ window }) => {
           >
             <Typography
               variant="h2"
-              sx={{
-                ...pageLinkStyles,
-                color: 'currentColor',
-                // fontSize: '2rem',
-                textTransform: 'capitalize',
-                display: 'inline-flex',
-                justifyContent: 'center',
-              }}
+              className="text-current capitalize inline-flex justify-center font-medium sm:inline xs:hidden text-center"
+              sx={{ ...pageLinkStyles }}
               onClick={() => navigateToPage(url, slideIndex)}
             >
               {boldCurrentPage(name, index)}
@@ -378,31 +312,17 @@ const Navigation = ({ window }) => {
 
       <div
         id="menu-footer"
-        style={{
-          height: '27.1%',
-          width: '100%',
-          gap: 60,
-          display: 'inline-flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 30,
-          color: theme.palette.text.primary,
-        }}
+        className="h-1/4 w-full gap-16 inline-flex justify-center p-8"
+        style={{ color: theme.palette.text.primary }}
       >
-
         <div
           id="theme-switch"
+          className="inline-flex h-28 flex-col justify-center gap-3"
           style={{
-            display: 'inline-flex',
-            height: 100,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 10,
             color: theme.palette.text.primary,
           }}
         >
-          <Typography width="100%" gutterBottom variant="body1" color="currentColor" align="center">{`${type} theme`}</Typography>
+          <Typography width="100%" variant="body1" color="currentColor" align="center">{`${type} theme`}</Typography>
           <div
             id="social-media"
             style={{
@@ -412,16 +332,9 @@ const Navigation = ({ window }) => {
             <button
               type="button"
               onClick={() => toggleTheme()}
+              className="w-12 h-12 relative rounded-full inline-flex justify-center "
               style={{
                 background: theme.palette.text.primary,
-                width: 50,
-                height: 50,
-                position: 'relative',
-                border: '1px solid black',
-                borderRadius: '100%',
-                display: 'inline-flex',
-                justifyContent: 'center',
-                alignItems: 'center',
                 color: theme.palette.text.secondary,
                 border: theme.custom.borders.brandBorder,
               }}
@@ -434,23 +347,13 @@ const Navigation = ({ window }) => {
 
         <div
           id="social-media-container"
-          style={{
-            display: 'inline-flex',
-            width: '100%',
-            height: 100,
-            flexDirection: 'column',
-            maxWidth: 250,
-            alignItems: 'center',
-            gap: 10,
-            color: theme.palette.text.primary,
-          }}
+          className="w-full h-28 flex-col max-w-[250px] gap-3"
+          style={{ color: theme.palette.text.primary }}
         >
-          <Typography width="100%" gutterBottom variant="body1" color="currentColor" align="center">Follow me</Typography>
+          <Typography width="100%" variant="body1" color="currentColor" align="center">Follow me</Typography>
           <div
             id="social-media"
-            style={{
-              display: 'inline-flex', width: '100%', flexDirection: 'row', alignItems: 'center', gap: 10,
-            }}
+            className="inline-flex w-full flex-row gap-3"
           >
             <RegularButton
               type="icon"
@@ -484,30 +387,43 @@ const Navigation = ({ window }) => {
   // ========================================================================== //
   //     Drawer
   // ========================================================================== //
-  const drawerSwitch = React.useCallback(() => (
-    <React.Fragment key="drawer">
-      <Button
-        sx={{ ...menuIconStyles }}
-        onClick={(e) => { toggleDrawer(e); }}
-      >
-        {menuIcon()}
-      </Button>
-      <SwipeableDrawer
-        // isableBackdropTransition={!iOS}
-        onOpen={() => setDrawerState(true)}
-        onClose={() => setDrawerState(false)}
-        disableDiscovery={iOS}
-        anchor="bottom"
-        open={drawerState}
-        sx={{}}
-      >
-        {drawerMenu()}
-      </SwipeableDrawer>
-    </React.Fragment>
-  ),
-    [drawerState]);
+  const drawerSwitch = React.useCallback(
+    () => (
+      <div className="inline-flex gap-3 flex-row items-center">
+        {/* cta */}
+        <RegularButton
+          onClick={() => navigateToPage('/booking', -2)}
+        >
+          Start Project
+        </RegularButton>
 
-  const trigger = useScrollTrigger({
+        {/* drawer button */}
+        <React.Fragment key="drawer">
+          <Button
+            className="border-none w-12 h-16 z-20 flex justify-center cursor-pointer"
+            sx={{ ...menuIconStyles }}
+            onClick={(e) => { toggleDrawer(e); }}
+          >
+            <Bars3Icon />
+          </Button>
+          <SwipeableDrawer
+            // isableBackdropTransition={!iOS}
+            onOpen={() => setDrawerState(true)}
+            onClose={() => setDrawerState(false)}
+            disableDiscovery={iOS}
+            anchor="bottom"
+            open={drawerState}
+            sx={{}}
+          >
+            {drawerMenu()}
+          </SwipeableDrawer>
+        </React.Fragment>
+      </div>
+    ),
+    [drawerState],
+  );
+
+  const hideNav = useScrollTrigger({
     target: window ? window() : undefined,
     threshold: 6000,
     disableHysteresis: true,
@@ -518,45 +434,30 @@ const Navigation = ({ window }) => {
   //     app bar
   // ========================================================================== //
   return (
-    <>
-      <Slide appear direction="down" in={!trigger}>
-        <AppBar
-          elevation={!trigger ? 6 : 0}
-          position="fixed"
-          sx={{
-            boxShadow: (theme) => theme.custom.shadows.brand,
-            zIndex: 30, // hidhest
-            minHeight: 85,
-            height: 100,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            // background: (theme) => `linear-gradient(180deg, ${theme.palette.text.primary} 20%, ${hexToAlpha(theme.palette.text.primary, 0)} 100%)`,
-            background: (theme) => hexToAlpha(theme.palette.text.primary, 0.6),
-            backdropFilter: 'blur(10px)',
-            color: 'text.secondary',
-            padding: {
-              xs: 1,
-              sm: 1,
-              md: [2, 0],
-            },
-          }}
-        >
+    <Slide appear direction="down" in={!hideNav}>
+      <AppBar
+        elevation={!hideNav ? 6 : 0}
+        position="fixed"
+        className="z-[30] min-h-[85px] h-[80px] flex flex-row backdrop-blur-md sm:p-1 md:px-2"
+        sx={{
+          boxShadow: (theme) => theme.custom.shadows.brand,
+          background: (theme) => hexToAlpha(theme.palette.text.primary, 0.6),
+          color: 'text.secondary',
+        }}
+      >
+        <Grid item sm={12} md={10} className="w-full">
+          <Toolbar disableGutters className="h-full flex justify-between">
+            {logo('inherit')}
 
-          <Grid item sm={false} md={10} style={{ width: '100%' }}>
-            <Toolbar disableGutters style={{ height: '100%', display: 'flex', justifyContent: 'space-between' }}>
-              {logo('inherit')}
+            {pageNavigation()}
 
-              {pageNavigation()}
+            {drawerSwitch()}
+          </Toolbar>
+        </Grid>
 
-              {drawerSwitch()}
-            </Toolbar>
-          </Grid>
-
-        </AppBar>
-      </Slide>
-    </>
+      </AppBar>
+    </Slide>
   );
-};
+}
 
 export default Navigation;

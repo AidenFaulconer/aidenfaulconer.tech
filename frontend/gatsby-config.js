@@ -1,15 +1,12 @@
-/**
- * Configure your Gatsby site with this file.
- *
- * See: https://www.gatsbyjs.org/docs/gatsby-config/
- */
+// const resolveConfig = require('tailwindcss/resolveConfig');
+const tailwindConfig = require('./tailwind.config');
+
+// const fullConfig = resolveConfig(tailwindConfig);
 
 // ========================================================================== //
 // Environment variables
 // ========================================================================== //
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
-
-const path = require('path');
 
 // ========================================================================== //
 // Bundle checks
@@ -18,10 +15,10 @@ const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE;
 
 module.exports = {
   flags: {
+    // FAST_DEV: true,
     // PRESERVE_WEBPACK_CACHE: true,
     // GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true,
     // PARALLEL_SOURCING: true,
-    // FAST_DEV: true,
     // DEV_SSR: true,
     // ENABLE_GATSBY_EXTERNAL_JOBS: true,//for gatsby-parallel-runner, which outsources to google cloud
   },
@@ -37,22 +34,21 @@ module.exports = {
     // ========================================================================== //
     //     Scroll animations
     // ========================================================================== //
-    {
-      resolve: 'gatsby-plugin-scroll-reveal',
-      options: {
-        threshold: 1, // Percentage of an element's area that needs to be visible to launch animation
-        once: true, // Defines if animation needs to be launched once
-        disable: false, // Flag for disabling animations
-
-        // Advanced Options
-        selector: '[data-sal]', // Selector of the elements to be animated
-        animateClassName: 'sal-animate', // Class name which triggers animation
-        disabledClassName: 'sal-disabled', // Class name which defines the disabled state
-        rootMargin: '0% 50%', // Corresponds to root's bounding box margin
-        enterEventName: 'sal:in', // Enter event name
-        exitEventName: 'sal:out', // Exit event name
-      },
-    },
+    // {
+    //   resolve: 'gatsby-plugin-scroll-reveal',
+    //   options: {
+    //     threshold: 1, // Percentage of an element's area that needs to be visible to launch animation
+    //     once: true, // Defines if animation needs to be launched once
+    //     disable: false, // Flag for disabling animations
+    //     // Advanced Options
+    //     selector: '[data-sal]', // Selector of the elements to be animated
+    //     animateClassName: 'sal-animate', // Class name which triggers animation
+    //     disabledClassName: 'sal-disabled', // Class name which defines the disabled state
+    //     rootMargin: '0% 50%', // Corresponds to root's bounding box margin
+    //     enterEventName: 'sal:in', // Enter event name
+    //     exitEventName: 'sal:out', // Exit event name
+    //   },
+    // },
     // ========================================================================== //
     //     Page transitioning
     // ========================================================================== //
@@ -117,28 +113,28 @@ module.exports = {
     // ========================================================================== //
     //     Image compression
     // ========================================================================== //
-    {
-      resolve: 'gatsby-plugin-sharp',
-      options: {
-        useMozJped: false,
-        stripMetadata: true,
-        defaultQuality: 75,
-        defaults: {
-          formats: ['auto', 'webp'],
-          placeholder: 'dominantColor',
-          quality: 50,
-          breakpoints: [750, 1080, 1366, 1920],
-          backgroundColor: 'transparent',
-          tracedSVGOptions: {},
-          blurredOptions: {},
-          jpgOptions: {},
-          pngOptions: {},
-          webpOptions: {},
-          avifOptions: {},
-        },
-      },
-    },
-    'gatsby-transformer-sharp',
+    // {
+    //   resolve: 'gatsby-plugin-sharp',
+    //   options: {
+    //     useMozJpeg: false,
+    //     stripMetadata: true,
+    //     defaultQuality: 75,
+    //     defaults: {
+    //       formats: ['auto', 'webp'],
+    //       placeholder: 'dominantColor',
+    //       quality: 50,
+    //       breakpoints: [750, 1080, 1366, 1920],
+    //       backgroundColor: 'transparent',
+    //       tracedSVGOptions: {},
+    //       blurredOptions: {},
+    //       jpgOptions: {},
+    //       pngOptions: {},
+    //       webpOptions: {},
+    //       avifOptions: {},
+    //     },
+    //   },
+    // },
+    // 'gatsby-transformer-sharp',
     // ========================================================================== //
     //       Consume markdown from netlify
     // ========================================================================== //
@@ -149,50 +145,54 @@ module.exports = {
       options: {
         plugins: [
           // use code markup in blog posts
-          {
-            resolve: 'gatsby-remark-prismjs',
-            options: {
-              classPrefix: 'language-',
-              inlineCodeMarker: null,
-              aliases: {},
-              showLineNumbers: false,
-              noInlineHighlight: false,
-            },
-          },
-          // use emojis in blog posts
-          // 512 //384 //256 //192 //48 /144
-          'gatsby-remark-emojis',
-
-          {
-            // flexible images with embedded image content in blogs
-            // use images in blog posts **png and jpg only**
-            // reference: https://www.gatsbyjs.com/plugins/@redocly/gatsby-remark-images/?=remark
-            resolve: 'gatsby-remark-images',
-            options: {
-              // It's important to specify the maxWidth (in pixels) of
-              // the content container as this plugin uses this as the
-              // base for generating different widths of each image.
-              // backgroundColor:
-              // quality
-              // withWebP
-              // tracedSvgs
-              withWebp: true,
-              showCaptions: true,
-              quality: 50,
-              maxWidth: 590,
-              // wrapperStyle: (fluidResult) => `flex:${_.round(fluidResult.aspectRatio, 2)};`,
-            },
-          },
-          // point remark data to public folder
           // {
-          //   resolve: 'gatsby-remark-copy-linked-files',
+          //   resolve: 'gatsby-remark-prismjs',
           //   options: {
-          //     destinationDir: `${__dirname}/_data`,
-          //     // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
+          //     classPrefix: 'language-',
+          //     inlineCodeMarker: null,
+          //     aliases: {},
+          //     showLineNumbers: false,
+          //     noInlineHighlight: false,
           //   },
           // },
+
+          // use emojis in blog posts
+          // 512 //384 //256 //192 //48 /144
+          // 'gatsby-remark-emojis',
+
+          //   // flexible images with embedded image content in blogs
+          //   // use images in blog posts **png and jpg only**
+          //   // reference: https://www.gatsbyjs.com/plugins/@redocly/gatsby-remark-images/?=remark
+          // {
+          //   resolve: 'gatsby-remark-images',
+          //   options: {
+          //     // It's important to specify the maxWidth (in pixels) of
+          //     // the content container as this plugin uses this as the
+          //     // base for generating different widths of each image.
+          //     // backgroundColor:
+          //     // quality
+          //     // withWebP
+          //     // tracedSvgs
+          //     withWebp: true,
+          //     showCaptions: true,
+          //     quality: 50,
+          //     maxWidth: 590,
+          //     // wrapperStyle: (fluidResult) => `flex:${_.round(fluidResult.aspectRatio, 2)};`,
+          //   },
+          // },
+
+          // point remark data to public folder
+          {
+            resolve: 'gatsby-remark-copy-linked-files',
+            options: {
+              destinationDir: `${__dirname}/_data`,
+              // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
+            },
+          },
           // proportion and make iframe content responsive in blogs
-          'gatsby-remark-responsive-iframe',
+          {
+            resolve: 'gatsby-remark-responsive-iframe',
+          },
           // make blog content more customizable **not compatible with gatsby-transformer-remark@^4.0.0
           // reference: https://www.gatsbyjs.com/plugins/gatsby-remark-custom-blocks/?=remark
           // {
@@ -221,9 +221,9 @@ module.exports = {
     //     analytics
     // ========================================================================== //
     {
+      // The property ID; the tracking code won't be generated without it. replace with yours
       resolve: 'gatsby-plugin-google-analytics',
       options: {
-        // The property ID; the tracking code won't be generated without it. replace with yours
         trackingId: 'UA-164743872-1',
         head: true,
       },
@@ -243,7 +243,18 @@ module.exports = {
     // ========================================================================== //
     //     enable tailwind
     // ========================================================================== //
-    'gatsby-plugin-postcss',
+    {
+      resolve: 'gatsby-plugin-postcss',
+      options: {
+        postCssPlugins: [
+          require('tailwindcss')(tailwindConfig),
+          require('autoprefixer'),
+          ...(process.env.NODE_ENV === 'production'
+            ? [require('cssnano')]
+            : []),
+        ],
+      },
+    },
     // ========================================================================== //
     //     Preload fonts for performance
     // ========================================================================== //
@@ -253,7 +264,6 @@ module.exports = {
         crossOrigin: 'use-credentials',
       },
     },
-    // 'gatsby-plugin-sass',
     'gatsby-plugin-react-helmet',
     // siteURL is a must for sitemap generation
     // `gatsby-plugin-sitemap`,
@@ -261,9 +271,8 @@ module.exports = {
     // ========================================================================== //
     //     Offline capabilities
     // ========================================================================== //
-    // 'gatsby-plugin-offline',
+    'gatsby-plugin-offline',
     'gatsby-plugin-remove-trailing-slashes', // remove pesky /'s at the end of routes ie: localhost/x/
-
     // {
     //   resolve: 'gatsby-plugin-google-analytics',
     //   options: {
@@ -291,7 +300,6 @@ module.exports = {
       },
     },
     'gatsby-theme-material-ui',
-    // 'gatsby-plugin-material-ui',
     // ========================================================================== //
     // Netlify CMS
     // ========================================================================== //

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
 import {
   Box, Grid, List, ListItem, ListItemText, Typography, useTheme,
@@ -21,22 +22,84 @@ import {
   PickDate,
 } from './custom/buttons';
 
-import { SCROLL_PROPS, svgEncodeBaseSixtyFour } from '../store/theme';
-
 import headlineImage from '../../static/assets/portfolio/designs.png';
-
 import ThreeDCarousel from './custom/threeDCarousel';
-// sections
-import { SectionHeader } from './section-header';
-
 import doItAll from '../../static/assets/portfolio/doitall.png';
 
-import { ServicesSelection } from './index-page-roulette/services';
+// sections
+import { Selection } from './custom/carousel/selection';
 import { useStore } from '../store/store';
 import { sendBookingForm } from './util/apis';
 import { useFormStore } from './util/customHooks';
 
-export default ({ i, title = 'Start a project', setSelected = () => { } }) => {
+const steps = [
+  {
+    title: 'Project Details',
+    key: 'projectDetails',
+    // StepComponent: DetailStep,
+    label: 'Project Details',
+    description: `For each ad campaign that you create, you can control how much
+                  you're willing to spend on clicks and conversions, which networks
+                  and geographical locations you want your ads to show on, and more.`,
+  },
+  {
+    title: 'Planning & Budget',
+    key: 'planningBudget',
+    // StepComponent: PlanningStep,
+    label: 'Planning & Budget',
+    description:
+      'An ad group contains one or more ads which target a shared set of keywords.',
+  },
+  {
+    title: 'Confirmation',
+    key: 'confirmation',
+    // StepComponent: ConfirmationStep,
+    label: 'Confirmation',
+    description: `Try out different ad text to see what brings in the most customers,
+                  and learn how to enhance your ads using features like ad extensions.
+                  If you run into any problems with your ads, find out how to tell if
+                  they're running and how to resolve approval issues.`,
+  },
+];
+const sections = [
+  {
+    headline: 'Website',
+    title: 'Website',
+    key: 'Website',
+  },
+  {
+    headline: 'Design',
+    title: 'Design',
+    key: 'Design',
+  },
+  {
+    headline: 'VR',
+    title: 'VR',
+    key: 'VR',
+  },
+  {
+    headline: 'AR',
+    title: 'AR',
+    key: 'AR',
+  },
+  {
+    headline: '3D',
+    title: '3D',
+    key: '3D',
+  },
+  {
+    headline: 'Branding',
+    title: 'Branding',
+    key: 'Branding',
+  },
+  {
+    headline: 'Other',
+    title: 'Other',
+    key: 'Other',
+  },
+];
+
+export default function ({ i, title = 'Start a project', setSelected = () => { } }) {
   const handleError = () => { };
   const theme = useTheme();
   const inputSources = React.createRef([]);
@@ -44,23 +107,15 @@ export default ({ i, title = 'Start a project', setSelected = () => { } }) => {
   return (
     <Grid
       container
-      display="flex"
-      alignItems="stretch"
-      justifyContent="flex-start"
+      className="items-stretch flex justify-start w-full pb-4 h-[1000px]"
       sx={{
-        width: '100%',
-        pb: 4,
-        height: 1000,
         color: (theme) => theme.palette.text.primary,
         border: (theme) => theme.custom.borders.brandBorder,
       }}
     >
       <Box
+        className="p-4 h-28 relative w-full"
         sx={{
-          p: 4,
-          width: '100%',
-          position: 'relative',
-          height: 100,
           background: (theme) => theme.palette.text.primary,
           color: (theme) => theme.palette.text.secondary,
         }}
@@ -78,7 +133,7 @@ export default ({ i, title = 'Start a project', setSelected = () => { } }) => {
       <MainSelections />
     </Grid>
   );
-};
+}
 
 /**
  * The ProjectStepper function renders a Stepper component that allows users to
@@ -94,7 +149,7 @@ export default ({ i, title = 'Start a project', setSelected = () => { } }) => {
  * @return A stepper component that contains the steps and controls for each step
  *
 * */
-export const ProjectStepper = ({ contentData: { headline, title, key }, setCurrent, current }) => {
+export function ProjectStepper({ contentData: { headline, title, key }, setCurrent, current }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [finished, setFinished] = React.useState(false);
@@ -104,7 +159,6 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
   React.useEffect(() => setService(key), [key]);
 
   const isStepOptional = (step) => step === 1;
-
   const isStepSkipped = (step) => skipped.has(step);
 
   const handleNext = () => {
@@ -159,10 +213,10 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
 
   const handleBack = () => { setActiveStep((prevActiveStep) => prevActiveStep - 1); };
 
+  // You probably want to guard against something like this,
+  // it should never occur unless someone's actively trying to break something.
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
       throw new Error("You can't skip a step that isn't optional.");
     }
 
@@ -205,21 +259,21 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
       {/* stepper controls */}
       {activeStep === steps.length ? (
         <>
-          <Typography sx={{ mb: 1 }}>
+          <Typography className="mb-1">
             All steps completed - you&apos;re finished
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
+          <div className="flex flex-row pt-2">
+            <div className="flex-auto" />
             <Button onClick={handleReset}>Reset</Button>
-          </Box>
+          </div>
         </>
       ) : (
         <>
-          <Typography sx={{ mb: 1 }}>
+          <Typography className="mb-1">
             Step
             {activeStep + 1}
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+          <div className="flex flex-row pt-2">
             <RegularButton
               type="secondary"
               color="inherit"
@@ -232,7 +286,7 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
             >
               {/* Back */}
             </RegularButton>
-            <Box sx={{ flex: '1 1 auto' }} />
+            <div className="flex-auto" />
             {isStepOptional(activeStep) && (
               <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
                 Skip
@@ -242,37 +296,20 @@ export const ProjectStepper = ({ contentData: { headline, title, key }, setCurre
             <RegularButton onClick={handleNext}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </RegularButton>
-          </Box>
+          </div>
         </>
       )}
     </Box>
   );
-};
+}
 
 export const DetailStep = React.memo((props) => {
   const [state, setState] = React.useState();
   const inputSources = React.createRef([]);
   const theme = useTheme();
   return (
-    <Box sx={{
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      position: 'relative',
-      height: 400,
-    }}
-    >
-      <Box
-        sx={{
-          width: '50%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexWrap: 'no-wrap',
-          flexDirection: 'column',
-          p: 4,
-        }}
-      >
+    <div className="w-full flex flex-row relative h-96">
+      <div className="w-1/2 h-full flex justify-between flex-nowrap flex-col p-4">
         <FancyTextField
           formName="bookingForm"
           fieldName="name"
@@ -374,19 +411,8 @@ export const DetailStep = React.memo((props) => {
           size="normal"
           input={{ mode: 'text' }}
         />
-      </Box>
-      <Box
-        sx={{
-          p: 4,
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          flexWrap: 'no-wrap',
-          width: '50%',
-          height: '100%',
-
-        }}
-      >
+      </div>
+      <div className="p-4 flex justify-between flex-nowrap w-1/2 h-full flex-col">
         <FancyTextField
           formName="bookingForm"
           fieldName="message"
@@ -396,8 +422,8 @@ export const DetailStep = React.memo((props) => {
           message="Tell me about yourself, and how I can help"
           defaultValue="Write me a message, tell me about what your project is, or just say hi!"
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 });
 
@@ -412,32 +438,15 @@ export const DetailStep = React.memo((props) => {
  * @return A set of input fields that are used to collect information about the project
  *
  */
-export const PlanningStep = (props) => {
+export function PlanningStep(props) {
   const [input, setInput] = React.useState([]);
   const inputSources = React.useRef([]);
   const { title } = props;
   const theme = useTheme();
 
   return (
-    <Box sx={{
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      position: 'relative',
-      height: 400,
-    }}
-    >
-      <Box
-        sx={{
-          width: '50%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexWrap: 'no-wrap',
-          flexDirection: 'column',
-          p: 4,
-        }}
-      >
+    <div className="w-full flex flex-row relative h-96">
+      <div className="w-1/2 h-full flex justify-between flex-nowrap flex-col p-4">
         <FancyTextField
           formName="bookingForm"
           fieldName="projectRequirements"
@@ -451,19 +460,8 @@ export const PlanningStep = (props) => {
           //   ref={(ref) => inputSources.current.push(ref)}
           label="When is this project due?"
         />
-      </Box>
-      <Box
-        sx={{
-          p: 4,
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          flexWrap: 'no-wrap',
-          width: '50%',
-          height: '100%',
-
-        }}
-      >
+      </div>
+      <div className="p-4 flex justify-between flex-col flex-nowrap h-full w-1/2">
         <FancyTextField
           formName="bookingForm"
           fieldName="budgetRange"
@@ -491,10 +489,10 @@ export const PlanningStep = (props) => {
           defaultValue={`I need this ${title || 'app'} project do the following.. `}
           input={{ mode: 'text', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' }}
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
-};
+}
 
 /**
  * The ConfirmationStep function renders a confirmation step for the booking form.
@@ -505,19 +503,12 @@ export const PlanningStep = (props) => {
  * @return A box with a summary of the booking data and an image
  *
  */
-export const ConfirmationStep = (finished = false) => {
+export function ConfirmationStep(finished = false) {
   // get bookingForm data from store
   const bookingFormSummary = useStore((state) => state.bookingForm);
 
   return (
-    <Box sx={{
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      position: 'relative',
-      height: 400,
-    }}
-    >
+    <div className="w-full flex flex-col relative h-96">
       {finished && (
         <ReactConfetti
           colors={[
@@ -542,46 +533,32 @@ export const ConfirmationStep = (finished = false) => {
             piece.key = key;
             piece.setAttribute('style', `left: ${Math.random() * 100}%;animation: confetti-animation ${Math.random() * 5 + 5}s linear infinite;`);
           }}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: 400,
-          }}
+          className="absolute top-0 left-0 w-full h-96"
         />
       )}
 
       {/* summarry */}
-      <Box sx={{
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'space-evenly',
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        p: 4,
-        textAlign: 'left',
-        borderRadius: (theme) => theme.custom.borders.brandBorderRadius,
-        m: 1,
-        border: (theme) => theme.custom.borders.brandBorder,
-        background: (theme) => theme.palette.text.primary,
-        color: (theme) => theme.palette.text.secondary,
-      }}
+      <Box
+        className="h-full w-full flex justify-evenly flex-col flex-wrap p-4 m-1 text-left"
+        sx={{
+          borderRadius: (theme) => theme.custom.borders.brandBorderRadius,
+          border: (theme) => theme.custom.borders.brandBorder,
+          background: (theme) => theme.palette.text.primary,
+          color: (theme) => theme.palette.text.secondary,
+        }}
       >
 
         {Object.keys(bookingFormSummary).map((name, index) => {
           if (name === 'methods') return;
           const value = bookingFormSummary[name];
           return (
-            <Box sx={{
-              display: 'inline-block',
-              borderBottom: (theme) => theme.custom.borders.brandBorder,
-            }}
+            <Box
+              className="inline-block"
+              sx={{
+                borderBottom: (theme) => theme.custom.borders.brandBorder,
+              }}
             >
-              <b>
-                {`${name.toUpperCase()}: `}
-              </b>
+              <b>{`${name.toUpperCase()}: `}</b>
               {String(value)}
             </Box>
           );
@@ -589,101 +566,15 @@ export const ConfirmationStep = (finished = false) => {
       </Box>
 
       {/* graphic */}
-      <Box sx={{
-        height: 100, width: '100%',
-      }}
-      />
+      <div className="h-28 w-full" />
       <img
         src={doItAll}
         alt=""
-        style={{
-          height: '100%', objectFit: 'cover', width: '100%', position: 'relative',
-        }}
+        className="h-full object-cover w-full relative"
       />
-    </Box>
+    </div>
   );
-};
-
-const steps = [
-  {
-    title: 'Project Details',
-    key: 'projectDetails',
-    // StepComponent: DetailStep,
-    label: 'Project Details',
-    description: `For each ad campaign that you create, you can control how much
-                  you're willing to spend on clicks and conversions, which networks
-                  and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    title: 'Planning & Budget',
-    key: 'planningBudget',
-    // StepComponent: PlanningStep,
-    label: 'Planning & Budget',
-    description:
-      'An ad group contains one or more ads which target a shared set of keywords.',
-  },
-  {
-    title: 'Confirmation',
-    key: 'confirmation',
-    // StepComponent: ConfirmationStep,
-    label: 'Confirmation',
-    description: `Try out different ad text to see what brings in the most customers,
-                  and learn how to enhance your ads using features like ad extensions.
-                  If you run into any problems with your ads, find out how to tell if
-                  they're running and how to resolve approval issues.`,
-  },
-];
-const sections = [
-  // ========================================================================== //
-  //     Website
-  {
-    headline: 'Website',
-    title: 'Website',
-    key: 'Website',
-  },
-  // ========================================================================== //
-  //     Design
-  {
-    headline: 'Design',
-    title: 'Design',
-    key: 'Design',
-  },
-  // ========================================================================== //
-  //   VR
-  {
-    headline: 'VR',
-    title: 'VR',
-    key: 'VR',
-  },
-  // ========================================================================== //
-  //   AR
-  {
-    headline: 'AR',
-    title: 'AR',
-    key: 'AR',
-  },
-  // ========================================================================== //
-  //   3D
-  {
-    headline: '3D',
-    title: '3D',
-    key: '3D',
-  },
-  // ========================================================================== //
-  //   Branding
-  {
-    headline: 'Branding',
-    title: 'Branding',
-    key: 'Branding',
-  },
-  // ========================================================================== //
-  //   Other
-  {
-    headline: 'Other',
-    title: 'Other',
-    key: 'Other',
-  },
-];
+}
 
 /**
  * The MainSelections function renders a carousel of 3D cards with the following
@@ -695,7 +586,7 @@ const sections = [
  * @return A carousel that has a number of cards
  *
  */
-export const MainSelections = () => {
+export function MainSelections() {
   const x = 0;
   return (
     <ThreeDCarousel
@@ -707,9 +598,9 @@ export const MainSelections = () => {
       title="Sections"
       key="Sections-carousel"
       carouselData={sections} // needs, title, image, alt, description, icon, cta, category
-      SelectionComponent={ServicesSelection}
+      SelectionComponent={Selection}
       subSelectionData={steps}
       HasContent={ProjectStepper}
     />
   );
-};
+}

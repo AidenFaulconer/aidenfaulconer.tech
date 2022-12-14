@@ -26,7 +26,7 @@ import { useEventListener } from '../components/util/customHooks';
 
 import Seo from './seo';
 
-const Layout = (props) => {
+function Layout(props) {
   useEventListener('close', saveStore);
 
   const theme = useTheme();
@@ -63,7 +63,7 @@ const Layout = (props) => {
     transform: 'scale(.75)',
   };
 
-  if (process.env.NODE_ENV === 'development') console.log('layout: time elapsed now', performance.now());
+  // if (process.env.NODE_ENV === 'development') console.log('layout: time elapsed now', performance.now());
   return (
     <div
       style={{
@@ -120,9 +120,9 @@ const Layout = (props) => {
       </MaterialUI>
     </div>
   );
-};
+}
 
-const Consolelogs = () => {
+function Consolelogs() {
   useEffect(() => {
     console.log(`
                      :-=++*##%%%%###**+=-:.            .:-=+**##%%%%%##*++=-.
@@ -193,9 +193,9 @@ const Consolelogs = () => {
     }
   }, []);
   return (<div />);
-};
+}
 
-const PageTransitionOverlay = (props) => {
+function PageTransitionOverlay(props) {
   const {
     active, progress, errors, item, loaded, total,
   } = useProgress();
@@ -225,28 +225,26 @@ const PageTransitionOverlay = (props) => {
   const theme = useTheme();
   const pageChangeStyles = { background: theme.palette.text.secondary };
   return (
-    <>
-      <a.div
-        style={{
-          background,
-          left,
-          transform,
-          position: 'fixed',
-          display: 'initial',
-          width: '200vw',
-          height: '100vh',
-          // transform: 'skew(10deg)',
-          overflow: 'hidden',
-          top: '0px',
-          // left: '-115vw',
-          opacity: 1,
-          zIndex: 30,
-          visibility: 'visible',
-          pointerEvents: 'all',
-        }}
-      />
-    </>
+    <a.div
+      style={{
+        background,
+        left,
+        transform,
+        position: 'fixed',
+        display: 'initial',
+        width: '200vw',
+        height: '100vh',
+        // transform: 'skew(10deg)',
+        overflow: 'hidden',
+        top: '0px',
+        // left: '-115vw',
+        opacity: 1,
+        zIndex: 30,
+        visibility: 'visible',
+        pointerEvents: 'all',
+      }}
+    />
   );
-};
+}
 
 export default Layout;

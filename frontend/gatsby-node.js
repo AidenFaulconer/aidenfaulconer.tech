@@ -64,8 +64,8 @@ async function createBlogPostArchive({ edges, gatsbyUtilities }) {
         path: getPagePath(pageNumber),
 
         // use the blog post archive template as the page component
-        // component: pth.resolve('./src/templates/blog-post-archive.jsx'),
-        component: pth.resolve('./src/templates/project-template.jsx'),
+        // component: pth.resolve('./src/template/blog-post-archive.jsx'),
+        component: pth.resolve('./src/template/project-template.jsx'),
 
         // `context` is available in the template as a prop and
         // as a variable in GraphQL.
@@ -136,8 +136,6 @@ async function getPosts({ graphql, reporter, regex }) {
 // create blog pages, and regular pages this function is destructuring the gatsby utils passed in
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
-
- 
 
   // ========================================================================== //
   //   function to Get and create blog posts
@@ -214,12 +212,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   // ========================================================================== //
   // await buildPageFromQuery(
   //   'b|Blog',
-  //   pth.resolve('src/templates/project-template.jsx'),
+  //   pth.resolve('src/template/project-template.jsx'),
   // ); // build blog pages
 
   await buildPageFromQuery(
     'P|project',
-    pth.resolve('src/templates/project-template.jsx'),
+    pth.resolve('src/template/project-template.jsx'),
   ); // build project pages
 };
 
@@ -448,7 +446,7 @@ exports.onCreateWebpackConfig = ({
 //           // path: `/${Helper.slugify(edge.node.frontmatter.slug)}/`,
 //           path,
 //           component: path.resolve(
-//             `src/templates/blog-post.js`,
+//             `src/template/blog-post.js`,
 //           ),
 //           context: {
 //             id,
@@ -458,7 +456,7 @@ exports.onCreateWebpackConfig = ({
 //         createPage({
 //           path,
 //             component: path.resolve(
-//             `src/templates/blog-post.js`,
+//             `src/template/blog-post.js`,
 //           ),
 //           context: {
 //             id,

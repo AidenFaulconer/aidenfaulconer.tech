@@ -1,50 +1,62 @@
-import { Grid } from '@mui/material';
-import React from 'react';
+import { Box, Grid } from '@mui/material';
+import React, { useEffect, useRef } from 'react';
+import { XCircleIcon } from '@heroicons/react/20/solid';
+import { useInView } from 'react-intersection-observer';
 import ThreeDCarousel from './custom/threeDCarousel';
-import { SectionHeader } from './section-header';
+import { IllustrationSelection } from './custom/carousel/selection';
 
 // ========================================================================== //
-// Routlette
+// Roulette
 // ========================================================================== //
 import jsonConfiguration from '../../static/admin/site-data.json';
 import { useStore } from '../store/store';
-import { useEventListener } from './util/customHooks';
+import { useLockBodyScroll } from './util/customHooks';
 
-export default () => {
+export default function () {
   const { sections, subSections } = jsonConfiguration;
-  const setCurrent = useStore((state) => state.appContext.setCurrent);
+  // const scrollProgress = useScrollProgress();
+  // const setAppContext = useStore((state) => state.appContext.methods.setAppContext);
+  // const { ref, inView } = useInView({
+  //   root: null,
+  //   rootMargin: '10px 0px 30px 0px',
+  //   threshold: 0.8,
+  // });
+  const containerRef = useRef(null);
 
-  // useEventListener("scroll",(e)=>{
-  //   let heightOffset = e.scrollHeight
-  //   // setCurrent()
-  // })
+  const handleScroll = () => {
+    // Check if the user has scrolled to the bottom of the ref
+    if (containerRef.current.scrollHeight - containerRef.current.scrollTop === containerRef.current.clientHeight) {
+      // Scroll the user back to the top of the containerRef
+      containerRef.current.scrollTo(0, 0);
+      alert('scroll back');
+    }
+  };
 
   return (
-    <Grid
-      container
-      display="flex"
-      alignItems="stretch"
-      justifyContent="flex-start"
+    <Box
+      ref={containerRef}
+      onScroll={handleScroll}
+      className="pb-24 relative"
       sx={{
-        width: '100%',
         background: (theme) => theme.palette.text.primary,
         color: (theme) => theme.palette.text.primary,
       }}
     >
+
       <ThreeDCarousel
-        // carousel dimensions
+          // carousel dimensions
         carouselHeight={225}
         cardWidth={400}
         gutter={0}
-        // top section
+          // top section
         title="Sections"
         key="Sections-carousel"
         carouselData={sections} // needs, title, image, alt, description, icon, cta, category
-        SelectionComponent={SectionHeader} // top level selection
-        // sub section
+        SelectionComponent={IllustrationSelection} // top level selection
+          // sub section
         subSectionData={subSections} // needs selectionComponent, subSectionComponent, headline, key
         SubSelectionComponent={ThreeDCarousel}
       />
-    </Grid>
+    </Box>
   );
-};
+}

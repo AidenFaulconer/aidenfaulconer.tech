@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
 /* eslint-disable no-case-declarations */
@@ -31,6 +32,24 @@ import { useStore } from '../../store/store';
 // Don’t call Hooks inside loops, conditions, or nested functions. Instead,
 // always use Hooks at the top level of your React function
 // ========================================================================== //
+
+// ========================================================================== //
+// detect users theme
+// ========================================================================== //
+const useThemeDetector = () => {
+  const getCurrentTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [isDarkTheme, setIsDarkTheme] = useState(getCurrentTheme());
+  const mqListener = ((e) => {
+    setIsDarkTheme(e.matches);
+  });
+
+  useEffect(() => {
+    const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)');
+    darkThemeMq.addListener(mqListener);
+    return () => darkThemeMq.removeListener(mqListener);
+  }, []);
+  return isDarkTheme;
+};
 
 // ========================================================================== //
 // Disable text highlighting
@@ -124,20 +143,31 @@ export const useAnimatedMount = ({ children }) => {
 };
 
 // INPUT: HTMLELEMENTS array
-// OUTPUT: reactive events attatched to interpolate betwwn the elements in array from start to end based on users scroll
+// OUTPUT: reactive events attatched to interpolate between the elements in array from start to end based on users scroll
 export const useIntersectionObserver = (handler =
-  (entries, observer = null) => {
-    entries.map((entry) => {
-      if (entry.intersectionRation >= 1) console.log('visible: ', entry.target);
-      return '';
-    });
-  }) => {
-  // logic to listen to observe when we are inside one of the elements added via addNode
-  const options = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
-  };
+// handler by default logs intersections, override this to call special functionaliry
+(entries, observer = null) => entries.map((entry) => {
+  // api
+  // .intersectionRatio
+  // .intersectionRect
+  // .isIntersecting
+  // .isVisible
+  // .target
+  // .time
+  // rootBounds
+  if (entry.intersectionRatio >= 0.5) console.info('visible: ', entry.target);
+  return '';
+}), options = {
+  root: null, // element used as the viewport for checking visibility of the target
+  rootMargin: '0px', // margin around the root
+  threshold: 0.5, // .5 = 50% visible. single number or [] of numbers to indicate at what percentage of targets visibility the observer callback should execute
+}) => {
+  // element refs to listen too
+  const refs = React.useRef([]);
+  // element that listens to elements (interseciton observer)
+  const observer = React.useRef(null);
+  // push refs to an array of html elements to listen to
+  const addNode = React.useCallback((node) => refs.current.push(node), []);
 
   const getObserver = (ref) => {
     const observer = ref.current;
@@ -148,20 +178,18 @@ export const useIntersectionObserver = (handler =
     ref.current = newObserver;
     return newObserver;
   };
-  const refs = React.useRef([]);
-  const observer = React.useRef(null);
-  const addNode = React.useCallback((node) => refs.current.push(node), []);
 
   React.useEffect(() => {
     if (observer.current) observer.current.disconnect();
 
     const newObserver = getObserver(observer);
     refs.current.forEach((node) => newObserver.observe(node));
-    console.log(refs.current);
+    console.info(refs.current);
 
     return () => newObserver.disconnect();
   }, []);
 
+  // ref={addNode} this method adds the element to be listened to by intersection observer
   return addNode;
 };
 
@@ -275,25 +303,22 @@ try {
 const wheelOpt = supportsPassive ? { passive: false } : false;
 const wheelEvent = typeof document !== 'undefined' && 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
 
-// call this to Disable
-function disableScroll() {
-  if (typeof window !== 'undefined') return;
-  window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
-  window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
-  window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
-  window.addEventListener('keydown', preventDefaultForScrollKeys, false);
-}
-
-// call this to Enable
-function enableScroll() {
-  if (typeof window !== 'undefined') return;
-  window.removeEventListener('DOMMouseScroll', preventDefault, false);
-  window.removeEventListener(wheelEvent, preventDefault, wheelOpt);
-  window.removeEventListener('touchmove', preventDefault, wheelOpt);
-  window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
-}
-export const toggleScrollHook = (defaultValue = true) => {
+export const useToggleScrollHook = (defaultValue = true) => {
   const [scrollEnabled, setScrollEnabled] = useState(defaultValue);
+  const disableScroll = () => {
+    if (typeof window !== 'undefined') return;
+    window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+    window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+    window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+    window.addEventListener('keydown', preventDefaultForScrollKeys, false);
+  };
+  const enableScroll = () => {
+    if (typeof window !== 'undefined') return;
+    window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.removeEventListener(wheelEvent, preventDefault, wheelOpt);
+    window.removeEventListener('touchmove', preventDefault, wheelOpt);
+    window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+  };
 
   useEffect(() => {
     if (scrollEnabled) enableScroll();
@@ -1198,17 +1223,50 @@ export const useDarkMode = () => {
   return [enabled, setEnabledState];
 };
 
+// hook
+export const useDisableScroll = () => {
+  if (typeof window === 'undefined') return;
+  const [scrollEnabled, setScrollEnabled] = useState(true);
+
+  useLayoutEffect(() => {
+    // Get the current page scroll position
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+    // if any scroll is attempted, set this to the previous value
+    if (!scrollEnabled) {
+      window.onscroll = () => {
+        window.scrollTo(scrollLeft, scrollTop);
+      };
+    } else {
+      window.onscroll = () => { };
+    }
+
+    return () => { window.onscroll = () => { }; };
+  }, [scrollEnabled]);
+
+  return [scrollEnabled, setScrollEnabled];
+};
+
 // Hook
 export const useLockBodyScroll = () => {
-  useLayoutEffect(() => {
+  const [scrollEnabled, setScrollEnabled] = useState(true);
+
+  useEffect(() => {
     // Get original body overflow
     const originalStyle = window.getComputedStyle(document.body).overflow;
     // Prevent scrolling on mount
-    document.body.style.overflow = 'hidden';
+    if (!scrollEnabled) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = originalStyle;
+    }
     // Re-enable scrolling when component unmounts
     // eslint-disable-next-line no-return-assign
     return () => (document.body.style.overflow = originalStyle);
-  }, []); // Empty array ensures effect is only run on mount and unmount
+  }, [scrollEnabled]); // Empty array ensures effect is only run on mount and unmount
+
+  return [scrollEnabled, setScrollEnabled];
 };
 
 // Hook

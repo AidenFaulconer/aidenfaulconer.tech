@@ -3,7 +3,7 @@
 // ========================================================================== //
 
 import makeStyles from '@mui/styles/makeStyles';
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { keyframes } from '@emotion/react';
 
@@ -300,18 +300,11 @@ export const Illustration = React.memo(
 
     return (
       <Box
-        sx={{
-          position: 'absolute',
-          marginLeft: 30,
-          bottom: -10,
-          // ...illustrationStyles,
-          width: 240,
-          height: 200,
-        }}
+        className="absolute ml-[30px] b-[-10px] w-[240px] h-[200px]"
         id="illustration"
       >
         <div
-          style={{ height: '100%', width: '100%', zIndex: 10 }}
+          className="h-full w-full z-10"
           dangerouslySetInnerHTML={{ __html: graphic }}
         />
       </Box>
@@ -353,9 +346,8 @@ const getStrokeAnimation = keyframes`
 // ========================================================================== //
 export const DesignWorld = React.memo(
   () => (
-    <>
-      <Box
-        sx={
+    <Box
+      sx={
           {
             position: 'relative',
             opacity: 0.9,
@@ -379,9 +371,8 @@ export const DesignWorld = React.memo(
             },
           }
       }
-        dangerouslySetInnerHTML={{ __html: world }}
-      />
-    </>
+      dangerouslySetInnerHTML={{ __html: world }}
+    />
   ),
   (prev, next) => prev !== next,
 );

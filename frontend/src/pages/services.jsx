@@ -1,56 +1,52 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import {
-  Box,
-  Container, Grid, Typography, useTheme,
-} from '@mui/material';
+import { Grid } from '@mui/material';
 import { graphql } from 'gatsby';
-
-import Services from '../components/index-page-roulette/services';
-import { Languages, Experience } from '../components/index-page-roulette/skills';
-
-import { SectionHeader } from '../components/section-header';
 import Roullete from '../components/roullette';
-import Contact from '../components/index-page-roulette/contact';
+import Contact from '../components/forms/contact';
 
 // TODO: get model actions from store, compare against the services sections data
-const SectionWrapper = ({ children, type = 'primary' }) => ((
-  <>
-    <Grid
-      item
-      md={1}
-      sx={{ background: (theme) => theme.palette.text[type] }}
-    />
-    <Grid item md={10} xs={12} sx={{ overflow: 'hidden' }}>
-      {children}
-    </Grid>
-    <Grid
-      item
-      md={1}
-      sx={{ background: (theme) => theme.palette.text[type] }}
-    />
-  </>
-));
+function SectionWrapper({ children, type = 'primary' }) {
+  return (
+    <>
+      <Grid
+        item
+        md={1}
+        sx={{ background: (theme) => theme.palette.text[type] }}
+      />
+      <Grid item md={10} xs={12} sx={{ overflow: 'hidden' }}>
+        {children}
+      </Grid>
+      <Grid
+        item
+        md={1}
+        sx={{ background: (theme) => theme.palette.text[type] }}
+      />
+    </>
+  );
+}
 
-const ServicesPage = ({
+function ServicesPage({
   // returned from pageQuery as props
   data: {
     allMarkdownRemark: { edges },
   },
   location,
-}) => (
-  <Grid container>
-    <SectionWrapper>
-      <Roullete headline="Services" threejs />
-    </SectionWrapper>
-    <SectionWrapper type="secondary">
-      <Contact />
-    </SectionWrapper>
-  </Grid>
-);
+}) {
+  return (
+    <Grid container>
+      <SectionWrapper>
+        <Roullete headline="Services" threejs />
+      </SectionWrapper>
+      <SectionWrapper type="secondary">
+        <Contact />
+      </SectionWrapper>
+    </Grid>
+  );
+}
 
 export default ServicesPage;
-// autorun at gatsby rebuild-cycle
+
+// autoruns at gatsby rebuild-cycle
 export const pageQuery = graphql`
   query servicesPageQuery {
     allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}, filter: {frontmatter: {catagory: {eq: "blog"}}}) {

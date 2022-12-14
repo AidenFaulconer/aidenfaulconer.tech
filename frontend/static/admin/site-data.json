@@ -18,7 +18,7 @@
     {
       "illustrationType": "vr",
       "headline": "Process",
-      "key": "pprocess"
+      "key": "process"
     },
     {
       "illustrationType": "genie",
@@ -29,57 +29,54 @@
       "illustrationType": "genie",
       "headline": "Projects",
       "key": "projects"
+    },
+    {
+      "illustrationType": "confidence",
+      "headline": "Contact Me",
+      "key": "contact"
     }
   ],
   "subSections": [
     {
       "headline": "Services",
       "key": "sub-services",
-      "selectionComponent": "ServicesSelection",
-      "HasContent": "SelectionContent",
+      "selectionComponent": "Selection",
+      "HasContent": "CtaList",
       "subSectionData": [
         {
           "title": "Websites",
-          "costRange": "400$-5000$",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "costRange": "400-7000",
+          "description": "We provide a range of website services to help businesses improve their online presence. With our expertise in website design and development, we create a professional, user-friendly website that accurately reflects your brand and effectively showcases your products and services. \nIn today's digital age, having a strong online presence is crucial for any business looking to attract and retain customers. Our website services can help improve your search engine ranking, drive traffic to your site, and ultimately increase conversions and sales. \nWhether you need a brand new website or an update to an existing one, we have the skills and experience to help. Contact us today to discuss your website needs and see how we can help your business succeed online.",
           "image": "website-image.png",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Iphone"]
-          }
+          "link":"/services/websites",
+          "posts":["/projects/xyz","/projects/xyz","/projects/xyz"]
         },
         {
           "title": "Design",
           "costRange": "0",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "description": "We offer professional website design services to help businesses improve their online presence. Our experienced team of designers will work closely with you to create a unique and visually appealing website that accurately reflects your brand and effectively showcases your products and services. \nIn today's digital world, having a well-designed website is essential for any business looking to attract and retain customers. Our website design services can help improve user experience, increase engagement, and ultimately drive conversions and sales. \nWhether you need a new website or an update to an existing one, we have the skills and experience to deliver results. Contact us today to discuss your website design needs and see how we can help your business succeed online.",
           "name": "Design",
           "image": "website-image.png",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Pencil", "Emoji"]
-          }
+          "link":"/services/design",
+          "posts":["/projects/xyz","/projects/xyz","/projects/xyz"]
         },
         {
           "title": "Virtual Reality",
           "costRange": "0",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "description": "We offer professional virtual reality (VR) development services to help businesses innovate and improve their operations. Our team of experienced VR developers can create custom VR solutions that can enhance training, simulate real-world environments, and provide immersive experiences for customers. In today's fast-paced world, VR technology is becoming increasingly important for businesses looking to stay ahead of the curve.\nOur VR development services can help you leverage this cutting-edge technology to improve efficiency, increase engagement, and ultimately drive success. Whether you need a VR training program, a VR simulation, or a VR experience for customers, we have the skills and experience to deliver results. Contact us today to discuss your VR development needs and see how we can help your business thrive.",
           "name": "Virtual Reality",
           "image": "website-image.png",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["VR"]
-          }
+          "link":"/services/vr",
+          "posts":["/projects/xyz","/projects/xyz","/projects/xyz"]
         },
         {
           "title": "Branding",
           "costRange": "0",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "description": "we offer professional branding services to help businesses establish and improve their brand identity. Our team of experienced designers and branding specialists can create a unique and consistent brand aesthetic that accurately reflects your business and sets you apart from the competition. In today's competitive market, having a strong and recognizable brand is crucial for any business looking to attract and retain customers. Our branding services can help improve recognition and customer loyalty, as well as drive conversions and sales. Whether you're starting a new business and need to create a brand from scratch, or you want to refresh and update your existing brand, we have the skills and experience to deliver results. Contact us today to discuss your branding needs and see how we can help your business succeed.",
           "name": "Branding",
           "image": "website-image.png",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Pencil", "Paper"]
-          }
+          "link":"/services/branding",
+          "posts":["/projects/xyz","/projects/xyz","/projects/xyz"]
         },
         {
           "title": "Other",
@@ -87,29 +84,75 @@
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
           "name": "Other",
           "image": "website-image.png",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Hammer"]
-          }
+          "link":"/services/other",
+          "posts":["/projects/xyz","/projects/xyz","/projects/xyz"]
+        }, 
+        {
+          "title": "Next",
+          "description": "",
+          "name": ""
+        }
+      ]
+    },
+     {
+      "headline": "Projects",
+      "key": "sub-projects",
+      "selectionComponent": "Selection",
+      "subSectionComponent": "CtaImage",
+      "subSectionData": [
+        {
+          "title": "Websites",
+          "costRange": "400-5000",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Websites"
+        },
+        {
+          "title": "Design",
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Design"
+        },
+        {
+          "title": "Virtual Reality",
+          "costRange": 0,
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Virtual Reality"
+        },
+        {
+          "title": "Branding",
+          "costRange": 0,
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Branding"
+        },
+        {
+          "title": "Other",
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Other"
         },
         {
           "title": "My Projects",
           "costRange": "0",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi,sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "My Projects",
-          "image": "website-image.png",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": []
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "My Projects"
+        },
+        {
+          "title": "Next",
+          "description": "",
+          "name": ""
+        },
+        {
+          "title": "Next",
+          "description": "",
+          "name": ""
         }
       ]
     },
-    {   
+    {
       "headline": "Experience",
       "key": "sub-experience",
-      "selectionComponent": "ServicesSelection",
-      "HasContent": "SelectionContent",
+      "selectionComponent": "Selection",
+      "HasContent": "CtaImage",
       "subSectionData": [
         {
           "title": "Australian War Memorial",
@@ -179,22 +222,27 @@
           "image": "website-image.png",
           "alt": "JavaScript",
           "category": "Consulting",
-          "description":  "",
+          "description": "",
           "icon": ""
+        },
+        {
+          "title": "Next",
+          "description": "",
+          "name": ""
         }
       ]
     },
-    { 
+    {
       "headline": "Skills",
       "key": "sub-skills",
-      "selectionComponent": "ServicesSelection",
-      "subSectionComponent": "SelectionContent",
+      "selectionComponent": "Selection",
+      "subSectionComponent": "CtaImage",
       "subSectionData": [
         {
           "title": "JavaScript",
           "image": "website-image.png",
           "alt": "JavaScript",
-          "description": "nocontent",
+          "description": "As a skilled JavaScript developer, I have a strong understanding of the language and its core concepts. I am proficient in using JavaScript to create interactive, dynamic web applications and have experience working with popular frameworks such as React and Angular. I am also familiar with best practices for writing clean, maintainable code, and have experience working on teams to develop and maintain large-scale projects. I am committed to continuing to learn and stay up-to-date with the latest developments in the JavaScript ecosystem.",
           "icon": ""
         },
         {
@@ -222,7 +270,13 @@
           "title": "Back-End",
           "image": "website-image.png",
           "alt": "Express",
-          "frameworks": ["Express", "Node.js", "IIS", "ASP.NET", "ASP.NET Core"],
+          "frameworks": [
+            "Express",
+            "Node.js",
+            "IIS",
+            "ASP.NET",
+            "ASP.NET Core"
+          ],
           "description": "nocontent",
           "icon": ""
         },
@@ -250,17 +304,22 @@
         {
           "title": "Business accumen",
           "image": "website-image.png",
-          "alt": "Business accumen", 
+          "alt": "Business accumen",
           "description": "nocontent",
           "icon": ""
+        },
+        {
+          "title": "Next",
+          "description": "",
+          "name": ""
         }
       ]
     },
     {
       "key": "sub-vr",
       "headline": "Virtual Reality",
-      "selectionComponent": "ServicesSelection",
-      "subSectionComponent": "SelectionContent",
+      "selectionComponent": "Selection",
+      "subSectionComponent": "CtaImage",
       "subSectionData": [
         {
           "title": "Virtual Reality Process",
@@ -296,157 +355,111 @@
           "title": "Consultancy Process",
           "description": "Come back to read more :)",
           "name": "Consultancy Process"
+        },
+        {
+          "title": "Next",
+          "description": "",
+          "name": ""
         }
       ]
     },
-    { 
-      "key": "sub-vr",
+    {
+      "key": "sub-blog",
       "headline": "Blog",
-      "selectionComponent": "ServicesSelection",
-      "subSectionComponent": "SelectionContent",
+      "selectionComponent": "Selection",
+      "subSectionComponent": "CtaImage",
       "subSectionData": [
         {
           "title": "Websites",
-          "costRange": "400$-5000$",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Websites",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Iphone"]
-          }
+          "costRange": "400-5000",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Websites"
         },
         {
           "title": "Design",
           "costRange": "0",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Design",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Pencil", "Emoji"]
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Design"
         },
         {
           "title": "Virtual Reality",
           "costRange": "0",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Virtual Reality",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["VR"]
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Virtual Reality"
         },
         {
           "title": "Branding",
           "costRange": "0",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Branding",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Pencil", "Paper"]
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Branding"
         },
         {
           "title": "Other",
           "costRange": "0",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Other",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Hammer"]
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Other"
         },
         {
           "title": "My Projects",
           "costRange": "0",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "My Projects",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": []
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "My Projects"
+        }, 
+        {
+          "title": "Next",
+          "description": "",
+          "name": ""
         }
       ]
     },
-    {  
-      "headline": "Projects",
-      "key": "sub-vr",
-      "selectionComponent": "ServicesSelection",
-      "subSectionComponent": "SelectionContent",
+    {
+      "key": "sub-contact",
+      "headline": "Contact Me",
+      "selectionComponent": "Selection",
+      "subSectionComponent": "ContactForm",
       "subSectionData": [
         {
           "title": "Websites",
-          "costRange": "400$-5000$",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Websites",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Iphone"]
-          }
+          "costRange": "400-5000",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Websites"
         },
         {
           "title": "Design",
           "costRange": "0",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Design",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Pencil", "Emoji"]
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Design"
         },
         {
           "title": "Virtual Reality",
-          "costRange": 0,
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Virtual Reality",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["VR"]
-          }
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Virtual Reality"
         },
         {
           "title": "Branding",
-          "costRange": 0,
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Branding",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Pencil", "Paper"]
-          }
+          "costRange": "0",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Branding"
         },
         {
           "title": "Other",
           "costRange": "0",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "Other",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": ["Hammer"]
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "Other"
         },
         {
           "title": "My Projects",
           "costRange": "0",
-          "description":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
-          "name": "My Projects",
-          "threejs": {
-            "animationsPlaying": ["hold"],
-            "propsUsing": []
-          }
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, mauris pellentesque amet nunc, mi, sit semper et fringilla. Id volutpat nec gravida tristique sit. Vitae adipiscing nam enim ut donec bibendum ante.",
+          "name": "My Projects"
+        }, 
+        {
+          "title": "Next",
+          "description": "",
+          "name": ""
         }
       ]
-    
     }
   ]
 }

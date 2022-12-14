@@ -4,11 +4,11 @@ import create from 'zustand';
 import React from 'react';
 import { deepmerge } from '@mui/utils';
 import produce from 'immer';
+import { navigate } from 'gatsby-link';
+
 // ========================================================================== //
 // Handle theming
 // ========================================================================== //
-import { navigate } from 'gatsby-link';
-
 import {
   DARK_THEME, LIGHT_THEME, OVERRIDES, CUSTOM_THEME_PROPS,
 } from './theme';
@@ -36,8 +36,9 @@ const loadStore = () => JSON.parse(localStorage.getItem('store'));
 // add on top of this for a more robust store
 const useStore = create((set, get) => ({
   appContext: {
-    type: 'light',
+    type: typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' : 'dark',
     location: {},
+    scrollLocked: false,
     methods: {
       // ⚠️ setCurrent **is injected here via threeDCarousel** this allows you to set the carousel globally
       setAppContext: (newAppContext) => {
@@ -166,6 +167,10 @@ const useStore = create((set, get) => ({
       position: { x: 0, y: 0, z: 0 },
       pageLink: '/',
       postData: [],
+      cameraCoords: [
+        0, 3.5, 10,
+      ],
+      scenePosition: [0, -2, 0],
       // react spring animated values from three wrapper and page transition overlay
       animatedColor: '#fff',
       animatedOpacity: 1,
@@ -248,4 +253,3 @@ const useStore = create((set, get) => ({
 export {
   createTheme, lt, dt, useStore, saveStore,
 };
-// 60668172

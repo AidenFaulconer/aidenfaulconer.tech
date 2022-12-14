@@ -25,5 +25,6 @@ module.exports = {
     'no-shadow': 'warn',
     'no-tabs': 'off',
     'max-len': 'off',
+    'global-require': 'off',
   },
 };

@@ -25,27 +25,27 @@ import { render } from '@react-three/fiber';
 
 const PREFIX = 'table-of-contents';
 
-const classes = {
-  threeWrapper: `${PREFIX}-threeWrapper`,
-  post: `${PREFIX}-post`
-};
+// const classes = {
+//   threeWrapper: `${PREFIX}-threeWrapper`,
+//   post: `${PREFIX}-post`
+// };
 
-const Root = styled('nav')((
-  {
-    theme
-  }
-) => ({
-  [`& .${classes.threeWrapper}`]: {
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    overflow: 'hidden',
-    top: '0px',
-    zIndex: 1,
-  },
+// const Root = styled('nav')((
+//   {
+//     theme
+//   }
+// ) => ({
+//   [`& .${classes.threeWrapper}`]: {
+//     position: 'absolute',
+//     height: '100%',
+//     width: '100%',
+//     overflow: 'hidden',
+//     top: '0px',
+//     zIndex: 1,
+//   },
 
-  [`& .${classes.post}`]: {}
-}));
+//   [`& .${classes.post}`]: {}
+// }));
 
 export default React.memo(({ pageContents }) => {
   const [open, setOpen] = React.useState(true);
@@ -61,34 +61,34 @@ export default React.memo(({ pageContents }) => {
   // https://www.npmjs.com/package/react-intersection-observer#polyfill
 
   return (
-    <Root className="col-2 pl-5" id="sticky">
-      <List
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        subheader={(
-          <ListSubheader component="div" id="nested-list-subheader">
-            {/* <img src={require('../../static/assets/profile-photo.png')} /> */}
-          </ListSubheader>
+  // <Root className="col-2 pl-5" id="sticky">
+    <List
+      component="nav"
+      aria-labelledby="nested-list-subheader"
+      subheader={(
+        <ListSubheader component="div" id="nested-list-subheader">
+          {/* <img src={require('../../static/assets/profile-photo.png')} /> */}
+        </ListSubheader>
         )}
-      >
-        <ListItem button>
-          <ListItemText primary="Sent mail" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Drafts" />
-        </ListItem>
-        <ListItem button onClick={handleClick}>
-          <ListItemText primary="Inbox" />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button>
-              <ListItemText primary="Starred" />
-            </ListItem>
-          </List>
-        </Collapse>
-      </List>
-    </Root>
+    >
+      <ListItem button>
+        <ListItemText primary="Sent mail" />
+      </ListItem>
+      <ListItem button>
+        <ListItemText primary="Drafts" />
+      </ListItem>
+      <ListItem button onClick={handleClick}>
+        <ListItemText primary="Inbox" />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button>
+            <ListItemText primary="Starred" />
+          </ListItem>
+        </List>
+      </Collapse>
+    </List>
+  // </Root>
   );
 });

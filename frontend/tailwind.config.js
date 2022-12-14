@@ -1,13 +1,26 @@
 /** @type {import('tailwindcss').Config} */
+// @eslint-ignore
 module.exports = {
   content: [
-    // './src/**/*.{html,js,jsx}',
-    './src/pages/*.{js,jsx,ts,tsx}',
-    './src/components/**/*.{js,jsx,ts,tsx}',
+    // './index.html', './pages/*.html', './pages/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'
+    './src/pages/**/*.{js,jsx,ts,tsx}',
+    './src/components/**/**/*.{js,jsx,ts,tsx}',
     './src/layout/**/*.{js,jsx,ts,tsx}',
+    '*.{js,jsx,ts,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+      },
+    },
+    backgroundColor: (theme) => ({
+      ...theme('colors'),
+    }),
   },
-  plugins: [],
+  // purge: ['./src/**/*.js|.ts|.jsx|.tsx'],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/line-clamp'),
+  ],
 };
