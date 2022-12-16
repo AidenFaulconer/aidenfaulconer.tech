@@ -234,13 +234,13 @@ exports.onCreateWebpackConfig = ({
 }) => {
   actions.setWebpackConfig({
     devtool: process.env.NODE_ENV === 'development' ? 'eval' /** 'eval-source-map' */ : process.env.NODE_ENV === 'devbuild' ? 'source-map' : 'hidden-source-map', // for debugging processes, production debug with source-map, source-map for most efficient production buildz
-    resolve: { extensions: ['.mjs', '.js', '.jsx', '.json', '.gltf', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'otf'] },
+    resolve: { extensions: ['.mjs', '.js', '.jsx', '.json', '.gltf', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.otf'] },
     module: {
       rules: [
         { test: /\.(glb|gltf)$/i, use: 'file-loader' }, // or gltf-webpack-loader
         { test: /react-hot-loader/, use: [loaders.js()] },
         {
-          test: /\.(pdf|gif|svg|json)$/,
+          test: /\.(pdf|gif|svg|json|png|jpg)$/,
           use: 'file-loader?name=[path][name].[ext]',
           include: pth.resolve(__dirname, 'static/assets'),
         },
@@ -346,8 +346,8 @@ exports.onCreateWebpackConfig = ({
     ],
     // externals: [ nodeExternals() ],
     resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      symlinks: false,
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.png', '.jpg'],
+      symlinks: true,
     },
   });
 };

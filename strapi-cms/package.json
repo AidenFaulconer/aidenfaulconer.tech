@@ -1,0 +1,55 @@
+{
+  "name": "my-project",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
+  "scripts": {
+    "dscan": "docker scan",
+    "dbuild": "docker build ./ -t aidenfaulconer-cms",
+    "ddev": "docker run -p 1337:1337 aidenfaulconer-cms",
+    "dev": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "export": "strapi export",
+    "strapi": "strapi"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "@api.video/strapi-uploader-plugin": "^1.0.0",
+    "@artcoded/strapi-plugin-github-projects": "^1.0.5",
+    "@ef2/strapi-plugin-bold-title-editor": "^1.0.6",
+    "@retikolo/drag-drop-content-types": "^1.2.1",
+    "@strapi/plugin-color-picker": "^4.5.4",
+    "@strapi/plugin-graphql": "^4.5.4",
+    "@strapi/plugin-i18n": "4.5.4",
+    "@strapi/plugin-seo": "^1.7.7",
+    "@strapi/plugin-users-permissions": "4.5.4",
+    "@strapi/strapi": "4.5.4",
+    "add": "^2.0.6",
+    "better-sqlite3": "7.4.6",
+    "strapi-google-auth": "^0.1.2",
+    "strapi-html-editor": "^1.0.2",
+    "strapi-plugin-comments": "^2.2.1",
+    "strapi-plugin-config-sync": "^1.1.0",
+    "strapi-plugin-import-export-content": "^0.4.2",
+    "strapi-plugin-io": "^1.1.2",
+    "strapi-plugin-local-image-sharp": "^1.2.1",
+    "strapi-plugin-netlify-deployments": "^2.0.0",
+    "strapi-plugin-preview-button": "^1.0.1",
+    "strapi-plugin-publisher": "^1.1.4",
+    "strapi-plugin-sitemap": "^2.0.8",
+    "strapi-plugin-todo": "^0.0.9",
+    "yarn": "^1.22.19"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "f5f008ad-28df-4b4d-8378-dde9f0adda2e"
+  },
+  "engines": {
+    "node": ">=14.19.1 <=18.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

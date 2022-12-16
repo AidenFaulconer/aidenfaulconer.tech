@@ -1,12 +1,19 @@
-// const resolveConfig = require('tailwindcss/resolveConfig');
 const tailwindConfig = require('./tailwind.config');
-
-// const fullConfig = resolveConfig(tailwindConfig);
 
 // ========================================================================== //
 // Environment variables
 // ========================================================================== //
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+
+// ========================================================================== //
+// Strapi configuration
+// ========================================================================== //
+const strapiConfig = {
+  apiURL: process.env.STRAPI_API_URL,
+  accessToken: process.env.STRAPI_TOKEN,
+  collectionTypes: ['blog-post', 'pricing', 'project-post'],
+  singleTypes: [],
+};
 
 // ========================================================================== //
 // Bundle checks
@@ -85,7 +92,47 @@ module.exports = {
       options: {
         name: 'markdown-pages',
         // everything netlify cms outputs is now accessible under markdown-pages
-        path: `${__dirname}/_data`,
+        path: `${__dirname}/cms`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'blog',
+        // everything netlify cms outputs is now accessible under markdown-pages
+        path: `${__dirname}/cms/blog`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'project',
+        // everything netlify cms outputs is now accessible under markdown-pages
+        path: `${__dirname}/cms/projects`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'faq',
+        // everything netlify cms outputs is now accessible under markdown-pages
+        path: `${__dirname}/cms/faqs`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'pricing',
+        // everything netlify cms outputs is now accessible under markdown-pages
+        path: `${__dirname}/cms/pricing`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'settings',
+        // everything netlify cms outputs is now accessible under markdown-pages
+        path: `${__dirname}/cms/settings`,
       },
     },
     {
@@ -185,7 +232,7 @@ module.exports = {
           {
             resolve: 'gatsby-remark-copy-linked-files',
             options: {
-              destinationDir: `${__dirname}/_data`,
+              destinationDir: `${__dirname}/cms`,
               // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
             },
           },
@@ -301,6 +348,13 @@ module.exports = {
     },
     'gatsby-theme-material-ui',
     // ========================================================================== //
+    // strapi CMS
+    // ========================================================================== //
+    {
+      resolve: 'gatsby-source-strapi',
+      options: strapiConfig,
+    },
+    // ========================================================================== //
     // Netlify CMS
     // ========================================================================== //
     {
@@ -322,7 +376,7 @@ module.exports = {
       resolve: 'gatsby-plugin-netlify-cache',
       options: {
         cachePublic: true,
-        extraDirsToCache: ['./static'],
+        extraDirsToCache: [`${__dirname}/static`],
       },
     },
     // ========================================================================== //

@@ -1,2 +1,1 @@
-cd ./frontend &&
-npm run develop 
+cd ./frontend && npm run develop 

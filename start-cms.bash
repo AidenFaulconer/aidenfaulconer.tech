@@ -1,0 +1,1 @@
+cd strapi-cms && npm run build && npm run start

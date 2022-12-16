@@ -1,6 +1,0 @@
-{
-  "projects": {
-    "production": "aidenfaulconer",
-    "staging": "test-aidenfaulconer"
-  }
-}

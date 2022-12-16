@@ -200,7 +200,7 @@
     "builddev": "cross-env NODE_ENV=devbuild && gatsby build --log-pages --verbose",
     "tbuild": "netlify env:import .env.production && gatsby build && netlify functions:build --src netlify/functions",
     "build": "gatsby build",
-    "dev": "cross-env NODE_ENV=development yarn run develop --host 0.0.0.0",
+    "dev": "yarn run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "deploy": "npm run build && netlify deploy --prod",
