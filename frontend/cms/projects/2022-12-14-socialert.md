@@ -11,7 +11,7 @@ title: Socialert
 metaDescription: today we are excited to share with you the design and
   development process behind Socialert, a social media platform tailored around
   social awareness and social causes.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

@@ -10,7 +10,7 @@ metaDescription: Scalable fullstack applications can be complex and difficult to
   applications. In this blog post, we will explore how to use Helm, Docker, and
   Kubernetes to build a scalable fullstack application written in TypeScript,
   using the Next.js framework, and deploy it on Azure.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

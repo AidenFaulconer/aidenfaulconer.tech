@@ -5,7 +5,7 @@ path: /blog
 date: 2022-12-14T01:04:14.766Z
 title: Basic Login/Register with localstorage in Java and angular
 metaDescription: Fullstack Login/Register with local storage in Java and Angular
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

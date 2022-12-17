@@ -7,7 +7,7 @@ title: Create a fullstack solution in astro and deploy to AWS
 metaDescription: In this blog post, we will show you how to develop a fullstack
   application using Astro, Next.js, Postgres, and Kubernetes. We will provide
   code examples and explain how to deploy your application to AWS.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

@@ -8,7 +8,7 @@ metaDescription: It's important to note that most money today is not in digital
   assets. Digital assets, such as cryptocurrencies, make up a very small portion
   of the global economy. However, the use of digital assets is growing, and more
   and more people are beginning to invest in them.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

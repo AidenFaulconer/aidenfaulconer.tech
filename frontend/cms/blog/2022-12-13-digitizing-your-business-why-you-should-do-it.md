@@ -8,7 +8,7 @@ metaDescription: If you're not already digitalizing your business, you're
   missing out on some major benefits. In today's world, having a strong online
   presence is essential for the success of any business, and digitalizing your
   business is the best way to achieve that.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

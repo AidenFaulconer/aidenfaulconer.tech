@@ -1,11 +1,18 @@
 # reused 
-media_folder: "static/assets"
-public_folder: "public/assets"
 backend:
   name: github
   repo: AidenFaulconer/aidenfaulconer.com
   publish_mode: editorial_workflow
-
+  commit_messages:
+    create: "Create {{collection}}"
+    update: "Update {{collection}}"
+    delete: "Delete {{collection}}"
+    uploadMedia: "[skip ci] Upload “{{path}}”"
+    deleteMedia: "[skip ci] Delete “{{path}}”"
+    
+local_backend: true
+media_folder: "frontend/static/assets"
+public_folder: "frontend/public/assets"
 
 # collections CMS can edit
 collections:
@@ -19,7 +26,7 @@ collections:
   #   # author configuration (admin)
   #   - name: authors
   #     label: Authors
-  #     file: cms/authors.yml
+  #     file: frontend/cms/authors.yml
   #     description: 'Author descriptions'
   #     fields:
   #     - name: authors
@@ -32,7 +39,7 @@ collections:
   # cms configuration (admin)
   - name: settings
     label: Settings
-    folder: "cms/settings"
+    folder: "frontend/cms/settings"
     files:
       - name: config
         label: Config
@@ -91,7 +98,7 @@ collections:
   # pricing page
   - name: "pricing"
     label: "Pricing"
-    folder: "cms/pages/pricing"
+    folder: "frontend/cms/pages/pricing"
     create: true
     fields:
       - {
@@ -161,7 +168,7 @@ collections:
   # blogs page
   # - name: blog
   #   label: Blog
-  #   folder: "cms/blogging"
+  #   folder: "frontend/cms/blogging"
   #   create: true
   #   files:
   #     - name: blog-page
@@ -218,7 +225,7 @@ collections:
   #         }
   #   name: forms
   # label: Form Workflows
-  # folder: cms/forms
+  # folder: frontend/cms/forms
   # create: true
   # fields:
   # label: Title
@@ -275,7 +282,7 @@ collections:
   # services page 
   - name: "Services"
     label: "Pages"
-    folder: "cms/services/"
+    folder: "frontend/cms/services/"
     create: true
     fields:
       - {name: title, label: Title}
@@ -293,7 +300,7 @@ collections:
   # booking carousel
   - name: "booking page carousel"
     label: "Booking Page Carousel"
-    folder: "cms/booking/carousel"
+    folder: "frontend/cms/booking/carousel"
     create: true
     fields:
       - {
@@ -337,7 +344,7 @@ collections:
   # index carousel
   - name: "landing page carousel"
     label: "Landing Page Carousel"
-    folder: "cms/pages/landing-page"
+    folder: "frontend/cms/pages/landing-page"
     create: true
     fields:
       - {
@@ -381,7 +388,7 @@ collections:
   # frequently asked questions (user)
   - name: "faq" # Used in routes, ie.: /admin/collections/:slug/edit
     label: "FAQ" # Used in the UI
-    folder: "cms/faqs"
+    folder: "frontend/cms/faqs"
     create: true # Allow users to create new documents in this collection
     fields: # The fields each document in this collection have
       - { label: "Question", name: "title", widget: "string", tagname: "h1" }
@@ -390,7 +397,7 @@ collections:
   # project blog folder (content editor)
   - label: Blog
     name: blog
-    folder: cms/blog
+    folder: frontend/cms/blog
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     create: true
     # required in content editor
@@ -444,7 +451,7 @@ collections:
   # blog folder (content editor) https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
   - label: Projects
     name: project
-    folder: cms/projects
+    folder: frontend/cms/projects
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     create: true
     # required in content editor
@@ -499,7 +506,7 @@ collections:
   - label: Page Configuration
     name: page-configuration
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    folder: cms/pages
+    folder: frontend/cms/pages
     create: true
     fields:
       - widget: string

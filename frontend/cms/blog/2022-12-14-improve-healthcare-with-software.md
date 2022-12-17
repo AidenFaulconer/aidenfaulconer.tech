@@ -9,7 +9,7 @@ metaDescription: Healthcare is an industry that desperately needs digital
   for efficient and effective solutions has never been greater. Fortunately, the
   use of software and automation can help improve healthcare delivery in
   Australia and provide better outcomes for patients.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

@@ -5,7 +5,7 @@ path: /blog
 date: 2022-12-14T01:07:34.436Z
 title: CRUD with sqlite in express.js
 metaDescription: CRUD with sqlite in express.js
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

@@ -10,7 +10,7 @@ metaDescription: In today's world, where we are constantly surrounded by a wide
   success. As human beings, we are naturally drawn to software that is easy to
   use, intuitive, and visually appealing, and we are more likely to continue
   using a software application if it meets these criteria.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

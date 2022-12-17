@@ -11,7 +11,7 @@ metaDescription: The design process is an essential aspect of creating
   influence the final design of a product or campaign. In this blog post, we
   will take a look at the design process and how it influences design in UI/UX,
   marketing, and software development, with examples and images.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

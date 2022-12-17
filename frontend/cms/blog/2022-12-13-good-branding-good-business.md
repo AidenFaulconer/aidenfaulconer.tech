@@ -10,7 +10,7 @@ metaDescription: Good branding is an essential aspect of building and growing a
   consistent and recognizable image for your company. In this blog post, we will
   take a look at what good branding is and how it can help your business grow,
   with examples and images.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

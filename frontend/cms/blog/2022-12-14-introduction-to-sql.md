@@ -9,7 +9,7 @@ metaDescription: SQL, or Structured Query Language, is a programming language
   1970s, and has since become the standard language for database management. SQL
   is a powerful tool that allows users to create, modify, and query databases
   using simple, intuitive commands.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

@@ -9,7 +9,7 @@ metaDescription: Choosing the right backend and frontend framework for your web
   options available, each with their own unique set of features and benefits. In
   this blog post, we'll explore some key considerations to keep in mind when
   choosing a backend and frontend framework for your project.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

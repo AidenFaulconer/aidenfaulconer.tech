@@ -14,7 +14,7 @@ metaDescription: given N denoting number of meetings to be arraned, their are M
   schedules are disjoint. you are given L and R where L\[i] is the starting and
   R\[i] is the ending time of the i'th meeting, schedules of the two meetings i
   and j are said to be disjoint if L\[i] > R\[j] or L\[j]>R\[i].
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 # Find minimum number of meetings
 

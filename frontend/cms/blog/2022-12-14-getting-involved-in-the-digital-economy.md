@@ -9,7 +9,7 @@ metaDescription: The digital economy is an increasingly important part of the
   individuals and businesses. In today's world, digital technologies, such as
   the internet and mobile devices, are essential for accessing information,
   communicating with others, and conducting a wide range of economic activities.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

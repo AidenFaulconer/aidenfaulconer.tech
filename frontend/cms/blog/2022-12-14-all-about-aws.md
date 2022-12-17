@@ -9,7 +9,7 @@ metaDescription: AWS, or Amazon Web Services, is a cloud computing platform that
   managing applications and services. AWS is widely used by businesses and
   organizations of all sizes, and offers many benefits, such as scalability,
   reliability, and security.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

@@ -10,7 +10,7 @@ metaDescription: If you're a business owner looking to invest in a website or
   solution can be a complex and challenging task, and there are many potential
   pitfalls along the way. In this blog post, we'll discuss some of the common
   problems you might encounter, and how we address these issues in our work.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

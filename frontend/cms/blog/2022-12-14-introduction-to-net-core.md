@@ -10,7 +10,7 @@ metaDescription: Writing applications in .NET Core can be a powerful and
   including how to write a controller, how to secure your controllers, how to
   use configure services, how to configure startup.cs, and how to generate an
   API for your client-side using Swagger.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

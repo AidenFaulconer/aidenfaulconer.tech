@@ -13,7 +13,7 @@ metaDescription: Azure is a cloud computing platform that provides a wide range
   configuring a content delivery network (CDN) with Cloudflare, using Azure Load
   Balancer for load balancing, managing billing, creating user groups, and
   configuring resource groups.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

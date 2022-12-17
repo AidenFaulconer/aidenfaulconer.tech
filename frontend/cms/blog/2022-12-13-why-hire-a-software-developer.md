@@ -9,7 +9,7 @@ metaDescription: Software developers are responsible for creating and building
   development, and maintenance of software applications. Software developers are
   responsible for ensuring that these programs and systems function properly and
   meet the needs of their users.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

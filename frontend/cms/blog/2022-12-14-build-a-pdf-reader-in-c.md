@@ -8,7 +8,7 @@ metaDescription: C++ is a popular, high-performance programming language that is
   widely used for building large-scale applications. C++ is known for its
   efficiency, flexibility, and control, and it offers a rich set of features and
   libraries for developing complex and performance-critical applications.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

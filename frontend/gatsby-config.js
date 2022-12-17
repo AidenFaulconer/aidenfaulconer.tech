@@ -3,7 +3,7 @@ const tailwindConfig = require('./tailwind.config');
 // ========================================================================== //
 // Environment variables
 // ========================================================================== //
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV}` });
 
 // ========================================================================== //
 // Strapi configuration
@@ -70,7 +70,7 @@ module.exports = {
     //     layout: require.resolve(`${__dirname}/src/layout/layout.jsx`), // this is excluded and stays static on transtiions **this means not including layout in pages or templates**
     //   },
     // }, // creates the 'tl-edge & tl-wrapper https://github.com/TylerBarnes/gatsby-plugin-transition-link/issues/29
-
+    'gatsby-plugin-react-helmet',
     // have a custom plugin inject theme before this
     {
       resolve: 'gatsby-plugin-layout',
@@ -147,7 +147,7 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'static',
-        path: `${__dirname}/static`,
+        path: `${__dirname}/static/`,
       },
     },
     {
@@ -160,79 +160,79 @@ module.exports = {
     // ========================================================================== //
     //     Image compression
     // ========================================================================== //
-    // {
-    //   resolve: 'gatsby-plugin-sharp',
-    //   options: {
-    //     useMozJpeg: false,
-    //     stripMetadata: true,
-    //     defaultQuality: 75,
-    //     defaults: {
-    //       formats: ['auto', 'webp'],
-    //       placeholder: 'dominantColor',
-    //       quality: 50,
-    //       breakpoints: [750, 1080, 1366, 1920],
-    //       backgroundColor: 'transparent',
-    //       tracedSVGOptions: {},
-    //       blurredOptions: {},
-    //       jpgOptions: {},
-    //       pngOptions: {},
-    //       webpOptions: {},
-    //       avifOptions: {},
-    //     },
-    //   },
-    // },
-    // 'gatsby-transformer-sharp',
+    'gatsby-plugin-image',
+    {
+      resolve: 'gatsby-plugin-sharp',
+      options: {
+        useMozJpeg: false,
+        stripMetadata: true,
+        defaultQuality: 75,
+        defaults: {
+          formats: ['webp', 'auto'],
+          placeholder: 'dominantColor',
+          quality: 50,
+          breakpoints: [750, 1080, 1366, 1920],
+          backgroundColor: 'transparent',
+          tracedSVGOptions: {},
+          blurredOptions: {},
+          jpgOptions: {},
+          pngOptions: {},
+          webpOptions: {},
+          avifOptions: {},
+        },
+      },
+    },
+    'gatsby-transformer-sharp',
     // ========================================================================== //
     //       Consume markdown from netlify
     // ========================================================================== //
-
     // makes markdown consumable in graphql through gatsbys api
     {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
+          // go before gatsby-remark-images
+          'gatsby-remark-relative-images-v2',
           // use code markup in blog posts
-          // {
-          //   resolve: 'gatsby-remark-prismjs',
-          //   options: {
-          //     classPrefix: 'language-',
-          //     inlineCodeMarker: null,
-          //     aliases: {},
-          //     showLineNumbers: false,
-          //     noInlineHighlight: false,
-          //   },
-          // },
-
+          {
+            resolve: 'gatsby-remark-prismjs',
+            options: {
+              classPrefix: 'language-',
+              inlineCodeMarker: null,
+              aliases: {},
+              showLineNumbers: false,
+              noInlineHighlight: false,
+            },
+          },
           // use emojis in blog posts
           // 512 //384 //256 //192 //48 /144
-          // 'gatsby-remark-emojis',
-
-          //   // flexible images with embedded image content in blogs
-          //   // use images in blog posts **png and jpg only**
-          //   // reference: https://www.gatsbyjs.com/plugins/@redocly/gatsby-remark-images/?=remark
-          // {
-          //   resolve: 'gatsby-remark-images',
-          //   options: {
-          //     // It's important to specify the maxWidth (in pixels) of
-          //     // the content container as this plugin uses this as the
-          //     // base for generating different widths of each image.
-          //     // backgroundColor:
-          //     // quality
-          //     // withWebP
-          //     // tracedSvgs
-          //     withWebp: true,
-          //     showCaptions: true,
-          //     quality: 50,
-          //     maxWidth: 590,
-          //     // wrapperStyle: (fluidResult) => `flex:${_.round(fluidResult.aspectRatio, 2)};`,
-          //   },
-          // },
+          'gatsby-remark-emojis',
+          // flexible images with embedded image content in blogs
+          // use images in blog posts **png and jpg only**
+          // reference: https://www.gatsbyjs.com/plugins/@redocly/gatsby-remark-images/?=remark
+          {
+            resolve: 'gatsby-remark-images',
+            options: {
+              // It's important to specify the maxWidth (in pixels) of
+              // the content container as this plugin uses this as the
+              // base for generating different widths of each image.
+              // backgroundColor:
+              // quality
+              // withWebP
+              // tracedSvgs
+              withWebp: true,
+              showCaptions: true,
+              quality: 50,
+              maxWidth: 590,
+              // wrapperStyle: (fluidResult) => `flex:${_.round(fluidResult.aspectRatio, 2)};`,
+            },
+          },
 
           // point remark data to public folder
           {
             resolve: 'gatsby-remark-copy-linked-files',
             options: {
-              destinationDir: `${__dirname}/cms`,
+              destinationDir: `${__dirname}/public`,
               // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
             },
           },
@@ -271,7 +271,7 @@ module.exports = {
       // The property ID; the tracking code won't be generated without it. replace with yours
       resolve: 'gatsby-plugin-google-analytics',
       options: {
-        trackingId: 'UA-164743872-1',
+        trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
         head: true,
       },
     },
@@ -370,8 +370,6 @@ module.exports = {
     //     purgeOnly: ['/all.sass'], // applies purging only on the bulma css file
     //   },
     // }, // must be after other CSS plugins
-
-    'gatsby-plugin-netlify',
     {
       resolve: 'gatsby-plugin-netlify-cache',
       options: {
@@ -379,6 +377,7 @@ module.exports = {
         extraDirsToCache: [`${__dirname}/static`],
       },
     },
+    'gatsby-plugin-netlify',
     // ========================================================================== //
     //     Webpack optimizations
     // ========================================================================== //

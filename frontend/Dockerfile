@@ -15,4 +15,4 @@ RUN yarn build
 
 EXPOSE 8000
 
-CMD ["yarn","run","serve", "--", "-H","0.0.0.0"]
+CMD ["yarn","serve", "--", "-H","0.0.0.0"]

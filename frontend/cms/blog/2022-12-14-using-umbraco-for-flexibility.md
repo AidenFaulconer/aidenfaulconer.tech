@@ -8,7 +8,7 @@ metaDescription: Umbraco is a popular content management system (CMS) that is
   widely used by businesses and organizations around the world. It is known for
   its ease of use, flexibility, and powerful features, making it an excellent
   choice for those looking to manage and publish content on the web.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 

@@ -12,7 +12,7 @@ metaDescription: Using source control, branches, and Azure DevOps is a powerful
   independently and then merged together. Azure DevOps is a cloud-based platform
   that provides tools for source control, branching, and collaboration, as well
   as many other features for managing the development process.
-thumbnail: public/assets/me.png
+thumbnail: https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80
 ---
 <!--StartFragment-->
 
