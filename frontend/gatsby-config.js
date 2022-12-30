@@ -277,14 +277,14 @@ module.exports = {
     // ========================================================================== //
     //     analytics
     // ========================================================================== //
-    {
-      // The property ID; the tracking code won't be generated without it. replace with yours
-      resolve: 'gatsby-plugin-google-analytics',
-      options: {
-        trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
-        head: true,
-      },
-    },
+    // {
+    //   // The property ID; the tracking code won't be generated without it. replace with yours
+    //   resolve: 'gatsby-plugin-google-analytics',
+    //   options: {
+    //     trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
+    //     head: true,
+    //   },
+    // },
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
