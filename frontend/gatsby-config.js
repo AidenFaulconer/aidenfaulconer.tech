@@ -128,14 +128,14 @@ module.exports = {
         path: `${__dirname}/cms/pricing`,
       },
     },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'settings',
-        // everything netlify cms outputs is now accessible under markdown-pages
-        path: `${__dirname}/cms/settings`,
-      },
-    },
+    // {
+    //   resolve: 'gatsby-source-filesystem',
+    //   options: {
+    //     name: 'settings',
+    //     // everything netlify cms outputs is now accessible under markdown-pages
+    //     path: `${__dirname}/cms/settings`,
+    //   },
+    // },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
