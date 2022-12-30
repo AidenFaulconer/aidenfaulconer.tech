@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_carousel_selections",
+  "info": {
+    "displayName": "CarouselSelection"
+  },
+  "options": {},
+  "attributes": {
+    "illustrationType": {
+      "type": "enumeration",
+      "enum": [
+        "moustache",
+        "confidence",
+        "coffee",
+        "genie",
+        "vr"
+      ]
+    },
+    "headline": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    }
+  }
+}

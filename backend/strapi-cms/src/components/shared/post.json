@@ -1,0 +1,77 @@
+{
+  "collectionName": "components_shared_posts",
+  "info": {
+    "displayName": "post",
+    "icon": "align-left",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "tags": {
+      "type": "enumeration",
+      "enum": [
+        "tech",
+        "business",
+        "frontend",
+        "backend",
+        "website",
+        "javascript",
+        "typescript",
+        "cplusplus",
+        "csharp",
+        "python",
+        "design",
+        "ui/ux",
+        "management",
+        "infrastructure",
+        "cloud",
+        "aws",
+        "azure",
+        "other",
+        "gatsby",
+        "react",
+        "vue",
+        "angular",
+        "umbraco",
+        "strapi",
+        "wordpress",
+        "code"
+      ],
+      "required": true,
+      "default": "tech"
+    },
+    "date": {
+      "type": "date",
+      "default": "2022-06-01",
+      "required": true
+    },
+    "theme": {
+      "type": "json"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "design",
+        "branding",
+        "vr",
+        "website",
+        "other",
+        "software"
+      ],
+      "required": true,
+      "default": "software"
+    },
+    "content": {
+      "type": "richtext",
+      "default": "post content",
+      "required": true,
+      "minLength": 1
+    },
+    "metaSocial": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.meta-social",
+      "required": true
+    }
+  }
+}

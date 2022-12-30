@@ -6865,18 +6865,6 @@ cheerio@1.0.0-rc.2:
     lodash "^4.15.0"
     parse5 "^3.0.1"
 
-cheerio@1.0.0-rc.3:
-  version "1.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.3.tgz#094636d425b2e9c0f4eb91a46c05630c9a1a8bf6"
-  integrity sha512-0td5ijfUPuubwLUu0OBoe98gZj8C/AA+RW3v67GPlGOrvxWjZmBXiBCRU+I8VEiNyJzjth40POfHiz2RB3gImA==
-  dependencies:
-    css-select "~1.2.0"
-    dom-serializer "~0.1.1"
-    entities "~1.1.1"
-    htmlparser2 "^3.9.1"
-    lodash "^4.15.0"
-    parse5 "^3.0.1"
-
 cheerio@^1.0.0-rc.10, cheerio@^1.0.0-rc.12:
   version "1.0.0-rc.12"
   resolved "https://registry.npmjs.org/cheerio/-/cheerio-1.0.0-rc.12.tgz"
@@ -8521,7 +8509,7 @@ dom-serializer@^2.0.0:
     domhandler "^5.0.2"
     entities "^4.2.0"
 
-dom-serializer@~0.1.0, dom-serializer@~0.1.1:
+dom-serializer@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-0.1.1.tgz#1ec4059e284babed36eec2941d4a970a189ce7c0"
   integrity sha512-l0IU0pPzLWSHBcieZbpOKgkIn3ts3vAh7ZuFyXNwJxJXk/c4Gwj9xaTJwIDVQCXawWD0qb3IzMGH5rglQaO0XA==
@@ -10575,6 +10563,11 @@ gatsby-plugin-emotion@^8.3.0:
     "@babel/runtime" "^7.15.4"
     "@emotion/babel-preset-css-prop" "^11.2.0"
 
+gatsby-plugin-env-variables@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-env-variables/-/gatsby-plugin-env-variables-2.3.0.tgz#bc47617bd78f8f68ff72b3c4c7a2ae7ae464fbc1"
+  integrity sha512-HvVzuapa1jZ0fHtvw4hRlu3Zi5boPLYejVkULnzSmzpSz6UrIj88eEk8WaiKrxkp0CDK9VmXweAdx6U3AwgCog==
+
 gatsby-plugin-google-analytics@^5.3.0:
   version "5.3.0"
   resolved "https://registry.npmjs.org/gatsby-plugin-google-analytics/-/gatsby-plugin-google-analytics-5.3.0.tgz"
@@ -10910,17 +10903,6 @@ gatsby-remark-relative-images-v2@^0.1.5:
     lodash "4.17.5"
     slash "2.0.0"
     unist-util-select "1.5.0"
-
-gatsby-remark-relative-images@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/gatsby-remark-relative-images/-/gatsby-remark-relative-images-2.0.2.tgz#17a26ba15762670c8125a33ecd8316a0124cb06f"
-  integrity sha512-VD8mHbTDvSKIbpJ5pWOWdooDhDsU5lh6QUg5d9bw0yq+BJRpl2NnUDFV3L+S2E2CSKonJ9rKZ/SPMpc7nfLG+w==
-  dependencies:
-    cheerio "1.0.0-rc.3"
-    is-invalid-path "1.0.2"
-    lodash "4.17.20"
-    traverse "0.6.6"
-    unist-util-select "3.0.1"
 
 gatsby-remark-responsive-iframe@^6.3.0:
   version "6.3.0"
@@ -12996,11 +12978,6 @@ is-interactive@^1.0.0:
   resolved "https://registry.yarnpkg.com/is-interactive/-/is-interactive-1.0.0.tgz#cea6e6ae5c870a7b0a0004070b7b587e0252912e"
   integrity sha512-2HvIEKRoqS62guEC+qBjpvRubdX910WCMuJTZ+I9yvqKU2/12eSL549HMwtabb4oupdj2sMP50k+XJfB/8JE6w==
 
-is-invalid-path@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/is-invalid-path/-/is-invalid-path-1.0.2.tgz#2f84731559f4936abcf1b227632719cf45c5dc0e"
-  integrity sha512-6KLcFrPCEP3AFXMfnWrIFkZpYNBVzZAoBJJDEZKtI3LXkaDjM3uFMJQjxiizUuZTZ9Oh9FNv/soXbx5TcpaDmA==
-
 is-invalid-path@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/is-invalid-path/-/is-invalid-path-0.1.0.tgz"
@@ -14473,11 +14450,6 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz"
   integrity sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==
-
-lodash@4.17.20:
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
-  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 lodash@4.17.21, lodash@^4.0.1, lodash@^4.1.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@~4.17.0:
   version "4.17.21"
@@ -16367,7 +16339,7 @@ nswag@^13.18.2:
   resolved "https://registry.npmjs.org/nswag/-/nswag-13.18.2.tgz"
   integrity sha512-7OpG9WkrZUO2+9I7hgQsaAHujsP/tCaIs7ML2B4wUuFLjSsG6lHucyrREyVO/h9l3MM/Cw4RlEGFBbluWhgeYg==
 
-nth-check@^1.0.0, nth-check@^1.0.1, nth-check@~1.0.1:
+nth-check@^1.0.1, nth-check@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nth-check/-/nth-check-1.0.2.tgz#b2bd295c37e3dd58a3bf0700376663ba4d9cf05c"
   integrity sha512-WeBOdju8SnzPN5vTUJYxYUxLeXpCaVP5i5e0LF8fg7WORF2Wd7wFX/pk0tYZk7s8T+J7VLy0Da6J1+wCT0AtHg==
@@ -21320,11 +21292,6 @@ tr46@~0.0.3:
   resolved "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
-traverse@0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.6.6.tgz#cbdf560fd7b9af632502fed40f918c157ea97137"
-  integrity sha512-kdf4JKs8lbARxWdp7RKdNzoJBhGUcIalSYibuGyHJbmk40pOysQ0+QPvlkCOICOivDWU2IJo2rkrxyTK2AH4fw==
-
 trim-lines@^1.0.0:
   version "1.1.3"
   resolved "https://registry.npmjs.org/trim-lines/-/trim-lines-1.1.3.tgz"
@@ -21775,17 +21742,6 @@ unist-util-select@1.5.0:
     css-selector-parser "^1.1.0"
     debug "^2.2.0"
     nth-check "^1.0.1"
-
-unist-util-select@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/unist-util-select/-/unist-util-select-3.0.1.tgz#787fc452db9ba77f0ade0e7dc53c3d9d4acc79c7"
-  integrity sha512-VQpTuqZVJlRbosQdnLdTPIIqwZeU70YZ5aMBOqtFNGeeCdYn6ORZt/9RiaVlbl06ocuf58SVMoFa7a13CSGPMA==
-  dependencies:
-    css-selector-parser "^1.0.0"
-    not "^0.1.0"
-    nth-check "^1.0.0"
-    unist-util-is "^4.0.0"
-    zwitch "^1.0.0"
 
 unist-util-select@^3.0.4:
   version "3.0.4"

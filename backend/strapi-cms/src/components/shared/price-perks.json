@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_shared_price_perks",
+  "info": {
+    "displayName": "PricePerks",
+    "icon": "dollar-sign"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    }
+  }
+}

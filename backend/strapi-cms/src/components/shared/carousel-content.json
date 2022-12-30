@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_shared_carousel_contents",
+  "info": {
+    "displayName": "CarouselContent",
+    "icon": "grip-vertical"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "link": {
+      "type": "string",
+      "default": "/services/",
+      "required": false
+    },
+    "image": {
+      "allowedTypes": [
+        "images",
+        "videos"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "project_posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::project-post.project-post"
+    },
+    "pricing": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::pricing.pricing"
+    }
+  }
+}

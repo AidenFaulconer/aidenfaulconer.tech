@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "carousels",
+  "info": {
+    "singularName": "carousel",
+    "pluralName": "carousels",
+    "displayName": "Carousel",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "subSections": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.carousel-item"
+    },
+    "sections": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.carousel-selection"
+    }
+  }
+}

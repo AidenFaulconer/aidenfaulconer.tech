@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_shared_price_features",
+  "info": {
+    "displayName": "PriceFeatures",
+    "icon": "dollar-sign"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    }
+  }
+}

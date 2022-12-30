@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_shared_prices",
+  "info": {
+    "displayName": "Price",
+    "icon": "dollar-sign",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "featured": {
+      "type": "boolean"
+    },
+    "description": {
+      "type": "text"
+    },
+    "priceStart": {
+      "type": "decimal"
+    },
+    "priceEnd": {
+      "type": "decimal"
+    },
+    "priceFeatures": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.price-features"
+    },
+    "pricePerks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.price-perks"
+    }
+  }
+}

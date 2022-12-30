@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_qas",
+  "info": {
+    "displayName": "QA",
+    "icon": "allergies"
+  },
+  "options": {},
+  "attributes": {
+    "Question": {
+      "type": "text"
+    },
+    "Answer": {
+      "type": "richtext"
+    }
+  }
+}

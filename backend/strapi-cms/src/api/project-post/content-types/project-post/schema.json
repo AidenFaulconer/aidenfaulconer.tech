@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "project_posts",
+  "info": {
+    "singularName": "project-post",
+    "pluralName": "project-posts",
+    "displayName": "ProjectPost",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
+    },
+    "post": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.post"
+    }
+  }
+}

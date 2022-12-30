@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_shared_carousel_items",
+  "info": {
+    "displayName": "CarouselSubSection",
+    "icon": "equals",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "headline": {
+      "type": "string",
+      "required": true
+    },
+    "key": {
+      "type": "string",
+      "required": true
+    },
+    "subSectionData": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.carousel-content"
+    },
+    "selectionComponent": {
+      "type": "enumeration",
+      "enum": [
+        "Selection"
+      ]
+    },
+    "hasContent": {
+      "type": "enumeration",
+      "enum": [
+        "CtaList",
+        "CtaImage"
+      ]
+    }
+  }
+}

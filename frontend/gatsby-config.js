@@ -13,6 +13,7 @@ const strapiConfig = {
   accessToken: process.env.STRAPI_TOKEN,
   collectionTypes: ['blog-post', 'pricing', 'project-post'],
   singleTypes: [],
+  queryLimit: 1000,
 };
 
 // ========================================================================== //
@@ -184,6 +185,15 @@ module.exports = {
     },
     'gatsby-transformer-sharp',
     // ========================================================================== //
+    //     env variables
+    // ========================================================================== //
+    {
+      resolve: 'gatsby-plugin-env-variables',
+      options: {
+        allowList: ['DOMAIN_NAME', 'SERVER_PORT', 'API_ENDPOINT'],
+      },
+    },
+    // ========================================================================== //
     //       Consume markdown from netlify
     // ========================================================================== //
     // makes markdown consumable in graphql through gatsbys api
@@ -350,10 +360,10 @@ module.exports = {
     // ========================================================================== //
     // strapi CMS
     // ========================================================================== //
-    {
-      resolve: 'gatsby-source-strapi',
-      options: strapiConfig,
-    },
+    // {
+    //   resolve: 'gatsby-source-strapi',
+    //   options: strapiConfig,
+    // },
     // ========================================================================== //
     // Netlify CMS
     // ========================================================================== //

@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "landing_pages",
+  "info": {
+    "singularName": "landing-page",
+    "pluralName": "landing-pages",
+    "displayName": "LandingPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.seo"
+    },
+    "headline": {
+      "type": "string"
+    },
+    "headlineDescription": {
+      "type": "text"
+    }
+  }
+}

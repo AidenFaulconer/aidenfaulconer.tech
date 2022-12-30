@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "booking_pages",
+  "info": {
+    "singularName": "booking-page",
+    "pluralName": "booking-pages",
+    "displayName": "BookingPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    }
+  }
+}

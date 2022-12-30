@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "faqs",
+  "info": {
+    "singularName": "faq",
+    "pluralName": "faqs",
+    "displayName": "FaqPage",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "questions": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.qa"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.seo"
+    }
+  }
+}

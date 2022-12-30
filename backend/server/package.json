@@ -1,0 +1,38 @@
+{
+  "dependencies": {
+    "@types/express": "^4.17.15",
+    "axios": "^1.2.1",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-cache-controller": "^1.1.0",
+    "express-rate-limit": "^6.7.0",
+    "express-swagger-generator": "^1.1.17",
+    "express-validator": "^6.14.2",
+    "helmet": "^6.0.1",
+    "helmet-csp": "^3.4.0",
+    "jsonschema": "^1.4.1",
+    "jsonwebtoken": "^9.0.0",
+    "jspdf": "^2.5.1",
+    "nodemailer": "^6.8.0",
+    "nodemon": "^2.0.20",
+    "pm2": "^5.2.2",
+    "sanitize-html": "^2.8.1",
+    "serverless-http": "^3.1.0",
+    "socket.io": "^4.5.4",
+    "stripe": "^11.4.0",
+    "typescript": "^4.9.4"
+  },
+  "scripts": {
+    "start": "cross-env NODE_ENV=production nodemon ./server.js localhost",
+    "dev": "cross-env NODE_ENV=development nodemon ./server.js localhost",
+    "debug": "cross-env NODE_ENV=development DEBUG=app:server node --inspect ./server.js",
+    "build-server": "cross-env NODE_ENV=development && netlify functions:build --src /functions.js",
+    "serve-server": "cross-env NODE_ENV=development && netlify functions:serve",
+    "serve-server2": "cross-env NODE_ENV=production && netlify deploy --open",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx --fix src/**/*.{js,jsx,ts,tsx}",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+  }
+}
