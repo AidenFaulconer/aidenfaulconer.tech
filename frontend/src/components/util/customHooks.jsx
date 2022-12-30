@@ -1040,7 +1040,7 @@ export const useWindowSize = () => {
 // };
 
 // Hook
-export const useEventListener = (eventName, handler, element = window) => {
+export const useEventListener = (eventName, handler, element = typeof window !== 'undefined' && window || '') => {
   // Create a ref that stores handler
   const savedHandler = useRef();
   // Update ref.current value if handler changes.

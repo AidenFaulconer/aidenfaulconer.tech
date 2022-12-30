@@ -134,92 +134,92 @@ async function getPosts({ graphql, reporter, regex }) {
 // ========================================================================== //
 
 // create blog pages, and regular pages this function is destructuring the gatsby utils passed in
-exports.createPages = async ({ actions, graphql, reporter }) => {
-  const { createPage } = actions;
+// exports.createPages = async ({ actions, graphql, reporter }) => {
+//   const { createPage } = actions;
 
-  // ========================================================================== //
-  //   function to Get and create blog posts
-  // ========================================================================== //
-  async function buildPageFromQuery(regex, template) {
-    // sort: {order: DESC, fields: [frontmatter__date]}
-    const result = await graphql(`
-    query blogBuilderQuery {
-      allMarkdownRemark(
-        filter: {frontmatter: {catagory: {regex: "/${regex}/"}}}
-        limit: 5000
-      ) {
-        edges {
-          node {
-            id
-            html
-            excerpt
-            frontmatter {
-              catagory
-              metaDescription
-              date
-              path
-              title
-              thumbnail
-            }
-          }
-          next {
-            nid: id
-          }
-          previous {
-            pid: id
-          }
-        }
-      }
-    }
-  `);
+//   // ========================================================================== //
+//   //   function to Get and create blog posts
+//   // ========================================================================== //
+//   async function buildPageFromQuery(regex, template) {
+//     // sort: {order: DESC, fields: [frontmatter__date]}
+//     const result = await graphql(`
+//     query blogBuilderQuery {
+//       allMarkdownRemark(
+//         filter: {frontmatter: {catagory: {regex: "/${regex}/"}}}
+//         limit: 5000
+//       ) {
+//         edges {
+//           node {
+//             id
+//             html
+//             excerpt
+//             frontmatter {
+//               catagory
+//               metaDescription
+//               date
+//               path
+//               title
+//               thumbnail
+//             }
+//           }
+//           next {
+//             nid: id
+//           }
+//           previous {
+//             pid: id
+//           }
+//         }
+//       }
+//     }
+//   `);
 
-    // ========================================================================== //
-    // Handle errors
-    // ========================================================================== //
-    if (result.errors) {
-      // reporter.panicOnBuild('Error while running GraphQL query.');
-      result.errors.forEach((e) => reporter.error(e.toString()));
-      // return Promise.reject(result.errors);//causes errors in node.js
-    }
+//     // ========================================================================== //
+//     // Handle errors
+//     // ========================================================================== //
+//     if (result.errors) {
+//       // reporter.panicOnBuild('Error while running GraphQL query.');
+//       result.errors.forEach((e) => reporter.error(e.toString()));
+//       // return Promise.reject(result.errors);//causes errors in node.js
+//     }
 
-    // ========================================================================== //
-    //     Build all the pages
-    // ========================================================================== //
-    // reporter.warn(JSON.stringify(result, null, 2));
-    // return;
-    // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
-    if (result !== null) {
-      // return; // i want a build NOW, i don't want to wait for the build to finish on this side, get it out NOW
-      result.data.allMarkdownRemark.edges.forEach((edge, i) => {
-        const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
+//     // ========================================================================== //
+//     //     Build all the pages
+//     // ========================================================================== //
+//     // reporter.warn(JSON.stringify(result, null, 2));
+//     // return;
+//     // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
+//     if (result !== null) {
+//       // return; // i want a build NOW, i don't want to wait for the build to finish on this side, get it out NOW
+//       result.data.allMarkdownRemark.edges.forEach((edge, i) => {
+//         const { node: { id, frontmatter: { path, title, thumbnail } } } = edge;
 
-        createPage({
-          context: {
-            id,
-            nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
-            previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
-          },
-          component: template,
-          path,
-        });
-      });
-    } else { reporter.warn(`queried data is null! for a ${regex}page${JSON.stringify(result, null, 2)}`); }
-  }
+//         createPage({
+//           context: {
+//             id,
+//             nextPostId: edge?.next?.nid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
+//             previousPostId: edge?.next?.pid || 'ee2133c9-f2d3-590f-afdd-122dc62d602f',
+//           },
+//           component: template,
+//           path,
+//         });
+//       });
+//     } else { reporter.warn(`queried data is null! for a ${regex}page${JSON.stringify(result, null, 2)}`); }
+//   }
 
-  // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
-  // ========================================================================== //
-  //   Build pages
-  // ========================================================================== //
-  // await buildPageFromQuery(
-  //   'b|Blog',
-  //   pth.resolve('src/template/project-template.jsx'),
-  // ); // build blog pages
+//   // reporter.warn(pth.resolve('src/components/template-components/project-template.jsx').default);
+//   // ========================================================================== //
+//   //   Build pages
+//   // ========================================================================== //
+//   // await buildPageFromQuery(
+//   //   'b|Blog',
+//   //   pth.resolve('src/template/project-template.jsx'),
+//   // ); // build blog pages
 
-  await buildPageFromQuery(
-    'P|project',
-    pth.resolve('src/template/project-template.jsx'),
-  ); // build project pages
-};
+//   await buildPageFromQuery(
+//     'P|project',
+//     pth.resolve('src/template/project-template.jsx'),
+//   ); // build project pages
+// };
 
 // ========================================================================== //
 // webpack configuration
