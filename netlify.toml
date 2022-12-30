@@ -19,7 +19,7 @@
 [build]
   command = "yarn build"
   functions = "backend/server"
-  publish = "frontend/public/"
+  publish = "public/"
  
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
@@ -42,7 +42,7 @@
 [context.production]
   command = "yarn build"
   functions = "backend/server"
-  publish = "frontend/public/"
+  publish = "public/"
   # environment = { ACCESS_TOKEN = "super secret", NODE_VERSION = "14.15.3" }
 
   
@@ -135,7 +135,7 @@
   command = "yarn dev" # Command to start your dev server
   targetPort = 8001 # The port for your application server, framework or site generator
   port = 3001 # The port that the netlify dev will be accessible on
-  publish = "frontend/public" # The path to your static content folder
+  publish = "public" # The path to your static content folder
   # jwtSecret = "secret" # The secret used to verify tokens for JWT based redirects
   # jwtRolePath = "app_metadata.authorization.roles" # Object path we should look for role values for JWT based redirects
   autoLaunch = false # a Boolean value that determines if Netlify Dev launches the local server address in your browser
