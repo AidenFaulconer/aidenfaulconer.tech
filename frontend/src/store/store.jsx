@@ -179,6 +179,7 @@ const useStore = create((set, get) => ({
         animationsPlaying: ['hold'],
         propsUsing: [],
         handPosition: [0, -1, 0],
+        numHands: 2,
       },
       // headline: 'THE BUILDING BLOCK FOR YOUR ORGANISATION',
       pageTheme: {
