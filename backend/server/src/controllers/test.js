@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 /**
  * This function comment is parsed by doctrine
@@ -10,13 +10,16 @@ const router = express.Router();
  * @returns {object} 200 - An array of user info
  * @returns {Error}  default - Unexpected error
  */
-router.get('/1', (req, res) => {
-  const { body, headers, readable, rawTrailers, socket, secure, subdomains, statusMessage, complete, fresh, ip, method, originalUrl, params, protocol, query} = req;
-
-  res.write(JSON.stringify({
-    message: 'you sent this information',
+router.get('/', (req, res) => {
+  const {
     body,
     headers,
+    readable,
+    rawTrailers,
+    socket,
+    secure,
+    subdomains,
+    statusMessage,
     complete,
     fresh,
     ip,
@@ -25,24 +28,57 @@ router.get('/1', (req, res) => {
     params,
     protocol,
     query,
-    rawTrailers,
-    readable,
-    secure,
-    // socket,
-    subdomains,
-    statusMessage,
-  }, null, 2));
-});
+  } = req
+
+  res.write(
+    JSON.stringify(
+      {
+        message: 'you sent this information',
+        body,
+        headers,
+        complete,
+        fresh,
+        ip,
+        method,
+        originalUrl,
+        params,
+        protocol,
+        query,
+        rawTrailers,
+        readable,
+        secure,
+        // socket,
+        subdomains,
+        statusMessage,
+      },
+      null,
+      2,
+    ),
+  )
+})
 
 router.get('/2', (req, res) => {
   const {
-    body, headers, readable, rawTrailers, socket, secure, subdomains, statusMessage, complete, fresh, ip, method, originalUrl, params, protocol, query,
-  } = req;
+    body,
+    headers,
+    readable,
+    rawTrailers,
+    socket,
+    secure,
+    subdomains,
+    statusMessage,
+    complete,
+    fresh,
+    ip,
+    method,
+    originalUrl,
+    params,
+    protocol,
+    query,
+  } = req
 
-  res.write(
-    JSON.stringify({message: 'hey, you said hi!',}, null, 2)
-    ); 
-});
+  res.write(JSON.stringify({ message: 'hey, you said hi!' }, null, 2))
+})
 
 //export router so the server can find this controller
-module.exports = router;
+module.exports = router

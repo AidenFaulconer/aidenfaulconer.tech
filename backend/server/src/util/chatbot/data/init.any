@@ -1,0 +1,21 @@
+## stories
+* greet
+  - action_greet
+* inquire_about_product
+  - inquire_about_product
+  - action_answer_product_inquiry
+* inquire_about_return
+  - inquire_about_return
+  - action_answer_return_inquiry
+* inquire_about_shipping
+  - inquire_about_shipping
+  - action_answer_shipping_inquiry
+* inquire_about_store_location
+  - inquire_about_store_location
+  - action_answer_store_location_inquiry
+* inquire_about_order
+  - inquire_about_order
+  - action_answer_order_inquiry
+* cannot_help
+  - any_other_input
+  - action_unable_to_help

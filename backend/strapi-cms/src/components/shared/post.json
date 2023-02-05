@@ -72,6 +72,26 @@
       "repeatable": false,
       "component": "shared.meta-social",
       "required": true
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "author": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.author"
+    },
+    "excerpt": {
+      "type": "richtext",
+      "maxLength": 300
     }
   }
 }

@@ -45,6 +45,7 @@ import Camera from './camera';
 import Cubes from './cubes';
 import HandModel from './hand';
 import Orb from './orb';
+import Smoke from './smoke';
 
 const DisableRender = () => useFrame(() => null, 1000);
 
@@ -66,9 +67,9 @@ export const PortfolioCanvas = React.memo(
   ({
     x, setColor, theme, id, setTheme,
   }) => {
-    const { cameraCoords, scenePosition, hand: { handPosition, propsUsing } } = useStore((state) => state.threejsContext.context);
+    const { cameraCoords, scenePosition, hand: { handPosition, propsUsing, numHands } } = useStore((state) => state.threejsContext.context);
     const {
-      fps, gpu, isMobile, tier,
+      fps, gpu, isMobile, tier, // tier goes up to 3
     } = useDetectGPU();
     const { ref, inView } = useInView();
     const { innerWidth } = useWindowSize();// detect resize
@@ -139,34 +140,53 @@ export const PortfolioCanvas = React.memo(
       >
         {!inView && <DisableRender />}
         <group position={scenePosition} scale={windowScale}>
-          <ambientLight color={x} intensity={0.3} />
-          {/* TODO: dont use presets, they are requested over network and block resources, pass your own */}
+
+          <ambientLight color={x} intensity={0.4} />
+
+          {tier === 4 && (
           <Environment preset="lobby" scene={undefined} />
+          ) || (
+          <directionalLight color={x} intensity={0.7} rotation={[d2r(10), d2r(45), 0]} position={[0, 5, 0]} />
+          )}
+          {/* TODO: dont use presets, they are requested over network and block resources, pass your own */}
           <Camera />
           <Suspense fallback={null}>
             {/* do not render hands if the device has a bad GPU */}
-            {tier !== 1 && (
-              <>
-                {/* left */}
-                <HandModel
-                  theatreKey="handLeft"
-                  scale={-1.65}
-                  position={[-4, 1.75, 1.5]}
-                  rotation={[d2r(-90), d2r(-190), d2r(-100)]}
-                />
-                {/* right hand */}
-                <HandModel
-                  theatreKey="handRight"
-                  scale={1.65}
-                  position={[4, 1.75, 1.5]}
-                  rotation={[d2r(-270), d2r(-190), d2r(-100)]}
-                />
-              </>
-            )}
+            <>
+              {(numHands > 1 && tier !== 1) && (
+                <>
+                  {/* left */}
+                  <HandModel
+                    // theatreKey="handLeft"
+                    scale={-1.65}
+                    position={[-4, 1.75, 1.5]}
+                    rotation={[d2r(-90), d2r(-190), d2r(-100)]}
+                  />
+                  {/* right hand */}
+                  <HandModel
+                    // theatreKey="handRight"
+                    scale={1.65}
+                    position={[4, 1.75, 1.5]}
+                    rotation={[d2r(-270), d2r(-190), d2r(-100)]}
+                  />
+                </>
+              ) || (
+                <>
+                  <HandModel
+                    // theatreKey="handRight"
+                    scale={1.65}
+                    position={handPosition}
+                    rotation={[0, d2r(-180), 0]}
+                  />
+                </>
+              )}
+            </>
+
             {/* <axesHelper args={[1, 1, 1]} scale={4} position={[0, 0, 0]} /> */}
             <group dispose={null} scale={[1.2, 1.2, 1.2]} position={[0, 2.5, 0]}>
               {/* all dependendant on physics */}
               {/* <Physics {...physicsProps}> */}
+              {/* <Smoke /> */}
               {determineScene()}
               {/* <Scene set={set} x={x} mobile={false}/> */}
               {/* </Physics> */}

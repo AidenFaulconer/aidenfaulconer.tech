@@ -470,7 +470,6 @@ const OVERRIDES = {
         'strong, b': {},
         body: {
           margin: 0,
-          overflowX: 'hidden',
           // background: generateNoisePng(1000, 1000, 12343412, 4, 3, 2, 29),
           // background: `url(${require('./noise.js').noise})`,
           // background: '#E6EBFA',

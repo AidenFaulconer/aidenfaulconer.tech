@@ -1,0 +1,19 @@
+
+print("""
+-----------------------------------------------------------------
+✨ Business Educated Backend
+-----------------------------------------------------------------
+""".strip())
+print('ℹ️ Open {tiltfile_path} in your favorite editor to get started...'.format(
+    tiltfile_path=config.main_path))
+
+# Build the container images for the services
+docker_build('server', context='./server')
+docker_build('strapi-cms', context='./strapi-cms')
+
+# Load the Kubernetes configuration files
+k8s_yaml(['./k8s/server.yaml', './k8s/strapi-cms.yaml'])
+
+# Forward the ports for the services
+k8s_resource(port_forwards=[3169], workload='server')
+k8s_resource(port_forwards=[1337], workload='strapi-cms')

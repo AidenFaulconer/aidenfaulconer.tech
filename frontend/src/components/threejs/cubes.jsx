@@ -107,7 +107,7 @@ export default function Cubes({
     }, i) => {
       // slice textureData length to three if tier is 1
       const texture = (thumbnail ? useLoader(THREE.TextureLoader, thumbnail) : new THREE.Texture());
-      debugger;
+      // debugger;
       return texture && (
         <Model
         // spinRoulette={(i) => setTimeout(() => {

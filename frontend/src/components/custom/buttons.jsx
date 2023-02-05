@@ -172,13 +172,16 @@ const buttonTypes = {
 };
 export function RegularButton(props) {
   const {
-    shadows = false, type = 'primary', icon = { enabled: true, type: 'arrow', color: buttonTypes[type].color }, shadow, children, size = 'large',
+    shadows = false, type = 'primary', icon = { enabled: false, type: 'arrow', color: buttonTypes[type].color }, shadow, children, size = 'large',
   } = props;
   return (
     <Button
       {...props}
       disableRipple
-      className="h-10 inline-flex items-center z-10 cursor-pointer font-medium"
+      className={`
+       text-left hover:-translate-y-1 ease-in-out transition-all hover:shadow-lg h-10 inline-flex
+       items-center z-10 cursor-pointer font-medium items-center gap-3
+       `}
       sx={{
         boxShadow: shadows ? (theme) => (theme.custom.shadows.brand) : 'none',
         lineHeight: '100%',
@@ -189,14 +192,9 @@ export function RegularButton(props) {
         },
       }}
       size={size}
-      // variant="contained"
       centerRipple
     >
-      {children && (
-        <div className="mr-8">
-          {children}
-        </div>
-      )}
+      {children && (children)}
       {icon.enabled && (<AFIcon {...icon} />)}
     </Button>
   );

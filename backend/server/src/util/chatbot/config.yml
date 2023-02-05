@@ -1,0 +1,6 @@
+language: en
+pipeline:
+  - name: "NLU"
+    path: "models/nlu"
+  - name: "Core"
+    path: "models/core"

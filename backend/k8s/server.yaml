@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  labels:
+    app: server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: server
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+        - name: server
+          image: <your_container_registry>/server:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 1337
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 1337
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 1
+          envFrom:
+            - secretRef:
+                name: server-env
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+      initContainers:
+        - name: setup
+          image: <your_container_registry>/server-setup:latest
+          envFrom:
+            - secretRef:
+                name: server-env
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi

@@ -1,0 +1,20 @@
+intents:
+  - greet
+  - inquire_about_product
+  - inquire_about_return
+  - inquire_about_shipping
+  - inquire_about_store_location
+  - inquire_about_order
+
+entities:
+  - product
+  - order_number
+
+actions:
+  - action_greet
+  - action_answer_product_inquiry
+  - action_answer_return_inquiry
+  - action_answer_shipping_inquiry
+  - action_answer_store_location_inquiry
+  - action_answer_order_inquiry
+  - action_unable_to_help

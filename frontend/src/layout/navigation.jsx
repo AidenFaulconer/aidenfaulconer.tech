@@ -251,6 +251,12 @@ function Navigation({ window }) {
   const pageNavigation = React.useCallback(() => (
     <Box sx={{ ...pageNavigationStyles }} className="z-30 gap-5">
       {processPages(pages)}
+      {/* cta */}
+      <RegularButton
+        onClick={() => navigateToPage('/booking', -2)}
+      >
+        Start Project
+      </RegularButton>
     </Box>
   ), []);
 
@@ -390,13 +396,6 @@ function Navigation({ window }) {
   const drawerSwitch = React.useCallback(
     () => (
       <div className="inline-flex gap-3 flex-row items-center">
-        {/* cta */}
-        <RegularButton
-          onClick={() => navigateToPage('/booking', -2)}
-        >
-          Start Project
-        </RegularButton>
-
         {/* drawer button */}
         <React.Fragment key="drawer">
           <Button
@@ -425,7 +424,7 @@ function Navigation({ window }) {
 
   const hideNav = useScrollTrigger({
     target: window ? window() : undefined,
-    threshold: 6000,
+    threshold: 500,
     disableHysteresis: true,
 
   });
@@ -436,12 +435,12 @@ function Navigation({ window }) {
   return (
     <Slide appear direction="down" in={!hideNav}>
       <AppBar
-        elevation={!hideNav ? 6 : 0}
+        elevation={!hideNav ? 0 : 0}
         position="fixed"
         className="z-[30] min-h-[85px] h-[80px] flex flex-row backdrop-blur-md sm:p-1 md:px-2"
         sx={{
-          boxShadow: (theme) => theme.custom.shadows.brand,
-          background: (theme) => hexToAlpha(theme.palette.text.primary, 0.6),
+          // boxShadow: (theme) => theme.custom.shadows.brand,
+          background: (theme) => hexToAlpha(theme.palette.text.primary, 0.7),
           color: 'text.secondary',
         }}
       >

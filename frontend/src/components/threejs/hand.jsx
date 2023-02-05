@@ -12,7 +12,8 @@ import {
 import { useGraph } from '@react-three/fiber';
 import { useStore } from '../../store/store';
 
-useGLTF.preload('./assets/gameModels/webexperience.gltf');
+// useGLTF.preload('./assets/gameModels/webexperience.gltf');
+useGLTF.preload('./assets/gameModels/webexperience-old.gltf');
 
 export function useSkinnedMeshClone(path) {
   const { scene, materials, animations } = useGLTF(path);
@@ -38,7 +39,8 @@ export function useSkinnedMeshClone(path) {
  */
 export default function Model({ /* instances */ ...props }) {
   const group = useRef();
-  const { nodes, materials, animations } = useSkinnedMeshClone('./assets/gameModels/webexperience.gltf');
+  // const { nodes, materials, animations } = useSkinnedMeshClone('./assets/gameModels/webexperience.gltf');
+  const { nodes, materials, animations } = useSkinnedMeshClone('./assets/gameModels/webexperience-old.gltf');
   const { actions } = useAnimations(animations, group);
 
   // pull in selection input from store
@@ -48,6 +50,147 @@ export default function Model({ /* instances */ ...props }) {
   const { methods: { changeHand }, context: { hand: { animationsPlaying, propsUsing } } } = useStore((state) => state.threejsContext);
   const _handProps = ['Iphone', 'Emoji', 'Hammer', 'Pencil', 'VR', 'Paper'];
   const _actions = ['wave', 'hold', 'snap', 'write', 'build'];
+
+  const determineProp = React.useCallback(() => {
+    const props = {
+      Iphone: () => (
+        <skinnedMesh
+          name="iphone_13"
+          geometry={nodes.iphone_13.geometry}
+          material={nodes.iphone_13.material}
+          skeleton={nodes.iphone_13.skeleton}
+        />
+      ),
+      Emoji: () => (
+        <skinnedMesh
+          name="Emoji"
+          geometry={nodes.Emoji.geometry}
+          material={nodes.Emoji.material}
+          skeleton={nodes.Emoji.skeleton}
+        />
+      ),
+      Hammer: () => (
+        <group name="Hammer">
+          <skinnedMesh
+            name="Cylinder002"
+            geometry={nodes.Cylinder002.geometry}
+            material={nodes.Cylinder002.material}
+            skeleton={nodes.Cylinder002.skeleton}
+          />
+          <skinnedMesh
+            name="Cylinder002_1"
+            geometry={nodes.Cylinder002_1.geometry}
+            material={nodes.Cylinder002_1.material}
+            skeleton={nodes.Cylinder002_1.skeleton}
+          />
+        </group>
+      ),
+      Pencil: () => (
+        <group name="pencil">
+          <skinnedMesh
+            name="Cylinder003"
+            geometry={nodes.Cylinder003.geometry}
+            material={nodes.Cylinder003.material}
+            skeleton={nodes.Cylinder003.skeleton}
+          />
+          <skinnedMesh
+            name="Cylinder003_1"
+            geometry={nodes.Cylinder003_1.geometry}
+            material={nodes.Cylinder003_1.material}
+            skeleton={nodes.Cylinder003_1.skeleton}
+          />
+          <skinnedMesh
+            name="Cylinder003_2"
+            geometry={nodes.Cylinder003_2.geometry}
+            material={nodes.Cylinder003_2.material}
+            skeleton={nodes.Cylinder003_2.skeleton}
+          />
+          <skinnedMesh
+            name="Cylinder003_3"
+            geometry={nodes.Cylinder003_3.geometry}
+            material={nodes.Cylinder003_3.material}
+            skeleton={nodes.Cylinder003_3.skeleton}
+          />
+          <skinnedMesh
+            name="Cylinder003_4"
+            geometry={nodes.Cylinder003_4.geometry}
+            material={nodes.Cylinder003_4.material}
+            skeleton={nodes.Cylinder003_4.skeleton}
+          />
+          <skinnedMesh
+            name="Cylinder003_5"
+            geometry={nodes.Cylinder003_5.geometry}
+            material={nodes.Cylinder003_5.material}
+            skeleton={nodes.Cylinder003_5.skeleton}
+          />
+          <skinnedMesh
+            name="Cylinder003_6"
+            geometry={nodes.Cylinder003_6.geometry}
+            material={materials.eraser}
+            skeleton={nodes.Cylinder003_6.skeleton}
+          />
+        </group>
+      ),
+      VR: () => (
+        <group name="vr_headsest">
+          <skinnedMesh
+            name="Cube003"
+            geometry={nodes.Cube003.geometry}
+            material={nodes.Cube003.material}
+            skeleton={nodes.Cube003.skeleton}
+          />
+          <skinnedMesh
+            name="Cube003_1"
+            geometry={nodes.Cube003_1.geometry}
+            material={nodes.Cube003_1.material}
+            skeleton={nodes.Cube003_1.skeleton}
+          />
+        </group>
+      ),
+      Paper: () => (
+        <group
+          name="paper"
+          position={[-2.161, -0.937, 0.85]}
+          rotation={[-2.989, 1.173, 3.006]}
+          scale={[0.752, 0.752, 0.752]}
+        >
+          <mesh
+            name="Plane"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane.geometry}
+            material={materials.Material}
+          />
+          <mesh
+            name="Plane_1"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane_1.geometry}
+            material={nodes.Plane_1.material}
+          />
+          <mesh
+            name="Checkmark"
+            castShadow
+            receiveShadow
+            geometry={nodes.Checkmark.geometry}
+            material={nodes.Checkmark.material}
+            position={[-0.8, 0.125, 1.048]}
+            scale={[249.691, 249.691, 249.691]}
+          />
+        </group>
+      ),
+      None: () => (
+        <group
+          name="paper"
+          position={[-2.161, -0.937, 0.85]}
+          rotation={[-2.989, 1.173, 3.006]}
+          scale={[0.752, 0.752, 0.752]}
+        />
+      ),
+    };
+
+    return propsUsing.map((propName) => (React.createElement(props[propName])));
+  }, [propsUsing]);
 
   const wave = () => {
     const start = () => {
@@ -145,154 +288,13 @@ export default function Model({ /* instances */ ...props }) {
           /> */}
         </group>
         {/** Props */}
-        {/* {propsUsing.length > 0 && (
+        {propsUsing.length > 0 && (
           <>
             {determineProp()}
           </>
-        )} */}
-
+        )}
+        vb
       </group>
     </group>
   );
 }
-
-// const determineProp = React.useCallback(() => {
-//   const props = {
-//     Iphone: () => (
-//       <skinnedMesh
-//         name="iphone_13"
-//         geometry={nodes.iphone_13.geometry}
-//         material={nodes.iphone_13.material}
-//         skeleton={nodes.iphone_13.skeleton}
-//       />
-//     ),
-//     Emoji: () => (
-//       <skinnedMesh
-//         name="Emoji"
-//         geometry={nodes.Emoji.geometry}
-//         material={nodes.Emoji.material}
-//         skeleton={nodes.Emoji.skeleton}
-//       />
-//     ),
-//     Hammer: () => (
-//       <group name="Hammer">
-//         <skinnedMesh
-//           name="Cylinder002"
-//           geometry={nodes.Cylinder002.geometry}
-//           material={nodes.Cylinder002.material}
-//           skeleton={nodes.Cylinder002.skeleton}
-//         />
-//         <skinnedMesh
-//           name="Cylinder002_1"
-//           geometry={nodes.Cylinder002_1.geometry}
-//           material={nodes.Cylinder002_1.material}
-//           skeleton={nodes.Cylinder002_1.skeleton}
-//         />
-//       </group>
-//     ),
-//     Pencil: () => (
-//       <group name="pencil">
-//         <skinnedMesh
-//           name="Cylinder003"
-//           geometry={nodes.Cylinder003.geometry}
-//           material={nodes.Cylinder003.material}
-//           skeleton={nodes.Cylinder003.skeleton}
-//         />
-//         <skinnedMesh
-//           name="Cylinder003_1"
-//           geometry={nodes.Cylinder003_1.geometry}
-//           material={nodes.Cylinder003_1.material}
-//           skeleton={nodes.Cylinder003_1.skeleton}
-//         />
-//         <skinnedMesh
-//           name="Cylinder003_2"
-//           geometry={nodes.Cylinder003_2.geometry}
-//           material={nodes.Cylinder003_2.material}
-//           skeleton={nodes.Cylinder003_2.skeleton}
-//         />
-//         <skinnedMesh
-//           name="Cylinder003_3"
-//           geometry={nodes.Cylinder003_3.geometry}
-//           material={nodes.Cylinder003_3.material}
-//           skeleton={nodes.Cylinder003_3.skeleton}
-//         />
-//         <skinnedMesh
-//           name="Cylinder003_4"
-//           geometry={nodes.Cylinder003_4.geometry}
-//           material={nodes.Cylinder003_4.material}
-//           skeleton={nodes.Cylinder003_4.skeleton}
-//         />
-//         <skinnedMesh
-//           name="Cylinder003_5"
-//           geometry={nodes.Cylinder003_5.geometry}
-//           material={nodes.Cylinder003_5.material}
-//           skeleton={nodes.Cylinder003_5.skeleton}
-//         />
-//         <skinnedMesh
-//           name="Cylinder003_6"
-//           geometry={nodes.Cylinder003_6.geometry}
-//           material={materials.eraser}
-//           skeleton={nodes.Cylinder003_6.skeleton}
-//         />
-//       </group>
-//     ),
-//     VR: () => (
-//       <group name="vr_headsest">
-//         <skinnedMesh
-//           name="Cube003"
-//           geometry={nodes.Cube003.geometry}
-//           material={nodes.Cube003.material}
-//           skeleton={nodes.Cube003.skeleton}
-//         />
-//         <skinnedMesh
-//           name="Cube003_1"
-//           geometry={nodes.Cube003_1.geometry}
-//           material={nodes.Cube003_1.material}
-//           skeleton={nodes.Cube003_1.skeleton}
-//         />
-//       </group>
-//     ),
-//     Paper: () => (
-//       <group
-//         name="paper"
-//         position={[-2.161, -0.937, 0.85]}
-//         rotation={[-2.989, 1.173, 3.006]}
-//         scale={[0.752, 0.752, 0.752]}
-//       >
-//         <mesh
-//           name="Plane"
-//           castShadow
-//           receiveShadow
-//           geometry={nodes.Plane.geometry}
-//           material={materials.Material}
-//         />
-//         <mesh
-//           name="Plane_1"
-//           castShadow
-//           receiveShadow
-//           geometry={nodes.Plane_1.geometry}
-//           material={nodes.Plane_1.material}
-//         />
-//         <mesh
-//           name="Checkmark"
-//           castShadow
-//           receiveShadow
-//           geometry={nodes.Checkmark.geometry}
-//           material={nodes.Checkmark.material}
-//           position={[-0.8, 0.125, 1.048]}
-//           scale={[249.691, 249.691, 249.691]}
-//         />
-//       </group>
-//     ),
-//     None: () => (
-//       <group
-//         name="paper"
-//         position={[-2.161, -0.937, 0.85]}
-//         rotation={[-2.989, 1.173, 3.006]}
-//         scale={[0.752, 0.752, 0.752]}
-//       />
-//     ),
-//   };
-
-//   return propsUsing.map((propName) => (React.createElement(props[propName])));
-// }, [propsUsing]);

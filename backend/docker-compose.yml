@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  nodejs-app:
+    image: node:18-alpine
+    build:
+      context: .
+      target: nodejs-app
+    volumes:
+      - ./src:/server/src
+      - ./ecosystem.config.js:/server/ecosystem.config.js
+      - ./index.js:/server/index.js
+      - ./pm2.js:/server/pm2.js
+      - ./package.json:/server/package.json
+      - ./yarn.lock:/server/yarn.lock
+    expose:
+      - "3169"
+    command: [ "yarn", "start" ]
+
+  nginx:
+    image: nginx:alpine
+    build:
+      context: .
+      target: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - nodejs-app
+    command: [ "nginx", "-g", "daemon off;" ]
+
+  certbot:
+    image: certbot/certbot
+    command: certonly --standalone -d example.com --preferred-challenges http-01 --http-01-port 80
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - nginx
+
+  certbot-renew:
+    image: certbot/certbot
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+    command: "certbot renew --quiet --renew-hook \"nginx -s reload\""
+    depends_on:
+      - nginx
+    # run the renew command every 12 hours
+    restart: always
+    # restart_policy:
+    #   condition: on-failure
+    #   delay: 12h

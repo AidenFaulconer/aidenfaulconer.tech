@@ -144,52 +144,79 @@ export const useAnimatedMount = ({ children }) => {
 
 // INPUT: HTMLELEMENTS array
 // OUTPUT: reactive events attatched to interpolate between the elements in array from start to end based on users scroll
-export const useIntersectionObserver = (handler =
-// handler by default logs intersections, override this to call special functionaliry
-(entries, observer = null) => entries.map((entry) => {
-  // api
-  // .intersectionRatio
-  // .intersectionRect
-  // .isIntersecting
-  // .isVisible
-  // .target
-  // .time
-  // rootBounds
-  if (entry.intersectionRatio >= 0.5) console.info('visible: ', entry.target);
-  return '';
-}), options = {
-  root: null, // element used as the viewport for checking visibility of the target
-  rootMargin: '0px', // margin around the root
-  threshold: 0.5, // .5 = 50% visible. single number or [] of numbers to indicate at what percentage of targets visibility the observer callback should execute
-}) => {
-  // element refs to listen too
+// export const useIntersectionObserver = (handler =
+// // handler by default logs intersections, override this to call special functionaliry
+// (entries, observer = null) => entries.map((entry) => {
+//   // api
+//   // .intersectionRatio
+//   // .intersectionRect
+//   // .isIntersecting
+//   // .isVisible
+//   // .target
+//   // .time
+//   // rootBounds
+//   if (entry.intersectionRatio >= 0.5) console.info('visible: ', entry.target);
+//   return '';
+// }), options = {
+//   root: null, // element used as the viewport for checking visibility of the target
+//   rootMargin: '0px', // margin around the root
+//   threshold: 0.5, // .5 = 50% visible. single number or [] of numbers to indicate at what percentage of targets visibility the observer callback should execute
+// }) => {
+//   // element refs to listen too
+//   const refs = React.useRef([]);
+//   // element that listens to elements (interseciton observer)
+//   const observer = React.useRef(null);
+//   // push refs to an array of html elements to listen to
+//   const addNode = React.useCallback((node) => refs.current.push(node), []);
+
+//   const getObserver = (ref) => {
+//     const observer = ref.current;
+//     if (observer !== null) {
+//       return observer;
+//     }
+//     const newObserver = new IntersectionObserver(handler, options);
+//     ref.current = newObserver;
+//     return newObserver;
+//   };
+
+//   React.useEffect(() => {
+//     if (observer.current) observer.current.disconnect();
+
+//     const newObserver = getObserver(observer);
+//     refs.current.forEach((node) => newObserver.observe(node));
+//     console.info(refs.current);
+
+//     // return () => refs.current.forEach((observerRef) => observerRef.disconnect());
+//     return () => newObserver.disconnect();
+//   }, [refs]);
+
+//   // ref={addNode} this method adds the element to be listened to by intersection observer
+//   return addNode;
+
+export const useIntersectionObserver = (
+  handler = (entries, observer) => entries.forEach((entry) => {
+    if (entry.intersectionRatio >= 0.5) console.info('visible: ', entry.target);
+  }),
+  options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5,
+  },
+) => {
   const refs = React.useRef([]);
-  // element that listens to elements (interseciton observer)
-  const observer = React.useRef(null);
-  // push refs to an array of html elements to listen to
-  const addNode = React.useCallback((node) => refs.current.push(node), []);
+  const observers = React.useRef([]);
 
-  const getObserver = (ref) => {
-    const observer = ref.current;
-    if (observer !== null) {
-      return observer;
-    }
-    const newObserver = new IntersectionObserver(handler, options);
-    ref.current = newObserver;
-    return newObserver;
-  };
-
-  React.useEffect(() => {
-    if (observer.current) observer.current.disconnect();
-
-    const newObserver = getObserver(observer);
-    refs.current.forEach((node) => newObserver.observe(node));
-    console.info(refs.current);
-
-    return () => newObserver.disconnect();
+  const addNode = React.useCallback((node) => {
+    refs.current.push(node);
   }, []);
 
-  // ref={addNode} this method adds the element to be listened to by intersection observer
+  React.useEffect(() => {
+    const newObserver = new IntersectionObserver(handler, options);
+    refs.current.forEach((node) => newObserver.observe(node));
+    observers.current.push(newObserver);
+    return () => newObserver.disconnect();
+  }, [refs.current]);
+
   return addNode;
 };
 

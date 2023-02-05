@@ -51,12 +51,14 @@ const secureServer = (
   if (enable.cors) {
     const whitelist = JSON.parse(process.env.CORS_WHITELIST).whitelist
     const corsOptions = {
-      //   origin: function (origin, callback) {
-      //     console.info(origin)
-      //     if (whitelist.indexOf(origin) !== -1) callback(null, true)
-      //     else callback(new Error('Not allowed by CORS'))
-      //   },
-      origin: whitelist,
+      origin: function (origin, callback) {
+        // if (process.env.NODE_ENV === 'development')
+        console.info(origin, whitelist.indexOf(origin), whitelist)
+
+        if (whitelist.indexOf(origin) !== -1) callback(null, true)
+        else callback(new Error('Not allowed by CORS'))
+      },
+      // origin: whitelist,
       credentials: false,
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
@@ -66,23 +68,38 @@ const secureServer = (
     app.use(cors(corsOptions))
 
     //manual testing of cors below
-    // app.use(function (req, res, next) {
-    //   res.header('Access-Control-Allow-Origin', whitelist.join(', '))
-    //   res.header('Access-Control-Allow-Credentials', 'true')
-    //   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-    //   res.header(
-    //     'Access-Control-Allow-Headers',
-    //     'Origin, X-Requested-With, Content-Type, Accept, My-Custom-Header',
-    //   )
-    //   next()
-    // })
+    // if (process.env.NODE_ENV === 'development')
+    //   app.use(function (req, res, next) {
+    //     res.header('Access-Control-Allow-Origin', '*')
+    //     res.header('Access-Control-Allow-Credentials', 'true')
+    //     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+    //     res.header(
+    //       'Access-Control-Allow-Headers',
+    //       'Origin, X-Requested-With, Content-Type, Accept, My-Custom-Header',
+    //     )
+    //     next()
+    //   })
   }
   // Enable HTTPS
   if (enable.https) {
-    const httpsOptions = {
-      key: fs.readFileSync('../certs/key.pem'),
-      cert: fs.readFileSync('../certs/cert.pem'),
-    }
+    let httpsOptions
+
+    //use certbot in production if needed
+    if (process.env.NODE_ENV === 'production')
+      httpsOptions = {
+        key: fs.readFileSync(
+          '/etc/letsencrypt/live/yourdomain.com/privkey.pem',
+        ),
+        cert: fs.readFileSync(
+          '/etc/letsencrypt/live/yourdomain.com/fullchain.pem',
+        ),
+      }
+    //manually create certificates to test in localhost
+    else
+      httpsOptions = {
+        key: fs.readFileSync('../certs/key.pem'),
+        cert: fs.readFileSync('../certs/cert.pem'),
+      }
     https.createServer(httpsOptions, app).listen(443)
   }
 

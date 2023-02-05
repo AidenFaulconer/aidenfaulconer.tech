@@ -1,6 +1,5 @@
-
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 /**
  * This function comment is parsed by doctrine
@@ -11,34 +10,46 @@ const router = express.Router();
  * @returns {object} 200 - An array of user info
  * @returns {Error}  default - Unexpected error
  */
-router.post('/recaptcha', async (req, res) => {
-    if (req.body.captcha === undefined ||
-        req.body.captcha === '' ||
-        req.body.captacha === null)
-        return res.json({ success: false, msg: 'Please select captcha' });
-
+router.post('/', async (req, res) => {
+  try {
+    if (
+      req.body.captcha === undefined ||
+      req.body.captcha === '' ||
+      req.body.captacha === null
+    )
+      return res.json({ success: false, msg: 'Please select captcha' })
 
     // verify url
-    const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_KEY}&response=${req.body.captcha}&remoteip=${req.connection.remoteAddress}`;
+    const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${req.body.captcha}&remoteip=${req.connection.remoteAddress}`
 
     //  request to verify url
-    const body = await fetch(verifyUrl).then(res => res.json());
+    const body = await fetch(verifyUrl).then((res) => res.json())
 
-
-    // if captcha not verified 
+    // if captcha not verified
     if (body.success !== undefined && !body.success)
-        return res.json({ success: false, msg: 'captcha failed' });
+      return res.json({ success: false, msg: 'captcha failed' })
 
-    // if captcha verified 
+    // if captcha verified
     return res.send({
-            statusCode: 200,
-            body: 'captcha verified',
-            isBase64Encoded: false,
-            multiValueHeaders: {
-                'Content-Type': 'application/json',
-            },
-        });
-});
+      statusCode: 200,
+      body: 'captcha verified',
+      isBase64Encoded: false,
+      multiValueHeaders: {
+        'Content-Type': 'application/json',
+      },
+    })
+  } catch (error) {
+    console.error(error)
+    return res.send({
+      status: 500,
+      body: 'an Error occured',
+      isBase64Encoded: false,
+      multiValueHeaders: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+})
 
 //export router so the server can find this controller
-module.exports = router;
+module.exports = router

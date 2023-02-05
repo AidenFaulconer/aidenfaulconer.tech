@@ -67,7 +67,7 @@ function Layout(props) {
   return (
     <div
       style={{
-        overflowX: 'hidden',
+        overflowX: 'unset',
         maxWidth: '100vw',
         width: '100vw',
         display: 'flex',
