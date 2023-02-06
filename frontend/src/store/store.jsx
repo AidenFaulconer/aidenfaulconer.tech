@@ -206,6 +206,7 @@ const useStore = create((set, get) => ({
       changeHand: (newContext) => {
         set(produce((state) => {
           state.threejsContext.context.hand = {
+            ...state.threejsContext.context.hand,
             ...newContext,
           };
         }));

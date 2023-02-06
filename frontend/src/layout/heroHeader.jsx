@@ -102,6 +102,8 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
   const postData = useStore((state) => state.threejsContext.context.postData);
   const selectedIndex = useStore((state) => state.threejsContext.context.selectedIndex);
   const changeHand = useStore((state) => state.threejsContext.methods.changeHand);
+  const type = useStore((state) => state.appContext.type);
+
   // const post = postsData ? postsData[selectedIndex] : {
   //   node: {
   //     frontmatter: {
@@ -134,14 +136,15 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
         numHands: 2,
       },
       background: 'transparent',
-      color: 'secondary',
+      color: type ? 'secondary' : 'primary',
+      cta: true,
     },
     {
       title: (
         <>
-          I build the perfect digital solution
+          Mobile applications...
           <br />
-          wizard 🪄
+          got you covered 👍
         </>
       ),
       subTitle: (
@@ -156,14 +159,15 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
         numHands: 1,
       },
       background: '#4EDB9E',
-      color: 'primary',
+      color: type ? 'primary' : 'secondary',
+      cta: false,
     },
     {
       title: (
         <>
-          VR & Mobile apps
+          Virtual Reality
           <br />
-          wizard 🪄
+          And 3D Specialist 🧊
         </>
       ),
       subTitle: (
@@ -178,12 +182,16 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
         numHands: 1,
       },
       background: '#864EDB',
-      color: 'primary',
+      color: type ? 'primary' : 'secondary',
+      cta: false,
     },
     {
       title: (
         <>
-          Design efficienty = user happiness
+          UI/UX, Graphic Design, Software
+          {' '}
+          <br />
+          You dream it I build it
         </>
       ),
       subTitle: (
@@ -198,23 +206,20 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
         numHands: 1,
       },
       background: '#FFFF99',
-      color: 'secondary',
+      color: type ? 'secondary' : 'primary',
+      cta: false,
     },
   ];
 
   // const scrollProgress = useScrollProgress();
   const [sticky, setSticky] = useState(true);
   const [selectedSlide, changeSelectedSlide] = useState(0);
-
   const theme = useTheme();
+
   //   color change spring
   const [{ x, y }, set] = useSpring(() => ({
     // when we pass an object through set, it updates this to property and puts the old property in the from object, for internal interpolation
     to: { x: theme.palette.text.primary, y: 1 },
-    // tells spring what the values mean, and what they should start with
-    // from: { x: theme.palette.text.primary, y: 1 },
-    // tell spring how the transition should be smoothed between values
-    // delay: '100',
     config: {
       mass: 15,
       duration: 550,
@@ -239,10 +244,6 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
     root: null,
     rootMargin: '0px 10% 0px 0px',
     threshold,
-    // delay
-    // trackVisibility
-    // observeChanges
-    // removeOnLoad
   });
 
   useEffect(() => {
@@ -295,13 +296,13 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
       >
         {/* ThreeJS */}
         <div
-          className={`
-            z-[1] w-full h-3/4 lg:min-h-[55vh] md:min-h-[55vh] 
+          className="
+            z-[1] w-full h-3/4 lg:min-h-[55vh] md:min-h-[55vh]
             md:max-h-[30vh] min-h-[53vh] inline-flex max-h-3/4 mt-0 m-auto
             sticky
-          `}
+          "
           style={{
-            position: sticky ? 'sticky' : 'relative',
+            position: 'sticky',
             top: 0,
           }}
         >
@@ -317,9 +318,9 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
         </div>
 
         {/* clouds */}
-        <div className="max-h-1/4 overflow-hidden  w-full z-[1] sticky mt-09">
+        {/* <div className="max-h-1/4 overflow-hidden  w-full z-[1] sticky mt-09">
           <Clouds />
-        </div>
+        </div> */}
 
         {/* Headlines */}
         {!heroData.enabled || (slides.map((slide, i) => {
@@ -338,9 +339,6 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
                   className="inline-flex gap-4 flex-col relative pointer-events-none p-3 "
                   sx={{
                     color: (theme) => theme.palette.text[slides[selectedSlide].color],
-                    '&:after': {
-                      color: (theme) => theme.palette.text[slides[selectedSlide].color],
-                    },
                   }}
                 >
                   <h1
@@ -360,7 +358,7 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
                 </Box>
 
                 {/* Buttons */}
-                {heroData.ctas === false || (
+                {slide.cta && (
                 <Box className="z-[10000] p-3 pointer-events-[all] inline-flex gap-2 justify-start items-start relative max-w-[556px]">
                   <RegularButton onClick={() => navigate('/#contact')} type="primary" icon={{ enabled: true, type: 'arrow' }}>
                     Get in touch
