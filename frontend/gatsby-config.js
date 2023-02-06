@@ -380,13 +380,13 @@ module.exports = {
     //     purgeOnly: ['/all.sass'], // applies purging only on the bulma css file
     //   },
     // }, // must be after other CSS plugins
-    {
-      resolve: 'gatsby-plugin-netlify-cache',
-      options: {
-        cachePublic: true,
-        extraDirsToCache: [`${__dirname}/static`],
-      },
-    },
+    // {
+    //   resolve: 'gatsby-plugin-netlify-cache',
+    //   options: {
+    //     cachePublic: true,
+    //     extraDirsToCache: [`${__dirname}/static`],
+    //   },
+    // },
     // 'gatsby-plugin-netlify',
     // ========================================================================== //
     //     Webpack optimizations
