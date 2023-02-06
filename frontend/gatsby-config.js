@@ -387,7 +387,7 @@ module.exports = {
         extraDirsToCache: [`${__dirname}/static`],
       },
     },
-    'gatsby-plugin-netlify',
+    // 'gatsby-plugin-netlify',
     // ========================================================================== //
     //     Webpack optimizations
     // ========================================================================== //
