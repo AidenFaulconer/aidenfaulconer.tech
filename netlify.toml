@@ -21,8 +21,8 @@
   functions = "backend/server"
   publish = "public/"
  
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
+# [[plugins]]
+#   package = "@netlify/plugin-lighthouse"
 
 
 [[redirects]]
@@ -40,6 +40,8 @@
 # Production context: all deploys from the Production branch set in your site’s
 # Branches settings in the UI will inherit these settings.
 [context.production]
+  environment = { NODE_ENV = "production" }
+  environment_file = ".env.production"
   command = "yarn build"
   functions = "backend/server"
   publish = "public/"
@@ -53,6 +55,8 @@
 # Specific branch context: all deploys from this specific branch will inherit
 # these settings.
 [context.staging] # “staging” is a branch name
+  environment = { NODE_ENV = "production" }
+  environment_file = ".env.production"
   command = "echo 'staging'"
   base = "staging"
 
