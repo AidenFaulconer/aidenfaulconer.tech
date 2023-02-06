@@ -13,7 +13,7 @@ import { useGraph } from '@react-three/fiber';
 import { useStore } from '../../store/store';
 
 // useGLTF.preload('./assets/gameModels/webexperience.gltf');
-useGLTF.preload('./assets/gameModels/webexperience-old.gltf');
+useGLTF.preload('./assets/gameModels/webexperience-new.gltf');
 
 export function useSkinnedMeshClone(path) {
   const { scene, materials, animations } = useGLTF(path);
@@ -40,14 +40,14 @@ export function useSkinnedMeshClone(path) {
 export default function Model({ /* instances */ ...props }) {
   const group = useRef();
   // const { nodes, materials, animations } = useSkinnedMeshClone('./assets/gameModels/webexperience.gltf');
-  const { nodes, materials, animations } = useSkinnedMeshClone('./assets/gameModels/webexperience-old.gltf');
+  const { nodes, materials, animations } = useSkinnedMeshClone('./assets/gameModels/webexperience-new.gltf');
   const { actions } = useAnimations(animations, group);
 
   // pull in selection input from store
   // const { selected } = useStore((state) => state.appContext);
 
   //   hand controls
-  const { methods: { changeHand }, context: { hand: { animationsPlaying, propsUsing } } } = useStore((state) => state.threejsContext);
+  const { methods: { changeHand }, context: { hand: { animationsPlaying, propsUsing, numHands } } } = useStore((state) => state.threejsContext);
   const _handProps = ['Iphone', 'Emoji', 'Hammer', 'Pencil', 'VR', 'Paper'];
   const _actions = ['wave', 'hold', 'snap', 'write', 'build'];
 
@@ -61,14 +61,14 @@ export default function Model({ /* instances */ ...props }) {
           skeleton={nodes.iphone_13.skeleton}
         />
       ),
-      Emoji: () => (
-        <skinnedMesh
-          name="Emoji"
-          geometry={nodes.Emoji.geometry}
-          material={nodes.Emoji.material}
-          skeleton={nodes.Emoji.skeleton}
-        />
-      ),
+      // Emoji: () => (
+      //   <skinnedMesh
+      //     name="Emoji"
+      //     geometry={nodes.Emoji.geometry}
+      //     material={nodes.Emoji.material}
+      //     skeleton={nodes.Emoji.skeleton}
+      //   />
+      // ),
       Hammer: () => (
         <group name="Hammer">
           <skinnedMesh
@@ -233,14 +233,14 @@ export default function Model({ /* instances */ ...props }) {
 
     // toggle animations based on user input/scroll input
     // map through array with names, if name is not found, toggle off from actions
+    // fadeIn(duration)
+    // fadeOut(duration)
+    // play()
+    // reset()
+    // stop()
+    // stopFading()
+    // halt()
     _actions.map((availibleAction) => {
-      // fadeIn(duration)
-      // fadeOut(duration)
-      // play()
-      // reset()
-      // stop()
-      // stopFading()
-      // halt()
       if (animationsPlaying.includes(availibleAction)) {
         actions[availibleAction]?.reset();
         actions[availibleAction]?.fadeIn(0.15);
@@ -264,7 +264,25 @@ export default function Model({ /* instances */ ...props }) {
       dispose={null}
     >
       <group name="Scene">
-        <group name="handRig">
+        <group
+          name="handRig"
+          onClick={() => {
+            const pU = propsUsing;
+            const nH = numHands;
+            changeHand({
+              animationsPlaying: ['wave'],
+              propsUsing: ['Iphone'],
+              numHands: 1,
+            });
+            setTimeout(() => {
+              changeHand({
+                animationsPlaying: ['hold'],
+                numHands: nH,
+                propsUsing: pU,
+              });
+            }, 2600);
+          }}
+        >
           {/* <axesHelper args={[1, 1, 1]} scale={4} position={[0, 0, 0]} /> */}
           <primitive object={nodes.forearmL} />
           <skinnedMesh
