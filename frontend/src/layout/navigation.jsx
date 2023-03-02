@@ -214,7 +214,7 @@ function Navigation({ window }) {
       switch (url[0]) {
         case '/':// for page navs use buttons
           return (
-            <Box
+            <div
               key={name}
               onClick={() => navigateToPage(url, slideIndex)}
               className="xs:scale-75 cursor-pointer"
@@ -225,7 +225,7 @@ function Navigation({ window }) {
               >
                 {boldCurrentPage(name.toUpperCase(), i)}
               </RegularButton>
-            </Box>
+            </div>
           );
         case '#':// for internal links use anchors
           return (
@@ -250,7 +250,9 @@ function Navigation({ window }) {
   // ========================================================================== //
   const pageNavigation = React.useCallback(() => (
     <Box sx={{ ...pageNavigationStyles }} className="z-30 gap-5">
-      {processPages(pages)}
+      <div className="md:flex gap-5 hidden">
+        {processPages(pages)}
+      </div>
       {/* cta */}
       <RegularButton
         onClick={() => navigateToPage('/booking', -2)}
@@ -276,11 +278,14 @@ function Navigation({ window }) {
         className="inline-flex p-8 justify-center w-full h-1/4"
       >
         <RegularButton
+          color="primary"
           type="icon"
           icon={{ type: 'close', enabled: true }}
           onClick={() => setDrawerState(true)}
+          className="rounded-full"
         />
       </div>
+      j
 
       <List
         className="sm:flex-row xs:flex-col overflow-hidden h-3/5 w-full gap-5 items-center flex"
@@ -302,7 +307,7 @@ function Navigation({ window }) {
           >
             <Typography
               variant="h2"
-              className="text-current capitalize inline-flex justify-center font-medium sm:inline xs:hidden text-center"
+              className="text-current capitalize inline-flex justify-center font-black sm:inline xs:hidden text-center"
               sx={{ ...pageLinkStyles }}
               onClick={() => navigateToPage(url, slideIndex)}
             >
@@ -310,9 +315,11 @@ function Navigation({ window }) {
             </Typography>
           </ListItem>
         ))}
+
         <Illustration
           maxWidth={50}
           type="moustache"
+          className="w-[240px] h-[200px] absolute bottom-0 mx-auto"
         />
       </List>
 
@@ -338,7 +345,7 @@ function Navigation({ window }) {
             <button
               type="button"
               onClick={() => toggleTheme()}
-              className="w-12 h-12 relative rounded-full inline-flex justify-center "
+              className="w-12 h-12 relative rounded-full inline-flex justify-center items-center"
               style={{
                 background: theme.palette.text.primary,
                 color: theme.palette.text.secondary,
@@ -395,7 +402,7 @@ function Navigation({ window }) {
   // ========================================================================== //
   const drawerSwitch = React.useCallback(
     () => (
-      <div className="inline-flex gap-3 flex-row items-center">
+      <div className="md:hidden inline-flex gap-3 flex-row items-center">
         {/* drawer button */}
         <React.Fragment key="drawer">
           <Button
@@ -424,7 +431,7 @@ function Navigation({ window }) {
 
   const hideNav = useScrollTrigger({
     target: window ? window() : undefined,
-    threshold: 500,
+    threshold: 100,
     disableHysteresis: true,
 
   });
@@ -433,29 +440,39 @@ function Navigation({ window }) {
   //     app bar
   // ========================================================================== //
   return (
-    <Slide appear direction="down" in={!hideNav}>
-      <AppBar
-        elevation={!hideNav ? 0 : 0}
-        position="fixed"
-        className="z-[30] min-h-[85px] h-[80px] flex flex-row backdrop-blur-md sm:p-1 md:px-2"
-        sx={{
+    <>
+      {/* after scroll */}
+      <Slide appear direction="down" in={hideNav}>
+        <header className="inline-flex w-full top-0 left-0 px-2 fixed min-h-7">
+          {logo('inherit')}
+        </header>
+      </Slide>
+
+      {/* before scroll */}
+      <Slide appear direction="down" in={!hideNav}>
+        <AppBar
+          elevation={!hideNav ? 0 : 0}
+          position="fixed"
+          className="z-[30] min-h-[85px] h-[80px] flex flex-row backdrop-blur-md sm:p-1 md:px-2"
+          sx={{
           // boxShadow: (theme) => theme.custom.shadows.brand,
-          background: (theme) => hexToAlpha(theme.palette.text.primary, 0.7),
-          color: 'text.secondary',
-        }}
-      >
-        <Grid item sm={12} md={10} className="w-full">
-          <Toolbar disableGutters className="h-full flex justify-between">
-            {logo('inherit')}
+            background: (theme) => hexToAlpha(theme.palette.text.primary, 0.7),
+            color: 'text.secondary',
+          }}
+        >
+          <Grid item sm={12} md={10} className="w-full">
+            <Toolbar disableGutters className="h-full flex justify-between">
+              {logo('inherit')}
 
-            {pageNavigation()}
+              {pageNavigation()}
 
-            {drawerSwitch()}
-          </Toolbar>
-        </Grid>
+              {drawerSwitch()}
+            </Toolbar>
+          </Grid>
 
-      </AppBar>
-    </Slide>
+        </AppBar>
+      </Slide>
+    </>
   );
 }
 

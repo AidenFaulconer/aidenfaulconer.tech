@@ -280,7 +280,7 @@ export default function Model({ /* instances */ ...props }) {
                 numHands: nH,
                 propsUsing: pU,
               });
-            }, 2600);
+            }, 2400);
           }}
         >
           {/* <axesHelper args={[1, 1, 1]} scale={4} position={[0, 0, 0]} /> */}

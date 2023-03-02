@@ -115,6 +115,41 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
   //   },
   // };
 
+  // const scrollProgress = useScrollProgress();
+  const [sticky, setSticky] = useState(true);
+  const [selectedSlide, changeSelectedSlide] = useState(0);
+  const theme = useTheme();
+
+  //   color change spring
+  const [{ x, y }, set] = useSpring(() => ({
+    // when we pass an object through set, it updates this to property and puts the old property in the from object, for internal interpolation
+    to: { x: theme.palette.text.primary, y: 1 },
+    config: {
+      mass: 15,
+      duration: 550,
+      tension: 1500,
+      friction: 150,
+      precision: 0.01,
+    },
+  }));
+
+  const threshold = 0.25;
+
+  // eslint-disable-next-line default-param-last
+  const intersectionHandler = (entries = [], observer) => entries.forEach(({ intersectionRatio, target }) => {
+    const id = Number(target.id);
+    console.log(intersectionRatio, id);
+    if (intersectionRatio >= threshold) {
+      changeSelectedSlide(id);
+    }
+  });
+
+  const addNode = useIntersectionObserver(intersectionHandler, {
+    root: null,
+    rootMargin: '0px 10% 0px 0px',
+    threshold,
+  });
+
   const slides = [
     {
       title: (
@@ -135,7 +170,7 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
         handPosition: [0, -1, 0],
         numHands: 2,
       },
-      background: 'transparent',
+      background: theme.palette.text.primary,
       color: type ? 'secondary' : 'primary',
       cta: true,
     },
@@ -211,41 +246,6 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
     },
   ];
 
-  // const scrollProgress = useScrollProgress();
-  const [sticky, setSticky] = useState(true);
-  const [selectedSlide, changeSelectedSlide] = useState(0);
-  const theme = useTheme();
-
-  //   color change spring
-  const [{ x, y }, set] = useSpring(() => ({
-    // when we pass an object through set, it updates this to property and puts the old property in the from object, for internal interpolation
-    to: { x: theme.palette.text.primary, y: 1 },
-    config: {
-      mass: 15,
-      duration: 550,
-      tension: 1500,
-      friction: 150,
-      precision: 0.01,
-    },
-  }));
-
-  const threshold = 0.4;
-
-  // eslint-disable-next-line default-param-last
-  const intersectionHandler = (entries = [], observer) => entries.forEach(({ intersectionRatio, target }) => {
-    const id = Number(target.id);
-    console.log(intersectionRatio, id);
-    if (intersectionRatio >= threshold) {
-      changeSelectedSlide(id);
-    }
-  });
-
-  const addNode = useIntersectionObserver(intersectionHandler, {
-    root: null,
-    rootMargin: '0px 10% 0px 0px',
-    threshold,
-  });
-
   useEffect(() => {
     if (selectedSlide === slides.length) {
       changeHand({
@@ -284,37 +284,38 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
   return (
     <section
       id={id}
+      className="relative"
     >
-      <Box
-        container
-        className="w-full py-24 h-full box-border relative inline-flex flex-col justify-start"
-        sx={{
-          height: `${slides.length * 100}vh`,
-          position: 'relative',
-          background: (theme) => theme.palette.text.primary,
+      <a.div
+        className="
+          w-full h-full grid grid-cols-6
+          box-border relative items-start
+        "
+        style={{
+          background: x,
         }}
       >
         {/* ThreeJS */}
         <div
-          className="
-            z-[1] w-full h-3/4 lg:min-h-[55vh] md:min-h-[55vh]
-            md:max-h-[30vh] min-h-[53vh] inline-flex max-h-3/4 mt-0 m-auto
-            sticky
-          "
-          style={{
-            position: 'sticky',
-            top: 0,
-          }}
+          className="md:col-start-3 col-start-1 md:col-span-4 col-span-6 sticky top-0"
         >
-          <Box
-            className="w-[100vw] h-[60vh] absolute inline-flex top-0 m-auto z-1"
-            // this allows the threejs to be shown outside this main containment
-            sx={{
-              background: (theme) => `linear-gradient('50% ${theme.palette.text.primary}','50% transparent')`,
-            }}
+          <div
+            className="
+              z-[1] w-full h-full lg:min-h-[55vh] md:min-h-[55vh]
+              md:max-h-[30vh] min-h-[53vh] inline-flex max-h-3/4 mt-0 m-auto
+              sticky top-0
+            "
           >
-            {edges && (<ThreeWrapper posts={edges} />)}
-          </Box>
+            <div
+            // w-[100vw]
+              className="
+              w-full h-[60vh]
+              absolute inline-flex md:top-[20vh] top-[0vh] m-auto z-1
+            "
+            >
+              {edges && (<ThreeWrapper posts={edges} />)}
+            </div>
+          </div>
         </div>
 
         {/* clouds */}
@@ -326,14 +327,20 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
         {!heroData.enabled || (slides.map((slide, i) => {
           const odd = i % 2 === 0;
           return (
-            <a.div
+            <div
               id={i}
-              style={{ background: x }}
-              className={`w-full h-[100vh] relative inline-flex ${odd && 'justify-start' || 'justify-end'}`}
+              className="
+                md:col-start-1 col-start-2 md:col-span-2 col-span-6 w-full min-h-[150vh]
+                inline-flex transition-all ease-in-out
+              "
               ref={addNode}
             >
+              {/* headline */}
               <div
-                className="h-full sticky flex-col md:w-[40%] w-full align-middle inline-flex px-3"
+                className={`
+                    ${i === selectedSlide ? 'self-start' : ''}  ${i === selectedSlide && i !== 0 ? 'fixed' : 'relative'} 
+                    pb-36 top-[35%] h-full sticky flex-col w-auto align-middle inline-flex px-3
+                  `}
               >
                 <Box
                   className="inline-flex gap-4 flex-col relative pointer-events-none p-3 "
@@ -376,11 +383,17 @@ export const HeroHeader = React.memo(({ id, noHeadline = false, ...props }) => {
                 </Box>
                 )}
               </div>
-            </a.div>
+
+              {/* details (tablet + desktop up) */}
+              {/* <a.div
+                className={`${i === selectedSlide ? 'self-end' : ''}  ${i === selectedSlide && i !== 0 ? 'fixed top-0' : 'relative'} h-full sticky flex-col md:inline-flex md:w-[30%] hidden align-middle px-3`}
+              /> */}
+              {/* Test */}
+            </div>
           );
         })
         )}
-      </Box>
+      </a.div>
     </section>
   );
 }, (pre, post) => pre !== post);

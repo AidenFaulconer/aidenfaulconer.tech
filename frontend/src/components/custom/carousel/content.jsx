@@ -129,10 +129,6 @@ export function CtaList({
           title: 'services',
           subTitle: 'loreum ipsum sit dolor amet consectetur',
           imageSrc: defaultImage,
-        }, {
-          title: 'services',
-          subTitle: 'loreum ipsum sit dolor amet consectetur',
-          imageSrc: defaultImage,
         }].map(({ title, subTitle, imageSrc }, i) => {
           const odd = i % 2 === 0;
           return (

@@ -26,6 +26,8 @@ import { useEventListener } from '../components/util/customHooks';
 
 import Seo from './seo';
 
+import Header from './header';
+
 function Layout(props) {
   useEventListener('close', saveStore);
 
@@ -46,7 +48,6 @@ function Layout(props) {
       });
     }
   };
-
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
     disableHysteresis: true,
@@ -82,7 +83,8 @@ function Layout(props) {
       {/* <Seo /> */}
       {/* <PageTransitionOverlay /> */}
       <MaterialUI>
-        <Navigation />
+        {/* <Navigation /> */}
+        <Header />
 
         <HeroHeader id="projects" />
         {/* <div style={{ opacity: animatedOpacity }}> */}

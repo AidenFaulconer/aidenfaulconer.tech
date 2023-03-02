@@ -14,6 +14,7 @@ import PickersDay from '@mui/lab/PickersDay';
 import DatePicker from '@mui/lab/DatePicker';
 import CalendarPickerSkeleton from '@mui/lab/CalendarPickerSkeleton';
 import getDaysInMonth from 'date-fns/getDaysInMonth';
+import { useTheme } from '@emotion/react';
 import { useFormStore } from '../util/customHooks';
 import { AFIcon } from './icons';
 
@@ -120,73 +121,72 @@ export function PickDate({
     </LocalizationProvider>
   );
 }
-// ========================================================================== //
-// Button variant 2 (Green)
-// ========================================================================== //
+
 const buttonTypes = {
   primary: {
     color: (theme) => theme.palette.text.secondary,
-    background: (theme) => theme.palette.text.primary,
+    background: (theme) => `${theme.palette.text.primary} !important`,
+    backgroundColor: (theme) => `${theme.palette.text.primary} !important`,
     border: (theme) => theme.custom.borders.brandBorder,
     '&:hover': {
-      background: (theme) => theme.palette.text.secondary,
-      color: (theme) => theme.palette.text.primary,
+      background: `${(theme) => theme.palette.text.secondary} !important`,
+      color: (theme) => `${theme.palette.text.primary} !important`,
     },
   },
   secondary: {
-    color: (theme) => theme.palette.text.primary,
+    color: (theme) => `${theme.palette.text.primary} !important`,
     background: (theme) => theme.palette.text.secondary,
+    backgroundColor: (theme) => `${theme.palette.text.secondary} !important`,
     border: (theme) => theme.custom.borders.brandBorderSecondary,
     '&:hover': {
-      background: (theme) => theme.palette.text.primary,
-      color: 'text.secondary',
+      background: `${(theme) => theme.palette.text.primary} !important`,
+      color: (theme) => `${theme.palette.text.secondary} !important`,
     },
   },
   special: {
     color: 'text.secondary',
-    background: 'text.third',
+    background: (theme) => theme.palette.text.third,
+    backgroundColor: (theme) => `${theme.palette.text.third} !important`,
     border: (theme) => theme.custom.borders.brandBorder,
     '&:hover': {
-      background: 'text.prmary',
-      color: 'text.secondary',
+      background: `${(theme) => theme.palette.text.primary} !important`,
+      color: (theme) => `${theme.palette.text.secondary} !important`,
     },
   },
   icon: {
     borderRadius: '100%',
     width: 50,
-    maxWidth: 50,
-    minWidth: 0,
     height: 50,
-    zIndex: 10,
     position: 'relative',
     background: (theme) => theme.palette.text.primary,
+    backgroundColor: (theme) => `${theme.palette.text.primary} !important`,
     border: (theme) => theme.custom.borders.brandBorder,
     '& .MuiButton-endIcon': {
       margin: 0,
     },
     '&:hover': {
       background: (theme) => theme.palette.text.secondary,
-      color: (theme) => theme.palette.text.primary,
+      color: (theme) => `${theme.palette.text.primary} !important`,
     },
   },
 };
-export function RegularButton(props) {
-  const {
-    shadows = false, type = 'primary', icon = { enabled: false, type: 'arrow', color: buttonTypes[type].color }, shadow, children, size = 'large',
-  } = props;
+export function RegularButton({
+  className, shadows = false, type = 'primary', icon = { enabled: false, type: 'arrow', color: buttonTypes[type].color }, shadow, children, size = 'large', ...props
+}) {
+  const theme = useTheme();
+  console.log(buttonTypes[type], { background: theme.palette.text.primary });
   return (
     <Button
       {...props}
       disableRipple
-      className={`
+      className={className || `
        text-left hover:-translate-y-1 ease-in-out transition-all hover:shadow-lg h-10 inline-flex
        items-center z-10 cursor-pointer font-medium items-center gap-3
        `}
       sx={{
-        boxShadow: shadows ? (theme) => (theme.custom.shadows.brand) : 'none',
+        ...buttonTypes[type],
         lineHeight: '100%',
         fontSize: 14,
-        ...buttonTypes[type],
         '&:MuiEndIcon-root': {
           margin: 0,
         },

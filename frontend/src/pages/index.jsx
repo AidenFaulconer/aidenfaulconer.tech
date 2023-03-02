@@ -8,13 +8,14 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import Contact from '../components/forms/contact';
 import Roullete from '../components/roullette';
 import { RegularButton } from '../components/custom/buttons';
+import { useScrollProgress } from '../components/util/customHooks';
 
 function SectionWrapper({ styles, children, type = 'primary' }) {
   return (
     <>
       <Grid
         item
-        md={0}
+        md={1}
         styles={styles}
         sx={{ background: (theme) => theme.palette.text[type] }}
       />
@@ -23,7 +24,7 @@ function SectionWrapper({ styles, children, type = 'primary' }) {
       </Grid>
       <Grid
         item
-        md={0}
+        md={1}
         sx={{ background: (theme) => theme.palette.text[type] }}
       />
     </>
@@ -37,6 +38,8 @@ function IndexPage({
   const marginAmount = '175px';
   const [count, setCount] = React.useState(0);
   // const addNode = useScrollSnappedChildren();
+  const scrollProgress = useScrollProgress();
+
   return (
     <Grid container>
 
@@ -53,6 +56,11 @@ function IndexPage({
       </SectionWrapper>
 
       <SectionWrapper>
+        {/* <SectionWrapper>
+        <div className="height-full min-h-100 w-1 bg-gray-400">
+          <div className="absolute top-0 w-1 bg-black" style={{ height: `${((scrollProgress) / 100)}% ` }} />
+        </div>
+      </SectionWrapper> */}
         <Roullete />
       </SectionWrapper>
       <Contact />

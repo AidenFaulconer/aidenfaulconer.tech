@@ -1,3 +1,4 @@
+import subprocess
 import sqlite3
 import json
 from selenium.webdriver.common.by import By
@@ -13,6 +14,24 @@ from selenium import webdriver
 import requests
 import random
 from fake_useragent import UserAgent
+import string
+
+
+def generate_device_id(write=false):
+    # Define the length of the device ID
+    id_length = 16
+
+    # Generate a random device ID
+    device_id = ''.join(random.choices(
+        string.ascii_uppercase + string.digits, k=id_length))
+
+    # Write the device ID to a file
+    if (write):
+        with open('device_id.txt', 'w') as f:
+            f.write(device_id)
+
+    return device_id
+
 
 # Use a random user-agent to hide the browser type and version
 ua = UserAgent()
@@ -27,6 +46,7 @@ response = requests.get('http://example.com', headers=headers, proxies=proxies)
 
 testBot = {}
 
+
 def get_free_proxy():
     # Scrape the website that lists free residential proxies
     response = requests.get("https://free-proxy-list.net/")
@@ -39,11 +59,11 @@ def get_free_proxy():
 
     return (ip, port)
 
-import subprocess
 
 def get_local_db(db_file):
     conn = sqlite3.connect(db_file)
     return dbo
+
 
 def getVpn():
     # Start openvpn client with the proper config file
@@ -51,21 +71,27 @@ def getVpn():
 
 
 def spoof_device_id(driver):
-    device_id = ''.join(random.choices(string.ascii_letters + string.digits, k=20))
+    device_id = ''.join(random.choices(
+        string.ascii_letters + string.digits, k=20))
     driver.add_cookie({'name': 'device_id', 'value': device_id})
+
 
 def clear_cookies(driver):
     driver.delete_all_cookies()
+
 
 def clear_browser_history(driver):
     driver.execute_script("window.localStorage.clear();")
     driver.execute_script("window.sessionStorage.clear();")
     driver.execute_script("window.indexedDB.deleteDatabase('History');")
     driver.execute_script("window.indexedDB.deleteDatabase('Downloads');")
-    driver.execute_script("window.indexedDB.deleteDatabase('chrome-extension_dckljplncjfjbkofonabajfhbomjffjp_0');")
+    driver.execute_script(
+        "window.indexedDB.deleteDatabase('chrome-extension_dckljplncjfjbkofonabajfhbomjffjp_0');")
+
 
 def use_browser_extensions(driver):
     # Code to add browser extensions
+
 
 def use_vpn(driver):
     proxy = get_free_proxy()
@@ -204,19 +230,19 @@ def create_driver():
         "--safebrowsing-disable-v4-only-mode-threat-protection-service-threat-detection",
         "--incognito"
     ]
-    
+
     for option in options_list:
-        chrome_options.add_argument(option);
+        chrome_options.add_argument(option)
 
     driver = webdriver.Chrome(chrome_options=chrome_options)
-    
+
     driver = getDriver()
     spoof_device_id(driver)
     clear_cookies(driver)
     clear_browser_history(driver)
     # use_browser_extensions(driver)
-    use_vpn(driver) 
-    
+    use_vpn(driver)
+
     return driver
 
 # def use_unique_credentials(driver):
@@ -226,13 +252,13 @@ def create_driver():
     # Code to avoid providing personal information
 
 
-def configure_bot(json_str,dbo):
+def configure_bot(json_str, dbo):
     json_obj = json.loads(json_str)
     driver = create_driver()
     for action in json_obj:
         if 'actions' in action:
             for sub_action in action['actions']:
-                execute_action(driver, sub_action,dbo)
+                execute_action(driver, sub_action, dbo)
         if 'args' in action:
             args = action['args']
             for arg in args:
@@ -244,8 +270,9 @@ def configure_bot(json_str,dbo):
                     update_data(arg['data'])
                 elif arg['type'] == 'delete':
                     delete_data(arg['data'])
-        execute_action(driver, action,dbo)
+        execute_action(driver, action, dbo)
     return driver
+
 
 def execute_action(driver, action):
     if action['action'] == 'get':
@@ -294,26 +321,33 @@ def execute_action(driver, action):
         driver.switch_to.default_content()
     # Add more elif statements for other Selenium actions as needed
 
+
 def create_data(data, dbo):
     cursor = dbo.cursor()
-    cursor.execute("INSERT INTO tablename (col1, col2, col3) VALUES (?, ?, ?)", (data['col1'], data['col2'], data['col3']))
+    cursor.execute("INSERT INTO tablename (col1, col2, col3) VALUES (?, ?, ?)",
+                   (data['col1'], data['col2'], data['col3']))
     dbo.commit()
+
 
 def read_data(data, dbo):
     cursor = dbo.cursor()
     cursor.execute("SELECT * FROM tablename WHERE id = ?", (data['id'],))
     return cursor.fetchone()
 
+
 def update_data(data, dbo):
     cursor = dbo.cursor()
-    cursor.execute("UPDATE tablename SET col1 = ?, col2 = ?, col3 = ? WHERE id = ?", (data['col1'], data['col2'], data['col3'], data['id']))
+    cursor.execute("UPDATE tablename SET col1 = ?, col2 = ?, col3 = ? WHERE id = ?",
+                   (data['col1'], data['col2'], data['col3'], data['id']))
     dbo.commit()
+
 
 def delete_data(data, dbo):
     cursor = dbo.cursor()
     cursor.execute("DELETE FROM tablename WHERE id = ?", (data['id'],))
     dbo.commit()
-    
+
+
 def upload_file(file_path):
     # initialize webdriver
     driver = webdriver.Chrome()
@@ -346,6 +380,7 @@ def upload_file(file_path):
 # Example usage:
 # upload_file("/path/to/file.jpg")
 
+
 def login():
     # Start a webdriver session
     driver = webdriver.Chrome()
@@ -370,7 +405,7 @@ def getPhoneNumber():
 
     # Create a new phone number
     phone_number = client.incoming_phone_numbers.create(
-        phone_number = "15005550000"
+        phone_number="15005550000"
     )
 
     # Retrieve all messages sent to the phone number

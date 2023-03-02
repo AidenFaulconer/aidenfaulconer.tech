@@ -284,11 +284,12 @@ export const illustrations = {
 // Illustration component **parent should generally be realtively positioned**
 // ========================================================================== //
 export const Illustration = React.memo(
-  (props) => {
+  ({
+    maxWidth, flipped, margin, className, type,
+  }) => {
     const [graphic, setGraphic] = useState(
-      illustrations[props.type || 'computer'],
+      illustrations[type || 'computer'],
     );
-    const { maxWidth, flipped, margin } = props;
 
     const illustrationStyles = {
       transform: flipped && 'scaleX(-1)',
@@ -300,7 +301,7 @@ export const Illustration = React.memo(
 
     return (
       <Box
-        className="absolute ml-[30px] b-[-10px] w-[240px] h-[200px]"
+        className={className || 'absolute ml-[30px] bottom-[-10px] w-[240px] h-[200px]'}
         id="illustration"
       >
         <div
